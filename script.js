@@ -1,0 +1,501 @@
+// Template UBITS - Dashboard JavaScript
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos del DOM
+    const sidebar = document.getElementById('sidebar');
+    const topNav = document.getElementById('topNav');
+    const navButtons = document.querySelectorAll('.nav-button');
+    const navTabs = document.querySelectorAll('.nav-tab');
+    const contentArea = document.querySelector('.content-area');
+    const tooltip = document.getElementById('tooltip');
+
+    // Función para ajustar el sidebar según el alto de la pantalla
+    function adjustSidebarHeight() {
+        const windowHeight = window.innerHeight;
+        const topMargin = 16; // Margen superior
+        const bottomMargin = 16; // Margen inferior
+        const availableHeight = windowHeight - topMargin - bottomMargin;
+        
+        // El sidebar debe tener al menos 578px de alto
+        const sidebarHeight = Math.max(578, availableHeight);
+        
+        sidebar.style.height = `${sidebarHeight}px`;
+        sidebar.style.minHeight = `578px`;
+        
+        // Ajustar posición para mantener margen de 16px arriba y abajo
+        const topPosition = topMargin;
+        sidebar.style.top = `${topPosition}px`;
+        sidebar.style.bottom = 'auto';
+        
+
+    }
+
+    // Función para ajustar el alto del contenedor principal
+    function adjustMainContentHeight() {
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
+        const isMobile = windowWidth <= 768;
+        
+        const topMargin = isMobile ? 12 : 16; // Margen superior
+        const bottomMargin = isMobile ? 12 : 16; // Margen inferior
+        const availableHeight = windowHeight - topMargin - bottomMargin;
+        
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.style.height = `${availableHeight}px`;
+            mainContent.style.maxHeight = `${availableHeight}px`;
+        }
+    }
+
+    // Función para alternar modo oscuro
+    function toggleDarkMode() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        body.setAttribute('data-theme', newTheme);
+        
+        // Guardar preferencia en localStorage
+        localStorage.setItem('theme', newTheme);
+        
+        // Cambiar icono del botón
+        const darkModeButton = document.querySelector('#darkmode-toggle i');
+        if (darkModeButton) {
+            if (newTheme === 'dark') {
+                darkModeButton.className = 'fa fa-sun-bright';
+            } else {
+                darkModeButton.className = 'fa fa-moon';
+            }
+        }
+        
+        // Cambiar tooltip del botón
+        const darkModeButtonContainer = document.querySelector('#darkmode-toggle');
+        if (darkModeButtonContainer) {
+            if (newTheme === 'dark') {
+                darkModeButtonContainer.setAttribute('data-tooltip', 'Modo claro');
+            } else {
+                darkModeButtonContainer.setAttribute('data-tooltip', 'Modo oscuro');
+            }
+        }
+        
+        console.log(`Modo ${newTheme === 'dark' ? 'oscuro' : 'claro'} activado`);
+        console.log('🎯 Estado de navegación mantenido - no se cambió de sección');
+    }
+
+    // Función para cargar tema guardado
+    function loadSavedTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.setAttribute('data-theme', savedTheme);
+            
+            // Actualizar icono y tooltip si es modo oscuro
+            if (savedTheme === 'dark') {
+                const darkModeButton = document.querySelector('#darkmode-toggle i');
+                const darkModeButtonContainer = document.querySelector('#darkmode-toggle');
+                
+                if (darkModeButton) {
+                    darkModeButton.className = 'fa fa-sun-bright';
+                }
+                
+                if (darkModeButtonContainer) {
+                    darkModeButtonContainer.setAttribute('data-tooltip', 'Modo claro');
+                }
+            }
+        }
+    }
+
+    // Función para ajustar el nav superior según el ancho de la pantalla
+    function adjustTopNavWidth() {
+        // Ya no es necesaria - el CSS se encarga del ancho
+        console.log('🎯 Top Nav: CSS se encarga del ancho automáticamente');
+    }
+
+    // Función para manejar la navegación del sidebar
+    function handleSidebarNavigation(event) {
+        const button = event.currentTarget;
+        const section = button.dataset.section;
+        
+        // Remover clase active de todos los botones del sidebar
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Agregar clase active al botón clickeado del sidebar
+        button.classList.add('active');
+        
+        // Ocultar/mostrar top nav según la sección
+        const topNav = document.querySelector('.top-nav');
+        if (topNav) {
+            if (section === 'ubits-ai') {
+                topNav.style.display = 'none';
+            } else {
+                topNav.style.display = 'flex';
+                
+                // Activar siempre la Sección 1 del nav superior
+                navTabs.forEach(tab => tab.classList.remove('active'));
+                const section1Tab = document.querySelector('[data-tab="section1"]');
+                if (section1Tab) {
+                    section1Tab.classList.add('active');
+                }
+            }
+        }
+        
+        // Actualizar el contenido con la sección del sidebar + sección 1
+        updateContentArea(section);
+    }
+
+    // Función para manejar la navegación de tabs
+    function handleTabNavigation(event) {
+        const tab = event.currentTarget;
+        const tabName = tab.dataset.tab;
+        
+        // Remover clase active de todos los tabs
+        navTabs.forEach(t => t.classList.remove('active'));
+        
+        // Agregar clase active al tab clickeado
+        tab.classList.add('active');
+        
+        // NO cambiar el contenido principal, solo actualizar el indicador de subsección
+        console.log(`Cambiando a subsección: ${tabName}`);
+        
+        // Actualizar solo el indicador de subsección activa
+        updateSubsectionIndicator(tabName);
+    }
+    
+    // Función para actualizar solo el indicador de subsección
+    function updateSubsectionIndicator(subsection) {
+        const contentPlaceholder = contentArea.querySelector('.content-placeholder');
+        
+        if (contentPlaceholder) {
+            // Mantener el contenido principal, solo actualizar el indicador
+            const currentContent = contentPlaceholder.innerHTML;
+            
+            // Buscar y actualizar solo la línea de "Subsección activa"
+            if (currentContent.includes('Subsección activa:')) {
+                const updatedContent = currentContent.replace(
+                    /Subsección activa: .*?<\/p>/,
+                    `Subsección activa: ${subsection.charAt(0).toUpperCase() + subsection.slice(1)}</p>`
+                );
+                contentPlaceholder.innerHTML = updatedContent;
+            }
+        }
+    }
+
+    // Función para actualizar el área de contenido
+    function updateContentArea(section) {
+        const contentPlaceholder = contentArea.querySelector('.content-placeholder');
+        const contentAreaElement = document.querySelector('.content-area');
+        
+        if (contentPlaceholder) {
+            // Verificar si hay contenido personalizado
+            const customContent = getCustomContent(section);
+            
+            if (customContent) {
+                // Usar contenido personalizado si existe
+                contentPlaceholder.innerHTML = customContent;
+                
+                // Aplicar estilos especiales para UBITS AI
+                if (section === 'ubits-ai') {
+                    contentAreaElement.classList.add('no-background');
+                } else {
+                    contentAreaElement.classList.remove('no-background');
+                }
+            } else {
+                // Contenido por defecto del template
+                const sectionName = section.charAt(0).toUpperCase() + section.slice(1);
+                contentPlaceholder.innerHTML = `
+                    <h2>${sectionName}</h2>
+                    <p>Contenido de la sección: ${sectionName}</p>
+                    <p>Subsección activa: Sección 1</p>
+                    <p>Personaliza este contenido según tus necesidades</p>
+                `;
+                
+                // Remover estilos especiales
+                contentAreaElement.classList.remove('no-background');
+            }
+        }
+    }
+    
+    // Función para obtener contenido personalizado
+    function getCustomContent(section) {
+        // AQUÍ TU COMPAÑERO PERSONALIZA EL CONTENIDO
+        // Retorna null para usar contenido por defecto
+        // O retorna HTML personalizado para cada sección
+        
+        // PERSONALIZACIÓN PARA UBITS AI
+        if (section === 'ubits-ai') {
+            return `
+                <div class="ubits-ai-dashboard">
+                    <h2 class="ai-title">Hola, ¿en qué puedo ayudarte?</h2>
+                    
+                    <div class="ai-cards-container">
+                        <div class="ai-card">
+                            <div class="card-header">
+                                <h3 class="card-title">AI Insights</h3>
+                                <div class="card-icon">
+                                    <i class="fa fa-lightbulb"></i>
+                                </div>
+                            </div>
+                            <p class="card-description">Quiero sumar personas a la estructura de la compañía.</p>
+                        </div>
+                        
+                        <div class="ai-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Customer Support</h3>
+                                <div class="card-icon">
+                                    <i class="fa fa-headset"></i>
+                                </div>
+                            </div>
+                            <p class="card-description">Haz una comparación de precios vs. el mercado laboral.</p>
+                        </div>
+                        
+                        <div class="ai-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Evaluación financiera</h3>
+                                <div class="card-icon">
+                                    <i class="fa fa-chart-line"></i>
+                                </div>
+                            </div>
+                            <p class="card-description">Haz una comparación de precios vs. el mercado laboral.</p>
+                        </div>
+                        
+                        <div class="ai-card">
+                            <div class="card-header">
+                                <h3 class="card-title">¿Qué quieres aprender?</h3>
+                                <div class="card-icon">
+                                    <i class="fa fa-graduation-cap"></i>
+                                </div>
+                            </div>
+                            <p class="card-description">Haz una comparación de precios vs. el mercado laboral.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Ejemplo de personalización:
+        /*
+        if (section === 'aprendizaje') {
+            return `
+                <div class="custom-content">
+                    <h2>Mi Dashboard de Aprendizaje</h2>
+                    <div class="cards-grid">
+                        <div class="card">Card 1</div>
+                        <div class="card">Card 2</div>
+                        <div class="card">Card 3</div>
+                    </div>
+                </div>
+            `;
+        }
+        */
+        
+        return null; // null = usar contenido por defecto del template
+    }
+
+    // Función para manejar el responsive
+    function handleResponsive() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // Ajustar sidebar para pantallas pequeñas
+        if (windowWidth <= 768) {
+            sidebar.style.width = '80px';
+            sidebar.style.minWidth = '80px';
+            sidebar.style.left = '8px';
+            
+            // Ajustar contenedor principal para mobile
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.style.left = '108px';
+                mainContent.style.right = '12px';
+            }
+        } else {
+            sidebar.style.width = '96px';
+            sidebar.style.minWidth = '96px';
+            sidebar.style.left = '11px';
+            
+            // Restaurar posición del contenedor principal
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.style.left = '131px';
+                mainContent.style.right = '12px';
+            }
+        }
+        
+        // Ajustar para pantallas con poco alto
+        if (windowHeight <= 600) {
+            sidebar.style.padding = '12px 22px';
+        } else {
+            sidebar.style.padding = '16px 28px';
+        }
+        
+        // Reajustar dimensiones
+        adjustSidebarHeight();
+        adjustMainContentHeight();
+    }
+
+    // Event listeners
+    navButtons.forEach(button => {
+        // Solo agregar navegación a botones que tengan data-section
+        if (button.dataset.section) {
+            button.addEventListener('click', handleSidebarNavigation);
+        }
+        
+        // Tooltip hover para todos los botones
+        button.addEventListener('mouseenter', function(e) {
+            const tooltipText = this.getAttribute('data-tooltip');
+            tooltip.textContent = tooltipText;
+            tooltip.style.opacity = '1';
+            
+            // Posicionar tooltip a la derecha del botón
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = (rect.right + 20) + 'px';
+            tooltip.style.top = (rect.top + rect.height/2 - tooltip.offsetHeight/2) + 'px';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            tooltip.style.opacity = '0';
+        });
+        
+        // Manejo especial para el botón de modo oscuro
+        if (button.id === 'darkmode-toggle') {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevenir navegación normal
+                e.stopPropagation(); // Evitar que se propague el evento
+                toggleDarkMode();
+            });
+        }
+    });
+
+    navTabs.forEach(tab => {
+        tab.addEventListener('click', handleTabNavigation);
+    });
+
+    // Event listeners para responsive
+    window.addEventListener('resize', () => {
+        handleResponsive();
+        adjustMainContentHeight();
+    });
+    window.addEventListener('orientationchange', () => {
+        handleResponsive();
+        adjustMainContentHeight();
+    });
+
+    // Inicialización
+    function init() {
+        console.log('🚀 Inicializando Template UBITS...');
+        
+        adjustSidebarHeight();
+        adjustMainContentHeight();
+        handleResponsive();
+        
+        // Cargar tema guardado
+        loadSavedTheme();
+        
+        // Establecer estado inicial
+        const defaultSection = document.querySelector('[data-section="aprendizaje"]');
+        if (defaultSection) {
+            defaultSection.classList.add('active');
+        }
+        
+        const defaultTab = document.querySelector('[data-tab="section1"]');
+        if (defaultTab) {
+            defaultTab.classList.add('active');
+        }
+        
+        // Cargar contenido inicial
+        updateContentArea('aprendizaje');
+    }
+
+    // Inicializar la aplicación
+    init();
+
+    // Función para exportar configuración (útil para el equipo)
+    window.exportConfig = function() {
+        const config = {
+            sidebar: {
+                width: '96px',
+                backgroundColor: '#202837',
+                borderRadius: '8px',
+                shadow: '0px 1px 2px 0px rgba(0,0,0,0.14), 0px 0px 2px 0px rgba(0,0,0,0.12)'
+            },
+            topNav: {
+                height: '40px',
+                backgroundColor: '#ffffff',
+                borderRadius: '8px'
+            },
+            colors: {
+                primary: '#0c5bef',
+                secondary: '#5c646f',
+                background: '#f3f3f4',
+                white: '#ffffff',
+                dark: '#202837',
+                lightGray: '#98a6b3',
+                border: '#d0d2d5'
+            },
+            fonts: {
+                primary: 'Noto Sans',
+                weights: [400, 600]
+            },
+            spacing: {
+                sidebarPadding: '16px 8px',
+                navGap: '8px',
+                contentGap: '24px'
+            }
+        };
+        
+        console.log('Configuración del template:', config);
+        return config;
+    };
+
+    // Función para personalizar colores (útil para el equipo)
+    window.customizeColors = function(primaryColor, secondaryColor) {
+        const root = document.documentElement;
+        root.style.setProperty('--primary-color', primaryColor || '#0c5bef');
+        root.style.setProperty('--secondary-color', secondaryColor || '#5c646f');
+        
+        // Aplicar cambios dinámicamente
+        document.querySelectorAll('.nav-button.active').forEach(btn => {
+            btn.style.backgroundColor = primaryColor || '#0c5bef';
+        });
+        
+        document.querySelectorAll('.nav-tab.active::after').forEach(tab => {
+            tab.style.backgroundColor = primaryColor || '#0c5bef';
+        });
+    };
+});
+
+// Función para mostrar información del template
+function showTemplateInfo() {
+    console.log(`
+    🚀 TEMPLATE UBITS - DASHBOARD
+    
+    📁 Archivos incluidos:
+    - index.html (estructura HTML)
+    - styles.css (estilos CSS)
+    - script.js (funcionalidad JavaScript)
+    
+    🎨 Características:
+    - Sidebar responsive que se adapta al alto de pantalla
+    - Nav superior que se adapta al ancho de pantalla
+    - Estados de botones: Default, Hover, Active
+    - Colores y espaciados exactos del diseño Figma
+    - Fuente Noto Sans con pesos 400 y 600
+    - Iconos Font Awesome 6 Pro
+    
+    🔧 Funciones disponibles:
+    - exportConfig(): Exporta la configuración del template
+    - customizeColors(primary, secondary): Personaliza colores
+    
+    📱 Responsive:
+    - Mobile: sidebar 80px, ajustes de padding
+    - Low height: reducción de espaciados
+    
+    💡 Para personalizar:
+    1. Modifica los colores en CSS variables
+    2. Cambia los iconos en el HTML
+    3. Ajusta el contenido en updateContentArea()
+    4. Personaliza los nombres de secciones
+    `);
+}
+
+// Mostrar información al cargar
+document.addEventListener('DOMContentLoaded', showTemplateInfo);
