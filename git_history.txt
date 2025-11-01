@@ -1,3 +1,5 @@
+b051dd5f2180454b11c9f290af7319545cd94c88|Ubits|ubits@macbookpro.lan|2025-11-01 11:59:38 -0500|Update modal component with validations: Add button disabled until Name filled, email validation, USD cost formatting, and remove country code selector
+da1114417ab99336da09ce5414da8bcb70828133|Ubits|ubits@macbookpro.lan|2025-11-01 11:45:27 -0500|Update changelog with latest changes
 47a9e34b72fa3e6e8195e715cb543178f9faf1ff|Ubits|ubits@macbookpro.lan|2025-11-01 11:45:22 -0500|Keep Share team button always disabled in create_team.html
 1c1a021db3a82bdb11a51837ac6cdbefda966274|Ubits|ubits@macbookpro.lan|2025-11-01 11:42:21 -0500|Update changelog with latest changes
 a04a064f54b1c1fe8fcd64fb0da43fd2b1322509|Ubits|ubits@macbookpro.lan|2025-11-01 11:42:15 -0500|Implement modal component in create_team.html with proper spacing and styling
