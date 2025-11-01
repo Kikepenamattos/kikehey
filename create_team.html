@@ -1022,8 +1022,38 @@
             // Cargar equipos en el sidebar
             loadTeamsInSidebar();
 
-            // Cargar datos del proyecto actual si existe
-            loadCurrentProjectData();
+            // Guardar automáticamente cada 30 segundos (autosave)
+            setInterval(autoSave, 30000);
+            
+            // Guardar antes de cerrar la página
+            window.addEventListener('beforeunload', function() {
+                autoSave();
+            });
+            
+            // Cargar datos del proyecto actual si existe (después de inicializar todo)
+            setTimeout(() => {
+                loadCurrentProjectData();
+            }, 500);
+        }
+
+        // ============================================
+        // Auto-save functionality
+        // ============================================
+        function autoSave() {
+            const projectName = document.getElementById('projectName')?.value.trim();
+            
+            // Solo hacer autosave si hay algún contenido
+            if (projectName || membersList.length > 0) {
+                const projectData = getFormData();
+                projectData.status = 'draft';
+                
+                if (!currentProjectId) {
+                    currentProjectId = Date.now().toString();
+                }
+                
+                saveProjectToStorage(currentProjectId, projectData);
+                console.log('Auto-save realizado');
+            }
         }
 
         // ============================================
@@ -1123,6 +1153,11 @@
             projectNameInput.addEventListener('input', function() {
                 const hasProjectName = projectNameInput.value.trim().length > 0;
                 publishBtn.disabled = !hasProjectName;
+                
+                // Guardar automáticamente cuando se escribe el nombre
+                if (hasProjectName) {
+                    autoSave();
+                }
             });
 
             // Save Draft
@@ -1185,12 +1220,28 @@
         }
 
         function getFormData() {
+            // Obtener chips de Associated Projects
+            const projectsChips = [];
+            const chipsContainer = document.getElementById('projectsChipsContainer');
+            if (chipsContainer) {
+                const chips = chipsContainer.querySelectorAll('.project-chip');
+                chips.forEach(chip => {
+                    const chipText = chip.querySelector('.project-chip__text');
+                    if (chipText) {
+                        projectsChips.push(chipText.textContent.trim());
+                    }
+                });
+            }
+
             return {
                 name: document.getElementById('projectName').value.trim(),
                 teamCost: document.getElementById('teamCost').value,
                 associatedProjects: document.getElementById('associatedProjects').value,
-                members: [], // Se puede expandir más adelante
-                searchQuery: document.getElementById('searchInput').value
+                projects: projectsChips, // Chips de proyectos asociados
+                members: membersList, // Lista completa de miembros con sus datos
+                searchQuery: document.getElementById('searchInput').value,
+                createdAt: currentProjectId || Date.now(),
+                updatedAt: Date.now()
             };
         }
 
@@ -1567,6 +1618,11 @@
         }
         
         function createMember(memberData) {
+            // Generar ID único para el miembro si no existe
+            if (!memberData.id) {
+                memberData.id = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+            
             membersList.push(memberData);
             
             // Habilitar secondary-actions cuando se crea el primer miembro
@@ -1577,8 +1633,11 @@
             // Crear tarjeta de miembro visual
             createMemberCard(memberData);
             
-            // Actualizar el costo del equipo
+            // Actualizar costo del equipo
             updateTeamCost();
+            
+            // Guardar automáticamente después de agregar miembro
+            autoSave();
             
             console.log('Miembro creado:', memberData);
             console.log('Total de miembros:', membersList.length);
@@ -1708,6 +1767,8 @@
                             const chip = createProjectChip(value);
                             chipsContainer.appendChild(chip);
                             this.value = ''; // Limpiar input después de crear chip
+                            // Guardar automáticamente después de agregar chip
+                            autoSave();
                         } else {
                             alert('Este proyecto ya está agregado');
                         }
@@ -1732,6 +1793,8 @@
             
             closeBtn.addEventListener('click', function() {
                 chip.remove();
+                // Guardar automáticamente después de eliminar chip
+                autoSave();
             });
             
             chip.appendChild(chipText);
@@ -1833,8 +1896,86 @@
         }
 
         function loadCurrentProjectData() {
-            // Cargar datos si hay un proyecto en curso
-            // Por ahora dejamos esto para futuras implementaciones
+            // Cargar datos del proyecto actual desde localStorage
+            const projectDataObj = DocuProjectData.getProjectData();
+            if (!projectDataObj || !projectDataObj.teams || projectDataObj.teams.length === 0) {
+                return;
+            }
+
+            // Buscar el proyecto draft más reciente o uno específico
+            const drafts = projectDataObj.teams.filter(t => t.status === 'draft');
+            if (drafts.length > 0) {
+                // Cargar el draft más reciente
+                const latestDraft = drafts.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+                loadProjectData(latestDraft);
+            }
+        }
+
+        function loadProjectData(projectData) {
+            if (!projectData) return;
+
+            currentProjectId = projectData.id || Date.now().toString();
+            currentProjectData = projectData;
+
+            // Cargar nombre del proyecto
+            if (projectData.name) {
+                document.getElementById('projectName').value = projectData.name;
+                const publishBtn = document.getElementById('publishBtn');
+                if (publishBtn) {
+                    publishBtn.disabled = false;
+                }
+            }
+
+            // Cargar team cost
+            if (projectData.teamCost) {
+                document.getElementById('teamCost').value = projectData.teamCost;
+            }
+
+            // Cargar miembros
+            if (projectData.members && Array.isArray(projectData.members)) {
+                membersList = projectData.members;
+                
+                // Recrear las tarjetas de miembros
+                const teamMembersGrid = document.getElementById('teamMembersGrid');
+                if (teamMembersGrid) {
+                    const placeholder = document.getElementById('addMemberCard');
+                    teamMembersGrid.innerHTML = '';
+                    
+                    projectData.members.forEach(member => {
+                        createMemberCard(member);
+                    });
+                    
+                    if (placeholder) {
+                        teamMembersGrid.appendChild(placeholder);
+                    }
+                }
+
+                // Actualizar costo del equipo
+                updateTeamCost();
+
+                // Habilitar secondary-actions si hay miembros
+                if (membersList.length > 0) {
+                    enableSecondaryActions();
+                }
+            }
+
+            // Cargar chips de Associated Projects
+            if (projectData.projects && Array.isArray(projectData.projects)) {
+                const chipsContainer = document.getElementById('projectsChipsContainer');
+                const associatedProjectsInput = document.getElementById('associatedProjects');
+                
+                if (chipsContainer && associatedProjectsInput) {
+                    projectData.projects.forEach(projectName => {
+                        const chip = createProjectChip(projectName);
+                        chipsContainer.appendChild(chip);
+                    });
+                }
+            }
+
+            // Cargar búsqueda si existe
+            if (projectData.searchQuery) {
+                document.getElementById('searchInput').value = projectData.searchQuery;
+            }
         }
 
         // ============================================
