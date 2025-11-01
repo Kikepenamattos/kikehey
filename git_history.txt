@@ -1,3 +1,4 @@
+8e9709cab201e7fe2e77cae0756f8e16aa68772e|Ubits|ubits@macbookpro.lan|2025-11-01 11:17:48 -0500|Add Input Buscador component with send icon and chips functionality for Associated Projects
 e933d2f0571855226645b542f7e1c2e1474fbdf9|Ubits|ubits@macbookpro.lan|2025-11-01 10:37:31 -0500|Update create_team.html: Apply design system styles and layout adjustments
 855795e6a12d37178c170586dd4d603232bb0168|Ubits|ubits@macbookpro.lan|2025-11-01 09:57:09 -0500|Add create_team.html: Layout de creación de equipos con sidebar y persistencia
 c30eaf81ce0d3323fee9787f6c557937287631c3|Ubits|ubits@macbookpro.lan|2025-11-01 09:42:42 -0500|Add changelog documentation system
