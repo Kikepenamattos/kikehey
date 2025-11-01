@@ -1016,6 +1016,9 @@
             // Deshabilitar secondary-actions inicialmente
             disableSecondaryActions();
 
+            // Inicializar el costo del equipo
+            updateTeamCost();
+
             // Cargar equipos en el sidebar
             loadTeamsInSidebar();
 
@@ -1218,6 +1221,20 @@
             document.getElementById('publishBtn').disabled = true;
             currentProjectId = null;
             currentProjectData = null;
+            
+            // Limpiar lista de miembros y actualizar costo
+            membersList = [];
+            updateTeamCost();
+            
+            // Limpiar grid de miembros (excepto el placeholder)
+            const teamMembersGrid = document.getElementById('teamMembersGrid');
+            if (teamMembersGrid) {
+                const placeholder = document.getElementById('addMemberCard');
+                teamMembersGrid.innerHTML = '';
+                if (placeholder) {
+                    teamMembersGrid.appendChild(placeholder);
+                }
+            }
         }
 
         // ============================================
@@ -1560,8 +1577,36 @@
             // Crear tarjeta de miembro visual
             createMemberCard(memberData);
             
+            // Actualizar el costo del equipo
+            updateTeamCost();
+            
             console.log('Miembro creado:', memberData);
             console.log('Total de miembros:', membersList.length);
+        }
+
+        function updateTeamCost() {
+            const teamCostInput = document.getElementById('teamCost');
+            if (!teamCostInput) return;
+
+            // Sumar todos los costos individuales de los miembros
+            let totalCost = 0;
+            membersList.forEach(member => {
+                const cost = member.cost || '';
+                if (cost) {
+                    // Remover cualquier carácter no numérico excepto punto decimal
+                    const numericValue = parseFloat(cost.replace(/[^\d.]/g, ''));
+                    if (!isNaN(numericValue)) {
+                        totalCost += numericValue;
+                    }
+                }
+            });
+
+            // Formatear el total en USD con 2 decimales
+            if (totalCost > 0) {
+                teamCostInput.value = `USD ${totalCost.toFixed(2)}`;
+            } else {
+                teamCostInput.value = '';
+            }
         }
 
         function createMemberCard(memberData) {
