@@ -1,3 +1,5 @@
+a04a064f54b1c1fe8fcd64fb0da43fd2b1322509|Ubits|ubits@macbookpro.lan|2025-11-01 11:42:15 -0500|Implement modal component in create_team.html with proper spacing and styling
+07e9e85fe5c764613f18a934dbfc92482a834ff7|Ubits|ubits@macbookpro.lan|2025-11-01 11:27:50 -0500|Update changelog with latest changes
 3be098ad6ee5ccb78f105a21146b94067710e7e6|Ubits|ubits@macbookpro.lan|2025-11-01 11:27:43 -0500|Add Profile Card Placeholder component to design system and update create_team.html to use it
 6e9fd11f31ea7e54ae8c35148c5d04e0992a7420|Ubits|ubits@macbookpro.lan|2025-11-01 11:17:56 -0500|Update changelog with latest changes
 8e9709cab201e7fe2e77cae0756f8e16aa68772e|Ubits|ubits@macbookpro.lan|2025-11-01 11:17:48 -0500|Add Input Buscador component with send icon and chips functionality for Associated Projects
