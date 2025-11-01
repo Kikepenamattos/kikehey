@@ -1112,16 +1112,11 @@
             const publishBtn = document.getElementById('publishBtn');
             const saveDraftBtn = document.getElementById('saveDraftBtn');
 
-            // Validación: Habilitar/deshabilitar botones Publish y Share team
+            // Validación: Habilitar/deshabilitar botón Publish
+            // El botón Share team permanece siempre deshabilitado en esta pantalla
             projectNameInput.addEventListener('input', function() {
                 const hasProjectName = projectNameInput.value.trim().length > 0;
                 publishBtn.disabled = !hasProjectName;
-                
-                // También controlar el botón Share team
-                const shareTeamBtn = document.getElementById('shareTeamBtn');
-                if (shareTeamBtn) {
-                    shareTeamBtn.disabled = !hasProjectName;
-                }
             });
 
             // Save Draft
