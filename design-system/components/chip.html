@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chip Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="chip.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-demo {
+            background: var(--color-surface-especial);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-16);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .code-block {
+            background: var(--color-basics-dark-blue);
+            color: var(--color-basics-white);
+            padding: var(--spacing-16);
+            border-radius: var(--radius-sm);
+            font-family: 'Courier New', monospace;
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+            margin-top: var(--spacing-16);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <header class="component-doc__header">
+            <h1 class="component-doc__title">Chip</h1>
+            <p class="component-doc__description">
+                Componente chip para mostrar etiquetas o tags. Diseñado específicamente para asociar proyectos, pero puede utilizarse en cualquier contexto donde se necesite mostrar etiquetas removibles. Basado en el diseño exacto de Figma con fondo gris claro (#efefef), bordes redondeados completos (50px) y tipografía Lato Regular de 13px.
+            </p>
+        </header>
+
+        <!-- Default Variant -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Default</h2>
+            <p class="variant-section__description">
+                Chip básico con texto y botón de cierre para eliminar el chip.
+            </p>
+            
+            <div class="variant-demo">
+                <div class="variant-demo__title">Preview</div>
+                <div class="projects-chips-container">
+                    <div class="project-chip">
+                        <span class="project-chip__text">New namagement project</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+&lt;div class="project-chip"&gt;
+    &lt;span class="project-chip__text"&gt;New namagement project&lt;/span&gt;
+    &lt;button class="project-chip__close" aria-label="Remove project"&gt;
+        &lt;svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
+            &lt;path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/&gt;
+        &lt;/svg&gt;
+    &lt;/button&gt;
+&lt;/div&gt;
+            </div>
+        </div>
+
+        <!-- Multiple Chips -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Multiple Chips</h2>
+            <p class="variant-section__description">
+                Ejemplo de múltiples chips en un contenedor flexible que se adapta al ancho disponible.
+            </p>
+            
+            <div class="variant-demo">
+                <div class="variant-demo__title">Preview</div>
+                <div class="projects-chips-container">
+                    <div class="project-chip">
+                        <span class="project-chip__text">Project Alpha</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="project-chip">
+                        <span class="project-chip__text">Beta Project</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="project-chip">
+                        <span class="project-chip__text">Gamma Initiative</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+&lt;div class="projects-chips-container"&gt;
+    &lt;div class="project-chip"&gt;
+        &lt;span class="project-chip__text"&gt;Project Alpha&lt;/span&gt;
+        &lt;button class="project-chip__close" aria-label="Remove project"&gt;...&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="project-chip"&gt;
+        &lt;span class="project-chip__text"&gt;Beta Project&lt;/span&gt;
+        &lt;button class="project-chip__close" aria-label="Remove project"&gt;...&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="project-chip"&gt;
+        &lt;span class="project-chip__text"&gt;Gamma Initiative&lt;/span&gt;
+        &lt;button class="project-chip__close" aria-label="Remove project"&gt;...&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+            </div>
+        </div>
+
+        <!-- CSS Variables -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Especificaciones de Diseño</h2>
+            <p class="variant-section__description">
+                El componente Chip está diseñado exactamente según las especificaciones de Figma:
+            </p>
+            <ul style="font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: 1.6; margin-top: var(--spacing-16); padding-left: var(--spacing-24);">
+                <li><strong>Background:</strong> #efefef (status-disabled)</li>
+                <li><strong>Border:</strong> none</li>
+                <li><strong>Border Radius:</strong> 50px (completamente redondeado)</li>
+                <li><strong>Padding:</strong> 8px vertical, 16px horizontal</li>
+                <li><strong>Gap:</strong> 10px entre elementos internos</li>
+                <li><strong>Font Family:</strong> Lato (var(--font-family-secondary))</li>
+                <li><strong>Font Size:</strong> 13px</li>
+                <li><strong>Font Weight:</strong> Regular (var(--font-weight-regular))</li>
+                <li><strong>Text Color:</strong> #0a243f (var(--color-text-primary))</li>
+                <li><strong>Text Align:</strong> center</li>
+                <li><strong>Hover State:</strong> background-color cambia a #e0e0e0</li>
+            </ul>
+        </div>
+
+        <!-- Usage with Input -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Uso con Input</h2>
+            <p class="variant-section__description">
+                Ejemplo completo de uso del componente Chip con un input para agregar proyectos asociados. Al presionar Enter en el input, se crea un nuevo chip.
+            </p>
+            
+            <div class="variant-demo">
+                <div class="variant-demo__title">Preview Interactivo</div>
+                <div style="margin-bottom: var(--spacing-16);">
+                    <input type="text" id="demoInput" placeholder="Type the projects name" style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-basics-mid-blue); border-radius: 8px; font-family: var(--font-family-secondary); font-size: 14px;">
+                </div>
+                <div class="projects-chips-container" id="demoChipsContainer">
+                    <!-- Chips will be added here -->
+                </div>
+            </div>
+
+            <div class="code-block">
+&lt;input type="text" id="associatedProjects" placeholder="Type the projects name"&gt;
+&lt;div class="projects-chips-container" id="projectsChipsContainer"&gt;
+    &lt;!-- Chips will be dynamically added here --&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    const input = document.getElementById('associatedProjects');
+    const container = document.getElementById('projectsChipsContainer');
+    
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = input.value.trim();
+            if (value) {
+                // Crear y agregar chip
+                const chip = createChip(value);
+                container.appendChild(chip);
+                input.value = '';
+            }
+        }
+    });
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <!-- JavaScript Implementation -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Implementación JavaScript</h2>
+            <p class="variant-section__description">
+                Código JavaScript completo para manejar la creación y eliminación de chips dinámicamente.
+            </p>
+            
+            <div class="code-block">
+// Función para crear un chip
+function createChip(text) {
+    const chip = document.createElement('div');
+    chip.className = 'project-chip';
+    chip.setAttribute('data-project', text.trim());
+    
+    const chipText = document.createElement('span');
+    chipText.className = 'project-chip__text';
+    chipText.textContent = text.trim();
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'project-chip__close';
+    closeBtn.setAttribute('aria-label', 'Remove project');
+    closeBtn.innerHTML = '&lt;svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/&gt;&lt;/svg&gt;';
+    
+    closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        chip.remove();
+        saveProjects(); // Guardar estado
+    });
+    
+    chip.appendChild(chipText);
+    chip.appendChild(closeBtn);
+    
+    return chip;
+}
+
+// Manejar Enter key
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const value = input.value.trim();
+        if (!value) return;
+
+        // Verificar si ya existe (prevenir duplicados)
+        const existingChips = Array.from(container.querySelectorAll('.project-chip'));
+        const exists = existingChips.some(chip => 
+            chip.getAttribute('data-project').toLowerCase() === value.toLowerCase()
+        );
+
+        if (!exists) {
+            const chip = createChip(value);
+            container.appendChild(chip);
+            saveProjects();
+        }
+
+        input.value = '';
+    }
+});
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo interactivo
+        document.addEventListener('DOMContentLoaded', function() {
+            const demoInput = document.getElementById('demoInput');
+            const demoContainer = document.getElementById('demoChipsContainer');
+            
+            if (!demoInput || !demoContainer) return;
+
+            function createDemoChip(text) {
+                const chip = document.createElement('div');
+                chip.className = 'project-chip';
+                
+                const chipText = document.createElement('span');
+                chipText.className = 'project-chip__text';
+                chipText.textContent = text.trim();
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'project-chip__close';
+                closeBtn.setAttribute('aria-label', 'Remove project');
+                closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                
+                closeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    chip.remove();
+                });
+                
+                chip.appendChild(chipText);
+                chip.appendChild(closeBtn);
+                
+                return chip;
+            }
+
+            demoInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = demoInput.value.trim();
+                    if (!value) return;
+
+                    const existingChips = Array.from(demoContainer.querySelectorAll('.project-chip'));
+                    const exists = existingChips.some(chip => 
+                        chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+                    );
+
+                    if (!exists) {
+                        const chip = createDemoChip(value);
+                        demoContainer.appendChild(chip);
+                    }
+
+                    demoInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

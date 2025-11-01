@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Button Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="status-button.css">
+    <link rel="stylesheet" href="progress-bar.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .state-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+        }
+        
+        .state-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-12);
+            color: var(--color-text-primary);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+        
+        .demo-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Status Button Component</h1>
+            <p class="component-doc__description">
+                Botones de estado para tareas con funcionalidad dropdown para cambiar entre estados.
+                Incluye: In progress, Done, Paused y To start. Basado en el diseño exacto de Figma Components.
+            </p>
+        </div>
+        
+        <!-- Task Status Types -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Task Status Types</h2>
+            <p class="variant-section__description">
+                Cuatro tipos de estados para tareas, cada uno con su color, texto y estado hover.
+            </p>
+            
+            <div class="states-grid">
+                <div class="state-demo">
+                    <div class="state-demo__title">In Progress (Default)</div>
+                    <div class="dsu-status-button dsu-status-button--in-progress">
+                        <span class="dsu-status-button__text">In progress</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">In Progress (Hover)</div>
+                    <div class="dsu-status-button dsu-status-button--in-progress dsu-status-button--hover">
+                        <span class="dsu-status-button__text">In progress</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Done (Default)</div>
+                    <div class="dsu-status-button dsu-status-button--done">
+                        <span class="dsu-status-button__text">Done</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Done (Hover)</div>
+                    <div class="dsu-status-button dsu-status-button--done dsu-status-button--hover">
+                        <span class="dsu-status-button__text">Done</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Paused (Default)</div>
+                    <div class="dsu-status-button dsu-status-button--paused">
+                        <span class="dsu-status-button__text">Paused</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Paused (Hover)</div>
+                    <div class="dsu-status-button dsu-status-button--paused dsu-status-button--hover">
+                        <span class="dsu-status-button__text">Paused</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">To start (Default)</div>
+                    <div class="dsu-status-button dsu-status-button--to-start">
+                        <span class="dsu-status-button__text">To start</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">To start (Hover)</div>
+                    <div class="dsu-status-button dsu-status-button--to-start dsu-status-button--hover">
+                        <span class="dsu-status-button__text">To start</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="../../images/down-chevron.svg" alt="Dropdown">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dropdown Functionality -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Dropdown Functionality</h2>
+            <p class="variant-section__description">
+                Click en el botón para desplegar el menú y cambiar de estado. El dropdown muestra todos los estados disponibles.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Status Button con Dropdown (Funcional)</div>
+                    <div class="dsu-status-button-wrapper">
+                        <div class="dsu-status-button dsu-status-button--in-progress" id="statusButton1">
+                            <span class="dsu-status-button__text">In progress</span>
+                            <span class="dsu-status-button__chevron">
+                                <img src="../../images/down-chevron.svg" alt="Dropdown" id="statusChevron1">
+                            </span>
+                        </div>
+                        
+                        <div class="dsu-status-dropdown" id="statusDropdown1">
+                            <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                <span class="dsu-status-dropdown__text">In progress</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item" data-status="done">
+                                <span class="dsu-status-dropdown__text">Done</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item" data-status="paused">
+                                <span class="dsu-status-dropdown__text">Paused</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item" data-status="to-start">
+                                <span class="dsu-status-dropdown__text">To start</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Estado: Done</div>
+                    <div class="dsu-status-button-wrapper">
+                        <div class="dsu-status-button dsu-status-button--done" id="statusButton2">
+                            <span class="dsu-status-button__text">Done</span>
+                            <span class="dsu-status-button__chevron">
+                                <img src="../../images/down-chevron.svg" alt="Dropdown" id="statusChevron2">
+                            </span>
+                        </div>
+                        
+                        <div class="dsu-status-dropdown" id="statusDropdown2">
+                            <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                <span class="dsu-status-dropdown__text">In progress</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item dsu-status-dropdown__item--active" data-status="done">
+                                <span class="dsu-status-dropdown__text">Done</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item" data-status="paused">
+                                <span class="dsu-status-dropdown__text">Paused</span>
+                            </button>
+                            <button class="dsu-status-dropdown__item" data-status="to-start">
+                                <span class="dsu-status-dropdown__text">To start</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente Status Button.
+            </p>
+            
+            <table class="specs-table" style="width: 100%; border-collapse: collapse; margin-top: var(--spacing-24);">
+                <thead>
+                    <tr>
+                        <th style="padding: var(--spacing-12); text-align: left; border-bottom: 1px solid var(--color-basics-gray); background: var(--color-surface-especial); font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">Property</th>
+                        <th style="padding: var(--spacing-12); text-align: left; border-bottom: 1px solid var(--color-basics-gray); background: var(--color-surface-especial); font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Padding</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">8px vertical, 24px horizontal</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Border Radius</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">40px</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Gap</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">8px</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Font</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Lato, 14px, Regular (400)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Icon Size</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">20px × 20px</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Stage Status -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Stage Status</h2>
+            <p class="variant-section__description">
+                Estados de etapa del proyecto con badge de estado, fecha y barra de progreso. 
+                Tres variantes: In progress, To start y Completed.
+            </p>
+            
+            <div class="states-grid">
+                <div class="state-demo">
+                    <div class="state-demo__title">In progress</div>
+                    <div class="dsu-stage-status dsu-stage-status--in-progress">
+                        <div class="dsu-stage-status__badge">
+                            <span class="dsu-stage-status__badge-text">In progress</span>
+                            <span class="dsu-stage-status__badge-icon">
+                                <img src="../../images/Progress.svg" alt="Progress">
+                            </span>
+                        </div>
+                        <p class="dsu-stage-status__date">May 5 to Jun 31 2025</p>
+                        <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                            <span class="dsu-progress__percentage">10%</span>
+                            <div class="dsu-progress__bar">
+                                <div class="dsu-progress__fill" style="width: 10%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">To start</div>
+                    <div class="dsu-stage-status dsu-stage-status--to-start">
+                        <div class="dsu-stage-status__badge">
+                            <span class="dsu-stage-status__badge-text">To start</span>
+                            <span class="dsu-stage-status__badge-icon">
+                                <img src="../../images/Progress.svg" alt="Progress">
+                            </span>
+                        </div>
+                        <p class="dsu-stage-status__date">Jun 1 to Jun 15 2025</p>
+                        <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                            <span class="dsu-progress__percentage">0%</span>
+                            <div class="dsu-progress__bar">
+                                <div class="dsu-progress__fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Completed</div>
+                    <div class="dsu-stage-status dsu-stage-status--completed">
+                        <div class="dsu-stage-status__badge">
+                            <span class="dsu-stage-status__badge-text">Completed</span>
+                            <span class="dsu-stage-status__badge-icon">
+                                <img src="../../images/check.svg" alt="Completed">
+                            </span>
+                        </div>
+                        <p class="dsu-stage-status__date">Mar 1 to Apr 30 2025</p>
+                        <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                            <span class="dsu-progress__percentage">100%</span>
+                            <div class="dsu-progress__bar">
+                                <div class="dsu-progress__fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stage Status Examples -->
+            <div class="demo-container" style="margin-top: var(--spacing-24);">
+                <div class="demo-item" style="max-width: 320px;">
+                    <div class="demo-item__label">Ejemplo: Multiple Stages</div>
+                    <div style="display: flex; flex-direction: column; gap: var(--spacing-16);">
+                        <div class="dsu-stage-status dsu-stage-status--completed">
+                            <div class="dsu-stage-status__badge">
+                                <span class="dsu-stage-status__badge-text">Completed</span>
+                                <span class="dsu-stage-status__badge-icon">
+                                    <img src="../../images/check.svg" alt="Completed">
+                                </span>
+                            </div>
+                            <p class="dsu-stage-status__date">Apr 1 to Apr 30 2025</p>
+                            <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                                <span class="dsu-progress__percentage">100%</span>
+                                <div class="dsu-progress__bar">
+                                    <div class="dsu-progress__fill" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-stage-status dsu-stage-status--in-progress">
+                            <div class="dsu-stage-status__badge">
+                                <span class="dsu-stage-status__badge-text">In progress</span>
+                                <span class="dsu-stage-status__badge-icon">
+                                    <img src="../../images/Progress.svg" alt="Progress">
+                                </span>
+                            </div>
+                            <p class="dsu-stage-status__date">May 5 to Jun 31 2025</p>
+                            <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                                <span class="dsu-progress__percentage">45%</span>
+                                <div class="dsu-progress__bar">
+                                    <div class="dsu-progress__fill" style="width: 45%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-stage-status dsu-stage-status--to-start">
+                            <div class="dsu-stage-status__badge">
+                                <span class="dsu-stage-status__badge-text">To start</span>
+                                <span class="dsu-stage-status__badge-icon">
+                                    <img src="../../images/Progress.svg" alt="Progress">
+                                </span>
+                            </div>
+                            <p class="dsu-stage-status__date">Jul 1 to Jul 31 2025</p>
+                            <div class="dsu-progress dsu-progress--default dsu-progress--full-width">
+                                <span class="dsu-progress__percentage">0%</span>
+                                <div class="dsu-progress__bar">
+                                    <div class="dsu-progress__fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * ==========================================
+         * STATUS BUTTON DROPDOWN FUNCTIONALITY
+         * ==========================================
+         * 
+         * Permite cambiar el estado del botón mediante un dropdown
+         * con todos los estados disponibles.
+         */
+        function initStatusDropdowns() {
+            const statusButtons = document.querySelectorAll('.dsu-status-button[id^="statusButton"]');
+            const statusDropdowns = document.querySelectorAll('.dsu-status-dropdown[id^="statusDropdown"]');
+            const statusChevrons = document.querySelectorAll('.dsu-status-button__chevron img[id^="statusChevron"]');
+            
+            statusButtons.forEach((button, index) => {
+                const dropdown = statusDropdowns[index] || button.parentElement.querySelector('.dsu-status-dropdown');
+                const chevron = statusChevrons[index] || button.querySelector('.dsu-status-button__chevron img');
+                
+                if (!dropdown) return;
+                
+                // Click en el botón para abrir/cerrar dropdown
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const isExpanded = dropdown.classList.contains('dsu-status-dropdown--expanded');
+                    
+                    // Cerrar todos los demás dropdowns
+                    document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(dd => {
+                        if (dd !== dropdown) {
+                            dd.style.maxHeight = '0px';
+                            dd.classList.remove('dsu-status-dropdown--expanded');
+                            const btn = dd.parentElement.querySelector('.dsu-status-button');
+                            const chv = btn?.querySelector('.dsu-status-button__chevron img');
+                            if (chv) {
+                                chv.src = chv.src.replace('up-chevron.svg', 'down-chevron.svg');
+                            }
+                        }
+                    });
+                    
+                    if (isExpanded) {
+                        dropdown.style.maxHeight = '0px';
+                        dropdown.classList.remove('dsu-status-dropdown--expanded');
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    } else {
+                        dropdown.classList.add('dsu-status-dropdown--expanded');
+                        dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('down-chevron.svg', 'up-chevron.svg');
+                        }
+                    }
+                });
+                
+                // Click en items del dropdown
+                const dropdownItems = dropdown.querySelectorAll('.dsu-status-dropdown__item');
+                dropdownItems.forEach((item) => {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        const newStatus = this.getAttribute('data-status');
+                        const statusText = this.querySelector('.dsu-status-dropdown__text').textContent;
+                        
+                        // Actualizar el botón con el nuevo estado
+                        updateStatusButton(button, newStatus, statusText);
+                        
+                        // Remover active de todos los items
+                        dropdownItems.forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
+                        // Agregar active al item seleccionado
+                        this.classList.add('dsu-status-dropdown__item--active');
+                        
+                        // Cerrar el dropdown
+                        dropdown.style.maxHeight = '0px';
+                        dropdown.classList.remove('dsu-status-dropdown--expanded');
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    });
+                });
+            });
+            
+            // Cerrar dropdowns al hacer click fuera
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dsu-status-button-wrapper')) {
+                    document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(dropdown => {
+                        dropdown.style.maxHeight = '0px';
+                        dropdown.classList.remove('dsu-status-dropdown--expanded');
+                        const btn = dropdown.parentElement.querySelector('.dsu-status-button');
+                        const chv = btn?.querySelector('.dsu-status-button__chevron img');
+                        if (chv) {
+                            chv.src = chv.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    });
+                }
+            });
+        }
+        
+        /**
+         * Actualiza el botón de estado con el nuevo estado seleccionado
+         */
+        function updateStatusButton(button, status, text) {
+            // Remover todas las clases de estado
+            button.classList.remove(
+                'dsu-status-button--in-progress',
+                'dsu-status-button--done',
+                'dsu-status-button--paused',
+                'dsu-status-button--to-start'
+            );
+            
+            // Agregar la nueva clase de estado
+            button.classList.add(`dsu-status-button--${status}`);
+            
+            // Actualizar el texto
+            const textElement = button.querySelector('.dsu-status-button__text');
+            if (textElement) {
+                textElement.textContent = text;
+            }
+        }
+        
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', initStatusDropdowns);
+    </script>
+</body>
+</html>
+

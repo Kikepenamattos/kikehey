@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="input.css">
+    <link rel="stylesheet" href="task-stages.css">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="status-button.css">
+    <link rel="stylesheet" href="date-picker.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-item {
+            /* max-width: 690px; */
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .code-example {
+            background: var(--color-basics-dark-blue);
+            color: var(--color-basics-white);
+            padding: var(--spacing-16);
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-16);
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Input Component</h1>
+            <p class="component-doc__description">
+                Componente de input con label, estados y mensajes de error según el diseño de Figma.
+            </p>
+        </div>
+        
+        <!-- Full Input Structure -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Structure: Input (with label and error message)</h2>
+            
+            <div class="variant-item">
+                <div class="dsu-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Input name</span>
+                            <span class="dsu-input-label__required">
+                                <img src="../../images/asterisk.svg" alt="Required">
+                            </span>
+                        </div>
+                        <div class="dsu-input-label__hide">
+                            <span>Hide section</span>
+                            <span class="dsu-input-label__hide-icon">
+                                <img src="../../images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dsu-input-container">
+                        <input 
+                            type="text" 
+                            class="dsu-input" 
+                            placeholder="Placeholder"
+                        >
+                        <span class="dsu-input-container__icon">
+                            <img src="../../images/eye.svg" alt="Toggle visibility">
+                        </span>
+                    </div>
+                    <div class="dsu-input-error">Error message here</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Input Only -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Structure: Only Input</h2>
+            
+            <div class="variant-item">
+                <div class="dsu-input-group">
+                    <div class="dsu-input-container">
+                        <input 
+                            type="text" 
+                            class="dsu-input dsu-input--only" 
+                            placeholder="Placeholder"
+                        >
+                        <span class="dsu-input-container__icon">
+                            <img src="../../images/eye.svg" alt="Toggle visibility">
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Error State -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Structure: Error</h2>
+            
+            <div class="variant-item">
+                <div class="dsu-input-group dsu-input-group--error">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Input name</span>
+                            <span class="dsu-input-label__required">
+                                <img src="../../images/asterisk.svg" alt="Required">
+                            </span>
+                        </div>
+                        <div class="dsu-input-label__hide">
+                            <span>Hide section</span>
+                            <span class="dsu-input-label__hide-icon">
+                                <img src="../../images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dsu-input-container">
+                        <input 
+                            type="text" 
+                            class="dsu-input" 
+                            placeholder="Placeholder"
+                            value="Invalid value"
+                        >
+                        <span class="dsu-input-container__icon">
+                            <img src="../../images/eye.svg" alt="Toggle visibility">
+                        </span>
+                    </div>
+                    <div class="dsu-input-error">Error message here</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Rich Text Input -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Rich Text Input</h2>
+            <p class="variant-section__description">
+                Componente de texto enriquecido con toolbar de formato. Permite aplicar estilos como negrita, cursiva, subrayado, listas y enlaces.
+            </p>
+            
+            <div class="variant-item">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-12);">
+                    Ejemplo
+                </h3>
+                <div class="dsu-rich-text-input">
+                    <div class="dsu-rich-text-input__toolbar">
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                            <img src="../../images/bold.svg" alt="Bold">
+                        </button>
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                            <img src="../../images/italic.svg" alt="Italic">
+                        </button>
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                            <img src="../../images/underline.svg" alt="Underline">
+                        </button>
+                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                            <img src="../../images/list-bullet.svg" alt="Bullet List">
+                        </button>
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                            <img src="../../images/number_list.svg" alt="Numbered List">
+                        </button>
+                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                            <img src="../../images/link.svg" alt="Link">
+                        </button>
+                    </div>
+                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."></div>
+                    <div class="dsu-rich-text-input__footer">
+                        <div class="dsu-rich-text-input__footer-left">
+                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                <img src="../../images/attachment.svg" alt="Attachment">
+                            </button>
+                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                <img src="../../images/trash.svg" alt="Delete">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código de implementación:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-rich-text-input"&gt;
+  &lt;div class="dsu-rich-text-input__toolbar"&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita"&gt;
+      &lt;img src="../../images/bold.svg" alt="Bold"&gt;
+    &lt;/button&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva"&gt;
+      &lt;img src="../../images/italic.svg" alt="Italic"&gt;
+    &lt;/button&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado"&gt;
+      &lt;img src="../../images/underline.svg" alt="Underline"&gt;
+    &lt;/button&gt;
+    &lt;div class="dsu-rich-text-input__toolbar-separator"&gt;&lt;/div&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas"&gt;
+      &lt;img src="../../images/list-bullet.svg" alt="Bullet List"&gt;
+    &lt;/button&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada"&gt;
+      &lt;img src="../../images/number_list.svg" alt="Numbered List"&gt;
+    &lt;/button&gt;
+    &lt;div class="dsu-rich-text-input__toolbar-separator"&gt;&lt;/div&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace"&gt;
+      &lt;img src="../../images/link.svg" alt="Link"&gt;
+    &lt;/button&gt;
+    &lt;button class="dsu-rich-text-input__toolbar-button" data-command="attachment" title="Adjuntar archivo"&gt;
+      &lt;img src="../../images/attachment.svg" alt="Attachment"&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."&gt;&lt;/div&gt;
+    &lt;div class="dsu-rich-text-input__footer"&gt;
+      &lt;div class="dsu-rich-text-input__footer-left"&gt;
+        &lt;button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo"&gt;
+          &lt;img src="../../images/attachment.svg" alt="Attachment"&gt;
+        &lt;/button&gt;
+        &lt;button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar"&gt;
+          &lt;img src="../../images/trash.svg" alt="Delete"&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hide Section Functionality -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Hide Section Functionality</h2>
+            <p class="variant-section__description">
+                Funcionalidad para habilitar/deshabilitar elementos mediante el botón "Hide section".
+                El botón alterna el estado del input y cambia el icono entre <code>eye.svg</code> y <code>eye_hidden.svg</code>.
+            </p>
+            
+            <div class="variant-item">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-12);">
+                    Ejemplo Funcional
+                </h3>
+                <div class="dsu-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Input name</span>
+                            <span class="dsu-input-label__required">
+                                <img src="../../images/asterisk.svg" alt="Required">
+                            </span>
+                        </div>
+                        <div class="dsu-input-label__hide">
+                            <span>Hide section</span>
+                            <span class="dsu-input-label__hide-icon">
+                                <img src="../../images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dsu-input-container">
+                        <input 
+                            type="text" 
+                            class="dsu-input" 
+                            placeholder="Placeholder"
+                            id="hideSectionExample"
+                        >
+                        <span class="dsu-input-container__icon">
+                            <img src="../../images/eye.svg" alt="Toggle visibility">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código de implementación:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;script&gt;
+  // Funcionalidad para Hide Section
+  function initHideSection() {
+    const hideButtons = document.querySelectorAll('.dsu-input-label__hide');
+    
+    hideButtons.forEach((hideButton) => {
+      hideButton.addEventListener('click', function() {
+        // Buscar el grupo de input padre
+        const inputGroup = this.closest('.dsu-input-group');
+        if (!inputGroup) return;
+        
+        // Buscar el input dentro del grupo
+        const input = inputGroup.querySelector('.dsu-input');
+        if (!input) return;
+        
+        // Buscar el icono para cambiarlo
+        const hideIcon = this.querySelector('.dsu-input-label__hide-icon img');
+        
+        // Toggle del estado disabled
+        const isDisabled = input.disabled;
+        
+        if (isDisabled) {
+          // Habilitar el input
+          input.disabled = false;
+          input.removeAttribute('disabled');
+          
+          // Cambiar icono de eye_hidden a eye
+          if (hideIcon) {
+            hideIcon.src = '../../images/eye.svg';
+          }
+          
+          // Remover clase de grupo disabled
+          inputGroup.classList.remove('dsu-input-group--hidden');
+        } else {
+          // Deshabilitar el input
+          input.disabled = true;
+          input.setAttribute('disabled', 'disabled');
+          
+          // Cambiar icono de eye a eye_hidden
+          if (hideIcon) {
+            hideIcon.src = '../../images/eye_hidden.svg';
+          }
+          
+          // Agregar clase al grupo para estilos adicionales
+          inputGroup.classList.add('dsu-input-group--hidden');
+        }
+      });
+    });
+  }
+  
+  // Inicializar al cargar
+  document.addEventListener('DOMContentLoaded', initHideSection);
+&lt;/script&gt;</pre>
+                </div>
+            </div>
+            
+            <div class="variant-item" style="margin-top: var(--spacing-24);">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-12);">
+                    Cómo adaptar para otros elementos
+                </h3>
+                <div class="code-example">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Ejemplo genérico para cualquier elemento:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">// Función genérica para toggle de elementos
+function initToggleSection(toggleSelector, targetSelector, iconElement) {
+  const toggleButtons = document.querySelectorAll(toggleSelector);
+  
+  toggleButtons.forEach((toggleButton) => {
+    toggleButton.addEventListener('click', function() {
+      // Buscar el elemento objetivo
+      const targetElement = this.closest('.parent-container')
+        .querySelector(targetSelector);
+      
+      if (!targetElement) return;
+      
+      // Buscar el icono si se proporciona
+      const icon = iconElement 
+        ? this.querySelector(iconElement) 
+        : null;
+      
+      // Toggle del estado disabled
+      const isDisabled = targetElement.disabled || 
+                         targetElement.classList.contains('disabled');
+      
+      if (isDisabled) {
+        // Habilitar el elemento
+        targetElement.disabled = false;
+        targetElement.removeAttribute('disabled');
+        targetElement.classList.remove('disabled');
+        
+        // Cambiar icono si existe
+        if (icon) {
+          icon.src = '../../images/eye.svg';
+        }
+      } else {
+        // Deshabilitar el elemento
+        targetElement.disabled = true;
+        targetElement.setAttribute('disabled', 'disabled');
+        targetElement.classList.add('disabled');
+        
+        // Cambiar icono si existe
+        if (icon) {
+          icon.src = '../../images/eye_hidden.svg';
+        }
+      }
+    });
+  });
+}
+
+// Uso:
+// initToggleSection('.toggle-button', '.target-element', '.toggle-icon img');</pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Input States</h2>
+            
+            <div class="variant-item">
+                <label class="dsu-input-label">
+                    <span>Default</span>
+                </label>
+                <input 
+                    type="text" 
+                    class="dsu-input" 
+                    placeholder="Placeholder"
+                >
+            </div>
+            
+            <div class="variant-item">
+                <label class="dsu-input-label">
+                    <span>Filled</span>
+                </label>
+                <input 
+                    type="text" 
+                    class="dsu-input" 
+                    value="User input text"
+                >
+            </div>
+            
+            <div class="variant-item">
+                <label class="dsu-input-label">
+                    <span>Focused</span>
+                </label>
+                <input 
+                    type="text" 
+                    class="dsu-input" 
+                    placeholder="Placeholder"
+                    autofocus
+                >
+            </div>
+            
+            <div class="variant-item">
+                <label class="dsu-input-label">
+                    <span>Disabled</span>
+                </label>
+                <input 
+                    type="text" 
+                    class="dsu-input" 
+                    placeholder="Placeholder"
+                    disabled
+                >
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * ==========================================
+         * HIDE SECTION FUNCTIONALITY
+         * ==========================================
+         * 
+         * Alterna el estado disabled/enabled del input
+         * y cambia el icono entre eye.svg y eye_hidden.svg
+         * 
+         * Estructura HTML requerida:
+         *   <div class="dsu-input-group">
+         *     <div class="dsu-input-label">
+         *       ...
+         *       <div class="dsu-input-label__hide">
+         *         <span>Hide section</span>
+         *         <span class="dsu-input-label__hide-icon">
+         *           <img src="../../images/eye.svg" alt="Hide">
+         *         </span>
+         *       </div>
+         *     </div>
+         *     <div class="dsu-input-container">
+         *       <input type="text" class="dsu-input" />
+         *     </div>
+         *   </div>
+         */
+        function initHideSection() {
+            const hideButtons = document.querySelectorAll('.dsu-input-label__hide');
+            
+            hideButtons.forEach((hideButton) => {
+                hideButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Buscar el grupo de input padre
+                    const inputGroup = this.closest('.dsu-input-group');
+                    if (!inputGroup) return;
+                    
+                    // Buscar el input dentro del grupo
+                    const input = inputGroup.querySelector('.dsu-input');
+                    if (!input) return;
+                    
+                    // Buscar el icono para cambiarlo
+                    const hideIcon = this.querySelector('.dsu-input-label__hide-icon img');
+                    
+                    // Toggle del estado disabled
+                    const isDisabled = input.disabled || input.hasAttribute('disabled');
+                    
+                    if (isDisabled) {
+                        // Habilitar el input
+                        input.disabled = false;
+                        input.removeAttribute('disabled');
+                        
+                        // Cambiar icono de eye_hidden a eye
+                        if (hideIcon) {
+                            hideIcon.src = hideIcon.src.replace('eye_hidden.svg', 'eye.svg');
+                        }
+                        
+                        // Remover clase de grupo disabled
+                        inputGroup.classList.remove('dsu-input-group--hidden');
+                        
+                        // Disparar evento personalizado
+                        input.dispatchEvent(new CustomEvent('sectionEnabled', {
+                            bubbles: true,
+                            detail: { element: input, toggleButton: this }
+                        }));
+                    } else {
+                        // Deshabilitar el input
+                        input.disabled = true;
+                        input.setAttribute('disabled', 'disabled');
+                        
+                        // Cambiar icono de eye a eye_hidden
+                        if (hideIcon) {
+                            hideIcon.src = hideIcon.src.replace('eye.svg', 'eye_hidden.svg');
+                        }
+                        
+                        // Agregar clase al grupo para estilos adicionales
+                        inputGroup.classList.add('dsu-input-group--hidden');
+                        
+                        // Disparar evento personalizado
+                        input.dispatchEvent(new CustomEvent('sectionDisabled', {
+                            bubbles: true,
+                            detail: { element: input, toggleButton: this }
+                        }));
+                    }
+                });
+            });
+        }
+        
+        /**
+         * ==========================================
+         * INPUT VISIBILITY TOGGLE (eye icon inside input)
+         * ==========================================
+         *
+         * Al hacer clic en el icono del ojo dentro del input, alterna
+         * el tipo entre text y password y cambia el icono entre
+         * eye.svg y eye_hidden.svg
+         */
+        function initInputVisibilityToggle() {
+            const icons = document.querySelectorAll('.dsu-input-container__icon');
+            
+            icons.forEach((iconContainer) => {
+                iconContainer.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const inputContainer = this.closest('.dsu-input-container');
+                    if (!inputContainer) return;
+                    
+                    const input = inputContainer.querySelector('.dsu-input');
+                    const img = this.querySelector('img');
+                    if (!input || !img) return;
+                    
+                    const isPassword = input.type === 'password';
+                    
+                    if (isPassword) {
+                        input.type = 'text';
+                        img.src = img.src.replace('eye_hidden.svg', 'eye.svg');
+                    } else {
+                        input.type = 'password';
+                        img.src = img.src.replace('eye.svg', 'eye_hidden.svg');
+                    }
+                });
+            });
+        }
+        
+        // Rich Text Input Toolbar Functionality
+        function initRichTextToolbar() {
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+            
+            richTextInputs.forEach(function(richTextInput) {
+                const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+                const buttons = richTextInput.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]');
+                
+                if (!editor) return;
+                
+                // Convert to contenteditable div
+                if (editor.tagName === 'TEXTAREA') {
+                    const div = document.createElement('div');
+                    div.className = 'dsu-rich-text-input__editor';
+                    div.contentEditable = 'true';
+                    div.setAttribute('data-placeholder', editor.placeholder || '');
+                    div.textContent = editor.value || '';
+                    editor.parentNode.replaceChild(div, editor);
+                }
+                
+                buttons.forEach(function(button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const command = this.getAttribute('data-command');
+                        const value = this.getAttribute('data-value') || null;
+                        
+                        document.execCommand(command, false, value);
+                        updateToolbarButtons(richTextInput);
+                    });
+                });
+                
+                // Update button states
+                editor.addEventListener('keyup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+                
+                editor.addEventListener('mouseup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+            });
+        }
+        
+        function updateToolbarButtons(richTextInput) {
+            const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+            const buttons = richTextInput.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]');
+            
+            if (!editor) return;
+            
+            buttons.forEach(function(button) {
+                const command = button.getAttribute('data-command');
+                let isActive = false;
+                
+                try {
+                    switch(command) {
+                        case 'bold':
+                            isActive = document.queryCommandState('bold');
+                            break;
+                        case 'italic':
+                            isActive = document.queryCommandState('italic');
+                            break;
+                        case 'underline':
+                            isActive = document.queryCommandState('underline');
+                            break;
+                        case 'insertUnorderedList':
+                        case 'insertOrderedList':
+                            isActive = document.queryCommandState(command);
+                            break;
+                    }
+                } catch(e) {
+                    // Some browsers may throw errors
+                }
+                
+                if (isActive) {
+                    button.classList.add('dsu-rich-text-input__toolbar-button--active');
+                } else {
+                    button.classList.remove('dsu-rich-text-input__toolbar-button--active');
+                }
+            });
+        }
+        
+        // Agreements: Toggle from Default to Empty state
+        function initAgreementsToggle() {
+            const emptyButtons = document.querySelectorAll('.dsu-agreements__empty-button');
+            
+            emptyButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // Encontrar el contenedor del estado Default
+                    const defaultState = this.closest('.variant-item');
+                    if (!defaultState) return;
+                    
+                    // Encontrar el siguiente variant-item que es el estado Empty
+                    let nextSibling = defaultState.nextElementSibling;
+                    while (nextSibling && !nextSibling.classList.contains('variant-item')) {
+                        nextSibling = nextSibling.nextElementSibling;
+                    }
+                    
+                    if (nextSibling && nextSibling.querySelector('.dsu-agreements')) {
+                        // Ocultar el estado Default
+                        defaultState.style.display = 'none';
+                        
+                        // Mostrar el estado Empty
+                        nextSibling.style.display = 'block';
+                        
+                        // Opcional: Hacer scroll al estado Empty
+                        nextSibling.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            });
+        }
+        
+        // Interactive Agreements Functionality
+        function initInteractiveAgreements() {
+            const defaultContainer = document.getElementById('interactiveAgreementsDefault');
+            const emptyContainer = document.getElementById('interactiveAgreementsEmpty');
+            const activeContainer = document.getElementById('interactiveAgreementsActive');
+            const addOneBtn = document.getElementById('interactiveAddOneBtn');
+            const createAgreementBtn = document.getElementById('interactiveCreateAgreementBtn');
+            const agreementNameInput = document.getElementById('interactiveAgreementName');
+            const dateButton = document.getElementById('interactiveDateButton');
+            const item1Input = document.getElementById('interactiveAgreementItem1');
+            const sendButton = document.getElementById('interactiveSendButton');
+            const activeSendBtn = document.getElementById('interactiveActiveSendBtn');
+            const activeInput = document.getElementById('interactiveActiveInput');
+            const toggleBtn = document.getElementById('interactiveToggleBtn');
+            const activeItemsContainer = document.getElementById('interactiveActiveItems');
+            const collapsedContainer = document.getElementById('interactiveCollapsedAgreements');
+            const emptyItemsContainer = document.getElementById('interactiveEmptyItems');
+            const emptyToggleBtn = document.getElementById('interactiveEmptyToggleBtn');
+            const emptyMeta = document.getElementById('interactiveEmptyMeta');
+            
+            if (!addOneBtn) return;
+            
+            // State: Default -> Empty
+            addOneBtn.addEventListener('click', function() {
+                defaultContainer.style.display = 'none';
+                emptyContainer.style.display = 'block';
+                emptyContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+            
+            // Agreement name input - show title dynamically and enable send button
+            if (agreementNameInput) {
+                agreementNameInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        // Update the title display if visible
+                        updateAgreementTitle(this.value.trim());
+                        // Enable send button when agreement name is entered
+                        if (sendButton) {
+                            sendButton.disabled = false;
+                        }
+                    }
+                });
+                
+                agreementNameInput.addEventListener('input', function() {
+                    // Enable send button when user types in agreement name
+                    if (sendButton && this.value.trim()) {
+                        sendButton.disabled = false;
+                    } else if (sendButton) {
+                        // Disable if empty, unless item input has content
+                        checkSendButton();
+                    }
+                });
+                
+                agreementNameInput.addEventListener('blur', function() {
+                    // Also update on blur if there's text
+                    if (this.value.trim()) {
+                        updateAgreementTitle(this.value.trim());
+                        // Enable send button
+                        if (sendButton) {
+                            sendButton.disabled = false;
+                        }
+                    }
+                });
+            }
+            
+            // Function to update agreement title display
+            function updateAgreementTitle(title) {
+                const agreementForm = document.getElementById('interactiveAgreementForm');
+                if (!agreementForm) return;
+                
+                const headerContainer = agreementForm.querySelector('.dsu-agreements__agreement-header');
+                if (!headerContainer) return;
+                
+                // Check if title already exists
+                let headerTitle = headerContainer.querySelector('.dsu-agreements__agreement-title');
+                const inputWrapper = headerContainer.querySelector('.dsu-input-group');
+                
+                if (!headerTitle && inputWrapper) {
+                    // Create title paragraph to replace the input
+                    headerTitle = document.createElement('p');
+                    headerTitle.className = 'dsu-agreements__agreement-title';
+                    headerTitle.style.cssText = 'font-family: var(--font-family-secondary); font-size: var(--font-size-base); font-weight: var(--font-weight-black); line-height: 1.5; color: var(--color-text-primary); margin: 0; flex: 1; cursor: text;';
+                    headerTitle.textContent = title;
+                    
+                    // Only allow editing on click, NOT collapsing
+                    headerTitle.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent any parent click handlers
+                        editAgreementTitle(this);
+                    });
+                    
+                    // Replace input wrapper with title
+                    inputWrapper.replaceWith(headerTitle);
+                    
+                    // Show toggle button now that we have a title
+                    if (emptyToggleBtn) {
+                        emptyToggleBtn.style.display = 'block';
+                    }
+                } else if (headerTitle) {
+                    // Update existing title
+                    headerTitle.textContent = title;
+                }
+            }
+            
+            // Function to edit agreement title
+            function editAgreementTitle(titleElement) {
+                const currentTitle = titleElement.textContent;
+                const headerContainer = titleElement.closest('.dsu-agreements__agreement-header');
+                if (!headerContainer) return;
+                
+                // Create input element
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'dsu-input-group';
+                inputGroup.style.cssText = 'flex: 1;';
+                inputGroup.innerHTML = `
+                    <div class="dsu-input-label">
+                        <span>Agreement name</span>
+                    </div>
+                    <input type="text" class="dsu-input" id="interactiveAgreementNameEdit" value="${currentTitle}" placeholder="i.e: Meeting May 5">
+                `;
+                
+                // Replace title with input
+                titleElement.replaceWith(inputGroup);
+                
+                // Focus on input
+                const input = inputGroup.querySelector('#interactiveAgreementNameEdit');
+                if (input) {
+                    input.focus();
+                    input.select();
+                    
+                    // Handle blur - save and show title again
+                    input.addEventListener('blur', function() {
+                        const newTitle = this.value.trim() || currentTitle;
+                        updateAgreementTitle(newTitle);
+                        // Enable send button if there's content
+                        if (sendButton && this.value.trim()) {
+                            sendButton.disabled = false;
+                        }
+                    });
+                    
+                    // Handle Enter key
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter' && this.value.trim()) {
+                            e.preventDefault();
+                            updateAgreementTitle(this.value.trim());
+                            // Enable send button when Enter is pressed
+                            if (sendButton) {
+                                sendButton.disabled = false;
+                            }
+                        }
+                    });
+                    
+                    // Handle input - enable send button while typing
+                    input.addEventListener('input', function() {
+                        if (sendButton && this.value.trim()) {
+                            sendButton.disabled = false;
+                        } else if (sendButton) {
+                            checkSendButton();
+                        }
+                    });
+                }
+            }
+            
+            // Date picker functionality
+            const datePickerContainer = document.getElementById('interactiveDatePicker');
+            const dateButtonText = document.getElementById('interactiveDateButtonText');
+            
+            if (dateButton) {
+                initDatePicker('interactiveDatePicker', 'interactiveDateButton', 'interactiveDateButtonText');
+            }
+            
+            // Status Button Dropdown functionality
+            const statusButton = document.getElementById('interactiveStatusButton');
+            const statusDropdown = document.getElementById('interactiveStatusDropdown');
+            const statusChevron = document.getElementById('interactiveStatusChevron');
+            
+            if (statusButton && statusDropdown) {
+                initStatusDropdown('interactiveStatusButton', 'interactiveStatusDropdown', 'interactiveStatusChevron', 'interactiveStatusButtonText');
+            }
+            
+            // Function to initialize date picker
+            function initDatePicker(pickerId, buttonId, buttonTextId) {
+                const picker = document.getElementById(pickerId);
+                const button = document.getElementById(buttonId);
+                const buttonText = document.getElementById(buttonTextId);
+                
+                if (!picker || !button) return;
+                
+                let currentDate = new Date();
+                let selectedDate = null;
+                
+                function renderDatePicker(date) {
+                    const year = date.getFullYear();
+                    const month = date.getMonth();
+                    const firstDay = new Date(year, month, 1).getDay();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    const daysInPrevMonth = new Date(year, month, 0).getDate();
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                      'July', 'August', 'September', 'October', 'November', 'December'];
+                    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                    
+                    let html = `
+                        <div class="dsu-date-picker__header">
+                            <button class="dsu-date-picker__nav-button" data-action="prev">
+                                <img src="../../images/down-chevron.svg" alt="Previous" style="transform: rotate(90deg);">
+                            </button>
+                            <div class="dsu-date-picker__month-year">${monthNames[month]} ${year}</div>
+                            <button class="dsu-date-picker__nav-button" data-action="next">
+                                <img src="../../images/down-chevron.svg" alt="Next" style="transform: rotate(-90deg);">
+                            </button>
+                        </div>
+                        <div class="dsu-date-picker__calendar">
+                            <div class="dsu-date-picker__weekdays">
+                                ${weekdays.map(w => `<div class="dsu-date-picker__weekday">${w}</div>`).join('')}
+                            </div>
+                            <div class="dsu-date-picker__days">
+                    `;
+                    
+                    // Previous month days
+                    for (let i = firstDay - 1; i >= 0; i--) {
+                        const day = daysInPrevMonth - i;
+                        const dayDate = new Date(year, month - 1, day);
+                        html += `<button class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</button>`;
+                    }
+                    
+                    // Current month days
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dayDate = new Date(year, month, day);
+                        const isToday = dayDate.getTime() === today.getTime();
+                        const isSelected = selectedDate && dayDate.getTime() === selectedDate.getTime();
+                        const classes = ['dsu-date-picker__day'];
+                        if (isToday) classes.push('dsu-date-picker__day--today');
+                        if (isSelected) classes.push('dsu-date-picker__day--selected');
+                        
+                        html += `<button class="${classes.join(' ')}" data-date="${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}">${day}</button>`;
+                    }
+                    
+                    // Next month days (fill remaining cells)
+                    const totalCells = firstDay + daysInMonth;
+                    const remainingCells = 42 - totalCells;
+                    for (let day = 1; day <= remainingCells; day++) {
+                        html += `<button class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</button>`;
+                    }
+                    
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    picker.innerHTML = html;
+                    
+                    // Event listeners
+                    picker.querySelector('[data-action="prev"]').addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent closing the picker
+                        currentDate.setMonth(currentDate.getMonth() - 1);
+                        renderDatePicker(currentDate);
+                    });
+                    
+                    picker.querySelector('[data-action="next"]').addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent closing the picker
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                        renderDatePicker(currentDate);
+                    });
+                    
+                    picker.querySelectorAll('.dsu-date-picker__day[data-date]').forEach(dayBtn => {
+                        dayBtn.addEventListener('click', function(e) {
+                            e.stopPropagation(); // Prevent event bubbling
+                            const dateStr = this.getAttribute('data-date');
+                            const [y, m, d] = dateStr.split('-').map(Number);
+                            selectedDate = new Date(y, m - 1, d);
+                            
+                            // Update button text immediately and close picker
+                            if (buttonText && selectedDate) {
+                                const dateStrFormatted = selectedDate.getDate() + '/' + String(selectedDate.getMonth() + 1).padStart(2, '0') + '/' + selectedDate.getFullYear();
+                                buttonText.textContent = dateStrFormatted;
+                            }
+                            
+                            // Close picker only when a date is selected
+                            picker.classList.remove('dsu-date-picker--visible');
+                        });
+                    });
+                }
+                
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isVisible = picker.classList.contains('dsu-date-picker--visible');
+                    
+                    // Close all other pickers
+                    document.querySelectorAll('.dsu-date-picker--visible').forEach(p => {
+                        if (p !== picker) p.classList.remove('dsu-date-picker--visible');
+                    });
+                    
+                    if (isVisible) {
+                        picker.classList.remove('dsu-date-picker--visible');
+                    } else {
+                        currentDate = selectedDate || new Date();
+                        renderDatePicker(currentDate);
+                        picker.classList.add('dsu-date-picker--visible');
+                    }
+                });
+                
+                // Close picker when clicking outside (but not when clicking inside the picker)
+                document.addEventListener('click', function(e) {
+                    // Check if click is outside both the picker and the button
+                    if (!picker.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-date-button-wrapper')) {
+                        picker.classList.remove('dsu-date-picker--visible');
+                    }
+                }, true);
+            }
+            
+            // Function to initialize status dropdown
+            function initStatusDropdown(buttonId, dropdownId, chevronId, textId) {
+                const statusBtn = document.getElementById(buttonId);
+                const statusDrop = document.getElementById(dropdownId);
+                const chevron = document.getElementById(chevronId);
+                const statusText = document.getElementById(textId);
+                
+                if (!statusBtn || !statusDrop) return;
+                
+                statusBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const isExpanded = statusDrop.classList.contains('dsu-status-dropdown--expanded');
+                    
+                    // Close all other dropdowns
+                    document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(dd => {
+                        if (dd !== statusDrop) {
+                            dd.style.maxHeight = '0px';
+                            dd.classList.remove('dsu-status-dropdown--expanded');
+                            const btn = dd.parentElement.querySelector('.dsu-status-button');
+                            const chv = btn?.querySelector('.dsu-status-button__chevron img');
+                            if (chv) {
+                                chv.src = chv.src.replace('up-chevron.svg', 'down-chevron.svg');
+                            }
+                        }
+                    });
+                    
+                    if (isExpanded) {
+                        statusDrop.style.maxHeight = '0px';
+                        statusDrop.classList.remove('dsu-status-dropdown--expanded');
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    } else {
+                        statusDrop.classList.add('dsu-status-dropdown--expanded');
+                        statusDrop.style.maxHeight = statusDrop.scrollHeight + 'px';
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('down-chevron.svg', 'up-chevron.svg');
+                        }
+                    }
+                });
+                
+                const dropdownItems = statusDrop.querySelectorAll('.dsu-status-dropdown__item');
+                dropdownItems.forEach((item) => {
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        
+                        const newStatus = this.getAttribute('data-status');
+                        const statusTextContent = this.querySelector('.dsu-status-dropdown__text').textContent;
+                        
+                        // Update button
+                        statusBtn.className = 'dsu-status-button dsu-status-button--' + newStatus;
+                        if (statusText) statusText.textContent = statusTextContent;
+                        
+                        // Remove active from all items and add to selected
+                        dropdownItems.forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
+                        this.classList.add('dsu-status-dropdown__item--active');
+                        
+                        // Close dropdown
+                        statusDrop.style.maxHeight = '0px';
+                        statusDrop.classList.remove('dsu-status-dropdown--expanded');
+                        if (chevron) {
+                            chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    });
+                });
+            }
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dsu-status-button-wrapper')) {
+                    document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(dropdown => {
+                        dropdown.style.maxHeight = '0px';
+                        dropdown.classList.remove('dsu-status-dropdown--expanded');
+                        const btn = dropdown.parentElement.querySelector('.dsu-status-button');
+                        const chv = btn?.querySelector('.dsu-status-button__chevron img');
+                        if (chv) {
+                            chv.src = chv.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    });
+                }
+            });
+            
+            // Enable/disable send button based on input (agreement name OR item input)
+            function checkSendButton() {
+                if (sendButton) {
+                    const hasAgreementName = agreementNameInput && agreementNameInput.value.trim() !== '';
+                    const hasItemContent = item1Input && item1Input.value.trim() !== '';
+                    // Enable if either agreement name or item input has content
+                    sendButton.disabled = !(hasAgreementName || hasItemContent);
+                }
+            }
+            
+            if (item1Input) {
+                item1Input.addEventListener('input', checkSendButton);
+                
+                // Add item on Enter key in Empty state
+                item1Input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        addEmptyAgreementItem(this.value.trim(), emptyItemsContainer);
+                        this.value = '';
+                        checkSendButton();
+                    }
+                });
+            }
+            
+            // Send button in Empty state - add items when clicked
+            if (sendButton) {
+                sendButton.addEventListener('click', function() {
+                    if (item1Input && item1Input.value.trim()) {
+                        addEmptyAgreementItem(item1Input.value.trim(), emptyItemsContainer);
+                        item1Input.value = '';
+                    }
+                    checkSendButton();
+                });
+            }
+            
+            // Toggle Empty state agreement (show/hide items, meta, and form until send button)
+            // Only the toggle button (plus/minus icon) can collapse/expand
+            if (emptyToggleBtn) {
+                let emptyExpanded = true;
+                emptyToggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Ensure click doesn't bubble to other elements
+                    const agreementForm = document.getElementById('interactiveAgreementForm');
+                    const agreementFormForm = agreementForm ? agreementForm.nextElementSibling : null;
+                    
+                    if (emptyExpanded) {
+                        // Collapse: hide items, meta, and form
+                        if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
+                        if (emptyMeta) emptyMeta.style.display = 'none';
+                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                            agreementFormForm.style.display = 'none';
+                        }
+                        const img = this.querySelector('img');
+                        if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
+                        emptyExpanded = false;
+                    } else {
+                        // Expand: show items, meta, and form
+                        if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
+                            emptyItemsContainer.style.display = 'flex';
+                        }
+                        if (emptyMeta) emptyMeta.style.display = 'flex';
+                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                            agreementFormForm.style.display = 'flex';
+                        }
+                        const img = this.querySelector('img');
+                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
+                        emptyExpanded = true;
+                    }
+                });
+            }
+            
+            // Helper function to add agreement item in Empty state
+            function addEmptyAgreementItem(text, container) {
+                if (!container) return;
+                
+                // Show container if hidden
+                if (container.style.display === 'none') {
+                    container.style.display = 'flex';
+                }
+                
+                // Show toggle button and meta if items are being added
+                if (emptyToggleBtn && emptyToggleBtn.style.display === 'none') {
+                    emptyToggleBtn.style.display = 'block';
+                }
+                if (emptyMeta && emptyMeta.style.display === 'none') {
+                    emptyMeta.style.display = 'flex';
+                }
+                
+                const item = document.createElement('div');
+                item.className = 'dsu-agreements__agreement-item';
+                item.innerHTML = `
+                    <p class="dsu-agreements__agreement-item-text">-${text}</p>
+                    <div class="dsu-agreements__agreement-item-actions">
+                        <button class="dsu-agreements__agreement-item-action" onclick="this.closest('.dsu-agreements__agreement-item').remove(); checkEmptyItemsVisibility();">
+                            <img src="../../images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="dsu-agreements__agreement-item-action" onclick="editEmptyItem(this);">
+                            <img src="../../images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                container.appendChild(item);
+            }
+            
+            // Check if Empty items container should be hidden
+            window.checkEmptyItemsVisibility = function() {
+                if (emptyItemsContainer && emptyItemsContainer.children.length === 0) {
+                    emptyItemsContainer.style.display = 'none';
+                    if (emptyToggleBtn) {
+                        emptyToggleBtn.style.display = 'none';
+                        // Reset toggle icon to minus when hiding
+                        const img = emptyToggleBtn.querySelector('img');
+                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
+                    }
+                    // Keep meta visible even when no items
+                    if (emptyMeta) emptyMeta.style.display = 'flex';
+                } else if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
+                    // Show toggle button when items exist
+                    if (emptyToggleBtn) emptyToggleBtn.style.display = 'block';
+                }
+            };
+            
+            // Edit item functionality for Empty state
+            window.editEmptyItem = function(button) {
+                const item = button.closest('.dsu-agreements__agreement-item');
+                const textElement = item.querySelector('.dsu-agreements__agreement-item-text');
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+            
+            // Counter for unique IDs
+            let agreementCounter = 0;
+            
+            // Function to create a new agreement group
+            function createNewAgreementGroup() {
+                agreementCounter++;
+                const uniqueId = agreementCounter;
+                
+                // Create the agreement element
+                const agreementDiv = document.createElement('div');
+                agreementDiv.className = 'dsu-agreements__agreement';
+                agreementDiv.id = `interactiveAgreementForm_${uniqueId}`;
+                
+                agreementDiv.innerHTML = `
+                    <div class="dsu-agreements__agreement-header">
+                        <div class="dsu-input-group" style="flex: 1;">
+                            <div class="dsu-input-label">
+                                <span>Agreement name</span>
+                            </div>
+                            <input type="text" class="dsu-input" id="interactiveAgreementName_${uniqueId}" placeholder="i.e: Meeting May 5">
+                        </div>
+                        <button class="dsu-agreements__agreement-toggle" id="interactiveEmptyToggleBtn_${uniqueId}" style="display: none;">
+                            <img src="../../images/minus.svg" alt="Collapse">
+                        </button>
+                    </div>
+                    
+                    <div class="dsu-agreements__agreement-meta" id="interactiveEmptyMeta_${uniqueId}">
+                        <div class="dsu-date-button-wrapper">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" id="interactiveDateButton_${uniqueId}">
+                                <span class="dsu-agreements__date-button-icon">
+                                    <img src="../../images/calendar.svg" alt="Calendar">
+                                </span>
+                                <span id="interactiveDateButtonText_${uniqueId}">Select a date</span>
+                            </button>
+                            <div class="dsu-date-picker" id="interactiveDatePicker_${uniqueId}"></div>
+                        </div>
+                        <div class="dsu-agreements__agreement-status">
+                            <div class="dsu-status-button-wrapper">
+                                <div class="dsu-status-button dsu-status-button--to-start" id="interactiveStatusButton_${uniqueId}">
+                                    <span class="dsu-status-button__text" id="interactiveStatusButtonText_${uniqueId}">To start</span>
+                                    <span class="dsu-status-button__chevron">
+                                        <img src="../../images/down-chevron.svg" alt="Dropdown" id="interactiveStatusChevron_${uniqueId}">
+                                    </span>
+                                </div>
+                                <div class="dsu-status-dropdown" id="interactiveStatusDropdown_${uniqueId}">
+                                    <button class="dsu-status-dropdown__item" data-status="to-start">
+                                        <span class="dsu-status-dropdown__text">To start</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                        <span class="dsu-status-dropdown__text">In progress</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="paused">
+                                        <span class="dsu-status-dropdown__text">Paused</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="done">
+                                        <span class="dsu-status-dropdown__text">Done</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dsu-agreements__agreement-items" id="interactiveEmptyItems_${uniqueId}" style="display: none;">
+                        <!-- Items will be added dynamically here -->
+                    </div>
+                `;
+                
+                // Create the form element
+                const formDiv = document.createElement('div');
+                formDiv.className = 'dsu-agreements__agreement-form';
+                formDiv.id = `interactiveAgreementFormForm_${uniqueId}`;
+                formDiv.innerHTML = `
+                    <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                        <input type="text" class="dsu-input dsu-input--only" id="interactiveAgreementItem1_${uniqueId}" placeholder="Create and send an agreement">
+                    </div>
+                    <button class="dsu-agreements__send-button" id="interactiveSendButton_${uniqueId}" disabled>
+                        <span class="dsu-agreements__send-button-icon">
+                            <img src="../../images/mail.svg" alt="Mail">
+                        </span>
+                        <span>Send email</span>
+                    </button>
+                `;
+                
+                // Get the content container and button
+                const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
+                const newAgreementBtn = document.getElementById('interactiveCreateAgreementBtn');
+                
+                if (contentContainer && newAgreementBtn) {
+                    // Insert before the button
+                    contentContainer.insertBefore(agreementDiv, newAgreementBtn);
+                    contentContainer.insertBefore(formDiv, newAgreementBtn);
+                    
+                    // Initialize functionality for the new group
+                    initNewAgreementGroup(uniqueId);
+                }
+                
+                // Add scroll if needed - ensure content container has max-height
+                if (contentContainer) {
+                    const wrapper = emptyContainer.querySelector('.dsu-agreements__wrapper');
+                    if (wrapper) {
+                        wrapper.style.maxHeight = '700px';
+                        wrapper.style.overflowY = 'auto';
+                    }
+                }
+                
+                // Scroll to the new agreement
+                agreementDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            
+            // Initialize functionality for a new agreement group
+            function initNewAgreementGroup(uniqueId) {
+                const agreementNameInput = document.getElementById(`interactiveAgreementName_${uniqueId}`);
+                const dateButton = document.getElementById(`interactiveDateButton_${uniqueId}`);
+                const item1Input = document.getElementById(`interactiveAgreementItem1_${uniqueId}`);
+                const sendButton = document.getElementById(`interactiveSendButton_${uniqueId}`);
+                const emptyItemsContainer = document.getElementById(`interactiveEmptyItems_${uniqueId}`);
+                const emptyToggleBtn = document.getElementById(`interactiveEmptyToggleBtn_${uniqueId}`);
+                const emptyMeta = document.getElementById(`interactiveEmptyMeta_${uniqueId}`);
+                const agreementForm = document.getElementById(`interactiveAgreementForm_${uniqueId}`);
+                
+                // Agreement name input functionality
+                if (agreementNameInput) {
+                    agreementNameInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter' && this.value.trim()) {
+                            e.preventDefault();
+                            updateAgreementTitleForGroup(this.value.trim(), uniqueId);
+                            // Enable send button when agreement name is entered
+                            if (sendButton) {
+                                sendButton.disabled = false;
+                            }
+                        }
+                    });
+                    
+                    agreementNameInput.addEventListener('input', function() {
+                        // Enable send button when user types in agreement name
+                        if (sendButton && this.value.trim()) {
+                            sendButton.disabled = false;
+                        } else if (sendButton) {
+                            // Disable if empty, unless item input has content
+                            checkSendButtonForGroup(uniqueId);
+                        }
+                    });
+                    
+                    agreementNameInput.addEventListener('blur', function() {
+                        if (this.value.trim()) {
+                            updateAgreementTitleForGroup(this.value.trim(), uniqueId);
+                            // Enable send button
+                            if (sendButton) {
+                                sendButton.disabled = false;
+                            }
+                        }
+                    });
+                }
+                
+                // Date picker functionality for group
+                if (dateButton) {
+                    initDatePicker(`interactiveDatePicker_${uniqueId}`, `interactiveDateButton_${uniqueId}`, `interactiveDateButtonText_${uniqueId}`);
+                }
+                
+                // Status Button Dropdown functionality for group
+                const statusButtonGroup = document.getElementById(`interactiveStatusButton_${uniqueId}`);
+                const statusDropdownGroup = document.getElementById(`interactiveStatusDropdown_${uniqueId}`);
+                
+                if (statusButtonGroup && statusDropdownGroup) {
+                    initStatusDropdown(`interactiveStatusButton_${uniqueId}`, `interactiveStatusDropdown_${uniqueId}`, `interactiveStatusChevron_${uniqueId}`, `interactiveStatusButtonText_${uniqueId}`);
+                }
+                
+                // Enable/disable send button (agreement name OR item input)
+                function checkSendButtonForGroup(groupId) {
+                    const agreementNameInputCheck = document.getElementById(`interactiveAgreementName_${groupId}`);
+                    const item1InputCheck = document.getElementById(`interactiveAgreementItem1_${groupId}`);
+                    const sendButtonCheck = document.getElementById(`interactiveSendButton_${groupId}`);
+                    
+                    if (sendButtonCheck) {
+                        const hasAgreementName = agreementNameInputCheck && agreementNameInputCheck.value.trim() !== '';
+                        const hasItemContent = item1InputCheck && item1InputCheck.value.trim() !== '';
+                        // Enable if either agreement name or item input has content
+                        sendButtonCheck.disabled = !(hasAgreementName || hasItemContent);
+                    }
+                }
+                
+                if (item1Input) {
+                    item1Input.addEventListener('input', function() {
+                        checkSendButtonForGroup(uniqueId);
+                    });
+                    
+                    item1Input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter' && this.value.trim()) {
+                            e.preventDefault();
+                            addEmptyAgreementItem(this.value.trim(), emptyItemsContainer);
+                            this.value = '';
+                            checkSendButtonForGroup(uniqueId);
+                        }
+                    });
+                }
+                
+                // Send button functionality
+                if (sendButton) {
+                    sendButton.addEventListener('click', function() {
+                        if (item1Input && item1Input.value.trim()) {
+                            addEmptyAgreementItem(item1Input.value.trim(), emptyItemsContainer);
+                            item1Input.value = '';
+                        }
+                        checkSendButtonForGroup(uniqueId);
+                    });
+                }
+                
+                // Toggle functionality - Only the toggle button (plus/minus icon) can collapse/expand
+                if (emptyToggleBtn) {
+                    let emptyExpanded = true;
+                    emptyToggleBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Ensure click doesn't bubble to other elements
+                        const agreementFormForm = document.getElementById(`interactiveAgreementFormForm_${uniqueId}`);
+                        
+                        if (emptyExpanded) {
+                            if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
+                            if (emptyMeta) emptyMeta.style.display = 'none';
+                            if (agreementFormForm) agreementFormForm.style.display = 'none';
+                            const img = this.querySelector('img');
+                            if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
+                            emptyExpanded = false;
+                        } else {
+                            if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
+                                emptyItemsContainer.style.display = 'flex';
+                            }
+                            if (emptyMeta) emptyMeta.style.display = 'flex';
+                            if (agreementFormForm) agreementFormForm.style.display = 'flex';
+                            const img = this.querySelector('img');
+                            if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
+                            emptyExpanded = true;
+                        }
+                    });
+                }
+            }
+            
+            // Function to update agreement title for a specific group
+            function updateAgreementTitleForGroup(title, uniqueId) {
+                const agreementForm = document.getElementById(`interactiveAgreementForm_${uniqueId}`);
+                if (!agreementForm) return;
+                
+                const headerContainer = agreementForm.querySelector('.dsu-agreements__agreement-header');
+                if (!headerContainer) return;
+                
+                let headerTitle = headerContainer.querySelector('.dsu-agreements__agreement-title');
+                const inputWrapper = headerContainer.querySelector('.dsu-input-group');
+                
+                if (!headerTitle && inputWrapper) {
+                    headerTitle = document.createElement('p');
+                    headerTitle.className = 'dsu-agreements__agreement-title';
+                    headerTitle.style.cssText = 'font-family: var(--font-family-secondary); font-size: var(--font-size-base); font-weight: var(--font-weight-black); line-height: 1.5; color: var(--color-text-primary); margin: 0; flex: 1; cursor: text;';
+                    headerTitle.textContent = title;
+                    
+                    // Only allow editing on click, NOT collapsing
+                    headerTitle.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent any parent click handlers
+                        editAgreementTitleForGroup(this, uniqueId);
+                    });
+                    
+                    inputWrapper.replaceWith(headerTitle);
+                    
+                    const emptyToggleBtn = document.getElementById(`interactiveEmptyToggleBtn_${uniqueId}`);
+                    if (emptyToggleBtn) {
+                        emptyToggleBtn.style.display = 'block';
+                    }
+                } else if (headerTitle) {
+                    headerTitle.textContent = title;
+                }
+            }
+            
+            // Function to edit agreement title for a specific group
+            function editAgreementTitleForGroup(titleElement, uniqueId) {
+                const currentTitle = titleElement.textContent;
+                const headerContainer = titleElement.closest('.dsu-agreements__agreement-header');
+                if (!headerContainer) return;
+                
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'dsu-input-group';
+                inputGroup.style.cssText = 'flex: 1;';
+                inputGroup.innerHTML = `
+                    <div class="dsu-input-label">
+                        <span>Agreement name</span>
+                    </div>
+                    <input type="text" class="dsu-input" id="interactiveAgreementNameEdit_${uniqueId}" value="${currentTitle}" placeholder="i.e: Meeting May 5">
+                `;
+                
+                titleElement.replaceWith(inputGroup);
+                
+                const input = inputGroup.querySelector(`#interactiveAgreementNameEdit_${uniqueId}`);
+                if (input) {
+                    input.focus();
+                    input.select();
+                    
+                    const sendButtonForGroup = document.getElementById(`interactiveSendButton_${uniqueId}`);
+                    
+                    input.addEventListener('blur', function() {
+                        const newTitle = this.value.trim() || currentTitle;
+                        updateAgreementTitleForGroup(newTitle, uniqueId);
+                        // Enable send button if there's content
+                        if (sendButtonForGroup && this.value.trim()) {
+                            sendButtonForGroup.disabled = false;
+                        }
+                    });
+                    
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter' && this.value.trim()) {
+                            e.preventDefault();
+                            updateAgreementTitleForGroup(this.value.trim(), uniqueId);
+                            // Enable send button when Enter is pressed
+                            if (sendButtonForGroup) {
+                                sendButtonForGroup.disabled = false;
+                            }
+                        }
+                    });
+                    
+                    // Handle input - enable send button while typing
+                    input.addEventListener('input', function() {
+                        if (sendButtonForGroup && this.value.trim()) {
+                            sendButtonForGroup.disabled = false;
+                        } else if (sendButtonForGroup) {
+                            checkSendButtonForGroup(uniqueId);
+                        }
+                    });
+                }
+            }
+            
+            // Create Agreement: Add new agreement group
+            if (createAgreementBtn) {
+                createAgreementBtn.addEventListener('click', function() {
+                    createNewAgreementGroup();
+                });
+            }
+            
+            // Toggle agreement expand/collapse
+            if (toggleBtn) {
+                let isExpanded = true;
+                toggleBtn.addEventListener('click', function() {
+                    const agreement = document.getElementById('interactiveActiveAgreement');
+                    const itemsContainer = document.getElementById('interactiveActiveItems');
+                    const form = agreement ? agreement.nextElementSibling : null;
+                    
+                    if (isExpanded) {
+                        // Collapse
+                        if (itemsContainer) itemsContainer.style.display = 'none';
+                        if (form) form.style.display = 'none';
+                        this.querySelector('img').src = this.querySelector('img').src.replace('minus.svg', 'plus.svg');
+                        isExpanded = false;
+                    } else {
+                        // Expand
+                        if (itemsContainer) itemsContainer.style.display = 'flex';
+                        if (form) form.style.display = 'flex';
+                        this.querySelector('img').src = this.querySelector('img').src.replace('plus.svg', 'minus.svg');
+                        isExpanded = true;
+                    }
+                });
+            }
+            
+            // Add new item in active state
+            if (activeInput) {
+                activeInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        addAgreementItem(this.value.trim());
+                        this.value = '';
+                    }
+                });
+            }
+            
+            // Send email functionality
+            if (activeSendBtn) {
+                activeSendBtn.addEventListener('click', function() {
+                    const input = document.getElementById('interactiveActiveInput');
+                    if (input && input.value.trim()) {
+                        addAgreementItem(input.value.trim());
+                        input.value = '';
+                        alert('Email sent successfully!');
+                    }
+                });
+            }
+            
+            // New agreement button in active state
+            const activeNewBtn = document.getElementById('interactiveActiveNewBtn');
+            if (activeNewBtn) {
+                activeNewBtn.addEventListener('click', function() {
+                    // Reset and go back to empty state
+                    if (agreementNameInput) agreementNameInput.value = '';
+                    if (item1Input) item1Input.value = '';
+                    if (sendButton) sendButton.disabled = true;
+                    if (dateButton) {
+                        dateButton.querySelector('span:last-child').textContent = 'Select a date';
+                    }
+                    activeContainer.style.display = 'none';
+                    emptyContainer.style.display = 'block';
+                    emptyContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            }
+            
+            // Helper function to add agreement item
+            function addAgreementItem(text) {
+                if (!activeItemsContainer) return;
+                
+                const item = document.createElement('div');
+                item.className = 'dsu-agreements__agreement-item';
+                item.innerHTML = `
+                    <p class="dsu-agreements__agreement-item-text">-${text}</p>
+                    <div class="dsu-agreements__agreement-item-actions">
+                        <button class="dsu-agreements__agreement-item-action" onclick="this.closest('.dsu-agreements__agreement-item').remove()">
+                            <img src="../../images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="dsu-agreements__agreement-item-action" onclick="editItem(this)">
+                            <img src="../../images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                activeItemsContainer.appendChild(item);
+            }
+            
+            // Edit item functionality
+            window.editItem = function(button) {
+                const item = button.closest('.dsu-agreements__agreement-item');
+                const textElement = item.querySelector('.dsu-agreements__agreement-item-text');
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+        }
+        
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            initHideSection();
+            initInputVisibilityToggle();
+            initRichTextToolbar();
+            initAgreementsToggle();
+            initInteractiveAgreements();
+            
+            // Handle placeholder for contenteditable
+            const contentEditableEditors = document.querySelectorAll('.dsu-rich-text-input__editor[contenteditable="true"]');
+            contentEditableEditors.forEach(function(editor) {
+                const placeholder = editor.getAttribute('data-placeholder');
+                
+                function checkPlaceholder() {
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                        if (placeholder) {
+                            editor.setAttribute('data-placeholder-text', placeholder);
+                        }
+                    } else {
+                        editor.classList.remove('dsu-rich-text-input__editor--empty');
+                        editor.removeAttribute('data-placeholder-text');
+                    }
+                }
+                
+                editor.addEventListener('input', checkPlaceholder);
+                editor.addEventListener('focus', checkPlaceholder);
+                editor.addEventListener('blur', checkPlaceholder);
+                checkPlaceholder();
+            });
+        });
+    </script>
+    
+    <style>
+        /* Placeholder for contenteditable */
+        .dsu-rich-text-input__editor[contenteditable="true"]:empty:before,
+        .dsu-rich-text-input__editor--empty:before {
+            content: attr(data-placeholder-text);
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+    </style>
+    
+    <!-- Agreements Section -->
+    <div class="variant-section">
+        <h2 class="variant-section__title">Agreements</h2>
+        <p class="variant-section__description">
+            Componente para gestionar acuerdos de proyecto. Incluye estados Default (vacío), Empty (creación) y Active (con acuerdos activos).
+        </p>
+        
+        <!-- Default State -->
+        <div class="variant-item" style="margin-top: var(--spacing-24);">
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                Default (Empty State)
+            </h3>
+            <div class="dsu-agreements dsu-agreements--default">
+                <div class="dsu-agreements__wrapper">
+                    <div class="dsu-agreements__empty-illustration">
+                        <img src="../../images/perro_agreements.svg" alt="Empty agreements illustration">
+                    </div>
+                    <div class="dsu-agreements__content">
+                        <p class="dsu-agreements__headline-text">Project agreements</p>
+                        <p class="dsu-agreements__empty-message">Start solid and create your project's next steps.</p>
+                        <button class="dsu-button dsu-button--primary dsu-button--small dsu-agreements__empty-button">
+                            Add one
+                            <span class="dsu-button__icon"><img src="../../images/plus.svg" alt="Plus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Empty State (Creating) -->
+        <div class="variant-item" style="margin-top: var(--spacing-24);">
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                Empty (Creating New Agreement)
+            </h3>
+            <div class="dsu-agreements">
+                <div class="dsu-agreements__wrapper">
+                    <div class="dsu-agreements__content">
+                        <div class="dsu-agreements__headline">
+                            <div class="dsu-agreements__headline-icon">
+                                <img src="../../images/project.svg" alt="Project">
+                            </div>
+                            <p class="dsu-agreements__headline-text">Project agreements</p>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement">
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-label">
+                                    <span>Agreement name</span>
+                                </div>
+                                <input type="text" class="dsu-input" placeholder="i.e: Meeting May 5">
+                            </div>
+                            
+                            <div class="dsu-agreements__agreement-form-actions">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small">
+                                    <span class="dsu-agreements__date-button-icon">
+                                        <img src="../../images/calendar.svg" alt="Calendar">
+                                    </span>
+                                    <span>Select a date</span>
+                                </button>
+                                <div class="dsu-agreements__agreement-status">
+                                    <div class="dsu-task-stages dsu-task-stages--pending-approval">
+                                        <span class="dsu-task-stages__text">Pending approval</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement-form">
+                            <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                                <input type="text" class="dsu-input dsu-input--only" placeholder="Create and send an agreement">
+                            </div>
+                            <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                                <input type="text" class="dsu-input dsu-input--only" placeholder="Create and send an agreement">
+                            </div>
+                            <button class="dsu-agreements__send-button" disabled>
+                                <span class="dsu-agreements__send-button-icon">
+                                    <img src="../../images/mail.svg" alt="Mail">
+                                </span>
+                                <span>Send email</span>
+                            </button>
+                        </div>
+                        
+                        <button class="dsu-button dsu-button--secondary dsu-button--medium">
+                            <span>New agreement</span>
+                            <span class="dsu-button__icon">
+                                <img src="../../images/plus.svg" alt="Plus">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Active State -->
+        <div class="variant-item" style="margin-top: var(--spacing-24);">
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                Active (With Agreements)
+            </h3>
+            <div class="dsu-agreements">
+                <div class="dsu-agreements__wrapper">
+                    <div class="dsu-agreements__content">
+                        <div class="dsu-agreements__headline">
+                            <div class="dsu-agreements__headline-icon">
+                                <img src="../../images/project.svg" alt="Project">
+                            </div>
+                            <p class="dsu-agreements__headline-text">Project agreements</p>
+                        </div>
+                        
+                        <!-- Active Agreement (Expanded) -->
+                        <div class="dsu-agreements__agreement">
+                            <div class="dsu-agreements__agreement-header">
+                                <p class="dsu-agreements__agreement-title">Meeting may 5 / Project Adjustments</p>
+                                <button class="dsu-agreements__agreement-toggle">
+                                    <img src="../../images/minus.svg" alt="Collapse">
+                                </button>
+                            </div>
+                            <div class="dsu-agreements__agreement-meta">
+                                <p class="dsu-agreements__agreement-date">5/05/ 2024</p>
+                                <div class="dsu-agreements__agreement-status">
+                                    <div class="dsu-task-stages dsu-task-stages--approved">
+                                        <span class="dsu-task-stages__text">Approved</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dsu-agreements__agreement-items">
+                                <div class="dsu-agreements__agreement-item">
+                                    <p class="dsu-agreements__agreement-item-text">-Implement personalized recommendation algorithms to enhance user engagement.</p>
+                                    <div class="dsu-agreements__agreement-item-actions">
+                                        <button class="dsu-agreements__agreement-item-action">
+                                            <img src="../../images/trash.svg" alt="Delete">
+                                        </button>
+                                        <button class="dsu-agreements__agreement-item-action">
+                                            <img src="../../images/Edit.svg" alt="Edit">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="dsu-agreements__agreement-item">
+                                    <p class="dsu-agreements__agreement-item-text">-Implement personalized recommendation algorithms to enhance user engagement.</p>
+                                    <div class="dsu-agreements__agreement-item-actions">
+                                        <button class="dsu-agreements__agreement-item-action">
+                                            <img src="../../images/trash.svg" alt="Delete">
+                                        </button>
+                                        <button class="dsu-agreements__agreement-item-action">
+                                            <img src="../../images/Edit.svg" alt="Edit">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement-form">
+                            <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                                <input type="text" class="dsu-input dsu-input--only" placeholder="Create and send an agreement">
+                            </div>
+                            <button class="dsu-agreements__send-button">
+                                <span class="dsu-agreements__send-button-icon">
+                                    <img src="../../images/mail.svg" alt="Mail">
+                                </span>
+                                <span>Send email</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Collapsed Agreements -->
+                        <div class="dsu-agreements__collapsed-agreements">
+                            <div class="dsu-agreements__collapsed-agreement">
+                                <p class="dsu-agreements__agreement-title">Meeting may 5 / Project Adjustments</p>
+                                <button class="dsu-agreements__agreement-toggle">
+                                    <img src="../../images/plus.svg" alt="Expand">
+                                </button>
+                            </div>
+                            <div class="dsu-agreements__collapsed-agreement">
+                                <p class="dsu-agreements__agreement-title">Meeting may 5 / Project Adjustments</p>
+                                <button class="dsu-agreements__agreement-toggle">
+                                    <img src="../../images/plus.svg" alt="Expand">
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="dsu-button dsu-button--secondary dsu-button--medium">
+                            <span>New agreement</span>
+                            <span class="dsu-button__icon">
+                                <img src="../../images/plus.svg" alt="Plus">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Example -->
+        <div class="variant-item" style="margin-top: var(--spacing-48);">
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                Ejemplo Funcional Interactivo
+            </h3>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--spacing-24);">
+                Prueba las funcionalidades del módulo: haz clic en "Add one" para crear un acuerdo, luego podrás ver el estado activo con acuerdos.
+            </p>
+            
+            <!-- Default State (Interactive) -->
+            <div id="interactiveAgreementsDefault" class="dsu-agreements dsu-agreements--default">
+                <div class="dsu-agreements__wrapper">
+                    <div class="dsu-agreements__empty-illustration">
+                        <img src="../../images/perro_agreements.svg" alt="Empty agreements illustration">
+                    </div>
+                    <div class="dsu-agreements__content">
+                        <p class="dsu-agreements__headline-text">Project agreements</p>
+                        <p class="dsu-agreements__empty-message">Start solid and create your project's next steps.</p>
+                        <button class="dsu-button dsu-button--primary dsu-button--small dsu-agreements__empty-button" id="interactiveAddOneBtn">
+                            Add one
+                            <span class="dsu-button__icon"><img src="../../images/plus.svg" alt="Plus"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State (Interactive - Hidden by default) -->
+            <div id="interactiveAgreementsEmpty" class="dsu-agreements" style="display: none;">
+                <div class="dsu-agreements__wrapper" style="max-height: 700px; overflow-y: auto;">
+                    <div class="dsu-agreements__content">
+                        <div class="dsu-agreements__headline">
+                            <div class="dsu-agreements__headline-icon">
+                                <img src="../../images/project.svg" alt="Project">
+                            </div>
+                            <p class="dsu-agreements__headline-text">Project agreements</p>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement" id="interactiveAgreementForm">
+                            <div class="dsu-agreements__agreement-header">
+                                <div class="dsu-input-group" style="flex: 1;">
+                                    <div class="dsu-input-label">
+                                        <span>Agreement name</span>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="interactiveAgreementName" placeholder="i.e: Meeting May 5">
+                                </div>
+                                <button class="dsu-agreements__agreement-toggle" id="interactiveEmptyToggleBtn" style="display: none;">
+                                    <img src="../../images/minus.svg" alt="Collapse">
+                                </button>
+                            </div>
+                            
+                            <div class="dsu-agreements__agreement-meta" id="interactiveEmptyMeta">
+                                <div class="dsu-date-button-wrapper">
+                                    <button class="dsu-button dsu-button--secondary dsu-button--small" id="interactiveDateButton">
+                                        <span class="dsu-agreements__date-button-icon">
+                                            <img src="../../images/calendar.svg" alt="Calendar">
+                                        </span>
+                                        <span id="interactiveDateButtonText">Select a date</span>
+                                    </button>
+                                    <div class="dsu-date-picker" id="interactiveDatePicker"></div>
+                                </div>
+                                <div class="dsu-agreements__agreement-status">
+                                    <div class="dsu-status-button-wrapper">
+                                        <div class="dsu-status-button dsu-status-button--to-start" id="interactiveStatusButton">
+                                            <span class="dsu-status-button__text" id="interactiveStatusButtonText">To start</span>
+                                            <span class="dsu-status-button__chevron">
+                                                <img src="../../images/down-chevron.svg" alt="Dropdown" id="interactiveStatusChevron">
+                                            </span>
+                                        </div>
+                                        <div class="dsu-status-dropdown" id="interactiveStatusDropdown">
+                                            <button class="dsu-status-dropdown__item" data-status="to-start">
+                                                <span class="dsu-status-dropdown__text">To start</span>
+                                            </button>
+                                            <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                                <span class="dsu-status-dropdown__text">In progress</span>
+                                            </button>
+                                            <button class="dsu-status-dropdown__item" data-status="paused">
+                                                <span class="dsu-status-dropdown__text">Paused</span>
+                                            </button>
+                                            <button class="dsu-status-dropdown__item" data-status="done">
+                                                <span class="dsu-status-dropdown__text">Done</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="dsu-agreements__agreement-items" id="interactiveEmptyItems" style="display: none;">
+                                <!-- Items will be added dynamically here -->
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement-form">
+                            <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                                <input type="text" class="dsu-input dsu-input--only" id="interactiveAgreementItem1" placeholder="Create and send an agreement">
+                            </div>
+                            <button class="dsu-agreements__send-button" id="interactiveSendButton" disabled>
+                                <span class="dsu-agreements__send-button-icon">
+                                    <img src="../../images/mail.svg" alt="Mail">
+                                </span>
+                                <span>Send email</span>
+                            </button>
+                        </div>
+                        
+                        <button class="dsu-button dsu-button--secondary dsu-button--medium" id="interactiveCreateAgreementBtn">
+                            <span>New agreement</span>
+                            <span class="dsu-button__icon">
+                                <img src="../../images/plus.svg" alt="Plus">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active State (Interactive - Hidden by default) -->
+            <div id="interactiveAgreementsActive" class="dsu-agreements" style="display: none;">
+                <div class="dsu-agreements__wrapper">
+                    <div class="dsu-agreements__content">
+                        <div class="dsu-agreements__headline">
+                            <div class="dsu-agreements__headline-icon">
+                                <img src="../../images/project.svg" alt="Project">
+                            </div>
+                            <p class="dsu-agreements__headline-text">Project agreements</p>
+                        </div>
+                        
+                        <!-- Active Agreement (Expanded) -->
+                        <div class="dsu-agreements__agreement" id="interactiveActiveAgreement">
+                            <div class="dsu-agreements__agreement-header">
+                                <p class="dsu-agreements__agreement-title" id="interactiveActiveTitle">Meeting may 5 / Project Adjustments</p>
+                                <button class="dsu-agreements__agreement-toggle" id="interactiveToggleBtn">
+                                    <img src="../../images/minus.svg" alt="Collapse">
+                                </button>
+                            </div>
+                            <div class="dsu-agreements__agreement-meta">
+                                <p class="dsu-agreements__agreement-date" id="interactiveActiveDate">5/05/ 2024</p>
+                                <div class="dsu-agreements__agreement-status">
+                                    <div class="dsu-task-stages dsu-task-stages--approved">
+                                        <span class="dsu-task-stages__text">Approved</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dsu-agreements__agreement-items" id="interactiveActiveItems">
+                                <!-- Items will be added dynamically -->
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-agreements__agreement-form">
+                            <div class="dsu-input-group dsu-agreements__agreement-form-input">
+                                <input type="text" class="dsu-input dsu-input--only" id="interactiveActiveInput" placeholder="Create and send an agreement">
+                            </div>
+                            <button class="dsu-agreements__send-button" id="interactiveActiveSendBtn">
+                                <span class="dsu-agreements__send-button-icon">
+                                    <img src="../../images/mail.svg" alt="Mail">
+                                </span>
+                                <span>Send email</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Collapsed Agreements -->
+                        <div class="dsu-agreements__collapsed-agreements" id="interactiveCollapsedAgreements">
+                            <!-- Collapsed items will be added dynamically -->
+                        </div>
+                        
+                        <button class="dsu-button dsu-button--secondary dsu-button--medium" id="interactiveActiveNewBtn">
+                            <span>New agreement</span>
+                            <span class="dsu-button__icon">
+                                <img src="../../images/plus.svg" alt="Plus">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-example" style="margin-top: var(--spacing-24);">
+            <strong style="display: block; margin-bottom: var(--spacing-08);">Código de implementación:</strong>
+            <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-agreements"&gt;
+  &lt;div class="dsu-agreements__wrapper"&gt;
+    &lt;div class="dsu-agreements__content"&gt;
+      &lt;div class="dsu-agreements__headline"&gt;
+        &lt;div class="dsu-agreements__headline-icon"&gt;
+          &lt;img src="../../images/project.svg" alt="Project"&gt;
+        &lt;/div&gt;
+        &lt;p class="dsu-agreements__headline-text"&gt;Project agreements&lt;/p&gt;
+      &lt;/div&gt;
+      
+      &lt;!-- Agreement items here --&gt;
+      
+      &lt;button class="dsu-button dsu-button--secondary dsu-button--medium"&gt;
+        &lt;span&gt;New agreement&lt;/span&gt;
+        &lt;span class="dsu-button__icon"&gt;
+          &lt;img src="../../images/plus.svg" alt="Plus"&gt;
+        &lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </div>
+    </div>
+</body>
+</html>
+

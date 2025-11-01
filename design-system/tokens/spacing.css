@@ -1,0 +1,14 @@
+/* ==========================================
+   SPACING TOKENS - Design System Docu
+   Basado en Figma Components
+   ========================================== */
+
+:root {
+  --spacing-04: 4px;
+  --spacing-08: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-48: 48px;
+}
+

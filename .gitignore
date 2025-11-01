@@ -1,0 +1,44 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Archivos temporales
+*.log
+*.tmp
+*.temp
+*~
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de usuario temporales
+clear-data.html
+delete-user.html
+delete-wallace-account.html
+verify-deletion.html
+
+# Archivos de respaldo
+*_backup.html
+*.bak
+*.backup
+
+# Node modules (si se agrega en el futuro)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Archivos de entorno
+.env
+.env.local
+
+# Cache
+.cache/
+

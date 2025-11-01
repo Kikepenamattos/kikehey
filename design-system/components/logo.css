@@ -1,0 +1,48 @@
+/* ==========================================
+   LOGO COMPONENT - Design System Docu
+   Basado en Figma Components
+   ========================================== */
+
+.dsu-logo {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: var(--spacing-08);
+  flex-shrink: 0;
+}
+
+.dsu-logo__image {
+  display: block;
+  object-fit: contain;
+}
+
+/* === VARIANTS === */
+.dsu-logo--default {
+  width: 131px;
+  height: 43px;
+}
+
+.dsu-logo--default .dsu-logo__image {
+  width: 131px;
+  height: 43px;
+}
+
+.dsu-logo--icon {
+  width: 40px;
+  height: 43px;
+}
+
+.dsu-logo--icon .dsu-logo__image {
+  width: 40px;
+  height: 43px;
+}
+
+.dsu-logo--small {
+  width: 97px;
+  height: 32px;
+}
+
+.dsu-logo--small .dsu-logo__image {
+  width: 97px;
+  height: 32px;
+}
+

@@ -1,0 +1,11 @@
+/* ==========================================
+   DESIGN TOKENS - Index
+   Importa todos los tokens del sistema de diseño
+   ========================================== */
+
+@import './colors.css';
+@import './typography.css';
+@import './spacing.css';
+@import './radius.css';
+@import './elevation.css';
+

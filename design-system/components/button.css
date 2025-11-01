@@ -1,0 +1,261 @@
+/* ==========================================
+   BUTTON COMPONENT - Design System Docu
+   Basado en Figma Components
+   Espaciados y tamaños exactos según diseño
+   ========================================== */
+
+/* === BASE BUTTON === */
+.dsu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  font-family: var(--font-family-secondary);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 40px; /* Default border-radius */
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.dsu-button:focus-visible {
+  outline: 2px solid var(--color-basics-dark-blue);
+  outline-offset: 2px;
+}
+
+.dsu-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* === SIZES - Exactos según Figma === */
+
+/* X-Small: 36px height */
+.dsu-button--x-small {
+  padding: 8px 16px;
+  height: 36px;
+  font-size: 12px;
+  border-radius: 40px;
+  gap: 8px;
+}
+
+/* Small: 37px height */
+.dsu-button--small {
+  padding: 8px 16px;
+  height: 37px;
+  font-size: 14px;
+  border-radius: 40px;
+  gap: 8px;
+}
+
+/* Medium: 48px height */
+.dsu-button--medium {
+  padding: 12px 24px;
+  height: 48px;
+  font-size: 16px;
+  border-radius: 40px;
+  gap: 8px;
+}
+
+/* Large: 59px height */
+.dsu-button--large {
+  padding: 16px 32px;
+  height: 59px;
+  font-size: 18px;
+  border-radius: 40px;
+  gap: 8px;
+}
+
+/* === PRIMARY TYPE === */
+.dsu-button--primary {
+  background-color: var(--color-button-primary-bg-default);
+  color: var(--color-basics-dark-blue);
+  box-shadow: none;
+}
+
+.dsu-button--primary:hover:not(:disabled) {
+  background-color: var(--color-button-primary-bg-hover);
+  box-shadow: none;
+}
+
+.dsu-button--primary:active:not(:disabled),
+.dsu-button--primary.is-pressed {
+  background-color: var(--color-button-primary-bg-pressed);
+  box-shadow: none;
+}
+
+.dsu-button--primary:disabled {
+  background-color: var(--color-status-disabled);
+  color: var(--color-text-secondary);
+  opacity: 1;
+  box-shadow: none;
+}
+
+/* === SECONDARY TYPE === */
+.dsu-button--secondary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-basics-dark-blue);
+  box-shadow: var(--button-secondary-elevation-default);
+}
+
+.dsu-button--secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-regular); /* White background */
+  color: var(--color-text-primary); /* Keep dark-blue text */
+  border-color: var(--color-button-secondary-bg-hover); /* #0f3965 */
+  box-shadow: var(--button-secondary-elevation-hover);
+}
+
+.dsu-button--secondary:active:not(:disabled),
+.dsu-button--secondary.is-pressed {
+  background-color: var(--color-surface-regular); /* White background */
+  color: var(--color-text-primary); /* Keep dark-blue text */
+  border-color: var(--color-button-secondary-bg-hover); /* #0f3965 */
+  box-shadow: var(--button-secondary-elevation-pressed);
+}
+
+.dsu-button--secondary:disabled {
+  background-color: var(--color-surface-regular); /* White background */
+  border-color: var(--color-basics-gray); /* Light gray border */
+  color: var(--color-text-secondary); /* Secondary text color */
+  opacity: 1;
+  box-shadow: none;
+}
+
+/* === TERTIARY TYPE === */
+.dsu-button--tertiary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: none;
+  box-shadow: var(--button-tertiary-elevation-default);
+}
+
+.dsu-button--tertiary:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+  box-shadow: var(--button-tertiary-elevation-hover);
+}
+
+.dsu-button--tertiary:active:not(:disabled),
+.dsu-button--tertiary.is-pressed {
+  background-color: var(--color-basics-gray);
+  box-shadow: var(--button-tertiary-elevation-pressed);
+}
+
+.dsu-button--tertiary:disabled {
+  color: var(--color-text-secondary);
+  opacity: 1;
+  box-shadow: none;
+}
+
+/* === ACCESS TYPE === */
+.dsu-button--access {
+  background-color: var(--color-surface-regular);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-basics-mid-blue);
+  border-radius: 80px; /* Más redondeado que otros */
+  gap: 16px; /* Mayor gap para Access buttons */
+  padding: 16px;
+  height: 48px;
+  font-size: 16px;
+  box-shadow: var(--button-access-elevation-default);
+  width: 100%;
+}
+
+.dsu-button--access:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+  border-color: var(--color-basics-dark-blue);
+  box-shadow: var(--button-access-elevation-hover);
+}
+
+.dsu-button--access:active:not(:disabled),
+.dsu-button--access.is-pressed {
+  background-color: var(--color-surface-especial);
+  border-color: var(--color-basics-dark-blue);
+  box-shadow: var(--button-access-elevation-hover);
+}
+
+.dsu-button--access:disabled {
+  border-color: var(--color-status-disabled);
+  color: var(--color-text-secondary);
+  opacity: 1;
+  box-shadow: none;
+}
+
+/* === ICON SUPPORT === */
+.dsu-button__icon {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.dsu-button__icon img,
+.dsu-button__icon svg {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* Icon only button - ajustado según tamaños */
+.dsu-button--icon-only {
+  padding: 8px;
+  width: auto;
+}
+
+.dsu-button--icon-only.dsu-button--x-small {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+}
+
+.dsu-button--icon-only.dsu-button--small {
+  width: 37px;
+  height: 37px;
+  padding: 8px;
+}
+
+.dsu-button--icon-only.dsu-button--medium {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+}
+
+.dsu-button--icon-only.dsu-button--large {
+  width: 59px;
+  height: 59px;
+  padding: 16px;
+}
+
+/* === STICKY BUTTONS CONTAINER === */
+.dsu-sticky-buttons {
+  display: flex;
+  gap: var(--spacing-24);
+  align-items: flex-start;
+  padding: var(--spacing-24) 173px var(--spacing-24) 136px;
+  border-top: 1px solid var(--color-status-disabled);
+  background-color: var(--color-surface-regular);
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  bottom: 0;
+  z-index: 100;
+}
+
+.dsu-sticky-buttons__button {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Dark mode */
+[data-theme="dark"] .dsu-sticky-buttons {
+  background-color: var(--color-surface-regular);
+  border-top-color: var(--color-status-disabled);
+}

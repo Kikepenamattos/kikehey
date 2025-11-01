@@ -1,0 +1,313 @@
+/* ==========================================
+   CARD COMPONENT - Design System Docu
+   Basado en Figma Components
+   Card de inicio de proyecto con estados Default y Hover
+   ========================================== */
+
+/* === CARD === */
+.dsu-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08);
+  width: 272px;
+  height: 117px;
+  padding: var(--spacing-24);
+  background-color: var(--color-surface-regular);
+  border: 1px solid var(--color-basics-mid-blue);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  transition: box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* === CARD HOVER === */
+.dsu-card:hover,
+.dsu-card--hover {
+  box-shadow: var(--button-secondary-elevation-hover);
+}
+
+/* === CARD TITLE === */
+.dsu-card__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-black);
+  line-height: normal;
+  color: var(--color-text-primary);
+  width: 100%;
+  margin: 0;
+}
+
+/* === CARD BODY === */
+.dsu-card__body {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  width: 100%;
+  margin: 0;
+}
+
+/* === CARD LINK (opcional, para hacerla clickeable) === */
+.dsu-card--clickable {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.dsu-card--clickable:hover {
+  text-decoration: none;
+}
+
+/* === DARK MODE SUPPORT === */
+[data-theme="dark"] .dsu-card {
+  background-color: var(--color-surface-regular);
+  border-color: var(--color-basics-mid-blue);
+}
+
+/* ==========================================
+   PROFILE CARD COMPONENT
+   Basado en Figma Components
+   Tarjetas de perfil con imagen, nombre y contacto
+   ========================================== */
+
+/* === PROFILE CARD === */
+.dsu-profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  align-items: flex-start;
+  width: 200px;
+  box-sizing: border-box;
+}
+
+/* === PROFILE CARD IMAGE WRAPPER === */
+.dsu-profile-card__image-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--spacing-08);
+  box-sizing: border-box;
+}
+
+.dsu-profile-card__image-wrapper:hover {
+  cursor: pointer;
+}
+
+/* === PROFILE CARD IMAGE === */
+.dsu-profile-card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: var(--radius-md);
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.dsu-profile-card__image-wrapper:hover .dsu-profile-card__image {
+  transform: scale(1.1);
+}
+
+/* === PROFILE CARD EDIT BUTTON === */
+.dsu-profile-card__edit-button {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.dsu-profile-card__edit-button:hover {
+  background-color: var(--color-surface-especial);
+}
+
+/* === PROFILE CARD EDIT ICON === */
+.dsu-profile-card__edit-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+/* === PROFILE CARD CONTENT === */
+.dsu-profile-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* === PROFILE CARD NAME JOB === */
+.dsu-profile-card__name-job {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* === PROFILE CARD NAME === */
+.dsu-profile-card__name {
+  font-family: var(--font-family-secondary);
+  font-size: 18px;
+  font-weight: var(--font-weight-black);
+  line-height: normal;
+  color: var(--color-text-primary);
+  margin: 0;
+  width: 100%;
+  transition: text-decoration 0.2s ease;
+  cursor: pointer;
+}
+
+.dsu-profile-card__name:hover {
+  text-decoration: underline;
+}
+
+/* === PROFILE CARD JOB === */
+.dsu-profile-card__job {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin: 0;
+  width: 100%;
+}
+
+/* === PROFILE CARD CONTACT === */
+.dsu-profile-card__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* === PROFILE CARD CONTACT ITEM === */
+.dsu-profile-card__contact-item {
+  display: flex;
+  gap: var(--spacing-08);
+  align-items: center;
+  width: 100%;
+}
+
+/* === PROFILE CARD CONTACT ICON === */
+.dsu-profile-card__contact-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+/* === PROFILE CARD CONTACT TEXT === */
+.dsu-profile-card__contact-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+/* === PROFILE CARD CONTACT LINK (Email) === */
+.dsu-profile-card__contact-link {
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: text-decoration 0.2s ease;
+}
+
+.dsu-profile-card__contact-link:hover {
+  text-decoration: underline;
+}
+
+/* === PROFILE AVATAR === */
+.dsu-profile-avatar {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background-color: var(--color-surface-especial);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-08);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  box-sizing: border-box;
+}
+
+/* === PROFILE AVATAR ICON === */
+.dsu-profile-avatar__icon {
+  position: absolute;
+  top: var(--spacing-08);
+  left: var(--spacing-08);
+  width: 108.01px;
+  height: 175.537px;
+  object-fit: contain;
+  object-position: top left;
+}
+
+/* === PROFILE AVATAR EDIT BUTTON === */
+.dsu-profile-avatar__edit-button {
+  position: relative;
+  z-index: 1;
+  background-color: var(--color-basics-dark-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.dsu-profile-avatar__edit-button:hover {
+  opacity: 0.9;
+}
+
+/* === PROFILE AVATAR EDIT ICON === */
+.dsu-profile-avatar__edit-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* White icon */
+}
+
+/* === DARK MODE SUPPORT FOR PROFILE CARDS === */
+[data-theme="dark"] .dsu-profile-card__edit-button {
+  background-color: var(--color-surface-regular);
+}
+
+[data-theme="dark"] .dsu-profile-card__edit-button:hover {
+  background-color: var(--color-surface-especial);
+}
+
+[data-theme="dark"] .dsu-profile-avatar {
+  background-color: var(--color-surface-especial);
+}
+

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docu - Crear Cuenta</title>
+    <style>
+        /* ==========================================
+           RESET Y BASE
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
+            color: #0a243f;
+            min-height: 100vh;
+        }
+
+        /* ==========================================
+           FUENTES PERSONALIZADAS
+           ========================================== */
+        @font-face {
+            font-family: 'Lato';
+            src: url('Fonts/Lato/Lato-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Lato';
+            src: url('Fonts/Lato/Lato-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Lato';
+            src: url('Fonts/Lato/Lato-Black.ttf') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        /* ==========================================
+           WRAPPER Y CONTENEDOR PRINCIPAL
+           ========================================== */
+        .sign-up-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 24px;
+            position: relative;
+        }
+
+        .sign-up-container {
+            width: 100%;
+            max-width: 651px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        /* ==========================================
+           BOTÓN CERRAR
+           ========================================== */
+        .sign-up-close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .sign-up-close-button:hover {
+            opacity: 0.7;
+        }
+
+        .sign-up-close-button__icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* ==========================================
+           AVATAR SECTION
+           ========================================== */
+        .sign-up-avatar-section {
+            flex-shrink: 0;
+        }
+
+        .sign-up-avatar {
+            width: 200px;
+            height: 200px;
+            background-color: #f4f7fb;
+            border-radius: 10px;
+            padding: 8px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+
+        .sign-up-avatar__icon {
+            width: 108px;
+            height: 175.5px;
+            object-fit: contain;
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+        }
+
+        .sign-up-avatar__button {
+            width: 32px;
+            height: 32px;
+            background-color: #0a243f;
+            border: none;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 4px;
+            position: relative;
+            z-index: 1;
+            transition: opacity 0.2s ease;
+        }
+
+        .sign-up-avatar__button:hover {
+            opacity: 0.9;
+        }
+
+        .sign-up-avatar__button-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            filter: brightness(0) invert(1); /* Hace el icono blanco */
+        }
+
+        .sign-up-avatar__input {
+            display: none;
+        }
+
+        /* ==========================================
+           FORM SECTION
+           ========================================== */
+        .sign-up-form-section {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            align-items: center;
+        }
+
+        /* ==========================================
+           HEADER (Título y Subtítulo)
+           ========================================== */
+        .sign-up-header {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .sign-up-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #0a243f;
+            line-height: normal;
+            margin: 0;
+        }
+
+        .sign-up-subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #0a243f;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ==========================================
+           FORM
+           ========================================== */
+        .sign-up-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+        }
+
+        /* ==========================================
+           FORM ROW (Para campos lado a lado)
+           ========================================== */
+        .sign-up-form-row {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .sign-up-form-row .sign-up-form-field {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* ==========================================
+           FORM FIELD
+           ========================================== */
+        .sign-up-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+        }
+
+        /* ==========================================
+           LABEL
+           ========================================== */
+        .sign-up-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            color: #0a243f;
+            line-height: 100%;
+            cursor: pointer;
+        }
+
+        .sign-up-label__asterisk {
+            width: 4.802px;
+            height: 4.963px;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================
+           INPUT
+           ========================================== */
+        .sign-up-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .sign-up-input {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 16px;
+            border: 1px solid #6b7b8a;
+            border-radius: 8px;
+            background-color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #6b7b8a;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .sign-up-input--with-icon {
+            padding-right: calc(16px + 20px + 8px);
+        }
+
+        .sign-up-input:focus {
+            outline: none;
+            border-color: #0a243f;
+            color: #0a243f;
+        }
+
+        .sign-up-input::placeholder {
+            color: #6b7b8a;
+        }
+
+        /* ==========================================
+           PASSWORD TOGGLE
+           ========================================== */
+        .sign-up-password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .sign-up-password-toggle__icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .sign-up-button {
+            width: 100%;
+            height: 48px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 40px;
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            line-height: 1.5;
+            text-decoration: none;
+        }
+
+        /* Primary Button */
+        .sign-up-button--primary {
+            background-color: #9dff00;
+            color: #0a243f;
+        }
+
+        .sign-up-button--primary:hover {
+            background-color: #98f501;
+        }
+
+        .sign-up-button--primary:active {
+            background-color: #8ee600;
+        }
+
+        /* Google Button */
+        .sign-up-button--google {
+            background-color: #ffffff;
+            color: #0a243f;
+            border: 1px solid #6b7b8a;
+            border-radius: 80px;
+            padding: 16px;
+            gap: 16px;
+        }
+
+        .sign-up-button--google:hover {
+            background-color: #f9fafb;
+            border-color: #0a243f;
+        }
+
+        .sign-up-button__icon {
+            width: 20px;
+            height: 20px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        /* ==========================================
+           GOOGLE SECTION
+           ========================================== */
+        .sign-up-google-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .sign-up-google-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #0a243f;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ==========================================
+           LOGIN LINK
+           ========================================== */
+        .sign-up-login-link {
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #0a243f;
+            line-height: 1.5;
+            width: 424px;
+            text-align: center;
+        }
+
+        .sign-up-login-link a {
+            color: #0a243f;
+            text-decoration: underline;
+            text-decoration-skip-ink: none;
+            text-underline-position: from-font;
+            transition: color 0.2s ease;
+        }
+
+        .sign-up-login-link a:hover {
+            color: #6b7b8a;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 768px) {
+            .sign-up-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .sign-up-avatar-section {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .sign-up-form-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .sign-up-login-link {
+                width: 100%;
+                max-width: 424px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sign-up-wrapper {
+                padding: 16px;
+            }
+
+            .sign-up-container {
+                gap: 16px;
+            }
+
+            .sign-up-form {
+                gap: 16px;
+            }
+
+            .sign-up-form-section {
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sign-up-wrapper">
+        <div class="sign-up-container">
+            <!-- Botón Cerrar -->
+            <button class="sign-up-close-button" id="closeButton" aria-label="Cerrar y volver al login">
+                <img src="images/close.svg" alt="Cerrar" class="sign-up-close-button__icon">
+            </button>
+            
+            <!-- Avatar Section -->
+            <div class="sign-up-avatar-section">
+                <div class="sign-up-avatar">
+                    <img src="images/avatar_icon.svg" alt="Avatar" class="sign-up-avatar__icon">
+                    <button class="sign-up-avatar__button" type="button" aria-label="Add image" id="avatarButton">
+                        <img src="images/plus.svg" alt="Add" class="sign-up-avatar__button-icon">
+                    </button>
+                    <input class="sign-up-avatar__input" type="file" accept="image/*" aria-label="Upload profile image" id="avatarInput">
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="sign-up-form-section">
+                <!-- Header -->
+                <div class="sign-up-header">
+                    <h1 class="sign-up-title">Create your account</h1>
+                    <p class="sign-up-subtitle">Let's start with some facts about you.</p>
+                </div>
+
+                <!-- Form -->
+                <form class="sign-up-form" id="signUpForm">
+                    <!-- Name Fields Row -->
+                    <div class="sign-up-form-row">
+                        <div class="sign-up-form-field">
+                            <label for="firstName" class="sign-up-label">
+                                Firt name
+                                <img src="images/asterisk.svg" alt="Required" class="sign-up-label__asterisk">
+                            </label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                class="sign-up-input" 
+                                placeholder="Placeholder"
+                                required
+                            >
+                        </div>
+
+                        <div class="sign-up-form-field">
+                            <label for="lastName" class="sign-up-label">
+                                Last name
+                                <img src="images/asterisk.svg" alt="Required" class="sign-up-label__asterisk">
+                            </label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                class="sign-up-input" 
+                                placeholder="Placeholder"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Job Position -->
+                    <div class="sign-up-form-field">
+                        <label for="jobPosition" class="sign-up-label">
+                            Job position
+                            <img src="images/asterisk.svg" alt="Required" class="sign-up-label__asterisk">
+                        </label>
+                        <input 
+                            type="text" 
+                            id="jobPosition" 
+                            class="sign-up-input" 
+                            placeholder="Placeholder"
+                            required
+                        >
+                    </div>
+
+                    <!-- Email -->
+                    <div class="sign-up-form-field">
+                        <label for="email" class="sign-up-label">
+                            Email
+                            <img src="images/asterisk.svg" alt="Required" class="sign-up-label__asterisk">
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="sign-up-input" 
+                            placeholder="Email"
+                            required
+                        >
+                    </div>
+
+                    <!-- Password -->
+                    <div class="sign-up-form-field">
+                        <label for="password" class="sign-up-label">
+                            Create a password
+                            <img src="images/asterisk.svg" alt="Required" class="sign-up-label__asterisk">
+                        </label>
+                        <div class="sign-up-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="sign-up-input sign-up-input--with-icon" 
+                                placeholder="Email"
+                                required
+                            >
+                            <button 
+                                type="button"
+                                class="sign-up-password-toggle" 
+                                id="passwordToggle" 
+                                aria-label="Toggle password visibility"
+                            >
+                                <img src="images/eye_hidden.svg" alt="Password is hidden - Click to show" class="sign-up-password-toggle__icon" id="eyeIcon">
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="sign-up-button sign-up-button--primary">
+                        Create account
+                    </button>
+                </form>
+
+                <!-- Google Sign Up Section -->
+                <div class="sign-up-google-section">
+                    <p class="sign-up-google-text">Or continue with:</p>
+                    <button type="button" class="sign-up-button sign-up-button--google" id="googleSignUpBtn">
+                        <img src="images/Google.svg" alt="Google" class="sign-up-button__icon">
+                        <span>Continue with Google</span>
+                    </button>
+                </div>
+
+                <!-- Login Link -->
+                <div class="sign-up-login-link">
+                    <span>Already have an account? </span>
+                    <a href="index.html">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts externos -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    
+    <!-- Script principal -->
+    <script>
+        class SignUpManager {
+            constructor() {
+                this.form = document.getElementById('signUpForm');
+                this.firstNameInput = document.getElementById('firstName');
+                this.lastNameInput = document.getElementById('lastName');
+                this.jobPositionInput = document.getElementById('jobPosition');
+                this.emailInput = document.getElementById('email');
+                this.passwordInput = document.getElementById('password');
+                this.passwordToggle = document.getElementById('passwordToggle');
+                this.googleButton = document.getElementById('googleSignUpBtn');
+                this.avatarButton = document.getElementById('avatarButton');
+                this.avatarInput = document.getElementById('avatarInput');
+                this.avatarIcon = document.querySelector('.sign-up-avatar__icon');
+                this.closeButton = document.getElementById('closeButton');
+                
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.setupPasswordToggle();
+                this.setupAvatarUpload();
+            }
+
+            bindEvents() {
+                this.form.addEventListener('submit', (e) => this.handleSignup(e));
+                this.googleButton.addEventListener('click', () => this.handleGoogleSignup());
+                if (this.avatarButton) {
+                    this.avatarButton.addEventListener('click', () => {
+                        this.avatarInput.click();
+                    });
+                }
+                if (this.closeButton) {
+                    this.closeButton.addEventListener('click', () => {
+                        window.location.href = 'index.html';
+                    });
+                }
+            }
+
+            setupPasswordToggle() {
+                const eyeIcon = document.getElementById('eyeIcon');
+                if (!eyeIcon || !this.passwordToggle) return;
+                
+                const updateIcon = () => {
+                    const isPassword = this.passwordInput.type === 'password';
+                    
+                    if (isPassword) {
+                        eyeIcon.src = 'images/eye_hidden.svg';
+                        eyeIcon.alt = 'Password is hidden - Click to show';
+                    } else {
+                        eyeIcon.src = 'images/eye.svg';
+                        eyeIcon.alt = 'Password is visible - Click to hide';
+                    }
+                };
+                
+                updateIcon();
+                
+                this.passwordToggle.addEventListener('click', () => {
+                    const currentType = this.passwordInput.type;
+                    const newType = currentType === 'password' ? 'text' : 'password';
+                    this.passwordInput.type = newType;
+                    updateIcon();
+                });
+            }
+
+            setupAvatarUpload() {
+                if (!this.avatarInput) return;
+                
+                this.avatarInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            if (this.avatarIcon) {
+                                this.avatarIcon.src = e.target.result;
+                                this.avatarIcon.style.borderRadius = '8px';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            handleSignup(e) {
+                e.preventDefault();
+                
+                const userData = {
+                    firstName: this.firstNameInput.value.trim(),
+                    lastName: this.lastNameInput.value.trim(),
+                    jobPosition: this.jobPositionInput.value.trim(),
+                    email: this.emailInput.value.trim(),
+                    password: this.passwordInput.value
+                };
+                
+                if (!userData.firstName || !userData.lastName || !userData.email || !userData.password) {
+                    alert('Por favor completa todos los campos requeridos');
+                    return;
+                }
+                
+                if (typeof window.DocuAuth !== 'undefined') {
+                    const user = DocuAuth.createUser(userData);
+                    const session = DocuAuth.createSession(user);
+                    DocuAuth.clearTemporaryData();
+                    
+                    console.log('Usuario creado y sesión iniciada:', session);
+                    
+                    if (typeof window.DocuProjectData !== 'undefined') {
+                        DocuProjectData.saveProjectData({
+                            projects: [],
+                            teams: [],
+                            settings: {},
+                            preferences: {}
+                        });
+                    }
+                    
+                    alert(`¡Cuenta creada exitosamente, ${userData.firstName}! Sesión iniciada.`);
+                    // Redirigir a index.html por ahora hasta que team.html esté disponible
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Sistema de autenticación no disponible. Por favor recarga la página.');
+                }
+            }
+
+            handleGoogleSignup() {
+                alert('Signup con Google - En desarrollo');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esperar a que los scripts externos se carguen
+            function initializeSignUp() {
+                // NO redirigir automáticamente desde la página de signup
+                // Permitir que el usuario complete el registro
+                if (typeof window.DocuAuth !== 'undefined' && typeof window.DocuProjectData !== 'undefined') {
+                    new SignUpManager();
+                } else {
+                    console.warn('Esperando carga de scripts externos...');
+                    setTimeout(initializeSignUp, 100);
+                }
+            }
+            
+            initializeSignUp();
+        });
+    </script>
+</body>
+</html>
+

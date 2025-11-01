@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Picker Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="date-picker.css">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="input.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-24);
+            background: var(--color-surface-especial);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+        
+        .demo-item__title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+        
+        .code-example {
+            margin-top: var(--spacing-24);
+        }
+        
+        .code-example pre {
+            background: var(--color-surface-especial);
+            padding: var(--spacing-16);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-basics-gray);
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Date Picker Component</h1>
+            <p class="component-doc__description">
+                Componente de selección de fecha con calendario interactivo. Permite navegar entre meses 
+                sin cerrar el picker. Al hacer clic en una fecha, se selecciona automáticamente y se cierra. 
+                Utiliza todos los tokens de diseño del sistema.
+            </p>
+        </div>
+        
+        <!-- Interactive Example -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Date Picker (Funcional)</h2>
+            <p class="variant-section__description">
+                Date picker interactivo con funcionalidad completa. Haz clic en el botón para abrir el calendario.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__title">Date Picker Example</div>
+                    <div class="dsu-date-button-wrapper">
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="datePickerButton1">
+                            <span class="dsu-agreements__date-button-icon">
+                                <img src="../../images/calendar.svg" alt="Calendar">
+                            </span>
+                            <span id="datePickerButtonText1">Select a date</span>
+                        </button>
+                        <div class="dsu-date-picker" id="datePicker1"></div>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__title">Date Picker Example 2</div>
+                    <div class="dsu-date-button-wrapper">
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="datePickerButton2">
+                            <span class="dsu-agreements__date-button-icon">
+                                <img src="../../images/calendar.svg" alt="Calendar">
+                            </span>
+                            <span id="datePickerButtonText2">Select a date</span>
+                        </button>
+                        <div class="dsu-date-picker" id="datePicker2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Code Example -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Código de implementación</h2>
+            <div class="code-example">
+                <pre>&lt;div class="dsu-date-button-wrapper"&gt;
+    &lt;button class="dsu-agreements__date-button" id="datePickerButton"&gt;
+        &lt;span class="dsu-agreements__date-button-icon"&gt;
+            &lt;img src="../../images/calendar.svg" alt="Calendar"&gt;
+        &lt;/span&gt;
+        &lt;span id="datePickerButtonText"&gt;Select a date&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="dsu-date-picker" id="datePicker"&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+        
+        <!-- JavaScript Implementation -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">JavaScript</h2>
+            <p class="variant-section__description">
+                El date picker requiere JavaScript para inicializar. Usa la función <code>initDatePicker(pickerId, buttonId, buttonTextId)</code>.
+            </p>
+            <div class="code-example">
+                <pre>initDatePicker('datePicker', 'datePickerButton', 'datePickerButtonText');</pre>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Function to initialize date picker (from input.html)
+        function initDatePicker(pickerId, buttonId, buttonTextId) {
+            const picker = document.getElementById(pickerId);
+            const button = document.getElementById(buttonId);
+            const buttonText = document.getElementById(buttonTextId);
+            
+            if (!picker || !button) return;
+            
+            let currentDate = new Date();
+            let selectedDate = null;
+            
+            function renderDatePicker(date) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const daysInPrevMonth = new Date(year, month, 0).getDate();
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                
+                let html = `
+                    <div class="dsu-date-picker__header">
+                        <button class="dsu-date-picker__nav-button" data-action="prev">
+                            <img src="../../images/down-chevron.svg" alt="Previous" style="transform: rotate(90deg);">
+                        </button>
+                        <div class="dsu-date-picker__month-year">${monthNames[month]} ${year}</div>
+                        <button class="dsu-date-picker__nav-button" data-action="next">
+                            <img src="../../images/down-chevron.svg" alt="Next" style="transform: rotate(-90deg);">
+                        </button>
+                    </div>
+                    <div class="dsu-date-picker__calendar">
+                        <div class="dsu-date-picker__weekdays">
+                            ${weekdays.map(w => `<div class="dsu-date-picker__weekday">${w}</div>`).join('')}
+                        </div>
+                        <div class="dsu-date-picker__days">
+                `;
+                
+                // Previous month days
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    html += `<button class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</button>`;
+                }
+                
+                // Current month days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayDate = new Date(year, month, day);
+                    const isToday = dayDate.getTime() === today.getTime();
+                    const isSelected = selectedDate && dayDate.getTime() === selectedDate.getTime();
+                    const classes = ['dsu-date-picker__day'];
+                    if (isToday) classes.push('dsu-date-picker__day--today');
+                    if (isSelected) classes.push('dsu-date-picker__day--selected');
+                    
+                    html += `<button class="${classes.join(' ')}" data-date="${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}">${day}</button>`;
+                }
+                
+                // Next month days (fill remaining cells)
+                const totalCells = firstDay + daysInMonth;
+                const remainingCells = 42 - totalCells;
+                for (let day = 1; day <= remainingCells; day++) {
+                    html += `<button class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</button>`;
+                }
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+                
+                picker.innerHTML = html;
+                
+                // Event listeners
+                picker.querySelector('[data-action="prev"]').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    currentDate.setMonth(currentDate.getMonth() - 1);
+                    renderDatePicker(currentDate);
+                });
+                
+                picker.querySelector('[data-action="next"]').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    renderDatePicker(currentDate);
+                });
+                
+                picker.querySelectorAll('.dsu-date-picker__day[data-date]').forEach(dayBtn => {
+                    dayBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const dateStr = this.getAttribute('data-date');
+                        const [y, m, d] = dateStr.split('-').map(Number);
+                        selectedDate = new Date(y, m - 1, d);
+                        
+                        // Update button text immediately and close picker
+                        if (buttonText && selectedDate) {
+                            const dateStrFormatted = selectedDate.getDate() + '/' + String(selectedDate.getMonth() + 1).padStart(2, '0') + '/' + selectedDate.getFullYear();
+                            buttonText.textContent = dateStrFormatted;
+                        }
+                        
+                        // Close picker
+                        picker.classList.remove('dsu-date-picker--visible');
+                    });
+                });
+            }
+            
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = picker.classList.contains('dsu-date-picker--visible');
+                
+                // Close all other pickers
+                document.querySelectorAll('.dsu-date-picker--visible').forEach(p => {
+                    if (p !== picker) p.classList.remove('dsu-date-picker--visible');
+                });
+                
+                if (isVisible) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                } else {
+                    currentDate = selectedDate || new Date();
+                    renderDatePicker(currentDate);
+                    picker.classList.add('dsu-date-picker--visible');
+                }
+            });
+            
+            // Close picker when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!picker.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-date-button-wrapper')) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                }
+            }, true);
+        }
+        
+        // Initialize date pickers on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initDatePicker('datePicker1', 'datePickerButton1', 'datePickerButtonText1');
+            initDatePicker('datePicker2', 'datePickerButton2', 'datePickerButtonText2');
+        });
+    </script>
+</body>
+</html>
+

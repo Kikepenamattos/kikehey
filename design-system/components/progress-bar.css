@@ -1,0 +1,74 @@
+/* ==========================================
+   PROGRESS BAR COMPONENT - Design System Docu
+   Basado en Figma Components
+   Tamaños: Default (5px), Medium (10px)
+   ========================================== */
+
+/* === PROGRESS BAR WRAPPER === */
+.dsu-progress {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-08);
+}
+
+.dsu-progress--full-width {
+  width: 100%;
+}
+
+/* === PERCENTAGE === */
+.dsu-progress__percentage {
+  font-family: var(--font-family-secondary);
+  font-weight: 600; /* SemiBold */
+  font-size: 10px; /* Default size */
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* === BAR === */
+.dsu-progress__bar {
+  background-color: var(--color-status-disabled);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.dsu-progress__fill {
+  background-color: var(--color-status-done);
+  height: 100%;
+  width: 0%;
+  border-radius: 50px;
+  transition: width 0.3s ease;
+}
+
+/* === SIZES === */
+.dsu-progress--default .dsu-progress__bar {
+  width: 165px;
+  height: 5px;
+}
+
+.dsu-progress--default.dsu-progress--full-width .dsu-progress__bar {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+}
+
+.dsu-progress--medium .dsu-progress__percentage {
+  font-size: 12px;
+}
+
+.dsu-progress--medium .dsu-progress__bar {
+  width: 193px;
+  height: 10px;
+}
+
+.dsu-progress--medium.dsu-progress--full-width .dsu-progress__bar {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+}
+
+

@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="navigation.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .navigation-demo-container {
+            display: flex;
+            gap: var(--spacing-48);
+            flex-wrap: wrap;
+            margin-top: var(--spacing-24);
+        }
+        
+        .navigation-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--color-surface-regular);
+        }
+        
+        .navigation-demo__label {
+            padding: var(--spacing-12);
+            background: var(--color-surface-especial);
+            border-bottom: 1px solid var(--color-basics-gray);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+        
+        .navigation-demo__content {
+            padding: var(--spacing-24);
+        }
+        
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .state-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+        }
+        
+        .state-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-12);
+            color: var(--color-text-primary);
+        }
+        
+        .specs-table {
+            width: 100%;
+            margin-top: var(--spacing-24);
+            border-collapse: collapse;
+        }
+        
+        .specs-table th,
+        .specs-table td {
+            padding: var(--spacing-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .specs-table th {
+            background: var(--color-surface-especial);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-sm);
+        }
+        
+        .specs-table td {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        code {
+            background-color: var(--color-surface-especial);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--color-text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Navigation Component</h1>
+            <p class="component-doc__description">
+                Sistema de navegación sidebar con todas sus variantes, estados e interacciones.
+                Basado en el diseño exacto de Figma Components. Incluye logo, botones de navegación, dropdown de proyectos, y footer funcional.
+                El footer (Dark mode y Logout) se mantiene siempre en la parte inferior del sidebar, ajustándose automáticamente a la altura del contenedor.
+                Las secciones de Teams y Projects pueden expandirse simultáneamente sin interferir entre sí.
+            </p>
+        </div>
+        
+        <!-- Layout Behavior -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Layout Behavior</h2>
+            <p class="variant-section__description">
+                El sidebar utiliza flexbox para mantener el footer (Dark mode y Logout) siempre en la parte inferior, 
+                independientemente del contenido. El área de navegación principal puede hacer scroll si es necesario, 
+                mientras que el footer permanece fijo en la parte inferior del contenedor.
+            </p>
+            <ul style="font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: 1.6; margin-top: var(--spacing-16); padding-left: var(--spacing-24);">
+                <li>Sidebar tiene <code>height: 100vh</code> para ocupar toda la altura del viewport</li>
+                <li>Navigation Wrapper usa <code>flex: 1</code> para ocupar el espacio disponible</li>
+                <li>Navigation Main tiene <code>overflow-y: auto</code> para permitir scroll cuando hay mucho contenido</li>
+                <li>Footer tiene <code>margin-top: auto</code> y <code>flex-shrink: 0</code> para mantenerse siempre en la parte inferior</li>
+                <li>Las secciones de Teams y Projects funcionan de forma independiente y pueden expandirse simultáneamente</li>
+            </ul>
+        </div>
+
+        <!-- Sidebar Variants -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Sidebar Variants</h2>
+            <p class="variant-section__description">
+                Tres variantes del sidebar según el estado: Default, Teams expandido, y Projects expandido.
+            </p>
+            
+            <div class="navigation-demo-container">
+                <!-- Default Variant -->
+                <div class="navigation-demo" style="width: 260px;">
+                    <div class="navigation-demo__label">Default</div>
+                    <div class="navigation-demo__content" style="padding: 0;">
+                        <nav class="dsu-sidebar">
+                            <div class="dsu-sidebar__main">
+                                <!-- Logo Container -->
+                                <div class="dsu-sidebar__logo-container">
+                                    <a href="#" class="dsu-sidebar__logo">
+                                        <img src="../../images/logo.svg" alt="Docu Logo">
+                                    </a>
+                                </div>
+                                
+                                <!-- Navigation Wrapper -->
+                                <div class="dsu-sidebar__navigation-wrapper">
+                                    <!-- Navigation Main -->
+                                    <div class="dsu-sidebar__navigation">
+                                        <!-- Teams Level -->
+                                        <div class="dsu-teams-level">
+                                            <button class="dsu-teams-button dsu-teams-button--active">
+                                                <span class="dsu-teams-button__icon">
+                                                    <img src="../../images/team.svg" alt="Teams">
+                                                </span>
+                                                <span class="dsu-nav-button__text">Teams</span>
+                                            </button>
+                                            <div class="dsu-teams-chevron">
+                                                <img src="../../images/down-chevron.svg" alt="Chevron">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Teams Dropdown (hidden by default) -->
+                                        <div class="dsu-teams-dropdown">
+                                            <button class="dsu-teams-create">
+                                                <span>Create new team</span>
+                                                <span class="dsu-teams-create__icon">
+                                                    <img src="../../images/plus.svg" alt="Plus">
+                                                </span>
+                                            </button>
+                                            <div class="dsu-teams-list">
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 1</span>
+                                                </button>
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 2</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Projects Level -->
+                                        <div class="dsu-projects-button">
+                                            <div class="dsu-projects-level">
+                                                <button class="dsu-projects-button__trigger">
+                                                    <span class="dsu-projects-button__icon">
+                                                        <img src="../../images/project.svg" alt="Projects">
+                                                    </span>
+                                                    <span class="dsu-projects-button__text">Projects</span>
+                                                </button>
+                                                <div class="dsu-projects-chevron">
+                                                    <img src="../../images/down-chevron.svg" alt="Chevron">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Projects Dropdown (hidden by default) -->
+                                            <div class="dsu-projects-dropdown">
+                                                <button class="dsu-projects-create">
+                                                    <span>Create new team</span>
+                                                    <span class="dsu-projects-create__icon">
+                                                        <img src="../../images/plus.svg" alt="Plus">
+                                                    </span>
+                                                </button>
+                                                <div class="dsu-projects-list">
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 1</span>
+                                                    </button>
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 2</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Profile Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/avatar.svg" alt="Profile">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Profile</span>
+                                        </button>
+                                        
+                                        <!-- Feedback Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/chat.svg" alt="Feedback">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Give us feedback</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Sidebar Footer -->
+                                    <div class="dsu-sidebar__footer">
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/moon.svg" alt="Dark Mode">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Dark mode</span>
+                                        </button>
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/exit.svg" alt="Logout">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Logout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Teams Expanded Variant -->
+                <div class="navigation-demo" style="width: 260px;">
+                    <div class="navigation-demo__label">Teams Expanded</div>
+                    <div class="navigation-demo__content" style="padding: 0;">
+                        <nav class="dsu-sidebar">
+                            <div class="dsu-sidebar__main">
+                                <!-- Logo Container -->
+                                <div class="dsu-sidebar__logo-container">
+                                    <a href="#" class="dsu-sidebar__logo">
+                                        <img src="../../images/logo.svg" alt="Docu Logo">
+                                    </a>
+                                </div>
+                                
+                                <!-- Navigation Wrapper -->
+                                <div class="dsu-sidebar__navigation-wrapper">
+                                    <!-- Navigation Main -->
+                                    <div class="dsu-sidebar__navigation">
+                                        <!-- Teams Level -->
+                                        <div class="dsu-teams-level">
+                                            <button class="dsu-teams-button dsu-teams-button--active">
+                                                <span class="dsu-teams-button__icon">
+                                                    <img src="../../images/team.svg" alt="Teams">
+                                                </span>
+                                                <span class="dsu-nav-button__text">Teams</span>
+                                            </button>
+                                            <div class="dsu-teams-chevron">
+                                                <img src="../../images/up-chevron.svg" alt="Chevron">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Teams Dropdown -->
+                                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                                            <button class="dsu-teams-create">
+                                                <span>Create new team</span>
+                                                <span class="dsu-teams-create__icon">
+                                                    <img src="../../images/plus.svg" alt="Plus">
+                                                </span>
+                                            </button>
+                                            <div class="dsu-teams-list">
+                                                <button class="dsu-team-item dsu-team-item--active">
+                                                    <span class="dsu-team-item__text">Team name 1</span>
+                                                </button>
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 2</span>
+                                                </button>
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 3</span>
+                                                </button>
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 4</span>
+                                                </button>
+                                                <button class="dsu-team-item">
+                                                    <span class="dsu-team-item__text">Team name 5</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Projects Level -->
+                                        <div class="dsu-projects-button">
+                                            <div class="dsu-projects-level">
+                                                <button class="dsu-projects-button__trigger">
+                                                    <span class="dsu-projects-button__icon">
+                                                        <img src="../../images/project.svg" alt="Projects">
+                                                    </span>
+                                                    <span class="dsu-projects-button__text">Projects</span>
+                                                </button>
+                                                <div class="dsu-projects-chevron">
+                                                    <img src="../../images/down-chevron.svg" alt="Chevron">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Profile Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/avatar.svg" alt="Profile">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Profile</span>
+                                        </button>
+                                        
+                                        <!-- Feedback Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/chat.svg" alt="Feedback">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Give us feedback</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Sidebar Footer -->
+                                    <div class="dsu-sidebar__footer">
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/moon.svg" alt="Dark Mode">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Dark mode</span>
+                                        </button>
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/exit.svg" alt="Logout">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Logout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                
+                <!-- Projects Expanded Variant -->
+                <div class="navigation-demo" style="width: 260px;">
+                    <div class="navigation-demo__label">Projects Expanded</div>
+                    <div class="navigation-demo__content" style="padding: 0;">
+                        <nav class="dsu-sidebar">
+                            <div class="dsu-sidebar__main">
+                                <!-- Logo Container -->
+                                <div class="dsu-sidebar__logo-container">
+                                    <a href="#" class="dsu-sidebar__logo">
+                                        <img src="../../images/logo.svg" alt="Docu Logo">
+                                    </a>
+                                </div>
+                                
+                                <!-- Navigation Wrapper -->
+                                <div class="dsu-sidebar__navigation-wrapper">
+                                    <!-- Navigation Main -->
+                                    <div class="dsu-sidebar__navigation">
+                                        <!-- Teams Level -->
+                                        <div class="dsu-teams-level">
+                                            <button class="dsu-teams-button">
+                                                <span class="dsu-teams-button__icon">
+                                                    <img src="../../images/team.svg" alt="Teams">
+                                                </span>
+                                                <span class="dsu-nav-button__text">Teams</span>
+                                            </button>
+                                            <div class="dsu-teams-chevron">
+                                                <img src="../../images/down-chevron.svg" alt="Chevron">
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Projects Level -->
+                                        <div class="dsu-projects-button">
+                                            <div class="dsu-projects-level">
+                                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                                                    <span class="dsu-projects-button__icon">
+                                                        <img src="../../images/project.svg" alt="Projects">
+                                                    </span>
+                                                    <span class="dsu-projects-button__text">Projects</span>
+                                                </button>
+                                                <div class="dsu-projects-chevron">
+                                                    <img src="../../images/up-chevron.svg" alt="Chevron">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Projects Dropdown -->
+                                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                                <button class="dsu-projects-create">
+                                                    <span>Create new team</span>
+                                                    <span class="dsu-projects-create__icon">
+                                                        <img src="../../images/plus.svg" alt="Plus">
+                                                    </span>
+                                                </button>
+                                                <div class="dsu-projects-list">
+                                                    <button class="dsu-project-item dsu-project-item--active">
+                                                        <span class="dsu-project-item__text">Project name 1</span>
+                                                    </button>
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 2</span>
+                                                    </button>
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 3</span>
+                                                    </button>
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 4</span>
+                                                    </button>
+                                                    <button class="dsu-project-item">
+                                                        <span class="dsu-project-item__text">Project name 5</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Profile Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/avatar.svg" alt="Profile">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Profile</span>
+                                        </button>
+                                        
+                                        <!-- Feedback Button -->
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/chat.svg" alt="Feedback">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Give us feedback</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Sidebar Footer -->
+                                    <div class="dsu-sidebar__footer">
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/moon.svg" alt="Dark Mode">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Dark mode</span>
+                                        </button>
+                                        <button class="dsu-nav-button">
+                                            <span class="dsu-nav-button__icon">
+                                                <img src="../../images/exit.svg" alt="Logout">
+                                            </span>
+                                            <span class="dsu-nav-button__text">Logout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Button States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Navigation Button States</h2>
+            <p class="variant-section__description">
+                Estados disponibles para los botones de navegación: Default, Hover, Active y Disabled.
+            </p>
+            
+            <div class="states-grid">
+                <div class="state-demo">
+                    <div class="state-demo__title">Default</div>
+                    <button class="dsu-nav-button">
+                        <span class="dsu-nav-button__icon">
+                            <img src="../../images/team.svg" alt="Teams">
+                        </span>
+                        <span class="dsu-nav-button__text">Teams</span>
+                    </button>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Hover</div>
+                    <button class="dsu-nav-button dsu-nav-button--hover">
+                        <span class="dsu-nav-button__icon">
+                            <img src="../../images/team.svg" alt="Teams">
+                        </span>
+                        <span class="dsu-nav-button__text">Teams</span>
+                    </button>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Active</div>
+                    <button class="dsu-nav-button dsu-nav-button--active">
+                        <span class="dsu-nav-button__icon">
+                            <img src="../../images/team.svg" alt="Teams">
+                        </span>
+                        <span class="dsu-nav-button__text">Teams</span>
+                    </button>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Disabled</div>
+                    <button class="dsu-nav-button" disabled>
+                        <span class="dsu-nav-button__icon">
+                            <img src="../../images/team.svg" alt="Teams">
+                        </span>
+                        <span class="dsu-nav-button__text">Teams</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects Button States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Projects Button & Dropdown</h2>
+            <p class="variant-section__description">
+                Botón de proyectos con dropdown expandible y estados.
+            </p>
+            
+            <div class="states-grid">
+                <div class="state-demo">
+                    <div class="state-demo__title">Default (Collapsed)</div>
+                    <div class="dsu-projects-button">
+                        <button class="dsu-projects-button__trigger">
+                            <div class="dsu-projects-button__left">
+                                <span class="dsu-projects-button__icon">
+                                    <img src="../../images/project.svg" alt="Projects">
+                                </span>
+                                <span class="dsu-projects-button__text">My projects (3)</span>
+                            </div>
+                            <span class="dsu-projects-button__chevron">
+                                <img src="../../images/down-chevron.svg" alt="Dropdown">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Hover</div>
+                    <div class="dsu-projects-button">
+                        <button class="dsu-projects-button__trigger dsu-projects-button__trigger--hover">
+                            <div class="dsu-projects-button__left">
+                                <span class="dsu-projects-button__icon">
+                                    <img src="../../images/project.svg" alt="Projects">
+                                </span>
+                                <span class="dsu-projects-button__text">My projects (3)</span>
+                            </div>
+                            <span class="dsu-projects-button__chevron">
+                                <img src="../../images/down-chevron.svg" alt="Dropdown">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="state-demo">
+                    <div class="state-demo__title">Expanded (with Dropdown)</div>
+                    <div class="dsu-projects-button">
+                        <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                            <div class="dsu-projects-button__left">
+                                <span class="dsu-projects-button__icon">
+                                    <img src="../../images/project.svg" alt="Projects">
+                                </span>
+                                <span class="dsu-projects-button__text">My projects (3)</span>
+                            </div>
+                            <span class="dsu-projects-button__chevron">
+                                <img src="../../images/up-chevron.svg" alt="Dropdown">
+                            </span>
+                        </button>
+                        <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                            <button class="dsu-project-item dsu-project-item--create">
+                                <span class="dsu-project-item__text">Create a new project</span>
+                            </button>
+                            <button class="dsu-project-item">
+                                <span class="dsu-project-item__text">Project name 1</span>
+                            </button>
+                            <button class="dsu-project-item dsu-project-item--hover">
+                                <span class="dsu-project-item__text">Project name 2</span>
+                                <span class="dsu-project-item__icon">
+                                    <img src="../../images/draft.svg" alt="Draft">
+                                </span>
+                            </button>
+                            <button class="dsu-project-item">
+                                <span class="dsu-project-item__text">Project name 3</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications Table -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente de navegación.
+            </p>
+            
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="6">Sidebar</td>
+                        <td>Width</td>
+                        <td>260px</td>
+                    </tr>
+                    <tr>
+                        <td>Height</td>
+                        <td>100vh</td>
+                    </tr>
+                    <tr>
+                        <td>Padding</td>
+                        <td>64px 24px 16px 24px</td>
+                    </tr>
+                    <tr>
+                        <td>Background</td>
+                        <td>var(--color-surface-regular)</td>
+                    </tr>
+                    <tr>
+                        <td>Border</td>
+                        <td>1px solid var(--color-basics-gray)</td>
+                    </tr>
+                    <tr>
+                        <td>Layout</td>
+                        <td>Flexbox column, footer con margin-top: auto</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5">Nav Button</td>
+                        <td>Padding</td>
+                        <td>8px 16px</td>
+                    </tr>
+                    <tr>
+                        <td>Border Radius</td>
+                        <td>40px</td>
+                    </tr>
+                    <tr>
+                        <td>Gap</td>
+                        <td>8px</td>
+                    </tr>
+                    <tr>
+                        <td>Font</td>
+                        <td>Lato, 14px, 700</td>
+                    </tr>
+                    <tr>
+                        <td>Icon Size</td>
+                        <td>20px × 20px</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">Projects Dropdown</td>
+                        <td>Padding Left</td>
+                        <td>24px</td>
+                    </tr>
+                    <tr>
+                        <td>Gap</td>
+                        <td>8px</td>
+                    </tr>
+                    <tr>
+                        <td>Item Padding</td>
+                        <td>8px 16px</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4">Sidebar Footer</td>
+                        <td>Position</td>
+                        <td>margin-top: auto (siempre en la parte inferior)</td>
+                    </tr>
+                    <tr>
+                        <td>Display</td>
+                        <td>Flex column</td>
+                    </tr>
+                    <tr>
+                        <td>Gap</td>
+                        <td>16px</td>
+                    </tr>
+                    <tr>
+                        <td>Flex Shrink</td>
+                        <td>0 (no se comprime)</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">Navigation Wrapper</td>
+                        <td>Display</td>
+                        <td>Flex column</td>
+                    </tr>
+                    <tr>
+                        <td>Flex</td>
+                        <td>1 (ocupa espacio disponible)</td>
+                    </tr>
+                    <tr>
+                        <td>Justify Content</td>
+                        <td>space-between</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Navigation Main</td>
+                        <td>Flex</td>
+                        <td>1 (permite scroll si es necesario)</td>
+                    </tr>
+                    <tr>
+                        <td>Overflow</td>
+                        <td>overflow-y: auto</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // Funcionalidad para Teams y Projects dropdowns
+        function initNavigationDropdowns() {
+            // === TEAMS DROPDOWN ===
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Funcionalidad para el botón Teams
+                button.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                        button.classList.remove('dsu-teams-button--active');
+                        if (chevron) {
+                            chevron.src = '../../images/down-chevron.svg';
+                        }
+                    } else {
+                        dropdown.classList.add('dsu-teams-dropdown--expanded');
+                        button.classList.add('dsu-teams-button--active');
+                        if (chevron) {
+                            chevron.src = '../../images/up-chevron.svg';
+                        }
+                    }
+                });
+                
+                // Funcionalidad para el chevron de Teams
+                if (chevron && chevron.closest('.dsu-teams-chevron')) {
+                    chevron.closest('.dsu-teams-chevron').addEventListener('click', function() {
+                        button.click();
+                    });
+                }
+            });
+            
+            // === PROJECTS DROPDOWN ===
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Funcionalidad para el botón Projects
+                trigger.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                        trigger.classList.remove('dsu-projects-button__trigger--active');
+                        if (chevron) {
+                            chevron.src = '../../images/down-chevron.svg';
+                        }
+                    } else {
+                        dropdown.classList.add('dsu-projects-dropdown--expanded');
+                        trigger.classList.add('dsu-projects-button__trigger--active');
+                        if (chevron) {
+                            chevron.src = '../../images/up-chevron.svg';
+                        }
+                    }
+                });
+                
+                // Funcionalidad para el chevron de Projects
+                if (chevron && chevron.closest('.dsu-projects-chevron')) {
+                    chevron.closest('.dsu-projects-chevron').addEventListener('click', function() {
+                        trigger.click();
+                    });
+                }
+            });
+            
+            // También hacer clickeable el contenedor del chevron si se hace clic en él
+            document.querySelectorAll('.dsu-teams-chevron, .dsu-projects-chevron').forEach((chevronContainer) => {
+                chevronContainer.style.cursor = 'pointer';
+            });
+        }
+        
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', initNavigationDropdowns);
+    </script>
+</body>
+</html>
+

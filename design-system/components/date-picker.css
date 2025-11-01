@@ -1,0 +1,152 @@
+/* ==========================================
+   DATE PICKER COMPONENT - Design System Docu
+   Basado en Figma Components
+   ========================================== */
+
+.dsu-date-button-wrapper {
+  position: relative;
+}
+
+.dsu-date-picker {
+  position: absolute;
+  top: calc(100% + var(--spacing-08));
+  left: 0;
+  background-color: var(--color-surface-regular);
+  border: 1px solid var(--color-basics-gray);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-3);
+  padding: var(--spacing-08);
+  z-index: 1000;
+  min-width: 260px;
+  max-height: 320px;
+  display: none;
+}
+
+.dsu-date-picker--visible {
+  display: block;
+}
+
+.dsu-date-picker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-08);
+}
+
+.dsu-date-picker__nav-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-04);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  width: 20px;
+  height: 20px;
+}
+
+.dsu-date-picker__nav-button:hover {
+  background-color: var(--color-status-to-start);
+}
+
+.dsu-date-picker__nav-button img {
+  width: 12px;
+  height: 12px;
+}
+
+.dsu-date-picker__month-year {
+  font-family: var(--font-family-secondary);
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.dsu-date-picker__calendar {
+  width: 100%;
+}
+
+.dsu-date-picker__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-02);
+  margin-bottom: var(--spacing-06);
+}
+
+.dsu-date-picker__weekday {
+  text-align: center;
+  font-family: var(--font-family-secondary);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-02) 0;
+}
+
+.dsu-date-picker__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-02);
+}
+
+.dsu-date-picker__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-secondary);
+  font-size: 11px;
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 28px;
+  max-height: 28px;
+  width: 100%;
+}
+
+.dsu-date-picker__day:hover {
+  background-color: var(--color-status-to-start);
+}
+
+.dsu-date-picker__day--other-month {
+  color: var(--color-text-secondary);
+  opacity: 0.5;
+}
+
+.dsu-date-picker__day--today {
+  font-weight: var(--font-weight-bold);
+  background-color: var(--color-status-to-start);
+}
+
+.dsu-date-picker__day--selected {
+  background-color: var(--color-status-in-progress);
+  color: var(--color-basics-dark-blue);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Dark Mode */
+[data-theme="dark"] .dsu-date-picker {
+  background-color: var(--color-surface-regular);
+  border-color: var(--color-basics-gray);
+}
+
+[data-theme="dark"] .dsu-date-picker__nav-button:hover {
+  background-color: var(--color-status-to-start);
+}
+
+[data-theme="dark"] .dsu-date-picker__day:hover {
+  background-color: var(--color-status-to-start);
+}
+
+[data-theme="dark"] .dsu-date-picker__day--today {
+  background-color: var(--color-status-to-start);
+}
+
+[data-theme="dark"] .dsu-date-picker__day--selected {
+  background-color: var(--color-status-in-progress);
+  color: var(--color-basics-dark-blue);
+}
+

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="button.css">
+    <link rel="stylesheet" href="input.css">
+    <link rel="stylesheet" href="card.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+        
+        .demo-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+        
+        .specs-table {
+            width: 100%;
+            margin-top: var(--spacing-24);
+            border-collapse: collapse;
+        }
+        
+        .specs-table th,
+        .specs-table td {
+            padding: var(--spacing-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .specs-table th {
+            background: var(--color-surface-especial);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-sm);
+        }
+        
+        .specs-table td {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            animation: modalContainerFadeIn 0.3s ease;
+        }
+
+        @keyframes modalContainerFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .add-member-modal {
+            background: var(--color-basics-white);
+            border: 1px solid var(--color-basics-mid-blue);
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 856px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+        }
+
+        /* Modal Header */
+        .modal-header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .modal-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+            flex: 1;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal-description {
+            font-family: var(--font-family-secondary);
+            font-size: 16px;
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+        }
+
+        /* Modal Content */
+        .modal-content-wrapper {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .modal-profile-avatar {
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+        }
+
+        .modal-inputs-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+            width: 424px;
+        }
+
+        .modal-input-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .modal-input-row .modal-input-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .modal-input-group {
+            margin-bottom: 0;
+        }
+
+        .modal-input-group .dsu-input-label {
+            font-weight: var(--font-weight-black);
+            font-size: 14px;
+        }
+
+        .modal-input-group .dsu-input-label span::after {
+            content: none;
+        }
+
+        /* Modal Buttons */
+        .modal-buttons-level {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .modal-cancel-btn,
+        .modal-add-btn {
+            width: 152px;
+            padding: 12px 24px;
+            height: auto;
+            min-height: 48px;
+        }
+
+        .modal-cancel-btn .dsu-button__icon,
+        .modal-add-btn .dsu-button__icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .modal-cancel-btn .dsu-button__icon img,
+        .modal-add-btn .dsu-button__icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Trigger Button */
+        .modal-trigger-btn {
+            padding: var(--spacing-24);
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-mid-blue);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .modal-trigger-btn:hover {
+            background: var(--color-surface-especial);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Modal Component</h1>
+            <p class="component-doc__description">
+                Componente modal para diálogos, formularios y confirmaciones. Incluye overlay blanco al 70% de opacidad,
+                animaciones suaves de entrada/salida, y funcionalidad completa de apertura/cierre mediante múltiples métodos.
+                Basado en el diseño exacto de Figma Components.
+            </p>
+        </div>
+        
+        <!-- Modal Example -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Modal Example</h2>
+            <p class="variant-section__description">
+                Ejemplo funcional del modal "Add a new member" con todos sus elementos: header, formulario, avatar y botones de acción.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Modal "Add a new member"</div>
+                    <button class="modal-trigger-btn" id="openModalDemo">Abrir Modal</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Structure -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Modal Structure</h2>
+            <p class="variant-section__description">
+                El modal está compuesto por un overlay (fondo) y el contenido del modal. El overlay utiliza un fondo blanco al 70% de opacidad
+                con un efecto de blur para crear profundidad visual.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Componentes principales:</div>
+                    <ul style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.8; padding-left: var(--spacing-24);">
+                        <li><strong>Modal Overlay:</strong> Fondo fijo que cubre toda la pantalla (rgba(255, 255, 255, 0.7))</li>
+                        <li><strong>Modal Container:</strong> Contenedor centrado para el modal</li>
+                        <li><strong>Modal Content:</strong> Contenido principal con header, body y footer</li>
+                        <li><strong>Header:</strong> Título, descripción y botón de cerrar</li>
+                        <li><strong>Body:</strong> Formulario con inputs y avatar</li>
+                        <li><strong>Footer:</strong> Botones de acción (Cancel y Add)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente Modal.
+            </p>
+            
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="5">Modal Overlay</td>
+                        <td>Position</td>
+                        <td>fixed (cubre toda la pantalla)</td>
+                    </tr>
+                    <tr>
+                        <td>Background</td>
+                        <td>rgba(255, 255, 255, 0.7) - blanco al 70%</td>
+                    </tr>
+                    <tr>
+                        <td>Backdrop Filter</td>
+                        <td>blur(2px)</td>
+                    </tr>
+                    <tr>
+                        <td>Z-index</td>
+                        <td>1000</td>
+                    </tr>
+                    <tr>
+                        <td>Transition</td>
+                        <td>opacity 0.3s ease</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="6">Modal Content</td>
+                        <td>Background</td>
+                        <td>var(--color-basics-white)</td>
+                    </tr>
+                    <tr>
+                        <td>Border</td>
+                        <td>1px solid var(--color-basics-mid-blue)</td>
+                    </tr>
+                    <tr>
+                        <td>Border Radius</td>
+                        <td>10px</td>
+                    </tr>
+                    <tr>
+                        <td>Padding</td>
+                        <td>32px</td>
+                    </tr>
+                    <tr>
+                        <td>Max Width</td>
+                        <td>856px</td>
+                    </tr>
+                    <tr>
+                        <td>Box Shadow</td>
+                        <td>0 8px 32px rgba(10, 36, 63, 0.15)</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Modal Title</td>
+                        <td>Font</td>
+                        <td>Lato, 24px, ExtraBold (800)</td>
+                    </tr>
+                    <tr>
+                        <td>Color</td>
+                        <td>var(--color-basics-dark-blue)</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Modal Description</td>
+                        <td>Font</td>
+                        <td>Lato, 16px, Regular (400)</td>
+                    </tr>
+                    <tr>
+                        <td>Line Height</td>
+                        <td>1.5</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Animations</td>
+                        <td>Overlay</td>
+                        <td>Fade in (opacity 0 → 1)</td>
+                    </tr>
+                    <tr>
+                        <td>Modal</td>
+                        <td>Slide in + scale (translateY + scale)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Usage -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Usage</h2>
+            <p class="variant-section__description">
+                Cómo usar el componente modal en tu proyecto.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item" style="width: 100%;">
+                    <div class="demo-item__label">Métodos para abrir/cerrar el modal:</div>
+                    <ul style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.8; padding-left: var(--spacing-24); margin-top: var(--spacing-08);">
+                        <li><strong>JavaScript:</strong> <code>openModal()</code> y <code>closeModal()</code></li>
+                        <li><strong>Botón X:</strong> Clic en el ícono de cerrar en el header</li>
+                        <li><strong>Botón Cancel:</strong> Clic en el botón "Cancel" en el footer</li>
+                        <li><strong>Click fuera:</strong> Clic en el overlay (fuera del modal)</li>
+                        <li><strong>Tecla ESC:</strong> Presionar la tecla Escape</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal-overlay" id="addMemberModalOverlay">
+        <div class="modal-container">
+            <div class="add-member-modal">
+                <div class="modal-wrapper">
+                    <!-- Modal Header -->
+                    <div class="modal-header-section">
+                        <div class="modal-headline">
+                            <h2 class="modal-title">Add a new member</h2>
+                            <button class="modal-close-btn" id="closeModalBtn" aria-label="Close modal">
+                                <img src="../../images/close.svg" alt="Close" width="20" height="20">
+                            </button>
+                        </div>
+                        <p class="modal-description">-Implement personalized recommendation algorithms to enhance user engagement.</p>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="modal-content-wrapper">
+                        <!-- Profile Avatar -->
+                        <div class="modal-profile-avatar">
+                            <div class="dsu-profile-avatar">
+                                <img src="../../images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon">
+                                <button class="dsu-profile-avatar__edit-button" aria-label="Add image">
+                                    <img src="../../images/plus.svg" alt="Add" class="dsu-profile-avatar__edit-icon">
+                                </button>
+                                <input class="avatar-input" type="file" accept="image/*" aria-label="Upload profile image" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;">
+                            </div>
+                        </div>
+
+                        <!-- Inputs Form -->
+                        <div class="modal-inputs-wrapper">
+                            <!-- Name Row -->
+                            <div class="modal-input-row">
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <span>Name</span>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberName" placeholder="Placeholder">
+                                </div>
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <span>Last name</span>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberLastName" placeholder="Placeholder">
+                                </div>
+                            </div>
+
+                            <!-- Job Position -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <span>Job position</span>
+                                </div>
+                                <input type="text" class="dsu-input" id="modalMemberJobPosition" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <span>Email</span>
+                                </div>
+                                <input type="email" class="dsu-input" id="modalMemberEmail" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <span>Phone number</span>
+                                </div>
+                                <input type="tel" class="dsu-input" id="modalMemberPhone" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Individual Cost -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <span>Individual cost</span>
+                                </div>
+                                <input type="text" class="dsu-input" id="modalMemberCost" placeholder="Placeholder">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer Buttons -->
+                    <div class="modal-buttons-level">
+                        <button type="button" class="dsu-button dsu-button--secondary dsu-button--medium modal-cancel-btn" id="modalCancelBtn">
+                            <span class="dsu-button__icon">
+                                <img src="../../images/close.svg" alt="Cancel" width="20" height="20">
+                            </span>
+                            <span>Cancel</span>
+                        </button>
+                        <button type="button" class="dsu-button dsu-button--primary dsu-button--medium modal-add-btn" id="modalAddBtn">
+                            <span class="dsu-button__icon">
+                                <img src="../../images/plus.svg" alt="Add" width="20" height="20">
+                            </span>
+                            <span>Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functionality
+        (function() {
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalAddBtn = document.getElementById('modalAddBtn');
+            const openModalDemo = document.getElementById('openModalDemo');
+            
+            // Función para abrir el modal
+            function openModal() {
+                if (modalOverlay) {
+                    modalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            // Función para cerrar el modal
+            function closeModal() {
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            // Event listeners
+            document.addEventListener('DOMContentLoaded', function() {
+                // Abrir modal con botón demo
+                if (openModalDemo) {
+                    openModalDemo.addEventListener('click', openModal);
+                }
+
+                // Cerrar modal con botón X
+                if (closeModalBtn) {
+                    closeModalBtn.addEventListener('click', closeModal);
+                }
+
+                // Cerrar modal con botón Cancel
+                if (modalCancelBtn) {
+                    modalCancelBtn.addEventListener('click', closeModal);
+                }
+
+                // Cerrar modal al hacer clic en el overlay
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('click', function(e) {
+                        if (e.target === modalOverlay) {
+                            closeModal();
+                        }
+                    });
+                }
+
+                // Cerrar modal con tecla ESC
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modalOverlay?.classList.contains('active')) {
+                        closeModal();
+                    }
+                });
+
+                // Manejar formulario de agregar miembro
+                if (modalAddBtn) {
+                    modalAddBtn.addEventListener('click', function() {
+                        const memberData = {
+                            name: document.getElementById('modalMemberName')?.value.trim() || '',
+                            lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
+                            jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
+                            email: document.getElementById('modalMemberEmail')?.value.trim() || '',
+                            phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
+                            cost: document.getElementById('modalMemberCost')?.value.trim() || ''
+                        };
+
+                        // Validación básica
+                        if (!memberData.name || !memberData.lastName || !memberData.email) {
+                            alert('Please fill in Name, Last name, and Email fields.');
+                            return;
+                        }
+
+                        alert(`Member ${memberData.name} ${memberData.lastName} added successfully!`);
+                        
+                        // Limpiar formulario
+                        document.getElementById('modalMemberName').value = '';
+                        document.getElementById('modalMemberLastName').value = '';
+                        document.getElementById('modalMemberJobPosition').value = '';
+                        document.getElementById('modalMemberEmail').value = '';
+                        document.getElementById('modalMemberPhone').value = '';
+                        document.getElementById('modalMemberCost').value = '';
+
+                        // Cerrar modal
+                        closeModal();
+                    });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
+

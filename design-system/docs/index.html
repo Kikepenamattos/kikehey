@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Docu - Component Library</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family-secondary);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .docu-header {
+            background: var(--color-surface-regular);
+            border-bottom: 1px solid var(--color-basics-gray);
+            padding: var(--spacing-24) var(--spacing-48);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .docu-header__content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .docu-header__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-16);
+        }
+        
+        .docu-header__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-black);
+        }
+        
+        .docu-header__version {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+        
+        .docu-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-48);
+        }
+        
+        .docu-hero {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .docu-hero__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .docu-hero__description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            max-width: 800px;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--spacing-24);
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-card {
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-24);
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .component-card:hover {
+            border-color: var(--color-basics-dark-blue);
+            box-shadow: 0 4px 12px rgba(10, 36, 63, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .component-card__title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-08);
+        }
+        
+        .component-card__description {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-card__preview {
+            background: var(--color-surface-especial);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-16);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .component-card__status {
+            display: inline-block;
+            padding: 4px var(--spacing-08);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: var(--font-weight-bold);
+            text-transform: uppercase;
+            margin-top: var(--spacing-12);
+        }
+        
+        .component-card__status--ready {
+            background: var(--color-status-done);
+            color: var(--color-basics-white);
+        }
+        
+        .component-card__status--pending {
+            background: var(--color-status-in-progress);
+            color: var(--color-basics-dark-blue);
+        }
+        
+        .tokens-section {
+            margin-top: var(--spacing-48);
+            padding-top: var(--spacing-48);
+            border-top: 1px solid var(--color-basics-gray);
+        }
+        
+        .tokens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .color-palette-section {
+            margin-top: var(--spacing-48);
+            padding-top: var(--spacing-48);
+            border-top: 1px solid var(--color-basics-gray);
+        }
+        
+        .color-palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        /* Color Grid - Compact squares */
+        .color-grid-section {
+            margin-top: var(--spacing-24);
+        }
+        
+        .color-category {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .color-category__title {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+            color: var(--color-text-primary);
+        }
+        
+        .color-squares-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: var(--spacing-16);
+        }
+        
+        .color-square {
+            display: flex;
+            flex-direction: column;
+            width: 150px;
+            height: 150px;
+            aspect-ratio: 1 / 1;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+            overflow: hidden;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: var(--color-surface-regular);
+        }
+        
+        .color-square:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(10, 36, 63, 0.15);
+            border-color: var(--color-basics-dark-blue);
+        }
+        
+        .color-square__swatch {
+            width: 100%;
+            flex: 1;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: none;
+        }
+        
+        .color-square__info {
+            background: var(--color-surface-regular);
+            padding: var(--spacing-08);
+            border-top: 1px solid var(--color-basics-gray);
+            height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .color-square__name {
+            font-size: 11px;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+        
+        .color-square__value {
+            font-size: 10px;
+            font-family: monospace;
+            color: var(--color-text-secondary);
+            line-height: 1.2;
+        }
+        
+        .color-square__mode-badge {
+            position: absolute;
+            top: var(--spacing-08);
+            right: var(--spacing-08);
+            padding: 2px 6px;
+            border-radius: var(--radius-sm);
+            font-size: 9px;
+            font-weight: var(--font-weight-bold);
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+        
+        .color-square__mode-badge--light {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-text-primary);
+        }
+        
+        .color-square__mode-badge--dark {
+            background: rgba(10, 36, 63, 0.9);
+            color: #ffffff;
+        }
+        
+        .color-square--dark .color-square__info {
+            background: #0a243f;
+            border-top-color: #4a5563;
+        }
+        
+        .color-square--dark .color-square__name {
+            color: #ffffff;
+        }
+        
+        .color-square--dark .color-square__value {
+            color: #8fa0b0;
+        }
+        
+        .token-card {
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+        }
+        
+        .token-card__title {
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-12);
+        }
+        
+        .token-card__list {
+            list-style: none;
+            font-size: var(--font-size-sm);
+        }
+        
+        .token-card__item {
+            padding: var(--spacing-08) 0;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .token-card__item:last-child {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .color-swatch {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--spacing-08);
+            border: 1px solid var(--color-basics-gray);
+            transition: transform 0.2s ease;
+        }
+        
+        .color-swatch:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(10, 36, 63, 0.15);
+        }
+        
+        .color-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 4px;
+        }
+        
+        .color-value {
+            font-size: 12px;
+            font-family: monospace;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Icons Section Styles */
+        .icons-section {
+            margin-top: var(--spacing-48);
+            padding-top: var(--spacing-48);
+            border-top: 1px solid var(--color-basics-gray);
+        }
+        
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .icon-item {
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .icon-item:hover {
+            border-color: var(--color-basics-dark-blue);
+            box-shadow: 0 2px 8px rgba(10, 36, 63, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .icon-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-12);
+            background: var(--color-surface-especial);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-16);
+            min-height: 80px;
+        }
+        
+        .icon-name {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .icon-size {
+            font-size: 11px;
+            font-family: monospace;
+            color: var(--color-text-secondary);
+        }
+        
+        .icon-image {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+        
+        .icon-image--small {
+            width: 4.8px;
+            height: 4.96px;
+        }
+
+        /* Add Members preview styles */
+        .add-members-empty {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            border: 1px dashed var(--color-basics-mid-blue);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-08) var(--spacing-16);
+            cursor: pointer;
+            user-select: none;
+            background: var(--color-surface-regular);
+        }
+        .add-members-empty:hover {
+            background: var(--color-surface-especial);
+        }
+        .add-members-empty__icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Chip preview styles */
+        .chip-preview {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background-color: #efefef;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .chip-preview__text {
+            white-space: nowrap;
+            text-align: center;
+        }
+        
+        .chip-preview__close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+        }
+        
+        .chip-preview__close-icon {
+            width: 12px;
+            height: 12px;
+            display: block;
+        }
+        .add-members-empty__text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+    </style>
+</head>
+<body>
+    <header class="docu-header">
+        <div class="docu-header__content">
+            <div class="docu-header__logo">
+                <h1 class="docu-header__title">Design System Docu</h1>
+                <span class="docu-header__version">v1.0.0</span>
+            </div>
+        </div>
+    </header>
+    
+    <div class="docu-container">
+        <div class="docu-hero">
+            <h1 class="docu-hero__title">Component Library</h1>
+            <p class="docu-hero__description">
+                Biblioteca de componentes y tokens de diseño basados en Figma. 
+                Cada componente incluye todas sus variaciones visuales y estados.
+            </p>
+        </div>
+        
+        <section>
+            <h2 class="section-title">Components</h2>
+            <div class="components-grid">
+                <!-- Button -->
+                <a href="../components/button.html" class="component-card">
+                    <h3 class="component-card__title">Button</h3>
+                    <p class="component-card__description">
+                        Botones con variaciones de tamaño (x-small, small, medium, large), 
+                        tipo (Primary, Secondary, Tertiary) y estados (Default, Hover, Pressed, Disabled).
+                    </p>
+                    <div class="component-card__preview">
+                        <button style="background: var(--color-button-primary-bg-default); color: var(--color-text-primary); border: none; padding: 12px 24px; border-radius: var(--radius-xl); font-family: var(--font-family-secondary); font-size: var(--font-size-base);">Button</button>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Logo -->
+                <a href="../components/logo.html" class="component-card">
+                    <h3 class="component-card__title">Logo</h3>
+                    <p class="component-card__description">
+                        Componente de logo con tres variantes: Default (131×43px), 
+                        Icon (40×43px) y Small (97×32px).
+                    </p>
+                    <div class="component-card__preview">
+                        <img src="../../images/logo.svg" alt="Logo" style="height: 32px;">
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Illustrations -->
+                <div class="component-card">
+                    <h3 class="component-card__title">Illustrations</h3>
+                    <p class="component-card__description">
+                        Gráficos e ilustraciones de marca disponibles para layouts (ej. login).
+                    </p>
+                    <div class="component-card__preview">
+                        <img src="../../images/barco_vector.svg" alt="Boat illustration" style="height: 64px; object-fit: contain;">
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </div>
+                
+                <!-- Input -->
+                <a href="../components/input.html" class="component-card">
+                    <h3 class="component-card__title">Input</h3>
+                    <p class="component-card__description">
+                        Campos de entrada con label, estados de error, iconos y 
+                        diferentes variaciones de estructura.
+                    </p>
+                    <div class="component-card__preview">
+                        <input type="text" placeholder="Placeholder" style="width: 100%; padding: 12px 16px; border: 1px solid var(--color-basics-mid-blue); border-radius: var(--radius-md); font-size: var(--font-size-sm);">
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Status Button -->
+                <a href="../components/status-button.html" class="component-card">
+                    <h3 class="component-card__title">Status Button</h3>
+                    <p class="component-card__description">
+                        Botones de estado para tareas con dropdown: In progress, Done, Paused, To start.
+                        Incluye funcionalidad para cambiar de estado mediante menú desplegable.
+                    </p>
+                    <div class="component-card__preview">
+                        <span style="background: var(--color-status-in-progress); color: var(--color-basics-dark-blue); padding: 8px 16px; border-radius: var(--radius-full); font-size: var(--font-size-sm); font-weight: var(--font-weight-regular);">In progress</span>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Task Stages -->
+                <a href="../components/task-stages.html" class="component-card">
+                    <h3 class="component-card__title">Task Stages</h3>
+                    <p class="component-card__description">
+                        Componente para mostrar los estados de las etapas de tareas: 
+                        Pending approval, Approved y Rejected. Basado en el diseño exacto de Figma.
+                    </p>
+                    <div class="component-card__preview">
+                        <span style="background: var(--color-status-done); color: var(--color-basics-dark-blue); padding: 8px 16px; border-radius: var(--radius-xl); font-size: var(--font-size-sm); font-weight: var(--font-weight-regular); width: 138px; display: inline-block; text-align: center;">Approved</span>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Navigation -->
+                <a href="../components/navigation.html" class="component-card">
+                    <h3 class="component-card__title">Navigation</h3>
+                    <p class="component-card__description">
+                        Sidebar de navegación funcional con logo, botones de navegación, 
+                        dropdown de proyectos y footer. Incluye todos los estados (default, hover, active, disabled).
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="width: 100%; height: 80px; background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-sm); display: flex; align-items: center; padding: var(--spacing-12);">
+                            <div style="width: 20px; height: 20px; background: var(--color-text-secondary); border-radius: 50%; margin-right: var(--spacing-08);"></div>
+                            <div style="width: 80px; height: 8px; background: var(--color-basics-gray); border-radius: var(--radius-sm);"></div>
+                        </div>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Cards -->
+                <a href="../components/card.html" class="component-card">
+                    <h3 class="component-card__title">Cards</h3>
+                    <p class="component-card__description">
+                        Tarjetas de proyecto con estados Default y Hover. Incluye efecto de elevation igual al botón secondary.
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-mid-blue); border-radius: var(--radius-md); padding: var(--spacing-16); width: 100%; height: 80px;">
+                            <div style="font-size: var(--font-size-xl); font-weight: var(--font-weight-black); margin-bottom: var(--spacing-08);">Title</div>
+                            <div style="font-size: var(--font-size-base);">Body</div>
+                    </div>
+                </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Tabs/Chips -->
+                <a href="../components/tabs-chip.html" class="component-card">
+                    <h3 class="component-card__title">Tabs / Chips</h3>
+                    <p class="component-card__description">
+                        Chips o tabs con estados Active e Inactive. Puede usarse individualmente o en grupos para crear interfaces de tabs.
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span style="background: var(--color-basics-dark-blue); color: var(--color-surface-regular); padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: var(--font-weight-regular);">Active</span>
+                            <span style="background: var(--color-status-disabled); color: var(--color-text-primary); padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: var(--font-weight-regular);">Inactive</span>
+                    </div>
+                </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Progress Bar -->
+                <a href="../components/progress-bar.html" class="component-card">
+                    <h3 class="component-card__title">Progress Bar</h3>
+                    <p class="component-card__description">
+                        Barra de progreso con % a la izquierda. Tamaños Default (5px) y Medium (10px).
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span style="font-size: 10px; font-weight: 600;">10%</span>
+                            <div style="width: 165px; height: 5px; border-radius: 50px; overflow: hidden; background: var(--color-status-disabled);">
+                                <div style="width: 20px; height: 5px; background: var(--color-status-done);"></div>
+                        </div>
+                    </div>
+                </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Date Picker -->
+                <a href="../components/date-picker.html" class="component-card">
+                    <h3 class="component-card__title">Date Picker</h3>
+                    <p class="component-card__description">
+                        Componente de selección de fecha con calendario interactivo. Permite navegar entre meses sin cerrar. Selección automática al hacer clic en una fecha.
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="position: relative; display: inline-block;">
+                            <button style="background-color: var(--color-surface-regular); border: 1px solid var(--color-basics-mid-blue); border-radius: var(--radius-xl); padding: 8px 16px; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--color-text-primary);">
+                                <img src="../../images/calendar.svg" alt="Calendar" style="width: 13.33px; height: 13.33px;">
+                                <span>Select a date</span>
+                            </button>
+                        </div>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Add Members -->
+                <a href="../components/add-members.html" class="component-card">
+                    <h3 class="component-card__title">Add Members</h3>
+                    <p class="component-card__description">
+                        Componente para invitar personas a un proyecto. Variable "Empty": permite clic para abrir un modal (WIP).
+                    </p>
+                    <div class="component-card__preview">
+                        <div class="add-members-empty" title="Add members (opens modal)">
+                            <span class="add-members-empty__icon">
+                                <img src="../../images/plus.svg" alt="Plus" style="width: 20px; height: 20px; object-fit: contain;">
+                            </span>
+                            <span class="add-members-empty__text">Add members</span>
+                        </div>
+                    </div>
+                    <span class="component-card__status component-card__status--pending">Pending</span>
+                </a>
+                
+                <!-- Modal -->
+                <a href="../components/modal.html" class="component-card">
+                    <h3 class="component-card__title">Modal</h3>
+                    <p class="component-card__description">
+                        Componente modal para diálogos, formularios y confirmaciones. Incluye overlay blanco al 70% de opacidad, animaciones suaves y funcionalidad completa de apertura/cierre.
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-mid-blue); border-radius: 10px; padding: var(--spacing-16); width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <div style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold);">Add a new member</div>
+                    </div>
+                </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+                
+                <!-- Chip -->
+                <a href="../components/chip.html" class="component-card">
+                    <h3 class="component-card__title">Chip</h3>
+                    <p class="component-card__description">
+                        Componente chip para mostrar etiquetas o tags, especialmente útil para proyectos asociados. Permite agregar y eliminar chips dinámicamente. Basado en el diseño exacto de Figma.
+                    </p>
+                    <div class="component-card__preview">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-08); flex-wrap: wrap; padding: var(--spacing-16);">
+                            <div class="chip-preview">
+                                <span class="chip-preview__text">New namagement project</span>
+                                <button class="chip-preview__close" aria-label="Remove">
+                                    <svg class="chip-preview__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="component-card__status component-card__status--ready">Ready</span>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Icons Section -->
+        <section class="icons-section">
+            <h2 class="section-title">Icons</h2>
+            <p style="font-size: var(--font-size-base); color: var(--color-text-secondary); margin-bottom: var(--spacing-24); max-width: 800px;">
+                Biblioteca completa de iconos del sistema. Todos los iconos tienen un tamaño base de 20×20px según las especificaciones de Figma.
+            </p>
+            
+            <div class="icons-grid">
+                <!-- Chevron Icons -->
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <img src="../../images/left-chevron.svg" alt="left-chevron" class="icon-image">
+                    </div>
+                    <div class="icon-name">left-chevron</div>
+                    <div class="icon-size">20×20px</div>
+                </div>
+                
+                <div class="icon-item">
+                    <div class="icon-preview">
+                        <img src="../../images/right-chevron.svg" alt="right-chevron" class="icon-image">
+                    </div>
+                    <div class="icon-name">right-chevron</div>
+                    <div class="icon-size">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/up-chevron.svg" alt="up-chevron" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">up-chevron</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/down-chevron.svg" alt="down-chevron" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">down-chevron</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Navigation Icons -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/project.svg" alt="project" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">project</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/chat.svg" alt="chat" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">chat</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/exit.svg" alt="exit" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">exit</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/calendar.svg" alt="calendar" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">calendar</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Action Icons -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/close.svg" alt="close" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">close</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/minus.svg" alt="minus" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">minus</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/plus.svg" alt="plus" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">plus</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/share.svg" alt="share" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">share</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/spark.svg" alt="spark" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">spark</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/check.svg" alt="check" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">check</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/Edit.svg" alt="Edit" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">Edit</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/Progress.svg" alt="Progress" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">Progress</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/avatar.svg" alt="avatar" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">avatar</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/trash.svg" alt="trash" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">trash</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/mail.svg" alt="mail" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">mail</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Social & External Icons -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/Google.svg" alt="Google" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">Google</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/whatsapp.svg" alt="whatsapp" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">whatsapp</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Theme Icons -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/moon.svg" alt="moon" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">moon</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/sun.svg" alt="sun" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">sun</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Additional Icons -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/draft.svg" alt="draft" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">draft</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/team.svg" alt="team" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">team</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/grid.svg" alt="grid" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">grid</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/list.svg" alt="list" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">list</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/filter.svg" alt="filter" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">filter</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/send.svg" alt="send" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">send</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/eye.svg" alt="eye" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">eye</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/eye_hidden.svg" alt="eye_hidden" style="width: 20px; height: 20px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">eye_hidden</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">20×20px</div>
+                </div>
+                
+                <!-- Special Icon: Asterisk -->
+                <div class="icon-item" style="background: var(--color-surface-regular); border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: var(--spacing-16); text-align: center; transition: all 0.2s ease;">
+                    <div class="icon-preview" style="display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-12); background: var(--color-surface-especial); border-radius: var(--radius-sm); padding: var(--spacing-16); min-height: 80px;">
+                        <img src="../../images/asterisk.svg" alt="asterisk" style="width: 4.8px; height: 4.96px; object-fit: contain;">
+                    </div>
+                    <div class="icon-name" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin-bottom: 4px;">asterisk</div>
+                    <div class="icon-size" style="font-size: 11px; font-family: monospace; color: var(--color-text-secondary);">4.8×4.96px</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Colors Section - Compact Grid -->
+        <section class="tokens-section">
+            <h2 class="section-title">Color Palette</h2>
+            <p style="font-size: var(--font-size-base); color: var(--color-text-secondary); margin-bottom: var(--spacing-24); max-width: 800px;">
+                Paleta de colores completa del sistema. Cada color muestra su variante en Light Mode y Dark Mode.
+            </p>
+            
+            <div class="color-grid-section">
+                <!-- Basics Colors -->
+                <div class="color-category">
+                    <h3 class="color-category__title">Basics</h3>
+                    <div class="color-squares-grid">
+                        <!-- Light Mode -->
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-basics-dark-blue);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Dark Blue</div>
+                                <div class="color-square__value">#0a243f</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-basics-mid-blue);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Mid Blue</div>
+                                <div class="color-square__value">#6b7b8a</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-basics-light-blue);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Light Blue</div>
+                                <div class="color-square__value">#f4f7fb</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-basics-white); border: 1px solid var(--color-basics-gray);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">White</div>
+                                <div class="color-square__value">#ffffff</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-basics-gray);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Light Gray</div>
+                                <div class="color-square__value">#efefef</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Mode -->
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #0a243f; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Dark Blue</div>
+                                <div class="color-square__value">#0a243f</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #8fa0b0; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Mid Blue</div>
+                                <div class="color-square__value">#8fa0b0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #1a3e64; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Light Blue</div>
+                                <div class="color-square__value">#1a3e64</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #ffffff; border: 1px solid #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">White</div>
+                                <div class="color-square__value">#ffffff</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #4a5563; border-color: #6b7380;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Gray</div>
+                                <div class="color-square__value">#4a5563</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Error Colors -->
+                <div class="color-category">
+                    <h3 class="color-category__title">Error</h3>
+                    <div class="color-squares-grid">
+                        <!-- Light Mode -->
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-strong-red);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Strong Red</div>
+                                <div class="color-square__value">#ff4747</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-light-red);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Light Red</div>
+                                <div class="color-square__value">#ff9393</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Mode -->
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #ff6b6b; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Strong Red</div>
+                                <div class="color-square__value">#ff6b6b</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #ffb3b3; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Light Red</div>
+                                <div class="color-square__value">#ffb3b3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Buttons Colors -->
+                <div class="color-category">
+                    <h3 class="color-category__title">Buttons</h3>
+                    <div class="color-squares-grid">
+                        <!-- Light Mode -->
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-primary-bg-default);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Default)</div>
+                                <div class="color-square__value">#9dff00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-primary-bg-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Hover)</div>
+                                <div class="color-square__value">#98f501</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-primary-bg-pressed);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Pressed)</div>
+                                <div class="color-square__value">#8ee600</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-secondary-bg-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Secondary (Hover)</div>
+                                <div class="color-square__value">#0f3965</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-secondary-bg-pressed);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Secondary (Pressed)</div>
+                                <div class="color-square__value">#18528f</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-button-default);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Default/Access</div>
+                                <div class="color-square__value">#a4c4ff</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Mode -->
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #9dff00; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Default)</div>
+                                <div class="color-square__value">#9dff00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #b0ff33; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Hover)</div>
+                                <div class="color-square__value">#b0ff33</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #8ae600; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Primary (Pressed)</div>
+                                <div class="color-square__value">#8ae600</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #1e4a7a; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Secondary (Hover)</div>
+                                <div class="color-square__value">#1e4a7a</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #2569a8; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Secondary (Pressed)</div>
+                                <div class="color-square__value">#2569a8</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #7ab8ff; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Default/Access</div>
+                                <div class="color-square__value">#7ab8ff</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Accent/Cyan Colors -->
+                <div class="color-category">
+                    <h3 class="color-category__title">Accent/Cyan</h3>
+                    <div class="color-squares-grid">
+                        <!-- Light Mode -->
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-accent-cyan-light);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Light</div>
+                                <div class="color-square__value">#50dfff</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-accent-cyan-medium);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Medium</div>
+                                <div class="color-square__value">#30c9eb</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-accent-cyan-dark);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Dark</div>
+                                <div class="color-square__value">#009ed8</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Mode -->
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #50dfff; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Light</div>
+                                <div class="color-square__value">#50dfff</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #40c7e6; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Medium</div>
+                                <div class="color-square__value">#40c7e6</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #00b8e0; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Cyan Dark</div>
+                                <div class="color-square__value">#00b8e0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Status Colors -->
+                <div class="color-category">
+                    <h3 class="color-category__title">Status</h3>
+                    <div class="color-squares-grid">
+                        <!-- Light Mode -->
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-in-progress);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">In Progress</div>
+                                <div class="color-square__value">#ffc048</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-in-progress-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">In Progress (Hover)</div>
+                                <div class="color-square__value">#f7ae23</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-done);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Done</div>
+                                <div class="color-square__value">#3be4a9</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-done-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Done (Hover)</div>
+                                <div class="color-square__value">#19d795</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-paused);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Paused</div>
+                                <div class="color-square__value">#6b7b8a</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-paused-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Paused (Hover)</div>
+                                <div class="color-square__value">#4f5f6f</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-to-start);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">To Start</div>
+                                <div class="color-square__value">#efefef</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-to-start-hover);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">To Start (Hover)</div>
+                                <div class="color-square__value">#d4d4d4</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square">
+                            <div class="color-square__swatch" style="background: var(--color-status-disabled);">
+                                <span class="color-square__mode-badge color-square__mode-badge--light">Light</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Disabled</div>
+                                <div class="color-square__value">#efefef</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dark Mode -->
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #ffc048; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">In Progress</div>
+                                <div class="color-square__value">#ffc048</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #ffd470; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">In Progress (Hover)</div>
+                                <div class="color-square__value">#ffd470</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #3be4a9; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Done</div>
+                                <div class="color-square__value">#3be4a9</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #5ef0c0; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Done (Hover)</div>
+                                <div class="color-square__value">#5ef0c0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #8fa0b0; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Paused</div>
+                                <div class="color-square__value">#8fa0b0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #a8b5c3; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Paused (Hover)</div>
+                                <div class="color-square__value">#a8b5c3</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #4a5563; border-color: #6b7380;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">To Start</div>
+                                <div class="color-square__value">#4a5563</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #6b7380; border-color: #4a5563;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">To Start (Hover)</div>
+                                <div class="color-square__value">#6b7380</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-square color-square--dark">
+                            <div class="color-square__swatch" style="background: #4a5563; border-color: #6b7380;">
+                                <span class="color-square__mode-badge color-square__mode-badge--dark">Dark</span>
+                            </div>
+                            <div class="color-square__info">
+                                <div class="color-square__name">Disabled</div>
+                                <div class="color-square__value">#4a5563</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Other Design Tokens Section -->
+        <section class="tokens-section">
+            <h2 class="section-title">Design Tokens</h2>
+            <div class="tokens-grid">
+                <!-- Typography -->
+                <div class="token-card">
+                    <h3 class="token-card__title">Typography</h3>
+                    <ul class="token-card__list">
+                        <li class="token-card__item">
+                            <strong>Primary Font:</strong> Crimson Pro
+                        </li>
+                        <li class="token-card__item">
+                            <strong>Secondary Font:</strong> Lato
+                        </li>
+                        <li class="token-card__item">
+                            <strong>Sizes:</strong> 12px - 48px
+                        </li>
+                        <li class="token-card__item">
+                            <strong>Weights:</strong> 100 - 900
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Spacing -->
+                <div class="token-card">
+                    <h3 class="token-card__title">Spacing</h3>
+                    <ul class="token-card__list">
+                        <li class="token-card__item">--spacing-04: 4px</li>
+                        <li class="token-card__item">--spacing-08: 8px</li>
+                        <li class="token-card__item">--spacing-12: 12px</li>
+                        <li class="token-card__item">--spacing-16: 16px</li>
+                        <li class="token-card__item">--spacing-24: 24px</li>
+                        <li class="token-card__item">--spacing-48: 48px</li>
+                    </ul>
+                </div>
+                
+                <!-- Radius -->
+                <div class="token-card">
+                    <h3 class="token-card__title">Border Radius</h3>
+                    <ul class="token-card__list">
+                        <li class="token-card__item">--radius-sm: 4px</li>
+                        <li class="token-card__item">--radius-md: 8px</li>
+                        <li class="token-card__item">--radius-lg: 10px</li>
+                        <li class="token-card__item">--radius-full: 999px</li>
+                        <li class="token-card__item">--radius-xl: 40px</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // Temporary interaction for Add Members (Empty): allow click, placeholder modal pending
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.add-members-empty').forEach(function(el) {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert('Add Members modal – coming soon');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

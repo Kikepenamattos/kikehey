@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Bar Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="progress-bar.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-card {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+            background: var(--color-surface-especial);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+        
+        .demo-card__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+    </style>
+    </head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Progress Bar Component</h1>
+            <p class="component-doc__description">
+                Barra de progreso con porcentaje a la izquierda. Dos tamaños: Default (5px) y Medium (10px).
+                Colores basados en el design system.
+            </p>
+        </div>
+        
+        <!-- Sizes -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Sizes</h2>
+            <p class="variant-section__description">
+                Tamaños disponibles según Figma.
+            </p>
+            
+            <div class="grid">
+                <div class="demo-card">
+                    <div class="demo-card__title">Default</div>
+                    <div class="dsu-progress dsu-progress--default">
+                        <span class="dsu-progress__percentage">10%</span>
+                        <div class="dsu-progress__bar">
+                            <div class="dsu-progress__fill" style="width: 10%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card__title">Medium</div>
+                    <div class="dsu-progress dsu-progress--medium">
+                        <span class="dsu-progress__percentage">10%</span>
+                        <div class="dsu-progress__bar">
+                            <div class="dsu-progress__fill" style="width: 24%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Examples</h2>
+            <p class="variant-section__description">
+                Ejemplos de uso con diferentes porcentajes.
+            </p>
+            
+            <div class="grid">
+                <div class="demo-card">
+                    <div class="demo-card__title">25%</div>
+                    <div class="dsu-progress dsu-progress--default">
+                        <span class="dsu-progress__percentage">25%</span>
+                        <div class="dsu-progress__bar">
+                            <div class="dsu-progress__fill" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card__title">50%</div>
+                    <div class="dsu-progress dsu-progress--default">
+                        <span class="dsu-progress__percentage">50%</span>
+                        <div class="dsu-progress__bar">
+                            <div class="dsu-progress__fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card__title">75% (Medium)</div>
+                    <div class="dsu-progress dsu-progress--medium">
+                        <span class="dsu-progress__percentage">75%</span>
+                        <div class="dsu-progress__bar">
+                            <div class="dsu-progress__fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

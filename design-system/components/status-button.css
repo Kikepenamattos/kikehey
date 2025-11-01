@@ -1,0 +1,277 @@
+/* ==========================================
+   STATUS BUTTON COMPONENT - Design System Docu
+   Basado en Figma Components
+   Task Status con funcionalidad dropdown
+   ========================================== */
+
+/* === STATUS BUTTON WRAPPER === */
+.dsu-status-button-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* === STATUS BUTTON === */
+.dsu-status-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-08) var(--spacing-24);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  width: 144px;
+}
+
+/* === IN PROGRESS === */
+.dsu-status-button--in-progress {
+  background-color: var(--color-status-in-progress);
+  color: var(--color-basics-dark-blue);
+}
+
+.dsu-status-button--in-progress:hover,
+.dsu-status-button--in-progress.dsu-status-button--hover {
+  background-color: var(--color-status-in-progress-hover);
+}
+
+/* === DONE === */
+.dsu-status-button--done {
+  background-color: var(--color-status-done);
+  color: var(--color-basics-dark-blue);
+}
+
+.dsu-status-button--done:hover,
+.dsu-status-button--done.dsu-status-button--hover {
+  background-color: var(--color-status-done-hover);
+}
+
+/* === PAUSED === */
+.dsu-status-button--paused {
+  background-color: var(--color-status-paused);
+  color: var(--color-basics-white);
+}
+
+.dsu-status-button--paused:hover,
+.dsu-status-button--paused.dsu-status-button--hover {
+  background-color: var(--color-status-paused-hover);
+}
+
+/* === TO START === */
+.dsu-status-button--to-start {
+  background-color: var(--color-status-to-start);
+  color: var(--color-basics-dark-blue);
+}
+
+.dsu-status-button--to-start:hover,
+.dsu-status-button--to-start.dsu-status-button--hover {
+  background-color: var(--color-status-to-start-hover);
+}
+
+/* === STATUS BUTTON TEXT === */
+.dsu-status-button__text {
+  flex-shrink: 0;
+}
+
+/* === STATUS BUTTON CHEVRON === */
+.dsu-status-button__chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-status-button__chevron img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+/* === STATUS DROPDOWN === */
+.dsu-status-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: absolute;
+  top: calc(100% + var(--spacing-08));
+  left: 0;
+  width: 192px;
+  background-color: var(--color-surface-regular);
+  border: 1px solid var(--color-basics-gray);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-3);
+  overflow: hidden;
+  z-index: 100;
+  margin-top: var(--spacing-04);
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+}
+
+.dsu-status-dropdown--expanded {
+  /* Animation expanded state */
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* === STATUS DROPDOWN ITEM === */
+.dsu-status-dropdown__item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-12) var(--spacing-16);
+  border: none;
+  background-color: var(--color-surface-regular);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+  text-align: left;
+  width: 100%;
+  border-bottom: 1px solid var(--color-basics-gray);
+}
+
+.dsu-status-dropdown__item:last-child {
+  border-bottom: none;
+}
+
+.dsu-status-dropdown__item:hover:not(.dsu-status-dropdown__item--active) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-status-dropdown__item--active {
+  background-color: var(--color-surface-especial);
+  font-weight: var(--font-weight-bold);
+}
+
+.dsu-status-dropdown__text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+/* === DROPDOWN ITEM STATUS COLORS === */
+.dsu-status-dropdown__item[data-status="in-progress"] {
+  border-left: 3px solid var(--color-status-in-progress);
+}
+
+.dsu-status-dropdown__item[data-status="done"] {
+  border-left: 3px solid var(--color-status-done);
+}
+
+.dsu-status-dropdown__item[data-status="paused"] {
+  border-left: 3px solid var(--color-status-paused);
+}
+
+.dsu-status-dropdown__item[data-status="to-start"] {
+  border-left: 3px solid var(--color-status-to-start);
+}
+
+/* ==========================================
+   STAGE STATUS COMPONENT
+   Basado en Figma Components
+   Estados de etapa del proyecto con badge, fecha y barra de progreso
+   ========================================== */
+
+/* === STAGE STATUS CONTAINER === */
+.dsu-stage-status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08);
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* === STAGE STATUS BADGE === */
+.dsu-stage-status__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-16);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* === STAGE STATUS BADGE ICON === */
+.dsu-stage-status__badge-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.dsu-stage-status__badge-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+/* === STAGE STATUS BADGE TEXT === */
+.dsu-stage-status__badge-text {
+  flex-shrink: 0;
+  color: var(--color-basics-dark-blue);
+}
+
+/* === IN PROGRESS STATE === */
+.dsu-stage-status--in-progress .dsu-stage-status__badge {
+  background-color: var(--color-status-in-progress);
+  color: var(--color-basics-dark-blue);
+}
+
+/* === TO START STATE === */
+.dsu-stage-status--to-start .dsu-stage-status__badge {
+  background-color: var(--color-status-disabled);
+  color: var(--color-basics-dark-blue);
+}
+
+/* === COMPLETED STATE === */
+.dsu-stage-status--completed .dsu-stage-status__badge {
+  background-color: var(--color-status-done);
+  color: var(--color-basics-dark-blue);
+}
+
+/* === STAGE STATUS DATE === */
+.dsu-stage-status__date {
+  font-family: var(--font-family-secondary);
+  font-size: 12px;
+  font-weight: 600; /* SemiBold */
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  margin: 0;
+}
+
+/* === TO START: DISABLED DATE AND PROGRESS === */
+.dsu-stage-status--to-start .dsu-stage-status__date,
+.dsu-stage-status--to-start .dsu-progress,
+.dsu-stage-status--to-start .dsu-progress__percentage {
+  opacity: 0.5;
+  pointer-events: none;
+}
+

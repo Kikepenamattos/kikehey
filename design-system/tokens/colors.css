@@ -1,0 +1,112 @@
+/* ==========================================
+   COLOR TOKENS - Design System Docu
+   Basado en Figma Components
+   ========================================== */
+
+:root {
+  /* === BASICS === */
+  --color-basics-dark-blue: #0a243f;
+  --color-basics-mid-blue: #6b7b8a;
+  --color-basics-light-blue: #f4f7fb;
+  --color-basics-white: #ffffff;
+  --color-basics-gray: #efefef;
+  
+  /* === TEXT === */
+  --color-text-primary: #0a243f;
+  --color-text-secondary: #6b7b8a;
+  
+  /* === BUTTONS === */
+  /* Primary */
+  --color-button-primary-bg-default: #9dff00;
+  --color-button-primary-bg-hover: #98f501;
+  --color-button-primary-bg-pressed: #8ee600;
+  
+  /* Secondary */
+  --color-button-secondary-bg-hover: #0f3965;
+  --color-button-secondary-bg-pressed: #18528f;
+  
+  /* Default/Access */
+  --color-button-default: #a4c4ff;
+  
+  /* Accent/Cyan */
+  --color-accent-cyan-light: #50dfff;
+  --color-accent-cyan-medium: #30c9eb;
+  --color-accent-cyan-dark: #009ed8;
+  
+  /* === STATUS === */
+  /* Error */
+  --color-status-strong-red: #ff4747;
+  --color-status-light-red: #ff9393;
+  
+  /* Task Status */
+  --color-status-in-progress: #ffc048;
+  --color-status-in-progress-hover: #f7ae23;
+  --color-status-done: #3be4a9;
+  --color-status-done-hover: #19d795;
+  --color-status-paused: #6b7b8a;
+  --color-status-paused-hover: #4f5f6f;
+  --color-status-to-start: #efefef;
+  --color-status-to-start-hover: #d4d4d4;
+  --color-status-disabled: #efefef;
+  
+  /* === SURFACE === */
+  --color-surface-regular: #ffffff;
+  --color-surface-especial: #f4f7fb;
+}
+
+/* ==========================================
+   DARK MODE COLOR TOKENS
+   Fondo base: Dark Blue #0a243f
+   ========================================== */
+
+[data-theme="dark"] {
+  /* === BASICS === */
+  --color-basics-dark-blue: #0a243f; /* Background base */
+  --color-basics-mid-blue: #8fa0b0; /* Más claro para contraste en dark */
+  --color-basics-light-blue: #1a3e64; /* Versión oscura del light blue */
+  --color-basics-white: #ffffff; /* Se mantiene para textos */
+  --color-basics-gray: #4a5563; /* Más oscuro para dark mode */
+  
+  /* === TEXT === */
+  --color-text-primary: #ffffff; /* Blanco sobre fondo oscuro */
+  --color-text-secondary: #8fa0b0; /* Mid blue más claro para texto secundario */
+  
+  /* === BUTTONS === */
+  /* Primary - Mantienen colores vibrantes pero ajustados */
+  --color-button-primary-bg-default: #9dff00;
+  --color-button-primary-bg-hover: #b0ff33;
+  --color-button-primary-bg-pressed: #8ae600;
+  
+  /* Secondary - Más claros para contraste */
+  --color-button-secondary-bg-hover: #1e4a7a;
+  --color-button-secondary-bg-pressed: #2569a8;
+  
+  /* Default/Access - Más vibrante */
+  --color-button-default: #7ab8ff;
+  
+  /* Accent/Cyan - Mantienen pero con mejor contraste */
+  --color-accent-cyan-light: #50dfff;
+  --color-accent-cyan-medium: #40c7e6;
+  --color-accent-cyan-dark: #00b8e0;
+  
+  /* === STATUS === */
+  /* Error - Mantienen pero con texto claro */
+  --color-status-strong-red: #ff6b6b;
+  --color-status-light-red: #ffb3b3;
+  
+  /* Task Status - Ajustados para dark mode */
+  --color-status-in-progress: #ffc048;
+  --color-status-in-progress-hover: #ffd470;
+  --color-status-done: #3be4a9;
+  --color-status-done-hover: #5ef0c0;
+  --color-status-paused: #8fa0b0;
+  --color-status-paused-hover: #a8b5c3;
+  --color-status-to-start: #4a5563;
+  --color-status-to-start-hover: #6b7380;
+  --color-status-disabled: #4a5563; /* Más oscuro para dark mode */
+  
+  /* === SURFACE === */
+  --color-surface-regular: #0a243f; /* Dark Blue como fondo base */
+  --color-surface-especial: #1a3e64; /* Un tono más claro para destacar */
+}
+

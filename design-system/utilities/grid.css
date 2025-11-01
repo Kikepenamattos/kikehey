@@ -1,0 +1,27 @@
+/* Design System - 12-column Grid Utilities (desktop-first) */
+.dsu-container { width: min(1120px, 100% - 48px); margin-left: auto; margin-right: auto; }
+
+@media (min-width: 1024px) {
+  .dsu-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; row-gap: 24px; }
+  /* Viewport grid: applies columns to the whole browser width */
+  .dsu-grid-viewport { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; row-gap: 24px; width: 100%; padding-left: 48px; padding-right: 48px; }
+  .col-span-12 { grid-column: 1 / -1; }
+  .col-span-2 { grid-column: span 2; }
+  .col-span-3 { grid-column: span 3; }
+  .col-span-4 { grid-column: span 4; }
+  .col-span-6 { grid-column: span 6; }
+  .col-span-8 { grid-column: span 8; }
+  .col-start-2 { grid-column-start: 2; }
+  .col-start-3 { grid-column-start: 3; }
+  .col-start-4 { grid-column-start: 4; }
+  .col-start-5 { grid-column-start: 5; }
+  .col-start-6 { grid-column-start: 6; }
+  .justify-self-center { justify-self: center; }
+}
+
+/* Mobile fallback: simple stacked flow */
+@media (max-width: 1023.98px) {
+  .dsu-grid { display: block; }
+}
+
+

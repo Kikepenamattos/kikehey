@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabs / Chip Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="tabs-chip.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .chips-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .chip-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+            background: var(--color-surface-especial);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+        
+        .chip-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+        
+        .demo-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+        
+        .chips-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-08);
+            align-items: center;
+        }
+        
+        .specs-table {
+            width: 100%;
+            margin-top: var(--spacing-24);
+            border-collapse: collapse;
+        }
+        
+        .specs-table th,
+        .specs-table td {
+            padding: var(--spacing-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .specs-table th {
+            background: var(--color-surface-especial);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-sm);
+        }
+        
+        .specs-table td {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Tabs / Chip Component</h1>
+            <p class="component-doc__description">
+                Componente chip/tab con estados Active e Inactive. Puede usarse individualmente o en grupos 
+                para crear interfaces de tabs. Basado en el diseño exacto de Figma Components.
+            </p>
+        </div>
+        
+        <!-- Chip States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Chip States</h2>
+            <p class="variant-section__description">
+                Dos estados del componente chip: Active e Inactive.
+            </p>
+            
+            <div class="chips-grid">
+                <div class="chip-demo">
+                    <div class="chip-demo__title">Active</div>
+                    <button class="dsu-chip dsu-chip--active">
+                        <span class="dsu-chip__text">Chip name</span>
+                    </button>
+                </div>
+                
+                <div class="chip-demo">
+                    <div class="chip-demo__title">Inactive</div>
+                    <button class="dsu-chip dsu-chip--inactive">
+                        <span class="dsu-chip__text">Chip name</span>
+                    </button>
+                </div>
+                
+                <div class="chip-demo">
+                    <div class="chip-demo__title">Active Hover</div>
+                    <button class="dsu-chip dsu-chip--active" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        <span class="dsu-chip__text">Chip name</span>
+                    </button>
+                </div>
+                
+                <div class="chip-demo">
+                    <div class="chip-demo__title">Inactive Hover</div>
+                    <button class="dsu-chip dsu-chip--inactive">
+                        <span class="dsu-chip__text">Chip name</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Examples</h2>
+            <p class="variant-section__description">
+                Ejemplos de uso del componente Chip con diferentes contenidos y como grupo de tabs.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Chip individual - Active</div>
+                    <button class="dsu-chip dsu-chip--active">
+                        <span class="dsu-chip__text">Tab 1</span>
+                    </button>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Chip individual - Inactive</div>
+                    <button class="dsu-chip dsu-chip--inactive">
+                        <span class="dsu-chip__text">Tab 2</span>
+                    </button>
+                </div>
+                
+                <div class="demo-item" style="width: 100%;">
+                    <div class="demo-item__label">Grupo de chips como tabs</div>
+                    <div class="chips-group">
+                        <button class="dsu-chip dsu-chip--active">
+                            <span class="dsu-chip__text">Tab 1</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive">
+                            <span class="dsu-chip__text">Tab 2</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive">
+                            <span class="dsu-chip__text">Tab 3</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-item" style="width: 100%;">
+                    <div class="demo-item__label">Grupo de chips personalizados</div>
+                    <div class="chips-group">
+                        <button class="dsu-chip dsu-chip--active">
+                            <span class="dsu-chip__text">Todos</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive">
+                            <span class="dsu-chip__text">Activos</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive">
+                            <span class="dsu-chip__text">Completados</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive">
+                            <span class="dsu-chip__text">Pausados</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Example -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Interactive Example</h2>
+            <p class="variant-section__description">
+                Ejemplo funcional con JavaScript para alternar entre estados Active e Inactive.
+            </p>
+            
+            <div class="demo-item" style="width: 100%;">
+                <div class="chips-group" id="interactiveChips" data-interactive="true">
+                    <button class="dsu-chip dsu-chip--active" data-chip-id="1">
+                        <span class="dsu-chip__text">Tab 1</span>
+                    </button>
+                    <button class="dsu-chip dsu-chip--inactive" data-chip-id="2">
+                        <span class="dsu-chip__text">Tab 2</span>
+                    </button>
+                    <button class="dsu-chip dsu-chip--inactive" data-chip-id="3">
+                        <span class="dsu-chip__text">Tab 3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente Chip.
+            </p>
+            
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Padding</td>
+                        <td>8px vertical, 16px horizontal</td>
+                    </tr>
+                    <tr>
+                        <td>Border Radius</td>
+                        <td>50px (pill shape)</td>
+                    </tr>
+                    <tr>
+                        <td>Gap</td>
+                        <td>10px</td>
+                    </tr>
+                    <tr>
+                        <td>Font</td>
+                        <td>Lato, 13px, Regular (400)</td>
+                    </tr>
+                    <tr>
+                        <td>Line Height</td>
+                        <td>normal</td>
+                    </tr>
+                    <tr>
+                        <td>Active Background</td>
+                        <td>var(--color-basics-dark-blue) - #0a243f</td>
+                    </tr>
+                    <tr>
+                        <td>Active Text Color</td>
+                        <td>var(--color-surface-regular) - #ffffff</td>
+                    </tr>
+                    <tr>
+                        <td>Inactive Background</td>
+                        <td>var(--color-status-disabled) - #efefef</td>
+                    </tr>
+                    <tr>
+                        <td>Inactive Text Color</td>
+                        <td>var(--color-text-primary) - #0a243f</td>
+                    </tr>
+                    <tr>
+                        <td>Hover (Active)</td>
+                        <td>Opacity 0.9</td>
+                    </tr>
+                    <tr>
+                        <td>Hover (Inactive)</td>
+                        <td>var(--color-status-to-start-hover) - #d4d4d4</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        /**
+         * ==========================================
+         * INTERACTIVE CHIPS FUNCTIONALITY
+         * ==========================================
+         * 
+         * Permite alternar entre estados Active e Inactive
+         * cuando se hace clic en los chips de un grupo
+         */
+        function initInteractiveChips() {
+            const chipGroups = document.querySelectorAll('.chips-group[id^="interactive"], .chips-group[data-interactive="true"]');
+            
+            chipGroups.forEach((group) => {
+                const chips = group.querySelectorAll('.dsu-chip[data-chip-id]');
+                
+                chips.forEach((chip) => {
+                    chip.addEventListener('click', function() {
+                        // Si el chip ya está activo, no hacer nada
+                        if (this.classList.contains('dsu-chip--active')) {
+                            return;
+                        }
+                        
+                        // Desactivar todos los chips del grupo
+                        chips.forEach((c) => {
+                            c.classList.remove('dsu-chip--active');
+                            c.classList.add('dsu-chip--inactive');
+                        });
+                        
+                        // Activar el chip seleccionado
+                        this.classList.remove('dsu-chip--inactive');
+                        this.classList.add('dsu-chip--active');
+                    });
+                });
+            });
+        }
+        
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', initInteractiveChips);
+    </script>
+</body>
+</html>
+

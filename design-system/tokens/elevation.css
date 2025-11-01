@@ -1,0 +1,60 @@
+/* ==========================================
+   ELEVATION / SHADOW TOKENS
+   Design System Docu
+   Basado en especificaciones de Figma
+   ========================================== */
+
+:root {
+  /* === ELEVATION LEVELS === */
+
+  /* Elevation 0 - Sin sombra (Default state para algunos componentes) */
+  --elevation-0: none;
+
+  /* Elevation 1 - Sombra suave (Default para botones Primary) */
+  --elevation-1: 0px 1px 2px 0px rgba(10, 36, 63, 0.1);
+
+  /* Elevation 2 - Sombra media (Hover state para botones) */
+  --elevation-2: 0px 2px 4px 0px rgba(10, 36, 63, 0.15);
+
+  /* Elevation 3 - Sombra pronunciada (Hover intenso, modals) */
+  --elevation-3: 0px 4px 8px 0px rgba(10, 36, 63, 0.2);
+
+  /* Elevation 4 - Sombra fuerte (Tooltips, dropdowns) */
+  --elevation-4: 0px 8px 16px 0px rgba(10, 36, 63, 0.25);
+
+  /* === BUTTON SPECIFIC ELEVATIONS === */
+
+  /* Button Primary - Default */
+  --button-primary-elevation-default: 0px 1px 2px 0px rgba(10, 36, 63, 0.1);
+
+  /* Button Primary - Hover */
+  --button-primary-elevation-hover: 0px 2px 4px 0px rgba(10, 36, 63, 0.15);
+
+  /* Button Primary - Pressed (sin sombra o sombra interna) */
+  --button-primary-elevation-pressed: none;
+
+  /* Button Secondary - Default (sin sombra) */
+  --button-secondary-elevation-default: none;
+
+  /* Button Secondary - Hover */
+  --button-secondary-elevation-hover: 0px 2px 4px 0px rgba(10, 36, 63, 0.15);
+
+  /* Button Secondary - Pressed */
+  --button-secondary-elevation-pressed: none;
+
+  /* Button Tertiary - Default (sin sombra) */
+  --button-tertiary-elevation-default: none;
+
+  /* Button Tertiary - Hover (sin sombra) */
+  --button-tertiary-elevation-hover: none;
+
+  /* Button Tertiary - Pressed (sin sombra) */
+  --button-tertiary-elevation-pressed: none;
+
+  /* Button Access - Default */
+  --button-access-elevation-default: 0px 1px 2px 0px rgba(10, 36, 63, 0.1);
+
+  /* Button Access - Hover */
+  --button-access-elevation-hover: 0px 2px 4px 0px rgba(10, 36, 63, 0.15);
+}
+

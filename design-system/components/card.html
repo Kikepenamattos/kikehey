@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="card.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .card-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+            background: var(--color-surface-especial);
+        }
+        
+        .card-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-12);
+            color: var(--color-text-primary);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+        
+        .demo-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+        
+        .specs-table {
+            width: 100%;
+            margin-top: var(--spacing-24);
+            border-collapse: collapse;
+        }
+        
+        .specs-table th,
+        .specs-table td {
+            padding: var(--spacing-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .specs-table th {
+            background: var(--color-surface-especial);
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-sm);
+        }
+        
+        .specs-table td {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Card Component</h1>
+            <p class="component-doc__description">
+                Componente de card para mostrar contenido de proyectos. Incluye estados Default y Hover 
+                con efecto de elevation igual al botón secondary. Basado en el diseño exacto de Figma Components.
+            </p>
+        </div>
+        
+        <!-- Card States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Card States</h2>
+            <p class="variant-section__description">
+                Dos estados del componente card: Default y Hover (con efecto de elevation).
+            </p>
+            
+            <div class="cards-grid">
+                <div class="card-demo">
+                    <div class="card-demo__title">Default</div>
+                    <div class="dsu-card">
+                        <p class="dsu-card__title">Title</p>
+                        <p class="dsu-card__body">Body</p>
+                    </div>
+                </div>
+                
+                <div class="card-demo">
+                    <div class="card-demo__title">Hover</div>
+                    <div class="dsu-card dsu-card--hover">
+                        <p class="dsu-card__title">Title</p>
+                        <p class="dsu-card__body">Body</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Examples</h2>
+            <p class="variant-section__description">
+                Ejemplos de uso del componente Card con diferentes contenidos.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Card con contenido personalizado</div>
+                    <div class="dsu-card">
+                        <p class="dsu-card__title">Nuevo proyecto</p>
+                        <p class="dsu-card__body">Crea un nuevo proyecto desde cero</p>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Card interactiva (hover para ver elevation)</div>
+                    <div class="dsu-card">
+                        <p class="dsu-card__title">Mi proyecto</p>
+                        <p class="dsu-card__body">Descripción del proyecto aquí</p>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Card como enlace</div>
+                    <a href="#" class="dsu-card dsu-card--clickable">
+                        <p class="dsu-card__title">Proyecto activo</p>
+                        <p class="dsu-card__body">Haz clic para abrir</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente Card.
+            </p>
+            
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Width</td>
+                        <td>272px</td>
+                    </tr>
+                    <tr>
+                        <td>Height</td>
+                        <td>117px</td>
+                    </tr>
+                    <tr>
+                        <td>Padding</td>
+                        <td>24px</td>
+                    </tr>
+                    <tr>
+                        <td>Border Radius</td>
+                        <td>8px</td>
+                    </tr>
+                    <tr>
+                        <td>Border</td>
+                        <td>1px solid var(--color-basics-mid-blue)</td>
+                    </tr>
+                    <tr>
+                        <td>Background</td>
+                        <td>var(--color-surface-regular)</td>
+                    </tr>
+                    <tr>
+                        <td>Gap (between title and body)</td>
+                        <td>8px</td>
+                    </tr>
+                    <tr>
+                        <td>Title Font</td>
+                        <td>Lato, 24px, ExtraBold (800), line-height: normal</td>
+                    </tr>
+                    <tr>
+                        <td>Body Font</td>
+                        <td>Lato, 16px, Regular (400), line-height: 1.5</td>
+                    </tr>
+                    <tr>
+                        <td>Text Color</td>
+                        <td>var(--color-text-primary)</td>
+                    </tr>
+                    <tr>
+                        <td>Default Box Shadow</td>
+                        <td>none</td>
+                    </tr>
+                    <tr>
+                        <td>Hover Box Shadow</td>
+                        <td>var(--button-secondary-elevation-hover) - 0px 2px 4px 0px rgba(10, 36, 63, 0.15)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Profile Cards -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Profile Cards</h2>
+            <p class="variant-section__description">
+                Tarjetas de perfil de usuario con imagen, nombre, cargo y información de contacto. 
+                Basado en el diseño exacto de Figma Components.
+            </p>
+            
+            <div class="cards-grid">
+                <div class="card-demo">
+                    <div class="card-demo__title">Profile Card</div>
+                    <div class="dsu-profile-card">
+                        <div class="dsu-profile-card__image-wrapper">
+                            <img src="../../images/image_level.png" alt="Profile" class="dsu-profile-card__image">
+                            <button class="dsu-profile-card__edit-button">
+                                <img src="../../images/Edit.svg" alt="Edit" class="dsu-profile-card__edit-icon">
+                            </button>
+                        </div>
+                        <div class="dsu-profile-card__content">
+                            <div class="dsu-profile-card__name-job">
+                                <p class="dsu-profile-card__name">Katharina Rainer</p>
+                                <p class="dsu-profile-card__job">Sr Design especialyst</p>
+                            </div>
+                            <div class="dsu-profile-card__contact">
+                                <div class="dsu-profile-card__contact-item">
+                                    <img src="../../images/mail.svg" alt="Mail" class="dsu-profile-card__contact-icon">
+                                    <a href="mailto:email@email.com" class="dsu-profile-card__contact-text dsu-profile-card__contact-link">email@email.com</a>
+                                </div>
+                                <div class="dsu-profile-card__contact-item">
+                                    <img src="../../images/whatsapp.svg" alt="WhatsApp" class="dsu-profile-card__contact-icon">
+                                    <p class="dsu-profile-card__contact-text">+57 322 206 5854</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-demo">
+                    <div class="card-demo__title">Profile Avatar</div>
+                    <div class="dsu-profile-avatar">
+                        <img src="../../images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon">
+                        <button class="dsu-profile-avatar__edit-button">
+                            <img src="../../images/plus.svg" alt="Add" class="dsu-profile-avatar__edit-icon">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Card Examples -->
+            <div class="demo-container" style="margin-top: var(--spacing-24);">
+                <div class="demo-item">
+                    <div class="demo-item__label">Ejemplo: Multiple Profile Cards</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-24);">
+                        <div class="dsu-profile-card">
+                            <div class="dsu-profile-card__image-wrapper">
+                                <img src="../../images/image_level.png" alt="Profile" class="dsu-profile-card__image">
+                                <button class="dsu-profile-card__edit-button">
+                                    <img src="../../images/Edit.svg" alt="Edit" class="dsu-profile-card__edit-icon">
+                                </button>
+                            </div>
+                            <div class="dsu-profile-card__content">
+                                <div class="dsu-profile-card__name-job">
+                                    <p class="dsu-profile-card__name">Juan Pérez</p>
+                                    <p class="dsu-profile-card__job">Developer</p>
+                                </div>
+                                <div class="dsu-profile-card__contact">
+                                    <div class="dsu-profile-card__contact-item">
+                                        <img src="../../images/mail.svg" alt="Mail" class="dsu-profile-card__contact-icon">
+                                        <a href="mailto:juan@email.com" class="dsu-profile-card__contact-text dsu-profile-card__contact-link">juan@email.com</a>
+                                    </div>
+                                    <div class="dsu-profile-card__contact-item">
+                                        <img src="../../images/whatsapp.svg" alt="WhatsApp" class="dsu-profile-card__contact-icon">
+                                        <p class="dsu-profile-card__contact-text">+57 300 123 4567</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dsu-profile-avatar">
+                            <img src="../../images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon">
+                            <button class="dsu-profile-avatar__edit-button">
+                                <img src="../../images/plus.svg" alt="Add" class="dsu-profile-avatar__edit-icon">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

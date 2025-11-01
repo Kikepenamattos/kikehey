@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Stages Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="task-stages.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-24);
+            margin-top: var(--spacing-24);
+        }
+        
+        .stage-demo {
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+        }
+        
+        .stage-demo__title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-12);
+            color: var(--color-text-primary);
+        }
+        
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            margin-top: var(--spacing-24);
+        }
+        
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+        
+        .demo-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Task Stages Component</h1>
+            <p class="component-doc__description">
+                Componente para mostrar los estados de las etapas de tareas: Pending approval, Approved y Rejected.
+                Basado en el diseño exacto de Figma Components.
+            </p>
+        </div>
+        
+        <!-- Task Stages Variants -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Task Stages Variants</h2>
+            <p class="variant-section__description">
+                Tres variantes de estados para las etapas de tareas, cada una con su color de fondo específico.
+            </p>
+            
+            <div class="stages-grid">
+                <div class="stage-demo">
+                    <div class="stage-demo__title">Pending approval</div>
+                    <div class="dsu-task-stages dsu-task-stages--pending-approval">
+                        <span class="dsu-task-stages__text">Pending approval</span>
+                    </div>
+                </div>
+                
+                <div class="stage-demo">
+                    <div class="stage-demo__title">Approved</div>
+                    <div class="dsu-task-stages dsu-task-stages--approved">
+                        <span class="dsu-task-stages__text">Approved</span>
+                    </div>
+                </div>
+                
+                <div class="stage-demo">
+                    <div class="stage-demo__title">Rejected</div>
+                    <div class="dsu-task-stages dsu-task-stages--rejected">
+                        <span class="dsu-task-stages__text">Rejected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Examples</h2>
+            <p class="variant-section__description">
+                Ejemplos de uso del componente Task Stages.
+            </p>
+            
+            <div class="demo-container">
+                <div class="demo-item">
+                    <div class="demo-item__label">Pending approval Stage</div>
+                    <div class="dsu-task-stages dsu-task-stages--pending-approval">
+                        <span class="dsu-task-stages__text">Pending approval</span>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Approved Stage</div>
+                    <div class="dsu-task-stages dsu-task-stages--approved">
+                        <span class="dsu-task-stages__text">Approved</span>
+                    </div>
+                </div>
+                
+                <div class="demo-item">
+                    <div class="demo-item__label">Rejected Stage</div>
+                    <div class="dsu-task-stages dsu-task-stages--rejected">
+                        <span class="dsu-task-stages__text">Rejected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Specifications -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Specifications</h2>
+            <p class="variant-section__description">
+                Especificaciones técnicas del componente Task Stages.
+            </p>
+            
+            <table class="specs-table" style="width: 100%; border-collapse: collapse; margin-top: var(--spacing-24);">
+                <thead>
+                    <tr>
+                        <th style="padding: var(--spacing-12); text-align: left; border-bottom: 1px solid var(--color-basics-gray); background: var(--color-surface-especial); font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">Property</th>
+                        <th style="padding: var(--spacing-12); text-align: left; border-bottom: 1px solid var(--color-basics-gray); background: var(--color-surface-especial); font-weight: var(--font-weight-bold); font-size: var(--font-size-sm);">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Width</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">138px</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Padding</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">8px vertical, 16px horizontal</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Border Radius</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">40px</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Font</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Lato, 14px, Regular (400)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Text Color</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">Dark Blue (#0a243f)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm);">Background Colors</td>
+                        <td style="padding: var(--spacing-12); border-bottom: 1px solid var(--color-basics-gray); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                            Pending approval: #efefef<br>
+                            Approved: #3be4a9<br>
+                            Rejected: #ff9393
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="button.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .buttons-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .buttons-table__header {
+            background: var(--color-surface-especial);
+            border-bottom: 2px solid var(--color-basics-gray);
+        }
+        
+        .buttons-table__header-row {
+            display: grid;
+            grid-template-columns: 150px repeat(4, 1fr);
+            gap: var(--spacing-16);
+            padding: var(--spacing-16);
+            align-items: center;
+        }
+        
+        .buttons-table__header-cell {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+        
+        .buttons-table__header-cell:first-child {
+            text-align: left;
+        }
+        
+        .buttons-table__body {
+            display: block;
+        }
+        
+        .buttons-table__row {
+            display: grid;
+            grid-template-columns: 150px repeat(4, 1fr);
+            gap: var(--spacing-16);
+            padding: var(--spacing-16);
+            align-items: center;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+        
+        .buttons-table__row:last-child {
+            border-bottom: none;
+        }
+        
+        .buttons-table__size-label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            text-align: left;
+        }
+        
+        .buttons-table__cell {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .buttons-table__button-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        
+        .variant-item {
+            max-width: 100%;
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .code-example {
+            background: var(--color-basics-dark-blue);
+            color: var(--color-basics-white);
+            padding: var(--spacing-16);
+            border-radius: var(--radius-md);
+            font-family: 'Courier New', monospace;
+            font-size: var(--font-size-sm);
+            overflow-x: auto;
+        }
+        
+        .code-example pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .variant-section__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+            margin-bottom: var(--spacing-24);
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Button Component</h1>
+            <p class="component-doc__description">
+                Sistema de botones con múltiples variaciones de tamaño, tipo y estado.
+                Basado en el diseño exacto de Figma Components. Todos los tamaños, espaciados y estados coinciden exactamente con el archivo de diseño.
+            </p>
+        </div>
+        
+        <!-- Primary Buttons -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Primary Buttons</h2>
+            
+            <table class="buttons-table">
+                <thead class="buttons-table__header">
+                    <tr class="buttons-table__header-row">
+                        <th class="buttons-table__header-cell">Size</th>
+                        <th class="buttons-table__header-cell">Default</th>
+                        <th class="buttons-table__header-cell">Hover</th>
+                        <th class="buttons-table__header-cell">Pressed</th>
+                        <th class="buttons-table__header-cell">Disabled</th>
+                    </tr>
+                </thead>
+                <tbody class="buttons-table__body">
+                    <!-- X-Small: 36px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">x-small (36px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--x-small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--x-small" style="background-color: var(--color-button-primary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--x-small is-pressed" style="background-color: var(--color-button-primary-bg-pressed);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--x-small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Small: 37px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">small (37px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--small" style="background-color: var(--color-button-primary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--small is-pressed" style="background-color: var(--color-button-primary-bg-pressed);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Medium: 48px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">medium (48px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--medium">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--medium" style="background-color: var(--color-button-primary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--medium is-pressed" style="background-color: var(--color-button-primary-bg-pressed);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--medium" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Large: 59px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">large (59px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--large">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--large" style="background-color: var(--color-button-primary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--large is-pressed" style="background-color: var(--color-button-primary-bg-pressed);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--primary dsu-button--large" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Secondary Buttons -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Secondary Buttons</h2>
+            
+            <table class="buttons-table">
+                <thead class="buttons-table__header">
+                    <tr class="buttons-table__header-row">
+                        <th class="buttons-table__header-cell">Size</th>
+                        <th class="buttons-table__header-cell">Default</th>
+                        <th class="buttons-table__header-cell">Hover</th>
+                        <th class="buttons-table__header-cell">Pressed</th>
+                        <th class="buttons-table__header-cell">Disabled</th>
+                    </tr>
+                </thead>
+                <tbody class="buttons-table__body">
+                    <!-- X-Small: 36px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">x-small (36px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--x-small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--x-small" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--x-small is-pressed" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--x-small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Small: 37px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">small (37px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small is-pressed" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Medium: 48px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">medium (48px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--medium">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--medium" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--medium is-pressed" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--medium" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Large: 59px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">large (59px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--large">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--large" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--large is-pressed" style="background-color: var(--color-surface-regular); border-color: var(--color-button-secondary-bg-hover);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--secondary dsu-button--large" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Tertiary Buttons -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Tertiary Buttons</h2>
+            
+            <table class="buttons-table">
+                <thead class="buttons-table__header">
+                    <tr class="buttons-table__header-row">
+                        <th class="buttons-table__header-cell">Size</th>
+                        <th class="buttons-table__header-cell">Default</th>
+                        <th class="buttons-table__header-cell">Hover</th>
+                        <th class="buttons-table__header-cell">Pressed</th>
+                        <th class="buttons-table__header-cell">Disabled</th>
+                    </tr>
+                </thead>
+                <tbody class="buttons-table__body">
+                    <!-- X-Small: 36px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">x-small (36px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--x-small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--x-small" style="background-color: var(--color-surface-especial);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--x-small is-pressed" style="background-color: var(--color-basics-gray);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--x-small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Small: 37px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">small (37px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--small">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--small" style="background-color: var(--color-surface-especial);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--small is-pressed" style="background-color: var(--color-basics-gray);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--small" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Medium: 48px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">medium (48px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" style="background-color: var(--color-surface-especial);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium is-pressed" style="background-color: var(--color-basics-gray);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Large: 59px -->
+                    <tr class="buttons-table__row">
+                        <td class="buttons-table__size-label">large (59px)</td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--large">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--large" style="background-color: var(--color-surface-especial);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--large is-pressed" style="background-color: var(--color-basics-gray);">
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="buttons-table__cell">
+                            <div class="buttons-table__button-container">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--large" disabled>
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                    button
+                                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Access Buttons -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Access Buttons</h2>
+            
+            <div class="variant-grid">
+                <div class="variant-row">
+                    <div class="variant-row__label">medium (48px)</div>
+                    <div class="variant-items">
+                        <div class="state-label">Default:</div>
+                        <button class="dsu-button dsu-button--access dsu-button--medium">
+                            <span class="dsu-button__icon"><img src="../../images/Google.svg" alt="Google"></span>
+                            Continuar con Google
+                        </button>
+                        <div class="state-label">Hover:</div>
+                        <button class="dsu-button dsu-button--access dsu-button--medium" style="background-color: var(--color-surface-especial); border-color: var(--color-basics-dark-blue);">
+                            <span class="dsu-button__icon"><img src="../../images/Google.svg" alt="Google"></span>
+                            Continuar con Google
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sticky Buttons -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Sticky Buttons</h2>
+            <p class="variant-section__description">
+                Componente de botones pegados a la parte inferior de la pantalla. Típicamente usado para acciones principales en formularios o pantallas de edición.
+                <br><br>
+                <strong>Nota:</strong> Este componente usa <code>position: sticky</code> y se mantendrá fijo en la parte inferior cuando se implemente en un layout con scroll. El contenedor padre debe tener altura suficiente para que el efecto sticky funcione correctamente.
+            </p>
+            
+            <div class="variant-item" style="margin-top: var(--spacing-24);">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Ejemplo
+                </h3>
+                <div class="dsu-sticky-buttons">
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button">
+                        Save draft
+                    </button>
+                    <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button">
+                        Publish
+                    </button>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código de implementación:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;!-- El contenedor padre debe tener altura suficiente para que sticky funcione --&gt;
+&lt;div style="min-height: 100vh;"&gt;
+  &lt;!-- Contenido de la página --&gt;
+  
+  &lt;!-- Sticky buttons al final --&gt;
+  &lt;div class="dsu-sticky-buttons"&gt;
+    &lt;button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button"&gt;
+      Save draft
+    &lt;/button&gt;
+    &lt;button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button"&gt;
+      Publish
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Usage Examples -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Usage Examples</h2>
+            <div class="variant-items">
+                <button class="dsu-button dsu-button--primary dsu-button--medium">
+                    <span class="dsu-button__icon"><img src="../../images/right-chevron.svg" alt=""></span>
+                    Log in
+                </button>
+                <button class="dsu-button dsu-button--secondary dsu-button--medium">
+                    Cancel
+                    <span class="dsu-button__icon"><img src="../../images/close.svg" alt=""></span>
+                </button>
+                <button class="dsu-button dsu-button--tertiary dsu-button--medium">
+                    Learn more
+                </button>
+                <button class="dsu-button dsu-button--access dsu-button--medium">
+                    <span class="dsu-button__icon"><img src="../../images/Google.svg" alt="Google"></span>
+                    Continuar con Google
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

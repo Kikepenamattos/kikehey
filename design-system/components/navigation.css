@@ -1,0 +1,528 @@
+/* ==========================================
+   NAVIGATION COMPONENT - Design System Docu
+   Basado en Figma Components
+   Sidebar funcional con todas sus variantes
+   ========================================== */
+
+/* === SIDEBAR CONTAINER === */
+.dsu-sidebar {
+  background-color: var(--color-surface-regular);
+  border-right: 1px solid var(--color-basics-gray);
+  padding: 64px 24px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: relative;
+  height: 100vh;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, border-right-color 0.2s ease;
+}
+
+[data-theme="dark"] .dsu-sidebar {
+  background-color: var(--color-basics-dark-blue);
+  border-right-color: var(--color-basics-gray);
+}
+
+/* === SIDEBAR MAIN === */
+.dsu-sidebar__main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* === LOGO CONTAINER === */
+.dsu-sidebar__logo-container {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* === LOGO === */
+.dsu-sidebar__logo {
+  width: 97.333px;
+  height: 26.773px;
+  display: block;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dsu-sidebar__logo:hover {
+  opacity: 0.8;
+}
+
+.dsu-sidebar__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* === NAVIGATION WRAPPER === */
+.dsu-sidebar__navigation-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  justify-content: space-between;
+}
+
+/* === NAVIGATION MAIN === */
+.dsu-sidebar__navigation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* === NAVIGATION BUTTON === */
+.dsu-nav-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.dsu-nav-button:hover:not(:disabled),
+.dsu-nav-button--hover {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-nav-button--active,
+.dsu-nav-button.active {
+  background-color: var(--color-surface-especial);
+  text-decoration: underline;
+}
+
+.dsu-nav-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* === NAVIGATION BUTTON ICON === */
+.dsu-nav-button__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-nav-button__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* === NAVIGATION BUTTON TEXT === */
+.dsu-nav-button__text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+/* === TEAMS BUTTON WITH CHEVRON === */
+.dsu-teams-level {
+  display: flex;
+  gap: var(--spacing-16);
+  align-items: center;
+  width: 100%;
+}
+
+.dsu-teams-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 0;
+  text-align: left;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.dsu-teams-button:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-teams-button--active,
+.dsu-teams-button.active {
+  background-color: var(--color-surface-especial);
+  text-decoration: underline;
+}
+
+/* El chevron se rota automáticamente cuando cambia la imagen a up-chevron.svg */
+/* No necesitamos rotación adicional porque usamos imágenes diferentes */
+
+.dsu-teams-button__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dsu-teams-button__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dsu-teams-chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dsu-teams-chevron {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dsu-teams-chevron img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* === TEAMS DROPDOWN === */
+.dsu-teams-dropdown {
+  display: flex;
+  flex-direction: column;
+  padding-left: 29px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dsu-teams-dropdown--expanded {
+  max-height: 1000px;
+  opacity: 1;
+  padding-top: var(--spacing-08);
+  padding-bottom: 0;
+  transition: max-height 0.4s ease-in, opacity 0.3s ease-in 0.1s, padding 0.3s ease-in;
+}
+
+.dsu-teams-create {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: var(--spacing-08);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 600; /* SemiBold */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.dsu-teams-create__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-teams-create__icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+.dsu-teams-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08); /* Espaciado entre items de la lista */
+  width: 100%;
+  max-width: 100%;
+}
+
+.dsu-team-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 124px;
+  text-align: center;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular); /* Regular 400 */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  margin-bottom: 0;
+}
+
+.dsu-team-item:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-team-item--active,
+.dsu-team-item.active {
+  text-decoration: underline;
+}
+
+.dsu-team-item__text {
+  white-space: nowrap;
+}
+
+/* === PROJECTS BUTTON === */
+.dsu-projects-button {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08);
+}
+
+.dsu-projects-level {
+  display: flex;
+  gap: var(--spacing-08);
+  align-items: center;
+  width: 100%;
+}
+
+.dsu-projects-button__trigger {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 0;
+  text-align: left;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.dsu-projects-button__trigger:hover:not(:disabled),
+.dsu-projects-button__trigger--hover {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-projects-button__trigger--active {
+  background-color: var(--color-surface-especial);
+  text-decoration: underline;
+}
+
+.dsu-projects-button__left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+  flex: 1;
+}
+
+.dsu-projects-button__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-projects-button__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dsu-projects-button__text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+
+.dsu-projects-chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dsu-projects-chevron {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dsu-projects-chevron img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* El chevron se rota automáticamente cuando cambia la imagen a up-chevron.svg */
+/* No necesitamos rotación adicional porque usamos imágenes diferentes */
+
+/* === PROJECTS DROPDOWN === */
+.dsu-projects-dropdown {
+  display: flex;
+  flex-direction: column;
+  padding-left: 29px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dsu-projects-dropdown--expanded {
+  max-height: 1000px;
+  opacity: 1;
+  padding-top: var(--spacing-08);
+  padding-bottom: 0;
+  transition: max-height 0.4s ease-in, opacity 0.3s ease-in 0.1s, padding 0.3s ease-in;
+}
+
+.dsu-projects-create {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: var(--spacing-08);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 600; /* SemiBold */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+}
+
+.dsu-projects-create__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-projects-create__icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+.dsu-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dsu-project-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: var(--color-surface-regular);
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 124px;
+  text-align: center;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular); /* Regular 400 */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  margin-bottom: 0;
+}
+
+.dsu-project-item:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-project-item--active,
+.dsu-project-item.active {
+  text-decoration: underline;
+}
+
+.dsu-project-item__text {
+  white-space: nowrap;
+}
+
+
+/* === SIDEBAR FOOTER === */
+.dsu-sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-top: var(--spacing-16);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .dsu-sidebar {
+    width: 100%;
+    padding: var(--spacing-24);
+    min-height: auto;
+    height: auto;
+  }
+  
+  .dsu-projects-dropdown {
+    padding-left: var(--spacing-16);
+  }
+}
+

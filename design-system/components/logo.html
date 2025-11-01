@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="logo.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+        
+        .component-doc {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .component-doc__header {
+            margin-bottom: var(--spacing-48);
+        }
+        
+        .component-doc__title {
+            font-family: var(--font-family-primary);
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-black);
+            margin-bottom: var(--spacing-16);
+        }
+        
+        .component-doc__description {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            line-height: var(--line-height-normal);
+        }
+        
+        .variant-section {
+            margin-bottom: var(--spacing-48);
+            background: var(--color-surface-regular);
+            padding: var(--spacing-24);
+            border-radius: var(--radius-md);
+        }
+        
+        .variant-section__title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .variant-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-24);
+        }
+        
+        .variant-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+        
+        .variant-item__label {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-secondary);
+        }
+        
+        .variant-item__preview {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-24);
+            padding: var(--spacing-24);
+            background: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+        }
+        
+        .size-info {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Logo Component</h1>
+            <p class="component-doc__description">
+                Componente de logo con tres variantes de tamaño según el diseño de Figma.
+            </p>
+        </div>
+        
+        <div class="variant-section">
+            <h2 class="variant-section__title">Variants</h2>
+            
+            <div class="variant-grid">
+                <!-- Default -->
+                <div class="variant-item">
+                    <div class="variant-item__label">Default (131px × 43px)</div>
+                    <div class="variant-item__preview">
+                        <a href="#" class="dsu-logo dsu-logo--default">
+                            <img src="../../images/Property 1=Default.svg" alt="Docu Logo" class="dsu-logo__image">
+                        </a>
+                        <span class="size-info">131px × 43px</span>
+                    </div>
+                </div>
+                
+                <!-- Icon -->
+                <div class="variant-item">
+                    <div class="variant-item__label">Icon (40px × 43px)</div>
+                    <div class="variant-item__preview">
+                        <a href="#" class="dsu-logo dsu-logo--icon">
+                            <img src="../../images/Property 1=icon.svg" alt="Docu Logo Icon" class="dsu-logo__image">
+                        </a>
+                        <span class="size-info">40px × 43px</span>
+                    </div>
+                </div>
+                
+                <!-- Small -->
+                <div class="variant-item">
+                    <div class="variant-item__label">Small (97px × 32px)</div>
+                    <div class="variant-item__preview">
+                        <a href="#" class="dsu-logo dsu-logo--small">
+                            <img src="../../images/Property 1=small.svg" alt="Docu Logo Small" class="dsu-logo__image">
+                        </a>
+                        <span class="size-info">97px × 32px</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Usage Example -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Usage Example</h2>
+            <div style="padding: var(--spacing-24); background: var(--color-surface-regular); border-radius: var(--radius-md);">
+                <div class="dsu-logo dsu-logo--default">
+                    <img src="../../images/Property 1=Default.svg" alt="Docu Logo" class="dsu-logo__image">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

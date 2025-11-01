@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Members Component - Design System</title>
+    <link rel="stylesheet" href="../tokens/index.css">
+    <link rel="stylesheet" href="button.css">
+    <style>
+        body {
+            font-family: var(--font-family-secondary);
+            padding: var(--spacing-48);
+            background-color: var(--color-surface-especial);
+            color: var(--color-text-primary);
+        }
+
+        .component-doc { max-width: 1400px; margin: 0 auto; }
+        .component-doc__header { margin-bottom: var(--spacing-48); }
+        .component-doc__title { font-family: var(--font-family-primary); font-size: var(--font-size-2xl); font-weight: var(--font-weight-black); margin-bottom: var(--spacing-16); }
+        .component-doc__description { font-size: var(--font-size-base); color: var(--color-text-secondary); }
+
+        .variant-section { margin-bottom: var(--spacing-48); background: var(--color-surface-regular); padding: var(--spacing-24); border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 8px; }
+        .variant-section__title { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-24); }
+        .variant-section__description { font-size: var(--font-size-base); color: var(--color-text-secondary); margin-bottom: var(--spacing-24); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--spacing-24); margin-top: var(--spacing-24); }
+        .demo-card { border: 1px solid var(--color-basics-gray); border-radius: var(--radius-md); padding: 24px; background: var(--color-surface-especial); display: flex; flex-direction: column; gap: 8px; }
+        .demo-card__title { font-size: 14px; font-weight: var(--font-weight-black); color: var(--color-text-primary); }
+
+        /* Empty state chip */
+        .add-members-empty { display: inline-flex; align-items: center; gap: 8px; border: 1.5px dashed var(--color-basics-mid-blue); border-radius: 999px; padding: 12px 16px; cursor: pointer; user-select: none; background: var(--color-surface-regular); }
+        .add-members-empty:hover { background: var(--color-surface-especial); }
+        .add-members-empty__icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+        .add-members-empty__text { font-family: var(--font-family-secondary); font-size: 16px; font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+
+        /* Members list */
+        .members-list { display: flex; align-items: center; gap: var(--spacing-12); flex-wrap: wrap; }
+        .member-pill { display: inline-flex; align-items: center; gap: var(--spacing-08); padding: var(--spacing-06) var(--spacing-12); border: 1px solid var(--color-basics-mid-blue); border-radius: var(--radius-xl); background: var(--color-surface-regular); }
+        .member-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--color-status-to-start); display: inline-block; overflow: hidden; }
+        .member-name { font-size: var(--font-size-sm); color: var(--color-text-primary); }
+
+        /* Overlapped avatars row (Figma style) */
+        /* SMALL VARIANT (FIGMA) */
+        .avatars-row { display: inline-flex; align-items: center; }
+        .avatar { position: relative; width: 48px; height: 48px; border-radius: 50%; background: #fff; border: 1px solid #ffffff; box-shadow: 0 0 0 1px rgba(10,36,63,.15); cursor: pointer; }
+        .avatar + .avatar { margin-left: -12px; }
+        .avatar__ring { display: none; }
+        .avatar__img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+        .avatar:focus-visible { outline: 2px solid var(--color-basics-dark-blue); outline-offset: 2px; }
+
+        /* Overflow badge starting from 6th member */
+        .avatars-overflow { width: 48px; height: 48px; border-radius: 50%; background: var(--color-surface-especial); border: 1px solid #ffffff; box-shadow: 0 0 0 1px rgba(10,36,63,.15); display: inline-flex; align-items: center; justify-content: center; color: #0A243F; font-family: var(--font-family-secondary); font-weight: var(--font-weight-bold); font-size: 14px; margin-left: -12px; }
+
+        /* Outline CTA like Figma */
+        .add-cta { display: inline-flex; align-items: center; gap: 12px; padding: 12px 24px; height: 56px; border: 2px solid var(--color-basics-dark-blue); border-radius: 28px; background: transparent; color: var(--color-basics-dark-blue); font-weight: var(--font-weight-bold); font-size: 18px; cursor: pointer; }
+        .add-cta__icon { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; }
+        .add-cta:hover { background: var(--color-surface-especial); }
+
+        /* Layout row */
+        .with-members-row { display: flex; align-items: center; width: 343px; }
+        .with-members-row__left { display: flex; align-items: center; gap: 8px; }
+
+        /* Team header (large) */
+        .team-header__title { font-family: var(--font-family-secondary); font-size: 14px; font-weight: var(--font-weight-bold); color: #0A243F; /* margin-bottom: var(--spacing-24); */ }
+        /* HEADER VARIANT (replicate small pattern) */
+        .team-header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 343px; }
+        .team-add-dashed { width: 48px; height: 48px; border-radius: 50%; border: 1.5px dashed #6b7b8a; display: inline-flex; align-items: center; justify-content: center; color: #6b7b8a; font-size: 24px; line-height: 1; flex-shrink: 0; cursor: pointer; background: #fff; }
+        .team-add-label { font-family: var(--font-family-secondary); font-size: 12px; font-weight: var(--font-weight-regular); color: #0A243F; margin-left: 8px; }
+        .team-add-cta { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: none; padding: 0; cursor: pointer; margin-left: -12px; position: relative; z-index: 2; }
+
+        /* Placeholder modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal { background: var(--color-surface-regular); border-radius: var(--radius-md); border: 1px solid var(--color-basics-gray); width: min(520px, 92vw); padding: var(--spacing-24); box-shadow: var(--elevation-3); }
+        .modal__title { font-family: var(--font-family-primary); font-size: var(--font-size-xl); font-weight: var(--font-weight-black); margin-bottom: var(--spacing-12); }
+        .modal__body { font-size: var(--font-size-base); color: var(--color-text-secondary); margin-bottom: var(--spacing-24); }
+        .modal__actions { display: flex; justify-content: flex-end; gap: var(--spacing-08); }
+    </style>
+</head>
+<body>
+    <div class="component-doc">
+        <div class="component-doc__header">
+            <h1 class="component-doc__title">Add Members</h1>
+            <p class="component-doc__description">
+                Componente para agregar personas a un proyecto o equipo. Incluye la variable <strong>Empty</strong> (clic abre modal placeholder) y un ejemplo con miembros existentes.
+            </p>
+        </div>
+
+        <!-- Variables / States -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Variables</h2>
+            <p class="variant-section__description">Estados del componente según Figma.</p>
+
+            <div class="grid">
+                <!-- Empty -->
+                <div class="demo-card">
+                    <div class="demo-card__title">Empty</div>
+                    <button type="button" class="team-add-cta" aria-label="Add new team">
+                        <span class="team-add-dashed">+</span>
+                        <span class="team-add-label">Add new team</span>
+                    </button>
+                    <small style="color: var(--color-text-secondary);">Al hacer clic se despliega un modal (placeholder).</small>
+                </div>
+
+                <!-- With Members -->
+                <div class="demo-card">
+                    <div class="demo-card__title">With members</div>
+                    <div class="with-members-row">
+                        <div class="with-members-row__left">
+                            <div class="avatars-row">
+                                <span class="avatar" role="button" tabindex="0" aria-label="member 1"><span class="avatar__ring"></span><img class="avatar__img" src="../../images/ellipse 1.png" alt="member 1"></span>
+                                <span class="avatar" role="button" tabindex="0" aria-label="member 2"><span class="avatar__ring"></span><img class="avatar__img" src="../../images/ellipse 2.png" alt="member 2"></span>
+                                <span class="avatar" role="button" tabindex="0" aria-label="member 3"><span class="avatar__ring"></span><img class="avatar__img" src="../../images/ellipse 3.png" alt="member 3"></span>
+                                <span class="avatar" role="button" tabindex="0" aria-label="member 4"><span class="avatar__ring"></span><img class="avatar__img" src="../../images/ellipse 4.png" alt="member 4"></span>
+                                <span class="avatar" role="button" tabindex="0" aria-label="member 5"><span class="avatar__ring"></span><img class="avatar__img" src="../../images/ellipse 5.png" alt="member 5"></span>
+                                <span class="avatars-overflow">+ 10</span>
+                            </div>
+                        </div>
+                        <button type="button" class="team-add-cta" id="addMoreBtn" aria-label="Add new">
+                            <span class="team-add-dashed">+</span>
+                            <span class="team-add-label">Add new</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placeholder modal -->
+    <div class="modal-overlay" id="addMembersModal">
+        <div class="modal">
+            <div class="modal__title">Add members</div>
+            <div class="modal__body">Modal de ejemplo (placeholder). Aquí podrás buscar y agregar personas. 
+                Este modal será reemplazado por la versión final.
+            </div>
+            <div class="modal__actions">
+                <button class="dsu-button dsu-button--secondary dsu-button--small" id="closeModalBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Header Variant (from Figma) -->
+    <div class="component-doc" style="margin-top: var(--spacing-48);">
+        <div class="variant-section">
+            <div class="team-header__title">Team name</div>
+            <div class="team-header-row">
+                <div class="with-members-row__left">
+                    <div class="avatars-row">
+                        <span class="avatar"><img class="avatar__img" src="../../images/ellipse 1.png" alt="member 1"></span>
+                        <span class="avatar"><img class="avatar__img" src="../../images/ellipse 2.png" alt="member 2"></span>
+                        <span class="avatar"><img class="avatar__img" src="../../images/ellipse 3.png" alt="member 3"></span>
+                        <span class="avatar"><img class="avatar__img" src="../../images/ellipse 4.png" alt="member 4"></span>
+                        <span class="avatar"><img class="avatar__img" src="../../images/ellipse 5.png" alt="member 5"></span>
+                        <span class="avatars-overflow">+ 10</span>
+                    </div>
+                </div>
+                <button type="button" class="team-add-cta" aria-label="Add new">
+                    <span class="team-add-dashed">+</span>
+                    <span class="team-add-label">Add new</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Simple placeholder interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            const emptyChip = document.getElementById('addMembersEmpty');
+            const modal = document.getElementById('addMembersModal');
+            const closeBtn = document.getElementById('closeModalBtn');
+            const addMore = document.getElementById('addMoreBtn');
+            const smallRow = document.querySelector('.with-members-row .avatars-row');
+            const headerRow = document.querySelector('.team-header-row .avatars-row');
+
+            function updateOverflow(row) {
+                if (!row) return;
+                const avatars = Array.from(row.querySelectorAll('.avatar'));
+                const maxVisible = 5;
+                const existingBadge = row.querySelector('.avatars-overflow');
+
+                // Reset visibility
+                avatars.forEach((a, idx) => { a.style.display = idx < maxVisible ? 'inline-flex' : 'none'; });
+
+                const extra = Math.max(0, avatars.length - maxVisible);
+                if (extra > 0) {
+                    if (existingBadge) {
+                        existingBadge.textContent = `+ ${extra}`;
+                    } else {
+                        const badge = document.createElement('span');
+                        badge.className = 'avatars-overflow';
+                        badge.textContent = `+ ${extra}`;
+                        // insert right after the 5th visible avatar
+                        const ref = avatars[Math.min(maxVisible - 1, avatars.length - 1)];
+                        ref.insertAdjacentElement('afterend', badge);
+                    }
+                } else if (existingBadge) {
+                    existingBadge.remove();
+                }
+            }
+
+            // Initialize overflow on load (solo en la variante compacta)
+            updateOverflow(smallRow);
+
+            if (emptyChip) {
+                emptyChip.addEventListener('click', function() {
+                    modal.style.display = 'flex';
+                });
+            }
+
+            // Add buttons (icon + label) trigger modal
+            document.querySelectorAll('.team-add-cta, .team-add-dashed, .team-add-label').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    modal.style.display = 'flex';
+                });
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
+
+

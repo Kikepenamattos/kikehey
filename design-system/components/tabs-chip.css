@@ -1,0 +1,67 @@
+/* ==========================================
+   TABS / CHIP COMPONENT - Design System Docu
+   Basado en Figma Components
+   Componente chip/tab con estados Active e Inactive
+   ========================================== */
+
+/* === CHIP BASE === */
+.dsu-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: var(--spacing-08) var(--spacing-16);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family-secondary);
+  font-size: 13px;
+  font-weight: var(--font-weight-regular);
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* === ACTIVE STATE === */
+.dsu-chip--active {
+  background-color: var(--color-basics-dark-blue);
+  color: var(--color-surface-regular);
+}
+
+.dsu-chip--active:hover {
+  background-color: var(--color-basics-dark-blue);
+  opacity: 0.9;
+}
+
+/* === INACTIVE STATE === */
+.dsu-chip--inactive {
+  background-color: var(--color-status-disabled);
+  color: var(--color-text-primary);
+}
+
+.dsu-chip--inactive:hover {
+  background-color: var(--color-status-to-start-hover);
+}
+
+/* === CHIP TEXT === */
+.dsu-chip__text {
+  flex-shrink: 0;
+}
+
+/* === DARK MODE SUPPORT === */
+[data-theme="dark"] .dsu-chip--active {
+  background-color: var(--color-basics-dark-blue);
+  color: var(--color-surface-regular);
+}
+
+[data-theme="dark"] .dsu-chip--inactive {
+  background-color: var(--color-status-disabled);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .dsu-chip--inactive:hover {
+  background-color: var(--color-status-to-start-hover);
+}
+

@@ -1,0 +1,89 @@
+/* ==========================================
+   TYPOGRAPHY TOKENS - Design System Docu
+   Basado en Figma Components
+   ========================================== */
+
+@font-face {
+  font-family: 'Crimson Pro';
+  src: url('../../Fonts/Crimson_Pro/CrimsonPro-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../../Fonts/Lato/Lato-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../../Fonts/Lato/Lato-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../../Fonts/Lato/Lato-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../../Fonts/Lato/Lato-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('../../Fonts/Lato/Lato-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+:root {
+  /* === FONT FAMILIES === */
+  --font-family-primary: 'Crimson Pro', serif;
+  --font-family-secondary: 'Lato', sans-serif;
+  
+  /* === FONT SIZES === */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 48px;
+  
+  /* === FONT WEIGHTS === */
+  --font-weight-thin: 100;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+  --font-weight-extra-black: 900;
+  
+  /* === LINE HEIGHTS === */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* === TEXT STYLES === */
+  /* Label - Bold (Lato, 14px, 800) */
+  --text-label-bold: var(--font-family-secondary);
+  --text-label-bold-size: var(--font-size-sm);
+  --text-label-bold-weight: var(--font-weight-black);
+  --text-label-bold-line-height: 100%;
+  
+  /* Label - Regular (Lato, 14px, 400) */
+  --text-label-regular: var(--font-family-secondary);
+  --text-label-regular-size: var(--font-size-sm);
+  --text-label-regular-weight: var(--font-weight-regular);
+  --text-label-regular-line-height: 100%;
+}
+

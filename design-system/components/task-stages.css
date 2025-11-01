@@ -1,0 +1,44 @@
+/* ==========================================
+   TASK STAGES COMPONENT - Design System Docu
+   Basado en Figma Components
+   Task Stages: Pending approval, Approved, Rejected
+   ========================================== */
+
+/* === TASK STAGES === */
+.dsu-task-stages {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-08) var(--spacing-16);
+  border-radius: var(--radius-xl);
+  width: 138px;
+  box-sizing: border-box;
+}
+
+/* === TASK STAGES TEXT === */
+.dsu-task-stages__text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--color-basics-dark-blue);
+}
+
+/* === PENDING APPROVAL === */
+.dsu-task-stages--pending-approval {
+  background-color: var(--color-status-to-start);
+}
+
+/* === APPROVED === */
+.dsu-task-stages--approved {
+  background-color: var(--color-status-done);
+  width: 135px;
+}
+
+/* === REJECTED === */
+.dsu-task-stages--rejected {
+  background-color: var(--color-status-light-red);
+}
+
