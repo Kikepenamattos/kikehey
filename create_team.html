@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Team - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .create-team-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenido Principal */
+        .team-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            margin-left: 260px; /* Ancho del sidebar */
+        }
+
+        .team-content {
+            flex: 1;
+            padding: 64px 173px 0 135px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Data Level - Formulario principal */
+        .data-level {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Name Level */
+        .name-level {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .project-name-group {
+            flex: 1;
+            max-width: 537px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-label {
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: var(--font-size-sm, 14px);
+            font-weight: var(--font-weight-black, 800);
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--color-basics-mid-blue, #6b7b8a);
+            border-radius: var(--radius-md, 8px);
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: var(--font-size-sm, 14px);
+            font-weight: var(--font-weight-regular, 400);
+            color: var(--color-text-primary, #0a243f);
+            background-color: var(--color-surface-regular, #ffffff);
+            min-height: 48px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-buttons-primary-bg-default, #9dff00);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        /* Primary Actions Level */
+        .primary-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .btn-share-team {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding: 8px 16px;
+            border: 1px solid var(--color-text-primary, #0a243f);
+            border-radius: 40px;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .btn-share-team:hover {
+            opacity: 0.8;
+        }
+
+        .btn-add-member {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--color-buttons-primary-bg-default, #9dff00);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .btn-add-member:hover {
+            background-color: #98f501;
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Cost Edit Level */
+        .cost-edit-level {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .team-cost-group {
+            flex: 1;
+            max-width: 537px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .btn-edit-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--color-surface-regular, #ffffff);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .btn-edit-group:hover {
+            opacity: 0.8;
+        }
+
+        /* Secondary Action Levels */
+        .secondary-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .search-input-group {
+            flex: 1;
+            max-width: 537px;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 0;
+            align-items: center;
+        }
+
+        .view-control-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--color-surface-regular, #ffffff);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .view-control-btn:hover {
+            opacity: 0.8;
+        }
+
+        .view-control-btn.active {
+            background-color: var(--color-surface-especial, #f4f7fb);
+        }
+
+        /* Associated Projects */
+        .associated-projects-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 537px;
+        }
+
+        /* Team Members Section */
+        .team-members-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .team-members-title {
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 24px;
+            font-weight: var(--font-weight-black, 800);
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+        }
+
+        .team-members-grid {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        /* Profile Card Placeholder */
+        .profile-card-placeholder {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-card-image {
+            width: 100%;
+            height: 200px;
+            background-color: var(--color-surface-especial, #f4f7fb);
+            border-radius: var(--radius-md, 8px);
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 8px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-card-image:hover {
+            background-color: #e8ecf1;
+        }
+
+        .profile-card-edit-icon {
+            width: 28px;
+            height: 28px;
+            background-color: var(--color-surface-regular, #ffffff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card-edit-icon img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .profile-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-card-name {
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 18px;
+            font-weight: var(--font-weight-black, 800);
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+        }
+
+        .profile-card-job {
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 14px;
+            font-weight: var(--font-weight-regular, 400);
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+        }
+
+        .profile-card-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .contact-item-text {
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 14px;
+            font-weight: var(--font-weight-regular, 400);
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        /* Sticky Buttons */
+        .sticky-buttons {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--color-surface-regular, #ffffff);
+            border-top: 1px solid var(--color-status-disabled, #efefef);
+            padding: 24px 173px 24px 135px;
+            display: flex;
+            gap: 24px;
+            z-index: 100;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-save-draft {
+            flex: 1;
+            max-width: 423.5px;
+            padding: 12px 24px;
+            border: 1px solid var(--color-text-primary, #0a243f);
+            border-radius: 40px;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .btn-save-draft:hover {
+            opacity: 0.8;
+        }
+
+        .btn-publish {
+            flex: 1;
+            max-width: 423.5px;
+            padding: 12px 24px;
+            background-color: var(--color-buttons-primary-bg-default, #9dff00);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .btn-publish:hover:not(:disabled) {
+            background-color: #98f501;
+        }
+
+        .btn-publish:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--color-status-disabled, #efefef);
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .team-content-wrapper {
+                margin-left: 0;
+            }
+
+            .team-content {
+                padding: 24px 16px;
+            }
+
+            .sticky-buttons {
+                padding: 16px;
+                flex-direction: column;
+            }
+
+            .btn-save-draft,
+            .btn-publish {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="create-team-container">
+        <!-- Sidebar Navigation -->
+        <nav class="dsu-sidebar">
+            <div class="dsu-sidebar__main">
+                <!-- Logo Container -->
+                <div class="dsu-sidebar__logo-container">
+                    <a href="#" class="dsu-sidebar__logo">
+                        <img src="images/logo.svg" alt="Docu Logo">
+                    </a>
+                </div>
+                
+                <!-- Navigation Wrapper -->
+                <div class="dsu-sidebar__navigation-wrapper">
+                    <!-- Navigation Main -->
+                    <div class="dsu-sidebar__navigation">
+                        <!-- Teams Level -->
+                        <div class="dsu-teams-level">
+                            <button class="dsu-teams-button dsu-teams-button--active">
+                                <span class="dsu-teams-button__icon">
+                                    <img src="images/team.svg" alt="Teams">
+                                </span>
+                                <span class="dsu-nav-button__text">Teams</span>
+                            </button>
+                            <div class="dsu-teams-chevron">
+                                <img src="images/down-chevron.svg" alt="Chevron">
+                            </div>
+                        </div>
+                        
+                        <!-- Teams Dropdown -->
+                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                            <button class="dsu-teams-create" id="createTeamBtn">
+                                <span>Create new team</span>
+                                <span class="dsu-teams-create__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
+                            <div class="dsu-teams-list" id="teamsList">
+                                <!-- Teams list se poblará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Projects Level -->
+                        <div class="dsu-projects-button">
+                            <div class="dsu-projects-level">
+                                <button class="dsu-projects-button__trigger">
+                                    <span class="dsu-projects-button__icon">
+                                        <img src="images/project.svg" alt="Projects">
+                                    </span>
+                                    <span class="dsu-projects-button__text">Projects</span>
+                                </button>
+                                <div class="dsu-projects-chevron">
+                                    <img src="images/down-chevron.svg" alt="Chevron">
+                                </div>
+                            </div>
+                            
+                            <!-- Projects Dropdown -->
+                            <div class="dsu-projects-dropdown">
+                                <!-- Projects list -->
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/avatar.svg" alt="Profile">
+                            </span>
+                            <span class="dsu-nav-button__text">Profile</span>
+                        </button>
+                        
+                        <!-- Feedback Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/chat.svg" alt="Feedback">
+                            </span>
+                            <span class="dsu-nav-button__text">Give us feedback</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="dsu-sidebar__footer">
+                        <button class="dsu-nav-button" id="darkModeBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/moon.svg" alt="Dark Mode">
+                            </span>
+                            <span class="dsu-nav-button__text">Dark mode</span>
+                        </button>
+                        <button class="dsu-nav-button" id="logoutBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/exit.svg" alt="Logout">
+                            </span>
+                            <span class="dsu-nav-button__text">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="team-content-wrapper">
+            <div class="team-content">
+                <!-- Data Level -->
+                <div class="data-level">
+                    <!-- Name Level -->
+                    <div class="name-level">
+                        <div class="project-name-group">
+                            <label class="input-label" for="projectName">Project name:</label>
+                            <input 
+                                type="text" 
+                                id="projectName" 
+                                class="form-input" 
+                                placeholder="Team name"
+                                autocomplete="off"
+                            >
+                        </div>
+                        <div class="primary-actions">
+                            <button class="btn-share-team" id="shareTeamBtn">
+                                <span>Share team</span>
+                                <img src="images/share.svg" alt="Share" class="btn-icon">
+                            </button>
+                            <button class="btn-add-member" id="addMemberBtn">
+                                <span>Add new member</span>
+                                <img src="images/plus.svg" alt="Plus" class="btn-icon">
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Cost Edit Level -->
+                    <div class="cost-edit-level">
+                        <div class="team-cost-group">
+                            <label class="input-label" for="teamCost">Team cost:</label>
+                            <input 
+                                type="text" 
+                                id="teamCost" 
+                                class="form-input" 
+                                placeholder="Automatically calculated from teammates income in USD"
+                                readonly
+                            >
+                        </div>
+                        <button class="btn-edit-group" id="editGroupBtn">
+                            <span>Edit group</span>
+                            <img src="images/Edit.svg" alt="Edit" class="btn-icon">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secondary Action Levels -->
+                <div class="secondary-actions">
+                    <div class="search-input-group">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            class="form-input" 
+                            placeholder="Missing someone? find it here."
+                        >
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
+                            <img src="images/grid.svg" alt="Grid" class="btn-icon">
+                        </button>
+                        <button class="view-control-btn" id="listViewBtn" title="List view">
+                            <img src="images/list.svg" alt="List" class="btn-icon">
+                        </button>
+                        <button class="view-control-btn" id="filtersBtn">
+                            <span>Filters</span>
+                            <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Associated Projects -->
+                <div class="associated-projects-group">
+                    <label class="input-label" for="associatedProjects">Associated projects:</label>
+                    <input 
+                        type="text" 
+                        id="associatedProjects" 
+                        class="form-input" 
+                        placeholder="Automatically calculated from teammates income in USD"
+                    >
+                </div>
+
+                <!-- Team Members Section -->
+                <div class="team-members-section">
+                    <h2 class="team-members-title">Team members</h2>
+                    <div class="team-members-grid" id="teamMembersGrid">
+                        <!-- Placeholder Profile Card -->
+                        <div class="profile-card-placeholder" id="addMemberCard">
+                            <div class="profile-card-image">
+                                <div class="profile-card-edit-icon">
+                                    <img src="images/plus.svg" alt="Add member">
+                                </div>
+                            </div>
+                            <div class="profile-card-content">
+                                <div>
+                                    <div class="profile-card-name">Name</div>
+                                    <div class="profile-card-job">Job posistion</div>
+                                </div>
+                                <div class="profile-card-contact">
+                                    <div class="contact-item">
+                                        <img src="images/mail.svg" alt="Email" class="contact-item-icon">
+                                        <span class="contact-item-text">emai</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <img src="images/whatsapp.svg" alt="Contact" class="contact-item-icon">
+                                        <span class="contact-item-text">Contact</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sticky Buttons -->
+            <div class="sticky-buttons">
+                <button class="btn-save-draft" id="saveDraftBtn">Save draft</button>
+                <button class="btn-publish" id="publishBtn" disabled>Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    <script>
+        // ============================================
+        // Verificación de Sesión
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si hay sesión activa
+            if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
+                // Redirigir al login si no hay sesión
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Inicializar la página
+            initCreateTeamPage();
+        });
+
+        // ============================================
+        // Inicialización
+        // ============================================
+        function initCreateTeamPage() {
+            // Esperar a que los scripts se carguen
+            if (typeof window.DocuAuth === 'undefined' || typeof window.DocuProjectData === 'undefined') {
+                setTimeout(initCreateTeamPage, 100);
+                return;
+            }
+
+            console.log('Inicializando create_team.html');
+
+            // Inicializar navegación del sidebar
+            initSidebarNavigation();
+
+            // Inicializar funcionalidad del formulario
+            initFormFunctionality();
+
+            // Cargar equipos en el sidebar
+            loadTeamsInSidebar();
+
+            // Cargar datos del proyecto actual si existe
+            loadCurrentProjectData();
+        }
+
+        // ============================================
+        // Sidebar Navigation
+        // ============================================
+        function initSidebarNavigation() {
+            // Teams Dropdown
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                button.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                        button.classList.remove('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-teams-dropdown--expanded');
+                        button.classList.add('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-teams-chevron')) {
+                    chevron.closest('.dsu-teams-chevron').addEventListener('click', function() {
+                        button.click();
+                    });
+                }
+            });
+
+            // Projects Dropdown
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                trigger.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                        trigger.classList.remove('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-projects-dropdown--expanded');
+                        trigger.classList.add('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-projects-chevron')) {
+                    chevron.closest('.dsu-projects-chevron').addEventListener('click', function() {
+                        trigger.click();
+                    });
+                }
+            });
+
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        DocuAuth.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // ============================================
+        // Form Functionality
+        // ============================================
+        let currentProjectId = null;
+        let currentProjectData = null;
+
+        function initFormFunctionality() {
+            const projectNameInput = document.getElementById('projectName');
+            const publishBtn = document.getElementById('publishBtn');
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+
+            // Validación: Habilitar/deshabilitar botón Publish
+            projectNameInput.addEventListener('input', function() {
+                const hasProjectName = projectNameInput.value.trim().length > 0;
+                publishBtn.disabled = !hasProjectName;
+            });
+
+            // Save Draft
+            saveDraftBtn.addEventListener('click', function() {
+                saveDraft();
+            });
+
+            // Publish
+            publishBtn.addEventListener('click', function() {
+                publishProject();
+            });
+        }
+
+        function saveDraft() {
+            const projectData = getFormData();
+            projectData.status = 'draft';
+            
+            if (!currentProjectId) {
+                currentProjectId = Date.now().toString();
+            }
+
+            saveProjectToStorage(currentProjectId, projectData);
+            console.log('Draft guardado');
+        }
+
+        function publishProject() {
+            const projectName = document.getElementById('projectName').value.trim();
+            
+            if (!projectName) {
+                alert('Por favor, ingresa un nombre para el proyecto');
+                return;
+            }
+
+            const projectData = getFormData();
+            projectData.name = projectName;
+            projectData.status = 'published';
+            projectData.publishedAt = Date.now();
+
+            if (!currentProjectId) {
+                currentProjectId = Date.now().toString();
+            }
+
+            projectData.id = currentProjectId;
+            projectData.createdAt = currentProjectId;
+            projectData.updatedAt = Date.now();
+
+            // Guardar proyecto
+            saveProjectToStorage(currentProjectId, projectData);
+
+            // Agregar al sidebar
+            addTeamToSidebar(projectData);
+
+            console.log('Proyecto publicado:', projectData);
+            
+            // Mostrar mensaje de éxito
+            alert('Proyecto publicado exitosamente');
+            
+            // Limpiar formulario para nuevo proyecto
+            clearForm();
+        }
+
+        function getFormData() {
+            return {
+                name: document.getElementById('projectName').value.trim(),
+                teamCost: document.getElementById('teamCost').value,
+                associatedProjects: document.getElementById('associatedProjects').value,
+                members: [], // Se puede expandir más adelante
+                searchQuery: document.getElementById('searchInput').value
+            };
+        }
+
+        function saveProjectToStorage(projectId, projectData) {
+            const projectDataObj = DocuProjectData.getProjectData() || { teams: [] };
+            
+            if (!projectDataObj.teams) {
+                projectDataObj.teams = [];
+            }
+
+            // Buscar si ya existe
+            const existingIndex = projectDataObj.teams.findIndex(t => t.id === projectId);
+            
+            if (existingIndex >= 0) {
+                projectDataObj.teams[existingIndex] = projectData;
+            } else {
+                projectDataObj.teams.push(projectData);
+            }
+
+            DocuProjectData.saveProjectData(projectDataObj);
+        }
+
+        function clearForm() {
+            document.getElementById('projectName').value = '';
+            document.getElementById('teamCost').value = '';
+            document.getElementById('associatedProjects').value = '';
+            document.getElementById('searchInput').value = '';
+            document.getElementById('publishBtn').disabled = true;
+            currentProjectId = null;
+            currentProjectData = null;
+        }
+
+        // ============================================
+        // Load Teams in Sidebar
+        // ============================================
+        function loadTeamsInSidebar() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            const projectData = DocuProjectData.getProjectData();
+            const teams = (projectData && projectData.teams) ? projectData.teams : [];
+
+            // Filtrar solo equipos publicados y ordenar por fecha (más reciente primero)
+            const publishedTeams = teams
+                .filter(team => team.status === 'published')
+                .sort((a, b) => (b.publishedAt || b.createdAt || 0) - (a.publishedAt || a.createdAt || 0));
+
+            // Limpiar lista
+            teamsList.innerHTML = '';
+
+            // Agregar equipos a la lista
+            publishedTeams.forEach(team => {
+                const teamItem = document.createElement('button');
+                teamItem.className = 'dsu-team-item';
+                teamItem.innerHTML = `<span class="dsu-team-item__text">${escapeHtml(team.name || 'Sin nombre')}</span>`;
+                teamItem.addEventListener('click', function() {
+                    loadProjectData(team.id);
+                });
+                teamsList.appendChild(teamItem);
+            });
+        }
+
+        function addTeamToSidebar(teamData) {
+            // Recargar la lista
+            loadTeamsInSidebar();
+        }
+
+        function loadCurrentProjectData() {
+            // Cargar datos si hay un proyecto en curso
+            // Por ahora dejamos esto para futuras implementaciones
+        }
+
+        // ============================================
+        // Utilities
+        // ============================================
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
+

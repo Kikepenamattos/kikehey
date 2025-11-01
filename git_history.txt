@@ -1,3 +1,5 @@
+c30eaf81ce0d3323fee9787f6c557937287631c3|Ubits|ubits@macbookpro.lan|2025-11-01 09:42:42 -0500|Add changelog documentation system
+960e9ef493c3d365e436dc76374ebd41129b9823|Ubits|ubits@macbookpro.lan|2025-11-01 09:39:19 -0500|Add changelog.html: Historial de cambios con fecha, hora y búsqueda
 163df4da778e7cac5698da7b55ad8ae7f7ffe9b4|Ubits|ubits@macbookpro.lan|2025-11-01 07:20:48 -0500|Add detailed push instructions
 a232cbda84702059458979c1067e5b0d1ed84653|Ubits|ubits@macbookpro.lan|2025-11-01 07:20:30 -0500|Add GitHub setup instructions
 e4b780e5ed954da01b9624f6f81dd87a0c9f9bcd|Ubits|ubits@macbookpro.lan|2025-11-01 07:11:24 -0500|Update: Complete Docu project with authentication, design system, and data persistence
