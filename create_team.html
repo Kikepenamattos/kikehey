@@ -187,6 +187,275 @@
             background-color: #98f501;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+        }
+
+        .modal-overlay.active {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .modal-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            animation: modalContainerFadeIn 0.3s ease;
+        }
+
+        @keyframes modalContainerFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .add-member-modal {
+            background: var(--color-basics-white);
+            border: 1px solid var(--color-basics-mid-blue);
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 856px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modal Header */
+        .modal-header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            line-height: normal;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s ease;
+            margin: 0;
+            margin-left: auto;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal-description {
+            font-family: var(--font-family-secondary);
+            font-size: 16px;
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modal Content */
+        .modal-content-wrapper {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .modal-profile-avatar {
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-inputs-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+            width: 424px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-row .modal-input-group {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-group {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+            width: 100%;
+        }
+
+        .modal-input-group .dsu-input-label {
+            font-weight: var(--font-weight-black);
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .modal-input-group .dsu-input-label span::after {
+            content: none;
+        }
+
+        .modal-input-group .dsu-input {
+            margin: 0;
+            padding: var(--spacing-12) var(--spacing-16);
+            width: 100%;
+            min-height: 48px;
+        }
+
+        /* Modal Buttons */
+        .modal-buttons-level {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            gap: 0;
+        }
+
+        .modal-cancel-btn,
+        .modal-add-btn {
+            width: 152px;
+            padding: 12px 24px;
+            height: auto;
+            min-height: 48px;
+            margin: 0;
+        }
+
+        .modal-cancel-btn .dsu-button__icon,
+        .modal-add-btn .dsu-button__icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .modal-cancel-btn .dsu-button__icon img,
+        .modal-add-btn .dsu-button__icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Avatar Preview in Modal */
+        .modal-avatar-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            z-index: 0;
+        }
+
+        .modal-profile-avatar .dsu-profile-avatar {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        /* Ensure avatar icon and preview are positioned correctly */
+        .modal-profile-avatar .dsu-profile-avatar__icon {
+            position: absolute;
+            top: var(--spacing-08);
+            left: var(--spacing-08);
+            z-index: 0;
+        }
+
         .btn-icon {
             width: 20px;
             height: 20px;
@@ -578,6 +847,120 @@
         </div>
     </div>
 
+    <!-- Add Member Modal -->
+    <div class="modal-overlay" id="addMemberModalOverlay">
+        <div class="modal-container">
+            <div class="add-member-modal">
+                <div class="modal-wrapper">
+                    <!-- Modal Header -->
+                    <div class="modal-header-section">
+                        <div class="modal-headline">
+                            <h2 class="modal-title">Add a new member</h2>
+                            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+                                <img src="images/close.svg" alt="Close" width="20" height="20">
+                            </button>
+                        </div>
+                        <p class="modal-description">-Implement personalized recommendation algorithms to enhance user engagement.</p>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="modal-content-wrapper">
+                        <!-- Profile Avatar -->
+                        <div class="modal-profile-avatar">
+                            <div class="dsu-profile-avatar">
+                                <img src="images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon" id="modalAvatarIcon">
+                                <img class="modal-avatar-preview" id="modalAvatarPreview" style="display: none;" alt="Avatar Preview">
+                                <button class="dsu-profile-avatar__edit-button" aria-label="Add image">
+                                    <img src="images/plus.svg" alt="Add" class="dsu-profile-avatar__edit-icon">
+                                </button>
+                                <input class="avatar-input" type="file" accept="image/*" aria-label="Upload profile image" id="modalAvatarInput" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;">
+                            </div>
+                        </div>
+
+                        <!-- Inputs Form -->
+                        <div class="modal-inputs-wrapper">
+                            <!-- Name Row -->
+                            <div class="modal-input-row">
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>Name</span>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberName" placeholder="Placeholder">
+                                </div>
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>Last name</span>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberLastName" placeholder="Placeholder">
+                                </div>
+                            </div>
+
+                            <!-- Job Position -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Job position</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="dsu-input" id="modalMemberJobPosition" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Email</span>
+                                    </div>
+                                </div>
+                                <input type="email" class="dsu-input" id="modalMemberEmail" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Phone number</span>
+                                    </div>
+                                </div>
+                                <input type="tel" class="dsu-input" id="modalMemberPhone" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Individual Cost -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Individual cost</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="dsu-input" id="modalMemberCost" placeholder="Placeholder">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer Buttons -->
+                    <div class="modal-buttons-level">
+                        <button type="button" class="dsu-button dsu-button--secondary dsu-button--medium modal-cancel-btn" id="modalCancelBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/close.svg" alt="Cancel" width="20" height="20">
+                            </span>
+                            <span>Cancel</span>
+                        </button>
+                        <button type="button" class="dsu-button dsu-button--primary dsu-button--medium modal-add-btn" id="modalAddBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/plus.svg" alt="Add" width="20" height="20">
+                            </span>
+                            <span>Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
@@ -617,6 +1000,9 @@
 
             // Inicializar Input Buscador
             initInputBuscador();
+
+            // Inicializar funcionalidad del modal PRIMERO
+            initModalFunctionality();
 
             // Inicializar gestión de miembros
             initMembersManagement();
@@ -842,16 +1228,25 @@
         let membersList = [];
         
         function initMembersManagement() {
+            console.log('initMembersManagement called');
+            
             // Click en el botón "Add new member" del header
             const addMemberBtn = document.getElementById('addMemberBtn');
+            console.log('addMemberBtn:', addMemberBtn);
             if (addMemberBtn) {
-                addMemberBtn.addEventListener('click', function() {
+                addMemberBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Add member button clicked');
                     openAddMemberModal();
                 });
+            } else {
+                console.error('Add member button not found!');
             }
             
             // Click en el profile-card-placeholder
             const addMemberCard = document.getElementById('addMemberCard');
+            console.log('addMemberCard:', addMemberCard);
             if (addMemberCard) {
                 // Asegurar que toda la card tenga zona activa
                 // El CSS ya tiene cursor: pointer, pero agregamos funcionalidad adicional
@@ -869,30 +1264,195 @@
                 
                 // Hacer toda la card clickeable - capturar clicks en cualquier parte
                 addMemberCard.addEventListener('click', function(e) {
+                    console.log('Profile card placeholder clicked');
                     // Prevenir que otros elementos capturen el click
                     e.stopPropagation();
+                    e.preventDefault();
                     
                     // Si el click fue en un elemento interactivo, no hacer nada aquí
                     if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                        console.log('Click on interactive element, ignoring');
                         return;
                     }
                     
                     // Abrir modal para agregar miembro
                     openAddMemberModal();
                 });
+            } else {
+                console.error('Profile card placeholder not found!');
             }
         }
         
+        // ============================================
+        // Modal Functionality
+        // ============================================
         function openAddMemberModal() {
-            // Crear modal simple para agregar miembro
-            const memberName = prompt('Ingresa el nombre del miembro:');
-            if (memberName && memberName.trim()) {
-                createMember({
-                    id: Date.now().toString(),
-                    name: memberName.trim(),
-                    jobPosition: 'Job position',
-                    email: 'email@example.com',
-                    contact: 'Contact'
+            console.log('openAddMemberModal called');
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            console.log('modalOverlay:', modalOverlay);
+            
+            if (!modalOverlay) {
+                console.error('Modal overlay not found!');
+                // Try to find it again after a short delay
+                setTimeout(function() {
+                    const retryOverlay = document.getElementById('addMemberModalOverlay');
+                    if (retryOverlay) {
+                        retryOverlay.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                        resetModalForm();
+                    } else {
+                        console.error('Modal overlay still not found after retry!');
+                    }
+                }, 100);
+                return;
+            }
+            
+            // Force show modal
+            modalOverlay.classList.add('active');
+            modalOverlay.style.display = 'flex';
+            modalOverlay.style.opacity = '1';
+            modalOverlay.style.visibility = 'visible';
+            document.body.style.overflow = 'hidden';
+            
+            // Reset form
+            resetModalForm();
+            console.log('Modal opened successfully');
+        }
+        
+        // Make function globally accessible
+        window.openAddMemberModal = openAddMemberModal;
+
+        function closeModal() {
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('active');
+                modalOverlay.style.display = 'none';
+                modalOverlay.style.opacity = '0';
+                modalOverlay.style.visibility = 'hidden';
+                document.body.style.overflow = '';
+                // Reset form when closing
+                resetModalForm();
+            }
+        }
+        
+        // Make function globally accessible
+        window.closeModal = closeModal;
+
+        function resetModalForm() {
+            // Clear all inputs
+            document.getElementById('modalMemberName').value = '';
+            document.getElementById('modalMemberLastName').value = '';
+            document.getElementById('modalMemberJobPosition').value = '';
+            document.getElementById('modalMemberEmail').value = '';
+            document.getElementById('modalMemberPhone').value = '';
+            document.getElementById('modalMemberCost').value = '';
+            
+            // Reset avatar preview
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            const modalAvatarInput = document.getElementById('modalAvatarInput');
+            
+            if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+            if (modalAvatarPreview) {
+                modalAvatarPreview.style.display = 'none';
+                modalAvatarPreview.src = '';
+            }
+            if (modalAvatarInput) modalAvatarInput.value = '';
+        }
+
+        function initModalFunctionality() {
+            console.log('initModalFunctionality called');
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalAddBtn = document.getElementById('modalAddBtn');
+            const modalAvatarInput = document.getElementById('modalAvatarInput');
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+
+            console.log('Modal elements:', {
+                overlay: modalOverlay,
+                closeBtn: modalCloseBtn,
+                cancelBtn: modalCancelBtn,
+                addBtn: modalAddBtn
+            });
+
+            // Close modal with X button
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', closeModal);
+            } else {
+                console.error('Modal close button not found');
+            }
+
+            // Close modal with Cancel button
+            if (modalCancelBtn) {
+                modalCancelBtn.addEventListener('click', closeModal);
+            } else {
+                console.error('Modal cancel button not found');
+            }
+
+            // Close modal when clicking overlay
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+            } else {
+                console.error('Modal overlay not found!');
+            }
+
+            // Close modal with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay?.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // Handle avatar upload
+            if (modalAvatarInput) {
+                modalAvatarInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const imageUrl = event.target.result;
+                            if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                            if (modalAvatarPreview) {
+                                modalAvatarPreview.src = imageUrl;
+                                modalAvatarPreview.style.display = 'block';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Handle Add button
+            if (modalAddBtn) {
+                modalAddBtn.addEventListener('click', function() {
+                    const memberData = {
+                        id: Date.now().toString(),
+                        name: document.getElementById('modalMemberName')?.value.trim() || '',
+                        lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
+                        jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
+                        email: document.getElementById('modalMemberEmail')?.value.trim() || '',
+                        phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
+                        cost: document.getElementById('modalMemberCost')?.value.trim() || '',
+                        image: modalAvatarPreview?.src || ''
+                    };
+
+                    // Validation
+                    if (!memberData.name || !memberData.lastName || !memberData.email) {
+                        alert('Please fill in Name, Last name, and Email fields.');
+                        return;
+                    }
+
+                    // Create member
+                    createMember(memberData);
+
+                    // Close modal
+                    closeModal();
                 });
             }
         }
@@ -905,12 +1465,59 @@
                 enableSecondaryActions();
             }
             
-            // Crear tarjeta de miembro (por ahora solo guardamos la lista)
+            // Crear tarjeta de miembro visual
+            createMemberCard(memberData);
+            
             console.log('Miembro creado:', memberData);
             console.log('Total de miembros:', membersList.length);
+        }
+
+        function createMemberCard(memberData) {
+            const teamMembersGrid = document.getElementById('teamMembersGrid');
+            if (!teamMembersGrid) return;
+
+            // Crear elemento de tarjeta usando la estructura correcta del componente dsu-profile-card
+            const memberCard = document.createElement('div');
+            memberCard.className = 'dsu-profile-card';
+            memberCard.dataset.memberId = memberData.id;
             
-            // Aquí puedes agregar lógica para crear la tarjeta visual del miembro
-            // updateMembersDisplay();
+            // Construir HTML de la tarjeta según la estructura del design system
+            const imageSrc = memberData.image || 'images/avatar_icon.svg';
+            const imageAlt = memberData.image ? `${escapeHtml(memberData.name)} ${escapeHtml(memberData.lastName || '')}` : 'Avatar';
+            const imageClass = memberData.image ? 'dsu-profile-card__image' : 'dsu-profile-card__image';
+            
+            memberCard.innerHTML = `
+                <div class="dsu-profile-card__image-wrapper">
+                    <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" class="${imageClass}">
+                    <button class="dsu-profile-card__edit-button">
+                        <img src="images/Edit.svg" alt="Edit" class="dsu-profile-card__edit-icon">
+                    </button>
+                </div>
+                <div class="dsu-profile-card__content">
+                    <div class="dsu-profile-card__name-job">
+                        <p class="dsu-profile-card__name">${escapeHtml(memberData.name)} ${escapeHtml(memberData.lastName || '')}</p>
+                        <p class="dsu-profile-card__job">${escapeHtml(memberData.jobPosition || 'Job position')}</p>
+                    </div>
+                    <div class="dsu-profile-card__contact">
+                        ${memberData.email ? `<div class="dsu-profile-card__contact-item">
+                            <img src="images/mail.svg" alt="Email" class="dsu-profile-card__contact-icon">
+                            <a href="mailto:${escapeHtml(memberData.email)}" class="dsu-profile-card__contact-text dsu-profile-card__contact-link">${escapeHtml(memberData.email)}</a>
+                        </div>` : ''}
+                        ${memberData.phone ? `<div class="dsu-profile-card__contact-item">
+                            <img src="images/whatsapp.svg" alt="Phone" class="dsu-profile-card__contact-icon">
+                            <p class="dsu-profile-card__contact-text">${escapeHtml(memberData.phone)}</p>
+                        </div>` : ''}
+                    </div>
+                </div>
+            `;
+
+            // Insertar antes del placeholder card (addMemberCard)
+            const addMemberCard = document.getElementById('addMemberCard');
+            if (addMemberCard) {
+                teamMembersGrid.insertBefore(memberCard, addMemberCard);
+            } else {
+                teamMembersGrid.appendChild(memberCard);
+            }
         }
         
         function disableSecondaryActions() {
