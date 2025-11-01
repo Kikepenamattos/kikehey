@@ -13,6 +13,8 @@ try {
     }
     
     // Parsear commits
+    // git log ya devuelve commits de más reciente a más antiguo
+    // Mantener ese orden (más reciente primero, más antiguo último)
     const commits = lines.map(line => {
         const parts = line.split('|');
         if (parts.length < 5) return null;
@@ -25,7 +27,8 @@ try {
             date: date || new Date().toISOString(),
             message: messageParts.join('|')
         };
-    }).filter(c => c !== null).reverse(); // Más reciente primero
+    }).filter(c => c !== null);
+    // No hacer reverse - git log ya ordena de más reciente a más antiguo
     
     // Leer changelog.html
     let changelogHtml = fs.readFileSync('changelog.html', 'utf8');

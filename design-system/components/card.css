@@ -311,3 +311,154 @@
   background-color: var(--color-surface-especial);
 }
 
+/* ==========================================
+   PROFILE CARD PLACEHOLDER COMPONENT
+   Basado en Figma Components
+   Tarjeta placeholder para agregar nuevos miembros
+   Toda la card tiene zona activa (clickeable)
+   ========================================== */
+
+/* === PROFILE CARD PLACEHOLDER === */
+.dsu-profile-card-placeholder {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  user-select: none;
+}
+
+.dsu-profile-card-placeholder:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Asegurar que todos los elementos hijos no capturen el pointer por defecto */
+.dsu-profile-card-placeholder > * {
+  pointer-events: none;
+}
+
+/* Restaurar pointer-events solo para elementos realmente interactivos */
+.dsu-profile-card-placeholder a,
+.dsu-profile-card-placeholder button {
+  pointer-events: auto;
+}
+
+/* === PROFILE CARD PLACEHOLDER IMAGE === */
+.dsu-profile-card-placeholder__image {
+  width: 100%;
+  height: 200px;
+  background-color: var(--color-surface-especial);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: var(--spacing-08);
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.dsu-profile-card-placeholder__image:hover {
+  background-color: #e8ecf1;
+}
+
+/* === PROFILE CARD PLACEHOLDER EDIT ICON === */
+.dsu-profile-card-placeholder__edit-icon {
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-surface-regular);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.dsu-profile-card-placeholder__edit-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* === PROFILE CARD PLACEHOLDER CONTENT === */
+.dsu-profile-card-placeholder__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-16);
+  width: 100%;
+}
+
+/* === PROFILE CARD PLACEHOLDER NAME JOB === */
+.dsu-profile-card-placeholder__name-job {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* === PROFILE CARD PLACEHOLDER NAME === */
+.dsu-profile-card-placeholder__name {
+  font-family: var(--font-family-secondary);
+  font-size: 18px;
+  font-weight: var(--font-weight-black);
+  line-height: normal;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* === PROFILE CARD PLACEHOLDER JOB === */
+.dsu-profile-card-placeholder__job {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* === PROFILE CARD PLACEHOLDER CONTACT === */
+.dsu-profile-card-placeholder__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* === PROFILE CARD PLACEHOLDER CONTACT ITEM === */
+.dsu-profile-card-placeholder__contact-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+}
+
+/* === PROFILE CARD PLACEHOLDER CONTACT ICON === */
+.dsu-profile-card-placeholder__contact-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* === PROFILE CARD PLACEHOLDER CONTACT TEXT === */
+.dsu-profile-card-placeholder__contact-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* === DARK MODE SUPPORT === */
+[data-theme="dark"] .dsu-profile-card-placeholder__image {
+  background-color: var(--color-surface-especial);
+}
+
+[data-theme="dark"] .dsu-profile-card-placeholder__image:hover {
+  background-color: #e8ecf1;
+}
+

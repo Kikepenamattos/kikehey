@@ -413,7 +413,7 @@
         // Función para parsear el historial de git
         function parseGitHistory(text) {
             const lines = text.trim().split('\n').filter(line => line.trim());
-            return lines.map(line => {
+            const commits = lines.map(line => {
                 const parts = line.split('|');
                 if (parts.length >= 5) {
                     // Convertir fecha ISO a formato legible
@@ -429,6 +429,10 @@
                 }
                 return null;
             }).filter(commit => commit !== null);
+            
+            // git log ya devuelve commits de más reciente a más antiguo
+            // Mantener ese orden (no hacer reverse)
+            return commits;
         }
 
         // Función para filtrar
@@ -503,60 +507,20 @@
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
             {
-                hash: 'a294f75',
-                fullHash: 'a294f7540abd81c33e625bdaf767928baf269eac',
-                author: 'Ubits',
-                email: 'ubits@MacBook-Pro-de-Ubits.local',
-                date: '2025-08-25 10:02:03 -0500',
-                message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Login'
-            },
-            {
-                hash: 'e4b780e',
-                fullHash: 'e4b780e5ed954da01b9624f6f81dd87a0c9f9bcd',
+                hash: '6e9fd11',
+                fullHash: '6e9fd11f31ea7e54ae8c35148c5d04e0992a7420',
                 author: 'Ubits',
                 email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 07:11:24 -0500',
-                message: 'Update: Complete Docu project with authentication, design system, and data persistence'
+                date: '2025-11-01 11:17:56 -0500',
+                message: 'Update changelog with latest changes'
             },
             {
-                hash: 'a232cbd',
-                fullHash: 'a232cbda84702059458979c1067e5b0d1ed84653',
+                hash: '8e9709c',
+                fullHash: '8e9709cab201e7fe2e77cae0756f8e16aa68772e',
                 author: 'Ubits',
                 email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 07:20:30 -0500',
-                message: 'Add GitHub setup instructions'
-            },
-            {
-                hash: '163df4d',
-                fullHash: '163df4da778e7cac5698da7b55ad8ae7f7ffe9b4',
-                author: 'Ubits',
-                email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 07:20:48 -0500',
-                message: 'Add detailed push instructions'
-            },
-            {
-                hash: '960e9ef',
-                fullHash: '960e9ef493c3d365e436dc76374ebd41129b9823',
-                author: 'Ubits',
-                email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 09:39:19 -0500',
-                message: 'Add changelog.html: Historial de cambios con fecha, hora y búsqueda'
-            },
-            {
-                hash: 'c30eaf8',
-                fullHash: 'c30eaf81ce0d3323fee9787f6c557937287631c3',
-                author: 'Ubits',
-                email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 09:42:42 -0500',
-                message: 'Add changelog documentation system'
-            },
-            {
-                hash: '855795e',
-                fullHash: '855795e6a12d37178c170586dd4d603232bb0168',
-                author: 'Ubits',
-                email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 09:57:09 -0500',
-                message: 'Add create_team.html: Layout de creación de equipos con sidebar y persistencia'
+                date: '2025-11-01 11:17:48 -0500',
+                message: 'Add Input Buscador component with send icon and chips functionality for Associated Projects'
             },
             {
                 hash: 'e933d2f',
@@ -567,12 +531,60 @@
                 message: 'Update create_team.html: Apply design system styles and layout adjustments'
             },
             {
-                hash: '8e9709c',
-                fullHash: '8e9709cab201e7fe2e77cae0756f8e16aa68772e',
+                hash: '855795e',
+                fullHash: '855795e6a12d37178c170586dd4d603232bb0168',
                 author: 'Ubits',
                 email: 'ubits@macbookpro.lan',
-                date: '2025-11-01 11:17:48 -0500',
-                message: 'Add Input Buscador component with send icon and chips functionality for Associated Projects'
+                date: '2025-11-01 09:57:09 -0500',
+                message: 'Add create_team.html: Layout de creación de equipos con sidebar y persistencia'
+            },
+            {
+                hash: 'c30eaf8',
+                fullHash: 'c30eaf81ce0d3323fee9787f6c557937287631c3',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 09:42:42 -0500',
+                message: 'Add changelog documentation system'
+            },
+            {
+                hash: '960e9ef',
+                fullHash: '960e9ef493c3d365e436dc76374ebd41129b9823',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 09:39:19 -0500',
+                message: 'Add changelog.html: Historial de cambios con fecha, hora y búsqueda'
+            },
+            {
+                hash: '163df4d',
+                fullHash: '163df4da778e7cac5698da7b55ad8ae7f7ffe9b4',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:20:48 -0500',
+                message: 'Add detailed push instructions'
+            },
+            {
+                hash: 'a232cbd',
+                fullHash: 'a232cbda84702059458979c1067e5b0d1ed84653',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:20:30 -0500',
+                message: 'Add GitHub setup instructions'
+            },
+            {
+                hash: 'e4b780e',
+                fullHash: 'e4b780e5ed954da01b9624f6f81dd87a0c9f9bcd',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:11:24 -0500',
+                message: 'Update: Complete Docu project with authentication, design system, and data persistence'
+            },
+            {
+                hash: 'a294f75',
+                fullHash: 'a294f7540abd81c33e625bdaf767928baf269eac',
+                author: 'Ubits',
+                email: 'ubits@MacBook-Pro-de-Ubits.local',
+                date: '2025-08-25 10:02:03 -0500',
+                message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Login'
             }
         ];
     </script>

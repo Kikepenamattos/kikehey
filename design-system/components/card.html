@@ -257,6 +257,81 @@
             </table>
         </div>
         
+        <!-- Profile Card Placeholder -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Profile Card Placeholder</h2>
+            <p class="variant-section__description">
+                Tarjeta placeholder para agregar nuevos miembros al equipo. Toda la card tiene zona activa 
+                (clickeable) para facilitar la interacción. Al hacer clic en cualquier parte de la card, se 
+                activa la funcionalidad de agregar un nuevo miembro.
+            </p>
+            
+            <div class="demo-container" style="margin-top: var(--spacing-24);">
+                <div class="demo-item">
+                    <div class="demo-item__label">Profile Card Placeholder - Estado Default</div>
+                    <div class="dsu-profile-card-placeholder" id="demoPlaceholderCard">
+                        <div class="dsu-profile-card-placeholder__image">
+                            <div class="dsu-profile-card-placeholder__edit-icon">
+                                <img src="../../images/plus.svg" alt="Add member">
+                            </div>
+                        </div>
+                        <div class="dsu-profile-card-placeholder__content">
+                            <div class="dsu-profile-card-placeholder__name-job">
+                                <div class="dsu-profile-card-placeholder__name">Name</div>
+                                <div class="dsu-profile-card-placeholder__job">Job position</div>
+                            </div>
+                            <div class="dsu-profile-card-placeholder__contact">
+                                <div class="dsu-profile-card-placeholder__contact-item">
+                                    <img src="../../images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
+                                    <span class="dsu-profile-card-placeholder__contact-text">email</span>
+                                </div>
+                                <div class="dsu-profile-card-placeholder__contact-item">
+                                    <img src="../../images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
+                                    <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="code-block" style="background: var(--color-basics-dark-blue); color: var(--color-basics-white); padding: var(--spacing-16); border-radius: var(--radius-md); font-family: monospace; font-size: var(--font-size-sm); margin-top: var(--spacing-24); overflow-x: auto;">
+                <strong style="display: block; margin-bottom: var(--spacing-08);">Código HTML:</strong>
+                <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-profile-card-placeholder" id="addMemberCard"&gt;
+    &lt;div class="dsu-profile-card-placeholder__image"&gt;
+        &lt;div class="dsu-profile-card-placeholder__edit-icon"&gt;
+            &lt;img src="images/plus.svg" alt="Add member"&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="dsu-profile-card-placeholder__content"&gt;
+        &lt;div class="dsu-profile-card-placeholder__name-job"&gt;
+            &lt;div class="dsu-profile-card-placeholder__name"&gt;Name&lt;/div&gt;
+            &lt;div class="dsu-profile-card-placeholder__job"&gt;Job position&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="dsu-profile-card-placeholder__contact"&gt;
+            &lt;div class="dsu-profile-card-placeholder__contact-item"&gt;
+                &lt;img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon"&gt;
+                &lt;span class="dsu-profile-card-placeholder__contact-text"&gt;email&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="dsu-profile-card-placeholder__contact-item"&gt;
+                &lt;img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon"&gt;
+                &lt;span class="dsu-profile-card-placeholder__contact-text"&gt;Contact&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    // Hacer toda la card clickeable
+    const placeholderCard = document.getElementById('addMemberCard');
+    placeholderCard.addEventListener('click', function() {
+        // Abrir modal o funcionalidad para agregar miembro
+        openAddMemberModal();
+    });
+&lt;/script&gt;</pre>
+            </div>
+        </div>
+
         <!-- Profile Cards -->
         <div class="variant-section">
             <h2 class="variant-section__title">Profile Cards</h2>
@@ -346,6 +421,61 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        // Profile Card Placeholder - Hacer toda la card clickeable
+        function initProfileCardPlaceholder() {
+            const placeholderCard = document.getElementById('demoPlaceholderCard');
+            
+            if (placeholderCard) {
+                // Asegurar que toda la card tenga cursor pointer
+                placeholderCard.style.cursor = 'pointer';
+                
+                // Hacer que todos los elementos hijos también tengan cursor pointer
+                const allElements = placeholderCard.querySelectorAll('*');
+                allElements.forEach(element => {
+                    element.style.cursor = 'pointer';
+                    // Prevenir que los elementos hijos capturen el click
+                    element.style.pointerEvents = 'none';
+                });
+                
+                // Restaurar pointer-events en elementos interactivos si los hay
+                const interactiveElements = placeholderCard.querySelectorAll('a, button, input');
+                interactiveElements.forEach(element => {
+                    element.style.pointerEvents = 'auto';
+                });
+                
+                // Hacer toda la card clickeable - capturar clicks en cualquier parte
+                placeholderCard.addEventListener('click', function(e) {
+                    // Prevenir que otros elementos capturen el click
+                    e.stopPropagation();
+                    
+                    // Si el click fue en un elemento interactivo, no hacer nada aquí
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                        return;
+                    }
+                    
+                    // Aquí puedes agregar la funcionalidad para abrir modal de agregar miembro
+                    console.log('Profile Card Placeholder clicked - Abrir modal de agregar miembro');
+                    alert('Hacer clic en cualquier parte de la Profile Card Placeholder activa la funcionalidad de agregar miembro');
+                });
+                
+                // Agregar feedback visual al hacer hover
+                placeholderCard.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                placeholderCard.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        }
+        
+        // Inicializar al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            initProfileCardPlaceholder();
+        });
+    </script>
 </body>
 </html>
 

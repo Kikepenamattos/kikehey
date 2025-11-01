@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="design-system/components/input.css">
     <link rel="stylesheet" href="design-system/components/button.css">
     <link rel="stylesheet" href="design-system/components/chip.css">
+    <link rel="stylesheet" href="design-system/components/card.css">
     
     <style>
         * {
@@ -317,99 +318,6 @@
             align-items: flex-start;
         }
 
-        /* Profile Card Placeholder */
-        .profile-card-placeholder {
-            width: 200px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .profile-card-image {
-            width: 100%;
-            height: 200px;
-            background-color: var(--color-surface-especial, #f4f7fb);
-            border-radius: var(--radius-md, 8px);
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            padding: 8px;
-            position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .profile-card-image:hover {
-            background-color: #e8ecf1;
-        }
-
-        .profile-card-edit-icon {
-            width: 28px;
-            height: 28px;
-            background-color: var(--color-surface-regular, #ffffff);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-card-edit-icon img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
-
-        .profile-card-content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .profile-card-name {
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 18px;
-            font-weight: var(--font-weight-black, 800);
-            color: var(--color-text-primary, #0a243f);
-            line-height: normal;
-        }
-
-        .profile-card-job {
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 14px;
-            font-weight: var(--font-weight-regular, 400);
-            color: var(--color-text-primary, #0a243f);
-            line-height: 1.5;
-        }
-
-        .profile-card-contact {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .contact-item-icon {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .contact-item-text {
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 14px;
-            font-weight: var(--font-weight-regular, 400);
-            color: var(--color-text-primary, #0a243f);
-            line-height: 1.5;
-            flex: 1;
-        }
 
         /* Sticky Buttons - Usando design system, ajuste de centrado */
         .dsu-sticky-buttons {
@@ -635,25 +543,25 @@
                     <h2 class="team-members-title">Team members</h2>
                     <div class="team-members-grid" id="teamMembersGrid">
                         <!-- Placeholder Profile Card -->
-                        <div class="profile-card-placeholder" id="addMemberCard">
-                            <div class="profile-card-image">
-                                <div class="profile-card-edit-icon">
+                        <div class="dsu-profile-card-placeholder" id="addMemberCard">
+                            <div class="dsu-profile-card-placeholder__image">
+                                <div class="dsu-profile-card-placeholder__edit-icon">
                                     <img src="images/plus.svg" alt="Add member">
                                 </div>
                             </div>
-                            <div class="profile-card-content">
-                                <div>
-                                    <div class="profile-card-name">Name</div>
-                                    <div class="profile-card-job">Job posistion</div>
+                            <div class="dsu-profile-card-placeholder__content">
+                                <div class="dsu-profile-card-placeholder__name-job">
+                                    <div class="dsu-profile-card-placeholder__name">Name</div>
+                                    <div class="dsu-profile-card-placeholder__job">Job position</div>
                                 </div>
-                                <div class="profile-card-contact">
-                                    <div class="contact-item">
-                                        <img src="images/mail.svg" alt="Email" class="contact-item-icon">
-                                        <span class="contact-item-text">emai</span>
+                                <div class="dsu-profile-card-placeholder__contact">
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">email</span>
                                     </div>
-                                    <div class="contact-item">
-                                        <img src="images/whatsapp.svg" alt="Contact" class="contact-item-icon">
-                                        <span class="contact-item-text">Contact</span>
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
                                     </div>
                                 </div>
                             </div>
@@ -945,12 +853,33 @@
             // Click en el profile-card-placeholder
             const addMemberCard = document.getElementById('addMemberCard');
             if (addMemberCard) {
-                addMemberCard.addEventListener('click', function() {
-                    openAddMemberModal();
+                // Asegurar que toda la card tenga zona activa
+                // El CSS ya tiene cursor: pointer, pero agregamos funcionalidad adicional
+                const allElements = addMemberCard.querySelectorAll('*');
+                allElements.forEach(element => {
+                    // Prevenir que los elementos hijos capturen el click
+                    element.style.pointerEvents = 'none';
                 });
                 
-                // Hacer que toda la tarjeta sea clickeable
-                addMemberCard.style.cursor = 'pointer';
+                // Restaurar pointer-events en elementos realmente interactivos si los hay
+                const interactiveElements = addMemberCard.querySelectorAll('a, button, input');
+                interactiveElements.forEach(element => {
+                    element.style.pointerEvents = 'auto';
+                });
+                
+                // Hacer toda la card clickeable - capturar clicks en cualquier parte
+                addMemberCard.addEventListener('click', function(e) {
+                    // Prevenir que otros elementos capturen el click
+                    e.stopPropagation();
+                    
+                    // Si el click fue en un elemento interactivo, no hacer nada aquí
+                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
+                        return;
+                    }
+                    
+                    // Abrir modal para agregar miembro
+                    openAddMemberModal();
+                });
             }
         }
         
