@@ -1,0 +1,4 @@
+163df4da778e7cac5698da7b55ad8ae7f7ffe9b4|Ubits|ubits@macbookpro.lan|2025-11-01 07:20:48 -0500|Add detailed push instructions
+a232cbda84702059458979c1067e5b0d1ed84653|Ubits|ubits@macbookpro.lan|2025-11-01 07:20:30 -0500|Add GitHub setup instructions
+e4b780e5ed954da01b9624f6f81dd87a0c9f9bcd|Ubits|ubits@macbookpro.lan|2025-11-01 07:11:24 -0500|Update: Complete Docu project with authentication, design system, and data persistence
+a294f7540abd81c33e625bdaf767928baf269eac|Ubits|ubits@MacBook-Pro-de-Ubits.local|2025-08-25 10:02:03 -0500|🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Login

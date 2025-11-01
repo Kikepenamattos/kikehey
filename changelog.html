@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Cambios - Docu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f4f7fb;
+            color: #0a243f;
+            padding: 24px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #0a243f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #6b7b8a;
+            margin-bottom: 32px;
+        }
+
+        .info-bar {
+            background-color: #f4f7fb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #0a243f;
+        }
+
+        .info-item strong {
+            color: #6b7b8a;
+        }
+
+        .refresh-btn {
+            background-color: #9dff00;
+            color: #0a243f;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background-color: #98f501;
+        }
+
+        .changelog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .changelog-item {
+            background-color: #ffffff;
+            border: 1px solid #e0e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .changelog-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #9dff00;
+        }
+
+        .changelog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .changelog-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a243f;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .changelog-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            font-size: 12px;
+            color: #6b7b8a;
+        }
+
+        .changelog-date {
+            font-weight: 600;
+            color: #0a243f;
+        }
+
+        .changelog-time {
+            color: #6b7b8a;
+        }
+
+        .changelog-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid #f4f7fb;
+            font-size: 13px;
+            color: #6b7b8a;
+        }
+
+        .changelog-author-icon {
+            width: 16px;
+            height: 16px;
+            background-color: #0a243f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .changelog-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            color: #9dff00;
+            background-color: #0a243f;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7b8a;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7b8a;
+        }
+
+        .filter-section {
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 16px;
+            border: 1px solid #e0e4e8;
+            border-radius: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 14px;
+            color: #0a243f;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #9dff00;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: #0a243f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #9dff00;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .changelog-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .changelog-meta {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Volver al proyecto</a>
+        
+        <h1>Historial de Cambios</h1>
+        <p class="subtitle">Registro completo de todos los commits y modificaciones del proyecto Docu</p>
+
+        <div class="info-bar">
+            <div class="info-item">
+                <strong>Total de commits:</strong>
+                <span id="totalCommits">-</span>
+            </div>
+            <div class="info-item">
+                <strong>Última actualización:</strong>
+                <span id="lastUpdate">-</span>
+            </div>
+            <button class="refresh-btn" onclick="loadChangelog()">🔄 Actualizar</button>
+        </div>
+
+        <div class="filter-section">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="filter-input" 
+                placeholder="Buscar en el historial..."
+                onkeyup="filterChangelog()"
+            >
+        </div>
+
+        <div id="changelogContainer" class="changelog-list">
+            <div class="loading">Cargando historial...</div>
+        </div>
+    </div>
+
+    <script>
+        let allCommits = [];
+
+        // Función para formatear fecha
+        function formatDate(dateString) {
+            // Manejar formato ISO con timezone: "2025-11-01 07:20:48 -0500"
+            let date;
+            
+            // Intentar parsear formato de git log
+            const gitLogMatch = dateString.match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})\s+([+-]\d{4})$/);
+            if (gitLogMatch) {
+                const [, year, month, day, hour, minute, second, timezone] = gitLogMatch;
+                const tzSign = timezone[0];
+                const tzHours = parseInt(timezone.substring(1, 3));
+                const tzMinutes = parseInt(timezone.substring(3));
+                const tzOffset = (tzSign === '+' ? 1 : -1) * (tzHours * 60 + tzMinutes);
+                
+                // Crear fecha en UTC y ajustar por timezone
+                date = new Date(Date.UTC(
+                    parseInt(year),
+                    parseInt(month) - 1,
+                    parseInt(day),
+                    parseInt(hour),
+                    parseInt(minute),
+                    parseInt(second)
+                ));
+                
+                // Ajustar por el offset del timezone (convertir minutos a milisegundos)
+                date.setUTCMinutes(date.getUTCMinutes() - tzOffset);
+            } else {
+                // Intentar parsear como ISO string estándar
+                date = new Date(dateString);
+            }
+            
+            if (isNaN(date.getTime())) {
+                date = new Date(); // Fallback a fecha actual
+            }
+            
+            const now = new Date();
+            const diff = now - date;
+            
+            // Formato completo
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const fullDate = date.toLocaleDateString('es-ES', options);
+            
+            // Tiempo relativo
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+            const years = Math.floor(days / 365);
+
+            let relativeTime = '';
+            if (years > 0) {
+                relativeTime = `hace ${years} año${years > 1 ? 's' : ''}`;
+            } else if (months > 0) {
+                relativeTime = `hace ${months} mes${months > 1 ? 'es' : ''}`;
+            } else if (days > 0) {
+                relativeTime = `hace ${days} día${days > 1 ? 's' : ''}`;
+            } else if (hours > 0) {
+                relativeTime = `hace ${hours} hora${hours > 1 ? 's' : ''}`;
+            } else if (minutes > 0) {
+                relativeTime = `hace ${minutes} minuto${minutes > 1 ? 's' : ''}`;
+            } else {
+                relativeTime = 'hace unos segundos';
+            }
+
+            return {
+                full: fullDate,
+                relative: relativeTime
+            };
+        }
+
+        // Función para obtener iniciales del autor
+        function getInitials(name) {
+            if (!name) return '?';
+            const parts = name.split(' ');
+            if (parts.length >= 2) {
+                return (parts[0][0] + parts[1][0]).toUpperCase();
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+
+        // Función para obtener commits (simulando, ya que no podemos ejecutar git directamente)
+        async function fetchCommits() {
+            // En un entorno real, esto haría una llamada a una API o ejecutaría git log
+            // Por ahora, vamos a usar un enfoque que intente leer el historial
+            
+            try {
+                // Intentar hacer fetch desde el repositorio git
+                const response = await fetch('.git/logs/HEAD');
+                if (response.ok) {
+                    // Procesar logs si están disponibles
+                }
+            } catch (e) {
+                // Si no está disponible, usar datos del servidor o localStorage
+            }
+            
+            // Por ahora, retornar estructura vacía - se poblará con loadChangelog
+            return [];
+        }
+
+        // Función para cargar el historial
+        async function loadChangelog() {
+            const container = document.getElementById('changelogContainer');
+            container.innerHTML = '<div class="loading">Cargando historial de cambios...</div>';
+
+            try {
+                // Intentar cargar el archivo git_history.txt si existe
+                const response = await fetch('git_history.txt');
+                if (response.ok) {
+                    const text = await response.text();
+                    const commits = parseGitHistory(text);
+                    renderCommits(commits);
+                    return;
+                }
+            } catch (error) {
+                console.log('No se pudo cargar git_history.txt');
+            }
+            
+            // Si no se puede cargar el archivo, usar datos embebidos
+            renderCommits(realCommits);
+        }
+        
+        // Función para parsear el historial de git
+        function parseGitHistory(text) {
+            const lines = text.trim().split('\n').filter(line => line.trim());
+            return lines.map(line => {
+                const parts = line.split('|');
+                if (parts.length >= 5) {
+                    // Convertir fecha ISO a formato legible
+                    const dateStr = parts[3];
+                    return {
+                        hash: parts[0].substring(0, 7),
+                        fullHash: parts[0],
+                        author: parts[1],
+                        email: parts[2],
+                        date: dateStr,
+                        message: parts.slice(4).join('|') // Por si el mensaje tiene |
+                    };
+                }
+                return null;
+            }).filter(commit => commit !== null);
+        }
+
+        // Función para filtrar
+        function filterChangelog() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.changelog-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        }
+
+        // Cargar al iniciar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChangelog();
+        });
+    </script>
+    
+    <script>
+        // Función para renderizar commits
+        function renderCommits(commits) {
+            const container = document.getElementById('changelogContainer');
+            
+            if (commits.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No hay commits en el historial</p>
+                    </div>
+                `;
+                document.getElementById('totalCommits').textContent = '0';
+                return;
+            }
+            
+            let html = '';
+            
+            commits.forEach(commit => {
+                const dateInfo = formatDate(commit.date);
+                const initials = getInitials(commit.author);
+                
+                html += `
+                    <div class="changelog-item">
+                        <div class="changelog-header">
+                            <div class="changelog-title">${escapeHtml(commit.message)}</div>
+                            <div class="changelog-meta">
+                                <div class="changelog-date">${dateInfo.full}</div>
+                                <div class="changelog-time">${dateInfo.relative}</div>
+                            </div>
+                        </div>
+                        <div class="changelog-author">
+                            <div class="changelog-author-icon">${initials}</div>
+                            <span>${escapeHtml(commit.author)}</span>
+                            <span style="margin-left: auto;">${escapeHtml(commit.email)}</span>
+                        </div>
+                        <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('totalCommits').textContent = commits.length;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('es-ES');
+            allCommits = commits;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
+        const realCommits = [
+            {
+                hash: '163df4d',
+                fullHash: '163df4da778e7cac5698da7b55ad8ae7f7ffe9b4',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:20:48 -0500',
+                message: 'Add detailed push instructions'
+            },
+            {
+                hash: 'a232cbd',
+                fullHash: 'a232cbda84702059458979c1067e5b0d1ed84653',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:20:30 -0500',
+                message: 'Add GitHub setup instructions'
+            },
+            {
+                hash: 'e4b780e',
+                fullHash: 'e4b780e5ed954da01b9624f6f81dd87a0c9f9bcd',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-01 07:11:24 -0500',
+                message: 'Update: Complete Docu project with authentication, design system, and data persistence'
+            },
+            {
+                hash: 'a294f75',
+                fullHash: 'a294f7540abd81c33e625bdaf767928baf269eac',
+                author: 'Ubits',
+                email: 'ubits@MacBook-Pro-de-Ubits.local',
+                date: '2025-08-25 10:02:03 -0500',
+                message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Login'
+            }
+        ];
+    </script>
+</body>
+</html>
+
