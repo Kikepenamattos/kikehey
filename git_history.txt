@@ -1,3 +1,5 @@
+78c70d277ef6e5bf2fb0afc55f7ad1ce587439db|Ubits|ubits@macbookpro.lan|2025-11-01 12:05:29 -0500|Add automatic team cost calculation from individual member costs in USD format
+d264d59ebb21febfef7565fef3ab32bc9269baa8|Ubits|ubits@macbookpro.lan|2025-11-01 11:59:43 -0500|Update changelog with latest changes
 b051dd5f2180454b11c9f290af7319545cd94c88|Ubits|ubits@macbookpro.lan|2025-11-01 11:59:38 -0500|Update modal component with validations: Add button disabled until Name filled, email validation, USD cost formatting, and remove country code selector
 da1114417ab99336da09ce5414da8bcb70828133|Ubits|ubits@macbookpro.lan|2025-11-01 11:45:27 -0500|Update changelog with latest changes
 47a9e34b72fa3e6e8195e715cb543178f9faf1ff|Ubits|ubits@macbookpro.lan|2025-11-01 11:45:22 -0500|Keep Share team button always disabled in create_team.html
