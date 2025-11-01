@@ -8,6 +8,8 @@
     <!-- Design System CSS -->
     <link rel="stylesheet" href="design-system/tokens/index.css">
     <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
     
     <style>
         * {
@@ -40,7 +42,6 @@
             flex-direction: column;
             height: 100vh;
             overflow-y: auto;
-            margin-left: 260px; /* Ancho del sidebar */
         }
 
         .team-content {
@@ -49,6 +50,8 @@
             display: flex;
             flex-direction: column;
             gap: 32px;
+            width: 80%;
+            margin: 0 auto;
         }
 
         /* Data Level - Formulario principal */
@@ -68,42 +71,24 @@
 
         .project-name-group {
             flex: 1;
-            max-width: 537px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
         }
 
-        .input-label {
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: var(--font-size-sm, 14px);
-            font-weight: var(--font-weight-black, 800);
-            color: var(--color-text-primary, #0a243f);
-            line-height: 1.5;
+        .team-cost-group {
+            flex: 1;
+            max-width: 1217px;
         }
 
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--color-basics-mid-blue, #6b7b8a);
-            border-radius: var(--radius-md, 8px);
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: var(--font-size-sm, 14px);
-            font-weight: var(--font-weight-regular, 400);
-            color: var(--color-text-primary, #0a243f);
-            background-color: var(--color-surface-regular, #ffffff);
-            min-height: 48px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
+        .search-input-group {
+            flex: 1;
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--color-buttons-primary-bg-default, #9dff00);
+        .associated-projects-group {
+            /* flex: 1; */
         }
 
-        .form-input::placeholder {
-            color: var(--color-text-secondary, #6b7b8a);
+        /* Input width override para create_team */
+        .dsu-input {
+            width: 840px;
         }
 
         /* Primary Actions Level */
@@ -130,8 +115,16 @@
             color: var(--color-text-primary, #0a243f);
         }
 
-        .btn-share-team:hover {
+        .btn-share-team:hover:not(:disabled) {
             opacity: 0.8;
+        }
+
+        .btn-share-team:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--color-status-disabled, #efefef);
+            color: var(--color-text-secondary, #6b7b8a);
+            border-color: var(--color-status-disabled, #efefef);
         }
 
         .btn-add-member {
@@ -171,7 +164,7 @@
 
         .team-cost-group {
             flex: 1;
-            max-width: 537px;
+            max-width: 1217px;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -202,13 +195,11 @@
         .secondary-actions {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 16px;
         }
 
         .search-input-group {
             flex: 1;
-            max-width: 537px;
         }
 
         .view-controls {
@@ -366,62 +357,11 @@
             flex: 1;
         }
 
-        /* Sticky Buttons */
-        .sticky-buttons {
-            position: sticky;
-            bottom: 0;
-            background-color: var(--color-surface-regular, #ffffff);
-            border-top: 1px solid var(--color-status-disabled, #efefef);
-            padding: 24px 173px 24px 135px;
-            display: flex;
-            gap: 24px;
-            z-index: 100;
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .btn-save-draft {
-            flex: 1;
-            max-width: 423.5px;
-            padding: 12px 24px;
-            border: 1px solid var(--color-text-primary, #0a243f);
-            border-radius: 40px;
-            background-color: transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--color-text-primary, #0a243f);
-        }
-
-        .btn-save-draft:hover {
-            opacity: 0.8;
-        }
-
-        .btn-publish {
-            flex: 1;
-            max-width: 423.5px;
-            padding: 12px 24px;
-            background-color: var(--color-buttons-primary-bg-default, #9dff00);
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--color-text-primary, #0a243f);
-        }
-
-        .btn-publish:hover:not(:disabled) {
-            background-color: #98f501;
-        }
-
-        .btn-publish:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background-color: var(--color-status-disabled, #efefef);
-            color: var(--color-text-secondary, #6b7b8a);
+        /* Sticky Buttons - Usando design system, ajuste de centrado */
+        .dsu-sticky-buttons {
+            justify-content: center;
+            /* width: 80%; */
+            margin: 0 auto;
         }
 
         /* Responsive */
@@ -434,14 +374,9 @@
                 padding: 24px 16px;
             }
 
-            .sticky-buttons {
-                padding: 16px;
+            .dsu-sticky-buttons {
+                padding: var(--spacing-16);
                 flex-direction: column;
-            }
-
-            .btn-save-draft,
-            .btn-publish {
-                max-width: 100%;
             }
         }
     </style>
@@ -551,18 +486,22 @@
                 <div class="data-level">
                     <!-- Name Level -->
                     <div class="name-level">
-                        <div class="project-name-group">
-                            <label class="input-label" for="projectName">Project name:</label>
+                        <div class="dsu-input-group project-name-group">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Project name:</span>
+                                </div>
+                            </div>
                             <input 
                                 type="text" 
                                 id="projectName" 
-                                class="form-input" 
+                                class="dsu-input" 
                                 placeholder="Team name"
                                 autocomplete="off"
                             >
                         </div>
                         <div class="primary-actions">
-                            <button class="btn-share-team" id="shareTeamBtn">
+                            <button class="btn-share-team" id="shareTeamBtn" disabled>
                                 <span>Share team</span>
                                 <img src="images/share.svg" alt="Share" class="btn-icon">
                             </button>
@@ -575,12 +514,16 @@
 
                     <!-- Cost Edit Level -->
                     <div class="cost-edit-level">
-                        <div class="team-cost-group">
-                            <label class="input-label" for="teamCost">Team cost:</label>
+                        <div class="dsu-input-group team-cost-group">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Team cost:</span>
+                                </div>
+                            </div>
                             <input 
                                 type="text" 
                                 id="teamCost" 
-                                class="form-input" 
+                                class="dsu-input" 
                                 placeholder="Automatically calculated from teammates income in USD"
                                 readonly
                             >
@@ -594,11 +537,11 @@
 
                 <!-- Secondary Action Levels -->
                 <div class="secondary-actions">
-                    <div class="search-input-group">
+                    <div class="dsu-input-group search-input-group">
                         <input 
                             type="text" 
                             id="searchInput" 
-                            class="form-input" 
+                            class="dsu-input dsu-input--only" 
                             placeholder="Missing someone? find it here."
                         >
                     </div>
@@ -617,12 +560,16 @@
                 </div>
 
                 <!-- Associated Projects -->
-                <div class="associated-projects-group">
-                    <label class="input-label" for="associatedProjects">Associated projects:</label>
+                <div class="dsu-input-group associated-projects-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Associated projects:</span>
+                        </div>
+                    </div>
                     <input 
                         type="text" 
                         id="associatedProjects" 
-                        class="form-input" 
+                        class="dsu-input" 
                         placeholder="Automatically calculated from teammates income in USD"
                     >
                 </div>
@@ -660,9 +607,9 @@
             </div>
 
             <!-- Sticky Buttons -->
-            <div class="sticky-buttons">
-                <button class="btn-save-draft" id="saveDraftBtn">Save draft</button>
-                <button class="btn-publish" id="publishBtn" disabled>Publish</button>
+            <div class="dsu-sticky-buttons">
+                <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Save draft</button>
+                <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
             </div>
         </div>
     </div>
@@ -803,10 +750,16 @@
             const publishBtn = document.getElementById('publishBtn');
             const saveDraftBtn = document.getElementById('saveDraftBtn');
 
-            // Validación: Habilitar/deshabilitar botón Publish
+            // Validación: Habilitar/deshabilitar botones Publish y Share team
             projectNameInput.addEventListener('input', function() {
                 const hasProjectName = projectNameInput.value.trim().length > 0;
                 publishBtn.disabled = !hasProjectName;
+                
+                // También controlar el botón Share team
+                const shareTeamBtn = document.getElementById('shareTeamBtn');
+                if (shareTeamBtn) {
+                    shareTeamBtn.disabled = !hasProjectName;
+                }
             });
 
             // Save Draft
