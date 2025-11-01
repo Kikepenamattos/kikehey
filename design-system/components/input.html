@@ -417,6 +417,102 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             </div>
         </div>
         
+        <!-- Input Buscador (Search Input with Send Icon) -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Input Buscador</h2>
+            <p class="variant-section__description">
+                Componente de input de búsqueda con icono de envío (send.svg) que se activa únicamente cuando el usuario escribe en el campo. El icono está oculto por defecto y aparece con animación cuando hay texto en el input.
+            </p>
+            
+            <div class="variant-item">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Default State (Icon Hidden)
+                </h3>
+                <div class="dsu-input-buscador" id="buscadorDefault">
+                    <input 
+                        type="text" 
+                        class="dsu-input dsu-input--only" 
+                        placeholder="Missing someone? find it here."
+                        id="buscadorInputDefault"
+                    >
+                    <span class="dsu-input-buscador__send-icon" id="buscadorIconDefault">
+                        <img src="../../images/send.svg" alt="Send">
+                    </span>
+                </div>
+            </div>
+            
+            <div class="variant-item" style="margin-top: var(--spacing-24);">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Active State (Icon Visible)
+                </h3>
+                <div class="dsu-input-buscador" id="buscadorActive">
+                    <input 
+                        type="text" 
+                        class="dsu-input dsu-input--only" 
+                        placeholder="Missing someone? find it here."
+                        value="Search query example"
+                        id="buscadorInputActive"
+                    >
+                    <span class="dsu-input-buscador__send-icon dsu-input-buscador__send-icon--active" id="buscadorIconActive">
+                        <img src="../../images/send.svg" alt="Send">
+                    </span>
+                </div>
+            </div>
+            
+            <div class="variant-item" style="margin-top: var(--spacing-24);">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Interactive Example
+                </h3>
+                <div class="dsu-input-buscador" id="buscadorInteractive">
+                    <input 
+                        type="text" 
+                        class="dsu-input dsu-input--only" 
+                        placeholder="Missing someone? find it here."
+                        id="buscadorInputInteractive"
+                    >
+                    <span class="dsu-input-buscador__send-icon" id="buscadorIconInteractive">
+                        <img src="../../images/send.svg" alt="Send">
+                    </span>
+                </div>
+                <p style="margin-top: var(--spacing-12); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+                    Escribe en el input para ver cómo aparece el icono de envío.
+                </p>
+            </div>
+            
+            <div class="code-example" style="margin-top: var(--spacing-24);">
+                <strong style="display: block; margin-bottom: var(--spacing-08);">Código de implementación:</strong>
+                <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-input-buscador"&gt;
+  &lt;input 
+    type="text" 
+    class="dsu-input dsu-input--only" 
+    placeholder="Missing someone? find it here."
+    id="searchInput"
+  &gt;
+  &lt;span class="dsu-input-buscador__send-icon" id="searchSendIcon"&gt;
+    &lt;img src="images/send.svg" alt="Send"&gt;
+  &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const searchInput = document.getElementById('searchInput');
+  const sendIcon = document.getElementById('searchSendIcon');
+  
+  searchInput.addEventListener('input', function() {
+    if (this.value.trim().length > 0) {
+      sendIcon.classList.add('dsu-input-buscador__send-icon--active');
+    } else {
+      sendIcon.classList.remove('dsu-input-buscador__send-icon--active');
+    }
+  });
+  
+  sendIcon.addEventListener('click', function() {
+    // Handle send action
+    console.log('Enviar búsqueda:', searchInput.value);
+  });
+&lt;/script&gt;</pre>
+            </div>
+        </div>
+
         <!-- States -->
         <div class="variant-section">
             <h2 class="variant-section__title">Input States</h2>
@@ -1657,6 +1753,34 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             };
         }
         
+        // Input Buscador Functionality
+        function initInputBuscador() {
+            // Buscador Interactive
+            const buscadorInput = document.getElementById('buscadorInputInteractive');
+            const buscadorIcon = document.getElementById('buscadorIconInteractive');
+            
+            if (buscadorInput && buscadorIcon) {
+                // Activar/desactivar icono según input
+                buscadorInput.addEventListener('input', function() {
+                    if (this.value.trim().length > 0) {
+                        buscadorIcon.classList.add('dsu-input-buscador__send-icon--active');
+                    } else {
+                        buscadorIcon.classList.remove('dsu-input-buscador__send-icon--active');
+                    }
+                });
+                
+                // Handler para el click en el icono
+                buscadorIcon.addEventListener('click', function() {
+                    const searchValue = buscadorInput.value.trim();
+                    if (searchValue) {
+                        console.log('Enviar búsqueda:', searchValue);
+                        // Aquí puedes agregar la lógica de búsqueda
+                        alert('Búsqueda: ' + searchValue);
+                    }
+                });
+            }
+        }
+        
         // Inicializar al cargar
         document.addEventListener('DOMContentLoaded', function() {
             initHideSection();
@@ -1664,6 +1788,7 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             initRichTextToolbar();
             initAgreementsToggle();
             initInteractiveAgreements();
+            initInputBuscador();
             
             // Handle placeholder for contenteditable
             const contentEditableEditors = document.querySelectorAll('.dsu-rich-text-input__editor[contenteditable="true"]');

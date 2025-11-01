@@ -185,6 +185,57 @@
   object-fit: contain;
 }
 
+/* === INPUT BUSCADOR (Search Input with Send Icon) === */
+.dsu-input-buscador {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+}
+
+.dsu-input-buscador .dsu-input {
+  width: 100%;
+  padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+  box-sizing: border-box;
+}
+
+.dsu-input-buscador__send-icon {
+  position: absolute;
+  right: var(--spacing-16);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dsu-input-buscador__send-icon--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dsu-input-buscador__send-icon:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.dsu-input-buscador__send-icon img,
+.dsu-input-buscador__send-icon svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Asegurar que el input tenga el padding correcto cuando el icono está activo */
+.dsu-input-buscador--with-icon .dsu-input {
+  padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+}
+
 /* === RICH TEXT INPUT === */
 .dsu-rich-text-input {
   display: flex;

@@ -37,6 +37,14 @@ fi
 echo "🔄 Actualizando historial final..."
 ./update-changelog.sh
 
+# Actualizar changelog.html con los datos embebidos
+echo "📄 Actualizando datos embebidos en changelog.html..."
+if [ -f "./update-changelog-html.js" ]; then
+    node update-changelog-html.js || echo "⚠️  Error ejecutando update-changelog-html.js"
+else
+    echo "⚠️  Script update-changelog-html.js no encontrado"
+fi
+
 echo ""
 echo "✅ ¡Cambio documentado exitosamente!"
 echo "📊 Ver historial en: changelog.html"

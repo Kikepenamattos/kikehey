@@ -6,6 +6,8 @@
     <title>Tabs / Chip Component - Design System</title>
     <link rel="stylesheet" href="../tokens/index.css">
     <link rel="stylesheet" href="tabs-chip.css">
+    <link rel="stylesheet" href="chip.css">
+    <link rel="stylesheet" href="input.css">
     <style>
         body {
             font-family: var(--font-family-secondary);
@@ -256,6 +258,151 @@
             </div>
         </div>
         
+        <!-- Chip with Delete Functionality -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Chip with Delete Functionality</h2>
+            <p class="variant-section__description">
+                Chip con funcionalidad de eliminar. Ideal para mostrar etiquetas o tags que pueden ser removidas. 
+                Útil especialmente para proyectos asociados o cualquier lista de elementos removibles.
+            </p>
+            
+            <div class="demo-item" style="width: 100%; margin-bottom: var(--spacing-24);">
+                <div class="demo-item__label">Chip básico con botón de eliminar</div>
+                <div class="projects-chips-container">
+                    <div class="project-chip">
+                        <span class="project-chip__text">New namagement project</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-item" style="width: 100%; margin-bottom: var(--spacing-24);">
+                <div class="demo-item__label">Múltiples chips removibles</div>
+                <div class="projects-chips-container">
+                    <div class="project-chip">
+                        <span class="project-chip__text">Project Alpha</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="project-chip">
+                        <span class="project-chip__text">Beta Project</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="project-chip">
+                        <span class="project-chip__text">Gamma Initiative</span>
+                        <button class="project-chip__close" aria-label="Remove project">
+                            <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="code-block" style="background: var(--color-basics-dark-blue); color: var(--color-basics-white); padding: var(--spacing-16); border-radius: var(--radius-md); font-family: monospace; font-size: var(--font-size-sm); margin-top: var(--spacing-16); overflow-x: auto;">
+                <strong style="display: block; margin-bottom: var(--spacing-08);">Código HTML:</strong>
+                <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="projects-chips-container"&gt;
+    &lt;div class="project-chip"&gt;
+        &lt;span class="project-chip__text"&gt;New namagement project&lt;/span&gt;
+        &lt;button class="project-chip__close" aria-label="Remove project"&gt;
+            &lt;svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
+                &lt;path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/&gt;
+            &lt;/svg&gt;
+        &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+        
+        <!-- Dynamic Chips with Input -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Dynamic Chips Creation</h2>
+            <p class="variant-section__description">
+                Ejemplo funcional para crear chips dinámicamente desde un input. Al escribir y presionar Enter, 
+                se crea un nuevo chip. Cada chip puede ser eliminado haciendo clic en el botón de cerrar.
+            </p>
+            
+            <div class="demo-item" style="width: 100%;">
+                <div class="demo-item__label">Ejemplo interactivo: Escribe y presiona Enter</div>
+                <input 
+                    type="text" 
+                    id="demoChipInput" 
+                    class="dsu-input" 
+                    placeholder="Type project name and press Enter"
+                    style="max-width: 500px; margin-bottom: var(--spacing-16);"
+                >
+                <div class="projects-chips-container" id="demoChipsContainer">
+                    <!-- Chips will be added here dynamically -->
+                </div>
+            </div>
+            
+            <div class="code-block" style="background: var(--color-basics-dark-blue); color: var(--color-basics-white); padding: var(--spacing-16); border-radius: var(--radius-md); font-family: monospace; font-size: var(--font-size-sm); margin-top: var(--spacing-24); overflow-x: auto;">
+                <strong style="display: block; margin-bottom: var(--spacing-08);">Código JavaScript completo:</strong>
+                <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">// Función para crear un chip
+function createChip(text) {
+    const chip = document.createElement('div');
+    chip.className = 'project-chip';
+    chip.setAttribute('data-project', text.trim());
+    
+    const chipText = document.createElement('span');
+    chipText.className = 'project-chip__text';
+    chipText.textContent = text.trim();
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'project-chip__close';
+    closeBtn.setAttribute('aria-label', 'Remove project');
+    closeBtn.innerHTML = '&lt;svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/&gt;&lt;/svg&gt;';
+    
+    closeBtn.addEventListener('click', function() {
+        chip.remove();
+    });
+    
+    chip.appendChild(chipText);
+    chip.appendChild(closeBtn);
+    
+    return chip;
+}
+
+// Input para crear chips
+const input = document.getElementById('projectsInput');
+const container = document.getElementById('projectsChipsContainer');
+
+input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        const value = this.value.trim();
+        
+        if (value) {
+            // Verificar si el chip ya existe
+            const existingChips = Array.from(container.querySelectorAll('.project-chip'));
+            const exists = existingChips.some(chip => 
+                chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+            );
+            
+            if (!exists) {
+                const chip = createChip(value);
+                container.appendChild(chip);
+                this.value = ''; // Limpiar input
+            } else {
+                alert('Este proyecto ya está agregado');
+            }
+        }
+    }
+});</pre>
+            </div>
+        </div>
+        
         <!-- Specifications -->
         <div class="variant-section">
             <h2 class="variant-section__title">Specifications</h2>
@@ -356,8 +503,85 @@
             });
         }
         
+        /**
+         * ==========================================
+         * CHIP WITH DELETE FUNCTIONALITY
+         * ==========================================
+         * 
+         * Funcionalidad para crear chips dinámicamente desde un input
+         * y permitir eliminarlos haciendo clic en el botón de cerrar
+         */
+        function initDynamicChips() {
+            const demoInput = document.getElementById('demoChipInput');
+            const demoContainer = document.getElementById('demoChipsContainer');
+            
+            if (!demoInput || !demoContainer) return;
+            
+            function createDemoChip(text) {
+                const chip = document.createElement('div');
+                chip.className = 'project-chip';
+                chip.setAttribute('data-project', text.trim());
+                
+                const chipText = document.createElement('span');
+                chipText.className = 'project-chip__text';
+                chipText.textContent = text.trim();
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'project-chip__close';
+                closeBtn.setAttribute('aria-label', 'Remove project');
+                closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                
+                closeBtn.addEventListener('click', function() {
+                    chip.remove();
+                });
+                
+                chip.appendChild(chipText);
+                chip.appendChild(closeBtn);
+                
+                return chip;
+            }
+            
+            // Agregar funcionalidad de eliminar a chips existentes
+            const existingChips = demoContainer.querySelectorAll('.project-chip');
+            existingChips.forEach((chip) => {
+                const closeBtn = chip.querySelector('.project-chip__close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        chip.remove();
+                    });
+                }
+            });
+            
+            // Crear chip al presionar Enter
+            demoInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        // Verificar si el chip ya existe
+                        const existingChips = Array.from(demoContainer.querySelectorAll('.project-chip'));
+                        const exists = existingChips.some(chip => 
+                            chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+                        );
+                        
+                        if (!exists) {
+                            const chip = createDemoChip(value);
+                            demoContainer.appendChild(chip);
+                            this.value = ''; // Limpiar input
+                        } else {
+                            alert('Este proyecto ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
         // Inicializar al cargar
-        document.addEventListener('DOMContentLoaded', initInteractiveChips);
+        document.addEventListener('DOMContentLoaded', function() {
+            initInteractiveChips();
+            initDynamicChips();
+        });
     </script>
 </body>
 </html>

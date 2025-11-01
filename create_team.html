@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="design-system/components/navigation.css">
     <link rel="stylesheet" href="design-system/components/input.css">
     <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/chip.css">
     
     <style>
         * {
@@ -75,7 +76,7 @@
 
         .team-cost-group {
             flex: 1;
-            max-width: 1217px;
+            max-width: 839px;
         }
 
         .search-input-group {
@@ -89,6 +90,43 @@
         /* Input width override para create_team */
         .dsu-input {
             width: 840px;
+        }
+        
+        /* Asegurar que el icono del buscador esté dentro del input */
+        .dsu-input-buscador {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .dsu-input-buscador .dsu-input {
+            padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+            box-sizing: border-box;
+        }
+        
+        .dsu-input-buscador__send-icon {
+            position: absolute;
+            right: var(--spacing-16);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            /* Asegurar que el icono esté dentro del área del input */
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dsu-input-buscador__send-icon--active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* Primary Actions Level */
@@ -158,48 +196,55 @@
         .cost-edit-level {
             display: flex;
             align-items: flex-end;
-            justify-content: space-between;
+            /* justify-content: space-between; */
             gap: 16px;
         }
 
         .team-cost-group {
             flex: 1;
-            max-width: 1217px;
+            max-width: 839px;
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
 
-        .btn-edit-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background-color: var(--color-surface-regular, #ffffff);
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: var(--font-family-secondary, 'Lato');
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--color-text-primary, #0a243f);
-        }
-
-        .btn-edit-group:hover {
-            opacity: 0.8;
-        }
 
         /* Secondary Action Levels */
         .secondary-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 32px;
+        }
+        
+        /* Estado deshabilitado de secondary-actions */
+        .secondary-actions.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .secondary-actions.disabled * {
+            cursor: not-allowed !important;
+        }
+        
+        .secondary-actions.disabled input,
+        .secondary-actions.disabled button {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .search-input-group {
             flex: 1;
+        }
+        
+        /* Input Buscador - Override width para create_team */
+        .search-input-group.dsu-input-buscador {
+            width: 100%;
+            max-width: 840px;
+        }
+        
+        .search-input-group.dsu-input-buscador .dsu-input {
+            width: 100%;
         }
 
         .view-controls {
@@ -238,7 +283,16 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            max-width: 537px;
+            max-width: 839px;
+        }
+        
+        /* Chips Container */
+        .projects-chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-08);
+            margin-top: var(--spacing-12);
+            min-height: 24px;
         }
 
         /* Team Members Section */
@@ -528,22 +582,21 @@
                                 readonly
                             >
                         </div>
-                        <button class="btn-edit-group" id="editGroupBtn">
-                            <span>Edit group</span>
-                            <img src="images/Edit.svg" alt="Edit" class="btn-icon">
-                        </button>
                     </div>
                 </div>
 
                 <!-- Secondary Action Levels -->
-                <div class="secondary-actions">
-                    <div class="dsu-input-group search-input-group">
+                <div class="secondary-actions disabled">
+                    <div class="dsu-input-buscador search-input-group">
                         <input 
                             type="text" 
                             id="searchInput" 
                             class="dsu-input dsu-input--only" 
                             placeholder="Missing someone? find it here."
                         >
+                        <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
+                            <img src="images/send.svg" alt="Send">
+                        </span>
                     </div>
                     <div class="view-controls">
                         <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
@@ -570,8 +623,11 @@
                         type="text" 
                         id="associatedProjects" 
                         class="dsu-input" 
-                        placeholder="Automatically calculated from teammates income in USD"
+                        placeholder="Type project name and press Enter"
                     >
+                    <div class="projects-chips-container" id="projectsChipsContainer">
+                        <!-- Chips will be dynamically added here -->
+                    </div>
                 </div>
 
                 <!-- Team Members Section -->
@@ -650,6 +706,18 @@
 
             // Inicializar funcionalidad del formulario
             initFormFunctionality();
+
+            // Inicializar Input Buscador
+            initInputBuscador();
+
+            // Inicializar gestión de miembros
+            initMembersManagement();
+
+            // Inicializar funcionalidad de chips para Associated Projects
+            initAssociatedProjectsChips();
+
+            // Deshabilitar secondary-actions inicialmente
+            disableSecondaryActions();
 
             // Cargar equipos en el sidebar
             loadTeamsInSidebar();
@@ -858,6 +926,202 @@
             document.getElementById('publishBtn').disabled = true;
             currentProjectId = null;
             currentProjectData = null;
+        }
+
+        // ============================================
+        // Members Management
+        // ============================================
+        let membersList = [];
+        
+        function initMembersManagement() {
+            // Click en el botón "Add new member" del header
+            const addMemberBtn = document.getElementById('addMemberBtn');
+            if (addMemberBtn) {
+                addMemberBtn.addEventListener('click', function() {
+                    openAddMemberModal();
+                });
+            }
+            
+            // Click en el profile-card-placeholder
+            const addMemberCard = document.getElementById('addMemberCard');
+            if (addMemberCard) {
+                addMemberCard.addEventListener('click', function() {
+                    openAddMemberModal();
+                });
+                
+                // Hacer que toda la tarjeta sea clickeable
+                addMemberCard.style.cursor = 'pointer';
+            }
+        }
+        
+        function openAddMemberModal() {
+            // Crear modal simple para agregar miembro
+            const memberName = prompt('Ingresa el nombre del miembro:');
+            if (memberName && memberName.trim()) {
+                createMember({
+                    id: Date.now().toString(),
+                    name: memberName.trim(),
+                    jobPosition: 'Job position',
+                    email: 'email@example.com',
+                    contact: 'Contact'
+                });
+            }
+        }
+        
+        function createMember(memberData) {
+            membersList.push(memberData);
+            
+            // Habilitar secondary-actions cuando se crea el primer miembro
+            if (membersList.length === 1) {
+                enableSecondaryActions();
+            }
+            
+            // Crear tarjeta de miembro (por ahora solo guardamos la lista)
+            console.log('Miembro creado:', memberData);
+            console.log('Total de miembros:', membersList.length);
+            
+            // Aquí puedes agregar lógica para crear la tarjeta visual del miembro
+            // updateMembersDisplay();
+        }
+        
+        function disableSecondaryActions() {
+            const secondaryActions = document.querySelector('.secondary-actions');
+            if (secondaryActions) {
+                secondaryActions.classList.add('disabled');
+            }
+        }
+        
+        function enableSecondaryActions() {
+            const secondaryActions = document.querySelector('.secondary-actions');
+            if (secondaryActions) {
+                secondaryActions.classList.remove('disabled');
+            }
+        }
+        
+        function checkAndUpdateSecondaryActions() {
+            // Verificar si hay miembros creados
+            const hasMembers = membersList.length > 0;
+            
+            if (hasMembers) {
+                enableSecondaryActions();
+            } else {
+                disableSecondaryActions();
+            }
+        }
+
+        // ============================================
+        // Associated Projects Chips Functionality
+        // ============================================
+        function initAssociatedProjectsChips() {
+            const associatedProjectsInput = document.getElementById('associatedProjects');
+            const chipsContainer = document.getElementById('projectsChipsContainer');
+            
+            if (!associatedProjectsInput || !chipsContainer) return;
+            
+            // Crear chip al presionar Enter
+            associatedProjectsInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        // Verificar si el chip ya existe
+                        const existingChips = Array.from(chipsContainer.querySelectorAll('.project-chip'));
+                        const exists = existingChips.some(chip => 
+                            chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+                        );
+                        
+                        if (!exists) {
+                            const chip = createProjectChip(value);
+                            chipsContainer.appendChild(chip);
+                            this.value = ''; // Limpiar input después de crear chip
+                        } else {
+                            alert('Este proyecto ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createProjectChip(text) {
+            const chip = document.createElement('div');
+            chip.className = 'project-chip';
+            chip.setAttribute('data-project', text.trim());
+            
+            const chipText = document.createElement('span');
+            chipText.className = 'project-chip__text';
+            chipText.textContent = text.trim();
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'project-chip__close';
+            closeBtn.setAttribute('aria-label', 'Remove project');
+            closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            
+            closeBtn.addEventListener('click', function() {
+                chip.remove();
+            });
+            
+            chip.appendChild(chipText);
+            chip.appendChild(closeBtn);
+            
+            return chip;
+        }
+
+        // ============================================
+        // Input Buscador Functionality
+        // ============================================
+        function initInputBuscador() {
+            const searchInput = document.getElementById('searchInput');
+            const sendIcon = document.getElementById('searchSendIcon');
+            
+            if (!searchInput || !sendIcon) return;
+            
+            // Activar/desactivar icono según input
+            searchInput.addEventListener('input', function() {
+                if (this.value.trim().length > 0) {
+                    sendIcon.classList.add('dsu-input-buscador__send-icon--active');
+                } else {
+                    sendIcon.classList.remove('dsu-input-buscador__send-icon--active');
+                }
+            });
+            
+            // Handler para el click en el icono
+            sendIcon.addEventListener('click', function() {
+                const searchValue = searchInput.value.trim();
+                if (searchValue) {
+                    console.log('Enviar búsqueda:', searchValue);
+                    // Aquí puedes agregar la lógica de búsqueda
+                    performSearch(searchValue);
+                }
+            });
+            
+            // También permitir búsqueda con Enter
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchValue = this.value.trim();
+                    if (searchValue) {
+                        performSearch(searchValue);
+                    }
+                }
+            });
+        }
+        
+        function performSearch(searchQuery) {
+            console.log('Realizando búsqueda:', searchQuery);
+            // Aquí puedes implementar la lógica de búsqueda
+            // Por ejemplo, filtrar miembros del equipo, proyectos, etc.
+            // Por ahora solo mostramos un mensaje
+            const teamMembersGrid = document.getElementById('teamMembersGrid');
+            if (teamMembersGrid) {
+                // Aquí se puede implementar el filtrado de miembros
+                // Por ejemplo:
+                // const members = teamMembersGrid.querySelectorAll('.profile-card-placeholder');
+                // members.forEach(member => {
+                //     const name = member.querySelector('.profile-card-name').textContent.toLowerCase();
+                //     const isVisible = name.includes(searchQuery.toLowerCase());
+                //     member.style.display = isVisible ? 'flex' : 'none';
+                // });
+            }
         }
 
         // ============================================
