@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Team - Docu</title>
+    <title>Team Filled - Docu</title>
     
     <!-- Design System CSS -->
     <link rel="stylesheet" href="design-system/tokens/index.css">
@@ -75,7 +75,7 @@
             flex: 1;
         }
 
-        /* Project name display para teams publicados (usando estructura de team_filled.html) */
+        /* Project name display para teams publicados */
         .project-name-display {
             font-family: 'Crimson Pro', serif;
             font-weight: 800; /* ExtraBold */
@@ -88,19 +88,6 @@
 
         .project-name-group.published .dsu-input-label {
             display: none;
-        }
-
-        /* Team cost display para teams publicados */
-        .team-cost-display {
-            font-family: var(--font-family-secondary, 'Lato', sans-serif);
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--color-text-primary, #0a243f);
-            line-height: 1.5;
-        }
-
-        .team-cost-display span {
-            font-weight: 400;
         }
 
         .team-cost-group {
@@ -216,6 +203,7 @@
         }
 
         /* Modal Styles */
+        /* Modal no se usa en vista publicada, ocultar completamente */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -223,14 +211,15 @@
             right: 0;
             bottom: 0;
             background: rgba(255, 255, 255, 0.7);
-            display: none;
+            display: none !important;
             align-items: center;
             justify-content: center;
-            z-index: 10000;
+            z-index: -1;
             opacity: 0;
             transition: opacity 0.3s ease;
             backdrop-filter: blur(2px);
             visibility: hidden;
+            pointer-events: none;
         }
 
         .modal-overlay.active {
@@ -494,8 +483,21 @@
         .cost-edit-level {
             display: flex;
             align-items: flex-end;
-            /* justify-content: space-between; */
+            justify-content: space-between;
             gap: 16px;
+        }
+
+        /* Team cost display para teams publicados */
+        .team-cost-display {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+        }
+
+        .team-cost-display span {
+            font-weight: 400;
         }
 
         .team-cost-group {
@@ -745,53 +747,41 @@
                 <div class="data-level">
                     <!-- Name Level -->
                     <div class="name-level">
-                        <div class="dsu-input-group project-name-group">
-                            <div class="dsu-input-label">
-                                <div class="dsu-input-label__text">
-                                    <span>Project name:</span>
-                                </div>
-                            </div>
-                            <input 
-                                type="text" 
-                                id="projectName" 
-                                class="dsu-input" 
-                                placeholder="Team name"
-                                autocomplete="off"
-                            >
+                        <div class="dsu-input-group project-name-group published">
+                            <div class="project-name-display" id="projectNameDisplay"></div>
                         </div>
                         <div class="primary-actions">
-                            <button class="btn-share-team" id="shareTeamBtn" disabled>
-                                <span>Share team</span>
-                                <img src="images/share.svg" alt="Share" class="btn-icon">
+                            <button class="dsu-button dsu-button--secondary dsu-button--medium" id="shareTeamBtn">
+                                <span class="dsu-button__icon">
+                                    <img src="images/share.svg" alt="Share">
+                                </span>
+                                Share team
                             </button>
-                            <button class="btn-add-member" id="addMemberBtn">
-                                <span>Add new member</span>
-                                <img src="images/plus.svg" alt="Plus" class="btn-icon">
+                            <button class="dsu-button dsu-button--primary dsu-button--medium" id="addMemberBtn">
+                                <span class="dsu-button__text">Add new member</span>
+                                <span class="dsu-button__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Cost Edit Level -->
                     <div class="cost-edit-level">
-                        <div class="dsu-input-group team-cost-group">
-                            <div class="dsu-input-label">
-                                <div class="dsu-input-label__text">
-                                    <span>Team cost:</span>
-                                </div>
-                            </div>
-                            <input 
-                                type="text" 
-                                id="teamCost" 
-                                class="dsu-input" 
-                                placeholder="Automatically calculated from teammates income in USD"
-                                readonly
-                            >
+                        <div class="team-cost-display">
+                            <span>Team cost: </span>USD 0.00
                         </div>
+                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="editGroupBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/Edit.svg" alt="Edit">
+                            </span>
+                            <span class="dsu-button__text">Edit group</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Secondary Action Levels -->
-                <div class="secondary-actions disabled">
+                <div class="secondary-actions">
                     <div class="dsu-input-buscador search-input-group">
                         <input 
                             type="text" 
@@ -824,14 +814,8 @@
                             <span>Associated projects:</span>
                         </div>
                     </div>
-                    <input 
-                        type="text" 
-                        id="associatedProjects" 
-                        class="dsu-input" 
-                        placeholder="Type project name and press Enter"
-                    >
                     <div class="projects-chips-container" id="projectsChipsContainer">
-                        <!-- Chips will be dynamically added here -->
+                        <!-- Chips will be dynamically loaded -->
                     </div>
                 </div>
 
@@ -839,38 +823,9 @@
                 <div class="team-members-section">
                     <h2 class="team-members-title">Team members</h2>
                     <div class="team-members-grid" id="teamMembersGrid">
-                        <!-- Placeholder Profile Card -->
-                        <div class="dsu-profile-card-placeholder" id="addMemberCard">
-                            <div class="dsu-profile-card-placeholder__image">
-                                <div class="dsu-profile-card-placeholder__edit-icon">
-                                    <img src="images/plus.svg" alt="Add member">
-                                </div>
-                            </div>
-                            <div class="dsu-profile-card-placeholder__content">
-                                <div class="dsu-profile-card-placeholder__name-job">
-                                    <div class="dsu-profile-card-placeholder__name">Name</div>
-                                    <div class="dsu-profile-card-placeholder__job">Job position</div>
-                                </div>
-                                <div class="dsu-profile-card-placeholder__contact">
-                                    <div class="dsu-profile-card-placeholder__contact-item">
-                                        <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
-                                        <span class="dsu-profile-card-placeholder__contact-text">email</span>
-                                    </div>
-                                    <div class="dsu-profile-card-placeholder__contact-item">
-                                        <img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
-                                        <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Member Cards will be dynamically loaded -->
                     </div>
                 </div>
-            </div>
-
-            <!-- Sticky Buttons -->
-            <div class="dsu-sticky-buttons">
-                <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Save draft</button>
-                <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
             </div>
         </div>
     </div>
@@ -1008,73 +963,282 @@
             }
 
             // Inicializar la página
-            initCreateTeamPage();
+            initTeamFilledPage();
         });
 
         // ============================================
         // Inicialización
         // ============================================
-        function initCreateTeamPage() {
+        function initTeamFilledPage() {
             // Esperar a que los scripts se carguen
             if (typeof window.DocuAuth === 'undefined' || typeof window.DocuProjectData === 'undefined') {
-                setTimeout(initCreateTeamPage, 100);
+                setTimeout(initTeamFilledPage, 100);
                 return;
             }
 
-            console.log('Inicializando create_team.html');
+            console.log('Inicializando team_filled.html');
 
-            // Inicializar navegación del sidebar
+            // Inicializar navegación del sidebar (usando la misma función de create_team.html)
             initSidebarNavigation();
 
-            // Inicializar funcionalidad del formulario
-            initFormFunctionality();
-
-            // Inicializar Input Buscador
+            // Inicializar Input Buscador (solo para búsqueda, sin guardar)
             initInputBuscador();
 
-            // Inicializar funcionalidad del modal PRIMERO
-            initModalFunctionality();
+            // Inicializar vista grid/list
+            initViewControls();
 
-            // Inicializar gestión de miembros
-            initMembersManagement();
+            // Inicializar botones de acción
+            initActionButtons();
 
-            // Inicializar funcionalidad de chips para Associated Projects
-            initAssociatedProjectsChips();
-
-            // Deshabilitar secondary-actions inicialmente
-            disableSecondaryActions();
-
-            // Inicializar datos si es necesario (asegurar que teams exista)
-            DocuProjectData.initializeIfNeeded();
-            
-            // Cargar datos del proyecto PRIMERO (para mostrar información real desde el inicio)
-            // Esto se hace ANTES de inicializar el costo para que use los datos reales
-            loadCurrentProjectData();
+            // Cargar datos del team publicado PRIMERO (antes del sidebar para mostrar info real inmediatamente)
+            loadPublishedTeamData();
             
             // Luego cargar equipos en el sidebar
-            console.log('📋 Cargando teams en sidebar al iniciar...');
+            console.log('📋 Cargando teams en sidebar...');
             loadTeamsInSidebar();
+        }
 
-            // Guardar automáticamente cada 30 segundos (autosave)
-            setInterval(autoSave, 30000);
+        /**
+         * Inicializa los controles de vista (grid/list)
+         */
+        function initViewControls() {
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const membersGrid = document.getElementById('teamMembersGrid');
             
-            // Guardar antes de cerrar la página
-            // IMPORTANTE: Solo hacer autosave si es un draft, no si es un team publicado
-            window.addEventListener('beforeunload', function() {
-                // Solo hacer autosave si es un draft o nuevo team
-                if (!currentProjectData || currentProjectData.status === 'draft') {
-                    autoSave();
-                } else {
-                    console.log('ℹ️ beforeunload: omitiendo autosave para team publicado');
+            if (gridViewBtn && listViewBtn && membersGrid) {
+                gridViewBtn.addEventListener('click', function() {
+                    membersGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+                    gridViewBtn.classList.add('active');
+                    listViewBtn.classList.remove('active');
+                });
+
+                listViewBtn.addEventListener('click', function() {
+                    membersGrid.style.gridTemplateColumns = '1fr';
+                    listViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                });
+            }
+        }
+
+        /**
+         * Inicializa los botones de acción (Share team, Edit group, Add member)
+         */
+        function initActionButtons() {
+            // Share team
+            const shareTeamBtn = document.getElementById('shareTeamBtn');
+            if (shareTeamBtn) {
+                shareTeamBtn.addEventListener('click', function() {
+                    const teamURL = window.location.href;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(teamURL).then(function() {
+                            alert('URL del team copiada al portapapeles: ' + teamURL);
+                        }).catch(function() {
+                            prompt('Copia esta URL:', teamURL);
+                        });
+                    } else {
+                        prompt('Copia esta URL:', teamURL);
+                    }
+                });
+            }
+
+            // Edit group
+            const editGroupBtn = document.getElementById('editGroupBtn');
+            if (editGroupBtn) {
+                editGroupBtn.addEventListener('click', function() {
+                    window.location.href = 'create_team.html';
+                });
+            }
+
+            // Add new member
+            const addMemberBtn = document.getElementById('addMemberBtn');
+            if (addMemberBtn) {
+                addMemberBtn.addEventListener('click', function() {
+                    window.location.href = 'create_team.html';
+                });
+            }
+        }
+
+        /**
+         * Carga los datos del team publicado
+         */
+        function loadPublishedTeamData() {
+            try {
+                // Intentar obtener el team ID de la URL o sessionStorage
+                const urlParams = new URLSearchParams(window.location.search);
+                const teamId = urlParams.get('id') || sessionStorage.getItem('docu_selected_team_id');
+                
+                if (!teamId) {
+                    console.log('ℹ️ No hay team ID en URL o sessionStorage, cargando el más reciente');
+                    // Cargar el team publicado más reciente
+                    const projectData = DocuProjectData.getProjectData();
+                    if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
+                        const publishedTeams = projectData.teams.filter(t => 
+                            t.status === 'published' && 
+                            t.name && 
+                            t.name.trim().length > 0
+                        );
+                        
+                        if (publishedTeams.length > 0) {
+                            const latestTeam = publishedTeams.sort((a, b) => {
+                                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                                return dateB - dateA;
+                            })[0];
+                            
+                            displayTeamData(latestTeam);
+                        }
+                    }
+                    return;
                 }
-            });
+
+                // Cargar el team específico
+                const projectData = DocuProjectData.getProjectData();
+                if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
+                    const team = projectData.teams.find(t => t.id === teamId && t.status === 'published');
+                    if (team) {
+                        displayTeamData(team);
+                        // Marcar el team como activo en el sidebar después de cargar la lista
+                        setTimeout(() => {
+                            const teamsList = document.getElementById('teamsList');
+                            if (teamsList) {
+                                const teamItem = teamsList.querySelector(`[data-team-id="${teamId}"]`);
+                                if (teamItem) {
+                                    // Remover active de todos los items
+                                    teamsList.querySelectorAll('.dsu-team-item').forEach(item => {
+                                        item.classList.remove('dsu-team-item--active', 'active');
+                                    });
+                                    // Agregar active al item del team actual
+                                    teamItem.classList.add('dsu-team-item--active', 'active');
+                                }
+                            }
+                        }, 800);
+                    } else {
+                        console.warn('⚠️ Team no encontrado o no está publicado');
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar datos del team:', error);
+            }
+        }
+
+        /**
+         * Muestra los datos del team en la vista
+         */
+        function displayTeamData(teamData) {
+            // Mostrar nombre del team
+            const projectNameDisplay = document.getElementById('projectNameDisplay');
+            if (projectNameDisplay && teamData.name) {
+                projectNameDisplay.textContent = teamData.name;
+            }
+
+            // Mostrar team cost
+            const teamCostDisplay = document.querySelector('.team-cost-display');
+            if (teamCostDisplay) {
+                let teamCostValue = 'USD 0.00';
+                
+                // Si hay teamCost guardado y no está vacío, usarlo
+                if (teamData.teamCost && teamData.teamCost.trim() !== '') {
+                    teamCostValue = teamData.teamCost;
+                } else {
+                    // Si no hay teamCost guardado, calcularlo desde los miembros
+                    let totalCost = 0;
+                    if (teamData.members && Array.isArray(teamData.members)) {
+                        teamData.members.forEach(member => {
+                            const cost = member.cost || '';
+                            if (cost) {
+                                // Remover cualquier carácter no numérico excepto punto decimal
+                                const numericValue = parseFloat(cost.replace(/[^\d.]/g, ''));
+                                if (!isNaN(numericValue)) {
+                                    totalCost += numericValue;
+                                }
+                            }
+                        });
+                    }
+                    teamCostValue = `USD ${totalCost.toFixed(2)}`;
+                }
+                
+                teamCostDisplay.innerHTML = `<span>Team cost: </span>${teamCostValue}`;
+            }
+
+            // Mostrar associated projects (chips)
+            const chipsContainer = document.getElementById('projectsChipsContainer');
+            if (chipsContainer && teamData.projects && Array.isArray(teamData.projects)) {
+                chipsContainer.innerHTML = '';
+                teamData.projects.forEach(project => {
+                    const chip = document.createElement('div');
+                    chip.className = 'project-chip';
+                    chip.innerHTML = `<span class="project-chip__text">${escapeHtml(project)}</span>`;
+                    chipsContainer.appendChild(chip);
+                });
+            }
+
+            // Mostrar miembros
+            const membersGrid = document.getElementById('teamMembersGrid');
+            if (membersGrid && teamData.members && Array.isArray(teamData.members)) {
+                membersGrid.innerHTML = '';
+                teamData.members.forEach(member => {
+                    const memberCard = createMemberCardHTML(member);
+                    membersGrid.insertAdjacentHTML('beforeend', memberCard);
+                });
+            }
+        }
+
+        /**
+         * Crea el HTML para una tarjeta de miembro
+         */
+        function createMemberCardHTML(member) {
+            const memberName = escapeHtml(member.name || '');
+            const memberLastName = escapeHtml(member.lastName || '');
+            const memberJob = escapeHtml(member.jobPosition || '');
+            const memberEmail = escapeHtml(member.email || '');
+            const memberPhone = escapeHtml(member.phone || '');
+            const memberAvatar = member.avatar || '';
             
-            // Recargar teams en sidebar después de un breve delay solo para asegurar que los datos estén guardados
-            // (no crítico para mostrar la información inicial)
-            setTimeout(() => {
-                console.log('📋 Recargando teams en sidebar...');
-                loadTeamsInSidebar();
-            }, 300);
+            const fullName = `${memberName} ${memberLastName}`.trim() || 'Name';
+            
+            return `
+                <div class="dsu-profile-card">
+                    <div class="dsu-profile-card__image">
+                        ${memberAvatar ? 
+                            `<img src="${escapeHtml(memberAvatar)}" alt="${fullName}" class="dsu-profile-card__avatar-img">` :
+                            `<div class="dsu-profile-card__avatar-placeholder">
+                                <img src="images/avatar_icon.svg" alt="Avatar">
+                             </div>`
+                        }
+                        <button class="dsu-profile-card__edit-icon" title="Edit member">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                    <div class="dsu-profile-card__content">
+                        <div class="dsu-profile-card__name-job">
+                            <h3 class="dsu-profile-card__name">${fullName}</h3>
+                            <p class="dsu-profile-card__job">${memberJob || 'Job position'}</p>
+                        </div>
+                        <div class="dsu-profile-card__contact">
+                            ${memberEmail ? `
+                            <div class="dsu-profile-card__contact-item">
+                                <img src="images/mail.svg" alt="Email" class="dsu-profile-card__contact-icon">
+                                <a href="mailto:${memberEmail}" class="dsu-profile-card__contact-text">${memberEmail}</a>
+                            </div>` : ''}
+                            ${memberPhone ? `
+                            <div class="dsu-profile-card__contact-item">
+                                <img src="images/whatsapp.svg" alt="Phone" class="dsu-profile-card__contact-icon">
+                                <a href="tel:${memberPhone}" class="dsu-profile-card__contact-text">${memberPhone}</a>
+                            </div>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        /**
+         * Escapa HTML para prevenir XSS
+         */
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         // ============================================
@@ -1198,14 +1362,20 @@
                 }
             });
 
-            // Create New Team Button
+            // Create New Team Button - Redirigir a create_team.html
             const createTeamBtn = document.getElementById('createTeamBtn');
             if (createTeamBtn) {
                 createTeamBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('🆕 Botón "Create new team" clickeado');
-                    createNewTeam();
+                    console.log('🆕 Botón "Create new team" clickeado, redirigiendo a create_team.html');
+                    // Limpiar sessionStorage para crear un team nuevo
+                    try {
+                        sessionStorage.removeItem('docu_selected_team_id');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'create_team.html';
                 });
             } else {
                 console.error('❌ Botón "Create new team" no encontrado');
@@ -1457,23 +1627,9 @@
             console.log('📦 Total de chips extraídos:', projectsChips.length);
             console.log('📋 Chips extraídos:', projectsChips);
 
-            // Obtener teamCost, asegurar que siempre tenga un valor válido
-            const teamCostInput = document.getElementById('teamCost');
-            let teamCost = 'USD 0.00';
-            if (teamCostInput) {
-                const teamCostValue = teamCostInput.value.trim();
-                if (teamCostValue && teamCostValue !== '') {
-                    teamCost = teamCostValue;
-                } else {
-                    // Si está vacío, calcular desde los miembros antes de guardar
-                    updateTeamCost();
-                    teamCost = teamCostInput.value || 'USD 0.00';
-                }
-            }
-
             return {
                 name: document.getElementById('projectName').value.trim(),
-                teamCost: teamCost,
+                teamCost: document.getElementById('teamCost').value,
                 associatedProjects: document.getElementById('associatedProjects').value,
                 projects: projectsChips, // Chips de proyectos asociados
                 members: membersList, // Lista completa de miembros con sus datos
@@ -1628,7 +1784,7 @@
             
             const teamCostInput = document.getElementById('teamCost');
             if (teamCostInput) {
-                teamCostInput.value = 'USD 0.00';
+                teamCostInput.value = '';
             }
             
             const associatedProjectsInput = document.getElementById('associatedProjects');
@@ -2050,8 +2206,11 @@
             });
 
             // Formatear el total en USD con 2 decimales
-            // Si no hay valor, mostrar USD 0.00
-            teamCostInput.value = `USD ${totalCost.toFixed(2)}`;
+            if (totalCost > 0) {
+                teamCostInput.value = `USD ${totalCost.toFixed(2)}`;
+            } else {
+                teamCostInput.value = '';
+            }
         }
 
         function createMemberCard(memberData) {
@@ -2230,20 +2389,20 @@
         
         function performSearch(searchQuery) {
             console.log('Realizando búsqueda:', searchQuery);
-            // Aquí puedes implementar la lógica de búsqueda
-            // Por ejemplo, filtrar miembros del equipo, proyectos, etc.
-            // Por ahora solo mostramos un mensaje
             const teamMembersGrid = document.getElementById('teamMembersGrid');
-            if (teamMembersGrid) {
-                // Aquí se puede implementar el filtrado de miembros
-                // Por ejemplo:
-                // const members = teamMembersGrid.querySelectorAll('.profile-card-placeholder');
-                // members.forEach(member => {
-                //     const name = member.querySelector('.profile-card-name').textContent.toLowerCase();
-                //     const isVisible = name.includes(searchQuery.toLowerCase());
-                //     member.style.display = isVisible ? 'flex' : 'none';
-                // });
-            }
+            if (!teamMembersGrid) return;
+            
+            const members = teamMembersGrid.querySelectorAll('.dsu-profile-card');
+            const searchLower = searchQuery.toLowerCase();
+            
+            members.forEach(member => {
+                const name = member.querySelector('.dsu-profile-card__name')?.textContent.toLowerCase() || '';
+                const job = member.querySelector('.dsu-profile-card__job')?.textContent.toLowerCase() || '';
+                const email = member.querySelector('.dsu-profile-card__contact-text')?.textContent.toLowerCase() || '';
+                
+                const isVisible = name.includes(searchLower) || job.includes(searchLower) || email.includes(searchLower);
+                member.style.display = isVisible ? '' : 'none';
+            });
         }
 
         // ============================================
@@ -2414,31 +2573,15 @@
                     // Agregar clase active al item clickeado
                     teamItem.classList.add('dsu-team-item--active', 'active');
                     
-                    // Si el team está publicado, redirigir a team_filled.html
-                    if (team.id && team.status === 'published') {
+                    // Todos los teams mostrados en team_filled.html están publicados
+                    // Redirigir a team_filled.html con el ID del team
+                    if (team.id) {
                         try {
                             sessionStorage.setItem('docu_selected_team_id', team.id);
                             console.log('✅ Team publicado seleccionado, redirigiendo a team_filled.html');
                             window.location.href = `team_filled.html?id=${team.id}`;
                         } catch (error) {
                             console.warn('⚠️ Error al redirigir:', error);
-                        }
-                    } else if (team.id) {
-                        // Si no está publicado, cargar en create_team.html (modo editable)
-                        try {
-                            sessionStorage.setItem('docu_selected_team_id', team.id);
-                            console.log('✅ Team seleccionado guardado en sessionStorage:', team.id);
-                        } catch (error) {
-                            console.warn('⚠️ No se pudo guardar el team seleccionado en sessionStorage:', error);
-                        }
-                        
-                        // Buscar el team completo en los datos
-                        const fullTeam = teams.find(t => t.id === team.id);
-                        if (fullTeam) {
-                            loadProjectData(fullTeam);
-                        } else {
-                            console.warn('⚠️ Team completo no encontrado, cargando con datos parciales');
-                            loadProjectData(team);
                         }
                     } else {
                         console.error('❌ Team sin ID, no se puede cargar');
@@ -2639,20 +2782,6 @@
             console.log('✅ currentProjectId establecido:', currentProjectId);
             console.log('✅ currentProjectData establecido con status:', currentProjectData.status);
 
-            // create_team.html siempre debe estar en modo editable
-            // Si se intenta cargar un team publicado aquí, redirigir a team_filled.html
-            if (projectData.status === 'published') {
-                console.log('📋 Team publicado detectado en create_team.html, redirigiendo a team_filled.html');
-                if (projectData.id) {
-                    sessionStorage.setItem('docu_selected_team_id', projectData.id);
-                    window.location.href = `team_filled.html?id=${projectData.id}`;
-                }
-                return;
-            }
-            
-            // Asegurar que estamos en vista editable
-            transformToEditableView();
-
             // Cargar nombre del proyecto
             if (projectData.name) {
                 document.getElementById('projectName').value = projectData.name;
@@ -2663,15 +2792,8 @@
             }
 
             // Cargar team cost
-            const teamCostInput = document.getElementById('teamCost');
-            if (teamCostInput) {
-                if (projectData.teamCost && projectData.teamCost.trim() !== '') {
-                    // Si hay teamCost guardado, usarlo
-                    teamCostInput.value = projectData.teamCost;
-                } else {
-                    // Si no hay teamCost, calcularlo desde los miembros
-                    updateTeamCost();
-                }
+            if (projectData.teamCost) {
+                document.getElementById('teamCost').value = projectData.teamCost;
             }
 
             // Cargar miembros
@@ -2744,368 +2866,6 @@
             if (projectData.searchQuery) {
                 document.getElementById('searchInput').value = projectData.searchQuery;
             }
-        }
-
-        /**
-         * Transforma la vista editable a la vista publicada (team_filled.html)
-         */
-        function transformToPublishedView() {
-            const teamContent = document.querySelector('.team-content');
-            if (!teamContent) return;
-
-            // Obtener los elementos del DOM
-            const nameLevel = teamContent.querySelector('.name-level');
-            const costEditLevel = teamContent.querySelector('.cost-edit-level');
-            const secondaryActions = teamContent.querySelector('.secondary-actions');
-            const associatedProjectsGroup = teamContent.querySelector('.associated-projects-group');
-            
-            // 1. Transformar Project Name: input -> display
-            const projectNameGroup = nameLevel?.querySelector('.project-name-group');
-            const projectNameInput = document.getElementById('projectName');
-            if (projectNameGroup && projectNameInput) {
-                // Crear el display si no existe
-                let projectNameDisplay = document.getElementById('projectNameDisplay');
-                if (!projectNameDisplay) {
-                    projectNameDisplay = document.createElement('div');
-                    projectNameDisplay.id = 'projectNameDisplay';
-                    projectNameDisplay.className = 'project-name-display';
-                    projectNameGroup.innerHTML = '';
-                    projectNameGroup.appendChild(projectNameDisplay);
-                    projectNameGroup.classList.add('published');
-                }
-            }
-
-            // 2. Transformar botones Share team y Add member
-            const primaryActions = nameLevel?.querySelector('.primary-actions');
-            if (primaryActions) {
-                const shareBtn = document.getElementById('shareTeamBtn');
-                const addBtn = document.getElementById('addMemberBtn');
-                
-                // Actualizar Share team button
-                if (shareBtn) {
-                    shareBtn.className = 'dsu-button dsu-button--secondary dsu-button--medium';
-                    shareBtn.disabled = false;
-                    if (!shareBtn.querySelector('.dsu-button__icon')) {
-                        shareBtn.innerHTML = `
-                            <span class="dsu-button__icon">
-                                <img src="images/share.svg" alt="Share">
-                            </span>
-                            Share team
-                        `;
-                    }
-                }
-                
-                // Actualizar Add member button
-                if (addBtn) {
-                    addBtn.className = 'dsu-button dsu-button--primary dsu-button--medium';
-                    if (!addBtn.querySelector('.dsu-button__icon')) {
-                        addBtn.innerHTML = `
-                            <span class="dsu-button__text">Add new member</span>
-                            <span class="dsu-button__icon">
-                                <img src="images/plus.svg" alt="Plus">
-                            </span>
-                        `;
-                    }
-                    // Cambiar comportamiento para redirigir a create_team.html
-                    addBtn.onclick = function() {
-                        window.location.href = 'create_team.html';
-                    };
-                }
-            }
-
-            // 3. Transformar Team Cost: input -> display + botón Edit group
-            if (costEditLevel) {
-                const teamCostGroup = costEditLevel.querySelector('.team-cost-group');
-                const teamCostInput = document.getElementById('teamCost');
-                
-                if (teamCostGroup && teamCostInput) {
-                    // Crear team-cost-display si no existe
-                    let teamCostDisplay = costEditLevel.querySelector('.team-cost-display');
-                    if (!teamCostDisplay) {
-                        teamCostDisplay = document.createElement('div');
-                        teamCostDisplay.className = 'team-cost-display';
-                        teamCostDisplay.innerHTML = `<span>Team cost: </span>${teamCostInput.value || '$ 0.00 USD'}`;
-                        
-                        // Ocultar el input group
-                        teamCostGroup.style.display = 'none';
-                        
-                        // Crear botón Edit group si no existe
-                        let editGroupBtn = document.getElementById('editGroupBtn');
-                        if (!editGroupBtn) {
-                            editGroupBtn = document.createElement('button');
-                            editGroupBtn.id = 'editGroupBtn';
-                            editGroupBtn.className = 'dsu-button dsu-button--tertiary dsu-button--small';
-                            editGroupBtn.innerHTML = `
-                                <span class="dsu-button__icon">
-                                    <img src="images/Edit.svg" alt="Edit">
-                                </span>
-                                <span class="dsu-button__text">Edit group</span>
-                            `;
-                            editGroupBtn.onclick = function() {
-                                window.location.href = 'create_team.html';
-                            };
-                        }
-                        
-                        // Reemplazar el contenido del cost-edit-level
-                        costEditLevel.innerHTML = '';
-                        costEditLevel.appendChild(teamCostDisplay);
-                        costEditLevel.appendChild(editGroupBtn);
-                    }
-                }
-            }
-
-            // 4. Habilitar secondary-actions (remover disabled)
-            if (secondaryActions) {
-                secondaryActions.classList.remove('disabled');
-            }
-
-            // 5. Ocultar input de Associated Projects, solo mostrar chips
-            if (associatedProjectsGroup) {
-                const associatedProjectsInput = document.getElementById('associatedProjects');
-                if (associatedProjectsInput) {
-                    associatedProjectsInput.style.display = 'none';
-                }
-            }
-
-            // 6. Ocultar sticky buttons (Save draft y Publish)
-            const stickyButtons = document.querySelector('.dsu-sticky-buttons');
-            if (stickyButtons) {
-                stickyButtons.style.display = 'none';
-            }
-
-            // 7. Remover placeholder de add member card
-            const addMemberCard = document.getElementById('addMemberCard');
-            if (addMemberCard) {
-                addMemberCard.remove();
-            }
-        }
-
-        /**
-         * Transforma la vista publicada de vuelta a la vista editable
-         */
-        function transformToEditableView() {
-            const teamContent = document.querySelector('.team-content');
-            if (!teamContent) return;
-
-            // 1. Restaurar Project Name: display -> input
-            const projectNameGroup = teamContent.querySelector('.project-name-group');
-            if (projectNameGroup && projectNameGroup.classList.contains('published')) {
-                const projectNameDisplay = document.getElementById('projectNameDisplay');
-                if (projectNameDisplay) {
-                    const projectNameInput = document.getElementById('projectName');
-                    if (projectNameInput) {
-                        projectNameInput.value = projectNameDisplay.textContent;
-                    }
-                    projectNameGroup.innerHTML = `
-                        <div class="dsu-input-label">
-                            <div class="dsu-input-label__text">
-                                <span>Project name:</span>
-                            </div>
-                        </div>
-                    `;
-                    projectNameGroup.appendChild(projectNameInput);
-                    projectNameGroup.classList.remove('published');
-                }
-            }
-
-            // 2. Restaurar Team Cost: display -> input
-            const costEditLevel = teamContent.querySelector('.cost-edit-level');
-            if (costEditLevel) {
-                const teamCostDisplay = costEditLevel.querySelector('.team-cost-display');
-                const editGroupBtn = document.getElementById('editGroupBtn');
-                
-                if (teamCostDisplay || editGroupBtn) {
-                    const teamCostGroup = document.createElement('div');
-                    teamCostGroup.className = 'dsu-input-group team-cost-group';
-                    teamCostGroup.innerHTML = `
-                        <div class="dsu-input-label">
-                            <div class="dsu-input-label__text">
-                                <span>Team cost:</span>
-                            </div>
-                        </div>
-                    `;
-                    
-                    const teamCostInput = document.getElementById('teamCost');
-                    if (teamCostInput) {
-                        if (teamCostDisplay) {
-                            const costText = teamCostDisplay.textContent.replace('Team cost:', '').trim();
-                            teamCostInput.value = costText;
-                        }
-                        teamCostGroup.appendChild(teamCostInput);
-                    }
-                    
-                    costEditLevel.innerHTML = '';
-                    costEditLevel.appendChild(teamCostGroup);
-                }
-            }
-
-            // 3. Restaurar botones Share team y Add member a su estado original
-            const primaryActions = teamContent.querySelector('.primary-actions');
-            if (primaryActions) {
-                const shareBtn = document.getElementById('shareTeamBtn');
-                const addBtn = document.getElementById('addMemberBtn');
-                
-                if (shareBtn) {
-                    shareBtn.className = 'btn-share-team';
-                    shareBtn.disabled = true;
-                    shareBtn.innerHTML = `
-                        <span>Share team</span>
-                        <img src="images/share.svg" alt="Share" class="btn-icon">
-                    `;
-                }
-                
-                if (addBtn) {
-                    addBtn.className = 'btn-add-member';
-                    addBtn.innerHTML = `
-                        <span>Add new member</span>
-                        <img src="images/plus.svg" alt="Plus" class="btn-icon">
-                    `;
-                    addBtn.onclick = null; // Restaurar comportamiento original
-                }
-            }
-
-            // 4. Mostrar input de Associated Projects
-            const associatedProjectsInput = document.getElementById('associatedProjects');
-            if (associatedProjectsInput) {
-                associatedProjectsInput.style.display = '';
-            }
-
-            // 5. Mostrar sticky buttons
-            const stickyButtons = document.querySelector('.dsu-sticky-buttons');
-            if (stickyButtons) {
-                stickyButtons.style.display = '';
-            }
-
-            // 6. Restaurar placeholder de add member card
-            const teamMembersGrid = document.getElementById('teamMembersGrid');
-            if (teamMembersGrid) {
-                const addMemberCard = document.getElementById('addMemberCard');
-                if (!addMemberCard) {
-                    // Crear el placeholder si no existe
-                    const placeholder = document.createElement('div');
-                    placeholder.id = 'addMemberCard';
-                    placeholder.className = 'dsu-profile-card-placeholder';
-                    placeholder.innerHTML = `
-                        <div class="dsu-profile-card-placeholder__image">
-                            <div class="dsu-profile-card-placeholder__edit-icon">
-                                <img src="images/plus.svg" alt="Add member">
-                            </div>
-                        </div>
-                        <div class="dsu-profile-card-placeholder__content">
-                            <div class="dsu-profile-card-placeholder__name-job">
-                                <div class="dsu-profile-card-placeholder__name">Name</div>
-                                <div class="dsu-profile-card-placeholder__job">Job position</div>
-                            </div>
-                            <div class="dsu-profile-card-placeholder__contact">
-                                <div class="dsu-profile-card-placeholder__contact-item">
-                                    <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
-                                    <span class="dsu-profile-card-placeholder__contact-text">email</span>
-                                </div>
-                                <div class="dsu-profile-card-placeholder__contact-item">
-                                    <img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
-                                    <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    // Agregar evento click al placeholder
-                    placeholder.addEventListener('click', function() {
-                        if (typeof window.openAddMemberModal === 'function') {
-                            window.openAddMemberModal();
-                        }
-                    });
-                    teamMembersGrid.appendChild(placeholder);
-                }
-            }
-        }
-
-        /**
-         * Muestra los datos del team en la vista publicada
-         */
-        function displayPublishedTeamData(projectData) {
-            // Mostrar nombre del team
-            const projectNameDisplay = document.getElementById('projectNameDisplay');
-            if (projectNameDisplay && projectData.name) {
-                projectNameDisplay.textContent = projectData.name;
-            }
-
-            // Mostrar team cost
-            const teamCostDisplay = document.querySelector('.team-cost-display');
-            if (teamCostDisplay && projectData.teamCost) {
-                teamCostDisplay.innerHTML = `<span>Team cost: </span>${projectData.teamCost}`;
-            }
-
-            // Mostrar associated projects (chips) - sin input, solo chips
-            const chipsContainer = document.getElementById('projectsChipsContainer');
-            if (chipsContainer && projectData.projects && Array.isArray(projectData.projects)) {
-                chipsContainer.innerHTML = '';
-                projectData.projects.forEach(project => {
-                    const chip = document.createElement('div');
-                    chip.className = 'project-chip';
-                    chip.innerHTML = `<span class="project-chip__text">${escapeHtml(project)}</span>`;
-                    chipsContainer.appendChild(chip);
-                });
-            }
-
-            // Mostrar miembros (sin placeholder)
-            const teamMembersGrid = document.getElementById('teamMembersGrid');
-            if (teamMembersGrid && projectData.members && Array.isArray(projectData.members)) {
-                teamMembersGrid.innerHTML = '';
-                projectData.members.forEach(member => {
-                    const memberCard = createPublishedMemberCardHTML(member);
-                    teamMembersGrid.insertAdjacentHTML('beforeend', memberCard);
-                });
-            }
-
-            // Habilitar secondary-actions
-            enableSecondaryActions();
-        }
-
-        /**
-         * Crea el HTML para una tarjeta de miembro en vista publicada
-         */
-        function createPublishedMemberCardHTML(member) {
-            const memberName = escapeHtml(member.name || '');
-            const memberLastName = escapeHtml(member.lastName || '');
-            const memberJob = escapeHtml(member.jobPosition || '');
-            const memberEmail = escapeHtml(member.email || '');
-            const memberPhone = escapeHtml(member.phone || '');
-            const memberAvatar = member.avatar || '';
-            
-            const fullName = `${memberName} ${memberLastName}`.trim() || 'Name';
-            
-            return `
-                <div class="dsu-profile-card">
-                    <div class="dsu-profile-card__image">
-                        ${memberAvatar ? 
-                            `<img src="${escapeHtml(memberAvatar)}" alt="${fullName}" class="dsu-profile-card__avatar-img">` :
-                            `<div class="dsu-profile-card__avatar-placeholder">
-                                <img src="images/avatar_icon.svg" alt="Avatar">
-                             </div>`
-                        }
-                        <button class="dsu-profile-card__edit-icon" title="Edit member">
-                            <img src="images/Edit.svg" alt="Edit">
-                        </button>
-                    </div>
-                    <div class="dsu-profile-card__content">
-                        <div class="dsu-profile-card__name-job">
-                            <h3 class="dsu-profile-card__name">${fullName}</h3>
-                            <p class="dsu-profile-card__job">${memberJob || 'Job position'}</p>
-                        </div>
-                        <div class="dsu-profile-card__contact">
-                            ${memberEmail ? `
-                            <div class="dsu-profile-card__contact-item">
-                                <img src="images/mail.svg" alt="Email" class="dsu-profile-card__contact-icon">
-                                <a href="mailto:${memberEmail}" class="dsu-profile-card__contact-text">${memberEmail}</a>
-                            </div>` : ''}
-                            ${memberPhone ? `
-                            <div class="dsu-profile-card__contact-item">
-                                <img src="images/whatsapp.svg" alt="Phone" class="dsu-profile-card__contact-icon">
-                                <a href="tel:${memberPhone}" class="dsu-profile-card__contact-text">${memberPhone}</a>
-                            </div>` : ''}
-                        </div>
-                    </div>
-                </div>`;
         }
 
         // ============================================
