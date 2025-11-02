@@ -1,3 +1,5 @@
+6623197110af06ab10860dcabed0be377fab4aba|Ubits|ubits@macbookpro.lan|2025-11-01 23:57:31 -0500|Feat: Implementar edición y eliminación de miembros - Agregar botón cerrar en vista de edición - Ajustar botones en vista de teams publicados
+670554e21897d5363d7ea039247d574213e748f6|Ubits|ubits@macbookpro.lan|2025-11-01 23:20:41 -0500|Fix: Mostrar información real del team desde el primer momento - Eliminar valores de plantilla y optimizar orden de carga de datos - Asegurar que team cost siempre muestre un valor (USD 0.00 si no hay datos)
 09d96f8fae101a6f72da790ee78cd819e1659ef3|Ubits|ubits@macbookpro.lan|2025-11-01 21:30:21 -0500|Fix: Prevenir eliminación de teams publicados al recargar - Corregir autoSave y preservar estado de teams publicados
 3a08a0c836d2b709a942fb3c4d5b2b84a2a48923|Ubits|ubits@macbookpro.lan|2025-11-01 21:15:17 -0500|chore: Actualizar changelog con últimos cambios
 c0aa9325b49b71d13c422a0675c3067679bcc543|Ubits|ubits@macbookpro.lan|2025-11-01 21:15:11 -0500|Fix: Corregir persistencia de chips en Associated projects y evitar carga automática al seleccionar teams

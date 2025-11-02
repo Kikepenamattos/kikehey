@@ -58,10 +58,13 @@
             position: relative;
         }
         
+        .edit-close-button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        
         .edit-close-button {
-            position: absolute;
-            top: 0;
-            right: 0;
             width: 32px;
             height: 32px;
             background-color: transparent;
@@ -72,7 +75,6 @@
             justify-content: center;
             padding: 0;
             transition: opacity 0.2s ease;
-            z-index: 100;
         }
         
         .edit-close-button:hover {
@@ -773,10 +775,12 @@
             <div class="team-content">
                 <!-- Data Level -->
                 <div class="data-level">
-                    <!-- Close Button (Top Right - Edit Mode Only) -->
-                    <button class="edit-close-button" id="closeEditBtn" style="display: none;" aria-label="Close edit view">
-                        <img src="images/close.svg" alt="Close" class="edit-close-button__icon">
-                    </button>
+                    <!-- Close Button Container (Top Right - Edit Mode Only) -->
+                    <div class="edit-close-button-container">
+                        <button class="edit-close-button" id="closeEditBtn" style="display: none;" aria-label="Close edit view">
+                            <img src="images/close.svg" alt="Close" class="edit-close-button__icon">
+                        </button>
+                    </div>
                     <!-- Name Level -->
                     <div class="name-level">
                         <div class="dsu-input-group project-name-group">
