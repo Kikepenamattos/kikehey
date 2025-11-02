@@ -1,4 +1,7 @@
+6901a82f9b6de7efe44c65345c20140796b4c944|Ubits|ubits@macbookpro.lan|2025-11-01 21:05:53 -0500|Merge: Resolver conflictos en changelog manteniendo versión local actualizada
+8953e858c2949bee2b508fbb4d0e3979623fda54|Ubits|ubits@macbookpro.lan|2025-11-01 21:04:55 -0500|chore: Actualizar changelog con últimos cambios
 f4b80a9626d9184ecd5cedeb2750bbb777ef5e64|Ubits|ubits@macbookpro.lan|2025-11-01 21:04:49 -0500|Fix: Implementar persistencia completa de teams en sidebar con validaciones y reintentos
+a1e25a46c19a2037dd15514680fe3b5078d61f1e|Ubits|ubits@macbookpro.lan|2025-11-01 12:15:10 -0500|Update changelog with latest changes
 4cce9c4ce5d4bd836686c947838d26acf1a7e719|Ubits|ubits@macbookpro.lan|2025-11-01 12:15:05 -0500|Implement comprehensive data persistence system with auto-save functionality in create_team.html
 fe100010b6ca6d0d79316b1ee5ced838727ce35a|Ubits|ubits@macbookpro.lan|2025-11-01 12:05:35 -0500|Update changelog with latest changes
 78c70d277ef6e5bf2fb0afc55f7ad1ce587439db|Ubits|ubits@macbookpro.lan|2025-11-01 12:05:29 -0500|Add automatic team cost calculation from individual member costs in USD format
