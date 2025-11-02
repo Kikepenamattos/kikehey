@@ -1,3 +1,5 @@
+0b2c61f2d342c5ee9f7cd96695c0d5744fd54000|Ubits|ubits@macbookpro.lan|2025-11-02 10:52:28 -0500|Fix: Mejorar funcionalidad de eliminación de teams y ajustar sticky buttons
+a34eab0f9d0544131f02b5806bf7f0abc26c954d|Ubits|ubits@macbookpro.lan|2025-11-02 10:25:45 -0500|Update: Actualizar changelog con optimización de imágenes
 c7331e821262bf6432929194c56e8b3ff21ba8bd|Ubits|ubits@macbookpro.lan|2025-11-02 10:25:31 -0500|Optimize: Mejorar calidad de imágenes en profile cards sin aumentar peso
 12fd9f4139cb89d47f9bda0af9777bbd927e3902|Ubits|ubits@macbookpro.lan|2025-11-02 10:18:44 -0500|Merge: Resolver conflictos en changelog y git_history - mantener versión local actualizada
 c1c1366f7423021ea458ac623b558ea38b97d330|Ubits|ubits@macbookpro.lan|2025-11-02 10:18:29 -0500|Update: Actualizar changelog con últimos cambios
