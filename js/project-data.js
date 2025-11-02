@@ -227,6 +227,7 @@ const DocuProjectData = {
 
         const emptyData = {
             projects: [],
+            teams: [],
             settings: {},
             preferences: {}
         };
@@ -242,12 +243,21 @@ const DocuProjectData = {
         if (!data) {
             const emptyData = {
                 projects: [],
+                teams: [],
                 settings: {},
                 preferences: {}
             };
             this.saveProjectData(emptyData);
             return true;
         }
+        
+        // Asegurar que teams exista incluso si hay datos
+        if (!data.teams || !Array.isArray(data.teams)) {
+            data.teams = [];
+            this.saveProjectData(data);
+            return true;
+        }
+        
         return false;
     }
 };

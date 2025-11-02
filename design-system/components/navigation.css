@@ -280,21 +280,20 @@
 .dsu-team-item {
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: var(--spacing-08) var(--spacing-16);
-  background-color: var(--color-surface-regular);
+  background-color: transparent;
   border: none;
-  border-radius: 40px;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 124px;
-  text-align: center;
+  width: 100%;
+  text-align: left;
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-regular); /* Regular 400 */
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
-  margin-bottom: 0;
+  margin: 0;
+  border-radius: 0;
 }
 
 .dsu-team-item:hover:not(:disabled) {
@@ -304,10 +303,14 @@
 .dsu-team-item--active,
 .dsu-team-item.active {
   text-decoration: underline;
+  font-weight: var(--font-weight-semibold);
 }
 
 .dsu-team-item__text {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 /* === PROJECTS BUTTON === */
