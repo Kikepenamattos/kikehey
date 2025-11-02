@@ -1,3 +1,5 @@
+326be627104360f444ddbc58f7d9f941b779eedd|Ubits|ubits@macbookpro.lan|2025-11-02 11:47:17 -0500|Update: Actualizar padding del sidebar y documentación
+a089efeaf730bbad1d214471d6ba6c5562d5cde9|Ubits|ubits@macbookpro.lan|2025-11-02 10:52:43 -0500|Update: Actualizar changelog con mejoras de eliminación de teams
 0b2c61f2d342c5ee9f7cd96695c0d5744fd54000|Ubits|ubits@macbookpro.lan|2025-11-02 10:52:28 -0500|Fix: Mejorar funcionalidad de eliminación de teams y ajustar sticky buttons
 a34eab0f9d0544131f02b5806bf7f0abc26c954d|Ubits|ubits@macbookpro.lan|2025-11-02 10:25:45 -0500|Update: Actualizar changelog con optimización de imágenes
 c7331e821262bf6432929194c56e8b3ff21ba8bd|Ubits|ubits@macbookpro.lan|2025-11-02 10:25:31 -0500|Optimize: Mejorar calidad de imágenes en profile cards sin aumentar peso
