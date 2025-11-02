@@ -44,8 +44,9 @@
             flex-direction: column;
             height: 100vh;
             overflow-y: auto;
+            position: relative;
         }
-
+        
         .team-content {
             flex: 1;
             padding: 64px 173px 0 135px;
@@ -54,6 +55,34 @@
             gap: 32px;
             width: 80%;
             margin: 0 auto;
+            position: relative;
+        }
+        
+        .edit-close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: opacity 0.2s ease;
+            z-index: 100;
+        }
+        
+        .edit-close-button:hover {
+            opacity: 0.7;
+        }
+        
+        .edit-close-button__icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
         }
 
         /* Data Level - Formulario principal */
@@ -61,6 +90,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            position: relative;
         }
 
         /* Name Level */
@@ -743,6 +773,10 @@
             <div class="team-content">
                 <!-- Data Level -->
                 <div class="data-level">
+                    <!-- Close Button (Top Right - Edit Mode Only) -->
+                    <button class="edit-close-button" id="closeEditBtn" style="display: none;" aria-label="Close edit view">
+                        <img src="images/close.svg" alt="Close" class="edit-close-button__icon">
+                    </button>
                     <!-- Name Level -->
                     <div class="name-level">
                         <div class="dsu-input-group project-name-group">
@@ -883,7 +917,7 @@
                     <!-- Modal Header -->
                     <div class="modal-header-section">
                         <div class="modal-headline">
-                            <h2 class="modal-title">Add a new member</h2>
+                            <h2 class="modal-title" id="modalTitle">Add a new member</h2>
                             <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
                                 <img src="images/close.svg" alt="Close" width="20" height="20">
                             </button>
@@ -980,11 +1014,17 @@
                             </span>
                             <span>Cancel</span>
                         </button>
-                        <button type="button" class="dsu-button dsu-button--primary dsu-button--medium modal-add-btn" id="modalAddBtn" disabled>
+                        <button type="button" class="dsu-button dsu-button--tertiary dsu-button--medium modal-delete-btn" id="modalDeleteBtn" style="display: none;">
                             <span class="dsu-button__icon">
+                                <img src="images/trash.svg" alt="Delete" width="20" height="20">
+                            </span>
+                            <span>Delete member</span>
+                        </button>
+                        <button type="button" class="dsu-button dsu-button--primary dsu-button--medium modal-add-btn" id="modalAddBtn" disabled>
+                            <span class="dsu-button__icon" id="modalAddBtnIcon">
                                 <img src="images/plus.svg" alt="Add" width="20" height="20">
                             </span>
-                            <span>Add</span>
+                            <span id="modalAddBtnText">Add</span>
                         </button>
                     </div>
                 </div>
@@ -1311,6 +1351,24 @@
             publishBtn.addEventListener('click', function() {
                 publishProject();
             });
+            
+            // Close edit view
+            const closeEditBtn = document.getElementById('closeEditBtn');
+            if (closeEditBtn) {
+                closeEditBtn.addEventListener('click', function() {
+                    // Obtener el ID del team que se está editando
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const teamId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id') || sessionStorage.getItem('docu_selected_team_id');
+                    
+                    if (teamId) {
+                        // Redirigir de vuelta a team_filled.html con el ID del team
+                        window.location.href = `team_filled.html?id=${teamId}`;
+                    } else {
+                        // Si no hay ID, redirigir a la lista de teams publicados o al inicio
+                        window.location.href = 'create_team.html';
+                    }
+                });
+            }
         }
 
         function saveDraft() {
@@ -1741,8 +1799,13 @@
         // ============================================
         // Modal Functionality
         // ============================================
+        // Variable global para rastrear si estamos editando un miembro
+        let currentEditingMemberId = null;
+        
         function openAddMemberModal() {
             console.log('openAddMemberModal called');
+            currentEditingMemberId = null; // No estamos editando, es un nuevo miembro
+            
             const modalOverlay = document.getElementById('addMemberModalOverlay');
             console.log('modalOverlay:', modalOverlay);
             
@@ -1762,6 +1825,20 @@
                 return;
             }
             
+            // Actualizar título y botones del modal
+            const modalTitle = document.getElementById('modalTitle');
+            const modalAddBtnText = document.getElementById('modalAddBtnText');
+            const modalAddBtnIcon = document.getElementById('modalAddBtnIcon');
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            
+            if (modalTitle) modalTitle.textContent = 'Add a new member';
+            if (modalAddBtnText) modalAddBtnText.textContent = 'Add';
+            if (modalAddBtnIcon) {
+                const iconImg = modalAddBtnIcon.querySelector('img');
+                if (iconImg) iconImg.src = 'images/plus.svg';
+            }
+            if (modalDeleteBtn) modalDeleteBtn.style.display = 'none';
+            
             // Force show modal
             modalOverlay.classList.add('active');
             modalOverlay.style.display = 'flex';
@@ -1774,8 +1851,84 @@
             console.log('Modal opened successfully');
         }
         
-        // Make function globally accessible
+        function openEditMemberModal(memberId) {
+            console.log('openEditMemberModal called for member:', memberId);
+            currentEditingMemberId = memberId;
+            
+            // Buscar el miembro en la lista
+            const member = membersList.find(m => m.id === memberId);
+            if (!member) {
+                console.error('Member not found:', memberId);
+                return;
+            }
+            
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            if (!modalOverlay) {
+                console.error('Modal overlay not found!');
+                return;
+            }
+            
+            // Actualizar título y botones del modal
+            const modalTitle = document.getElementById('modalTitle');
+            const modalAddBtnText = document.getElementById('modalAddBtnText');
+            const modalAddBtnIcon = document.getElementById('modalAddBtnIcon');
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            
+            if (modalTitle) modalTitle.textContent = 'Edit member';
+            if (modalAddBtnText) modalAddBtnText.textContent = 'Save';
+            if (modalAddBtnIcon) {
+                const iconImg = modalAddBtnIcon.querySelector('img');
+                if (iconImg) iconImg.src = 'images/check.svg';
+            }
+            if (modalDeleteBtn) modalDeleteBtn.style.display = 'flex';
+            
+            // Precargar datos del miembro en el formulario
+            document.getElementById('modalMemberName').value = member.name || '';
+            document.getElementById('modalMemberLastName').value = member.lastName || '';
+            document.getElementById('modalMemberJobPosition').value = member.jobPosition || '';
+            document.getElementById('modalMemberEmail').value = member.email || '';
+            document.getElementById('modalMemberPhone').value = member.phone || '';
+            
+            // Formatear el costo (remover "USD" si existe)
+            let costValue = member.cost || '';
+            if (costValue.includes('USD')) {
+                costValue = costValue.replace(/USD\s*/gi, '').trim();
+            }
+            document.getElementById('modalMemberCost').value = costValue;
+            
+            // Precargar imagen si existe
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            if (member.image && member.image.trim() !== '') {
+                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                if (modalAvatarPreview) {
+                    modalAvatarPreview.src = member.image;
+                    modalAvatarPreview.style.display = 'block';
+                }
+            } else {
+                if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                if (modalAvatarPreview) {
+                    modalAvatarPreview.style.display = 'none';
+                    modalAvatarPreview.src = '';
+                }
+            }
+            
+            // Validar formulario
+            validateModalForm();
+            
+            // Mostrar modal
+            modalOverlay.classList.add('active');
+            modalOverlay.style.display = 'flex';
+            modalOverlay.style.opacity = '1';
+            modalOverlay.style.visibility = 'visible';
+            document.body.style.overflow = 'hidden';
+            
+            console.log('Modal opened in edit mode for member:', memberId);
+        }
+        
+        // Make functions globally accessible
         window.openAddMemberModal = openAddMemberModal;
+        window.openEditMemberModal = openEditMemberModal;
 
         function closeModal() {
             const modalOverlay = document.getElementById('addMemberModalOverlay');
@@ -1813,6 +1966,23 @@
                 modalAvatarPreview.src = '';
             }
             if (modalAvatarInput) modalAvatarInput.value = '';
+            
+            // Reset editing state
+            currentEditingMemberId = null;
+            
+            // Reset modal title and buttons
+            const modalTitle = document.getElementById('modalTitle');
+            const modalAddBtnText = document.getElementById('modalAddBtnText');
+            const modalAddBtnIcon = document.getElementById('modalAddBtnIcon');
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            
+            if (modalTitle) modalTitle.textContent = 'Add a new member';
+            if (modalAddBtnText) modalAddBtnText.textContent = 'Add';
+            if (modalAddBtnIcon) {
+                const iconImg = modalAddBtnIcon.querySelector('img');
+                if (iconImg) iconImg.src = 'images/plus.svg';
+            }
+            if (modalDeleteBtn) modalDeleteBtn.style.display = 'none';
             
             // Reset validation
             validateModalForm();
@@ -1972,11 +2142,11 @@
             // Initial validation to disable Add button
             validateModalForm();
 
-            // Handle Add button
+            // Handle Add/Save button
             if (modalAddBtn) {
                 modalAddBtn.addEventListener('click', function() {
                     const memberData = {
-                        id: Date.now().toString(),
+                        id: currentEditingMemberId || Date.now().toString(),
                         name: document.getElementById('modalMemberName')?.value.trim() || '',
                         lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
                         jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
@@ -1997,11 +2167,33 @@
                         return;
                     }
 
-                    // Create member
-                    createMember(memberData);
+                    // Si estamos editando, actualizar el miembro existente
+                    if (currentEditingMemberId) {
+                        updateMember(memberData);
+                    } else {
+                        // Si no, crear un nuevo miembro
+                        createMember(memberData);
+                    }
 
                     // Close modal
                     closeModal();
+                });
+            }
+            
+            // Handle Delete button
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            if (modalDeleteBtn) {
+                modalDeleteBtn.addEventListener('click', function() {
+                    if (!currentEditingMemberId) {
+                        console.warn('No member ID to delete');
+                        return;
+                    }
+                    
+                    // Confirmar eliminación
+                    if (confirm('Are you sure you want to delete this member?')) {
+                        deleteMember(currentEditingMemberId);
+                        closeModal();
+                    }
                 });
             }
         }
@@ -2030,6 +2222,68 @@
             
             console.log('Miembro creado:', memberData);
             console.log('Total de miembros:', membersList.length);
+        }
+        
+        function updateMember(memberData) {
+            // Buscar el índice del miembro en la lista
+            const memberIndex = membersList.findIndex(m => m.id === memberData.id);
+            if (memberIndex === -1) {
+                console.error('Member not found for update:', memberData.id);
+                return;
+            }
+            
+            // Actualizar el miembro en la lista
+            membersList[memberIndex] = { ...memberData };
+            
+            // Actualizar la tarjeta en el DOM
+            const memberCard = document.querySelector(`[data-member-id="${memberData.id}"]`);
+            if (memberCard) {
+                // Eliminar la tarjeta antigua
+                memberCard.remove();
+            }
+            
+            // Recrear la tarjeta con los datos actualizados
+            createMemberCard(memberData);
+            
+            // Actualizar el costo del equipo
+            updateTeamCost();
+            
+            // Guardar automáticamente después de actualizar miembro
+            autoSave();
+            
+            console.log('Miembro actualizado:', memberData);
+        }
+        
+        function deleteMember(memberId) {
+            // Buscar el índice del miembro en la lista
+            const memberIndex = membersList.findIndex(m => m.id === memberId);
+            if (memberIndex === -1) {
+                console.error('Member not found for deletion:', memberId);
+                return;
+            }
+            
+            // Eliminar de la lista
+            membersList.splice(memberIndex, 1);
+            
+            // Eliminar la tarjeta del DOM
+            const memberCard = document.querySelector(`[data-member-id="${memberId}"]`);
+            if (memberCard) {
+                memberCard.remove();
+            }
+            
+            // Si no hay miembros, deshabilitar secondary-actions
+            if (membersList.length === 0) {
+                disableSecondaryActions();
+            }
+            
+            // Actualizar el costo del equipo
+            updateTeamCost();
+            
+            // Guardar automáticamente después de eliminar miembro
+            autoSave();
+            
+            console.log('Miembro eliminado:', memberId);
+            console.log('Total de miembros restantes:', membersList.length);
         }
 
         function updateTeamCost() {
@@ -2099,6 +2353,17 @@
                 teamMembersGrid.insertBefore(memberCard, addMemberCard);
             } else {
                 teamMembersGrid.appendChild(memberCard);
+            }
+            
+            // Agregar event listener al botón de editar
+            const editButton = memberCard.querySelector('.dsu-profile-card__edit-button');
+            if (editButton) {
+                editButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Botón editar clickeado para miembro:', memberData.id);
+                    openEditMemberModal(memberData.id);
+                });
             }
         }
         
@@ -2502,6 +2767,43 @@
         function loadCurrentProjectData() {
             console.log('=== loadCurrentProjectData llamado ===');
             
+            // Verificar si estamos en modo de edición desde team_filled.html
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEditMode = urlParams.get('edit') === 'true';
+            const editTeamId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id');
+            
+            if (isEditMode && editTeamId) {
+                console.log('📝 Modo de edición activado para team:', editTeamId);
+                
+                // Mostrar botón de cerrar en modo edición
+                const closeEditBtn = document.getElementById('closeEditBtn');
+                if (closeEditBtn) {
+                    closeEditBtn.style.display = 'flex';
+                }
+                
+                const projectDataObj = DocuProjectData.getProjectData();
+                if (projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams)) {
+                    const teamToEdit = projectDataObj.teams.find(t => t.id === editTeamId);
+                    if (teamToEdit) {
+                        console.log('✅ Team a editar encontrado:', teamToEdit.name || teamToEdit.id);
+                        // Establecer el ID de edición antes de cargar
+                        currentProjectId = teamToEdit.id;
+                        sessionStorage.setItem('docu_selected_team_id', teamToEdit.id);
+                        // Cargar el team en modo editable (sin redirección)
+                        loadProjectData(teamToEdit, true); // true = permitir editar teams publicados
+                        return;
+                    } else {
+                        console.warn('⚠️ Team a editar no encontrado con ID:', editTeamId);
+                    }
+                }
+            } else {
+                // Ocultar botón de cerrar si no estamos en modo edición
+                const closeEditBtn = document.getElementById('closeEditBtn');
+                if (closeEditBtn) {
+                    closeEditBtn.style.display = 'none';
+                }
+            }
+            
             // Cargar datos del proyecto actual desde localStorage
             const projectDataObj = DocuProjectData.getProjectData();
             if (!projectDataObj || !projectDataObj.teams || projectDataObj.teams.length === 0) {
@@ -2618,7 +2920,7 @@
             }
         }
 
-        function loadProjectData(projectData) {
+        function loadProjectData(projectData, allowEditPublished = false) {
             if (!projectData) {
                 console.warn('⚠️ loadProjectData: projectData es null o undefined');
                 return;
@@ -2630,7 +2932,8 @@
                 name: projectData.name,
                 status: projectData.status,
                 membersCount: projectData.members ? projectData.members.length : 0,
-                projectsCount: projectData.projects ? projectData.projects.length : 0
+                projectsCount: projectData.projects ? projectData.projects.length : 0,
+                allowEditPublished: allowEditPublished
             });
 
             currentProjectId = projectData.id || Date.now().toString();
@@ -2641,13 +2944,30 @@
 
             // create_team.html siempre debe estar en modo editable
             // Si se intenta cargar un team publicado aquí, redirigir a team_filled.html
-            if (projectData.status === 'published') {
+            // EXCEPTO si allowEditPublished es true (cuando viene desde "Edit group")
+            if (projectData.status === 'published' && !allowEditPublished) {
                 console.log('📋 Team publicado detectado en create_team.html, redirigiendo a team_filled.html');
                 if (projectData.id) {
                     sessionStorage.setItem('docu_selected_team_id', projectData.id);
                     window.location.href = `team_filled.html?id=${projectData.id}`;
                 }
                 return;
+            }
+            
+            // Si estamos editando un team publicado, mostrar mensaje y mostrar botón de cerrar
+            if (projectData.status === 'published' && allowEditPublished) {
+                console.log('📝 Editando team publicado:', projectData.name);
+                // Mostrar botón de cerrar en modo edición
+                const closeEditBtn = document.getElementById('closeEditBtn');
+                if (closeEditBtn) {
+                    closeEditBtn.style.display = 'flex';
+                }
+            } else {
+                // Ocultar botón de cerrar si no estamos en modo edición
+                const closeEditBtn = document.getElementById('closeEditBtn');
+                if (closeEditBtn) {
+                    closeEditBtn.style.display = 'none';
+                }
             }
             
             // Asegurar que estamos en vista editable
@@ -2681,16 +3001,58 @@
                 // Recrear las tarjetas de miembros
                 const teamMembersGrid = document.getElementById('teamMembersGrid');
                 if (teamMembersGrid) {
-                    const placeholder = document.getElementById('addMemberCard');
+                    // Limpiar todo el grid
                     teamMembersGrid.innerHTML = '';
                     
+                    // Recrear las tarjetas de miembros existentes
                     projectData.members.forEach(member => {
                         createMemberCard(member);
                     });
                     
-                    if (placeholder) {
-                        teamMembersGrid.appendChild(placeholder);
+                    // Asegurar que el Profile Card Placeholder esté presente
+                    let placeholder = document.getElementById('addMemberCard');
+                    if (!placeholder) {
+                        // Si no existe, crear uno nuevo desde el HTML original
+                        placeholder = document.createElement('div');
+                        placeholder.className = 'dsu-profile-card-placeholder';
+                        placeholder.id = 'addMemberCard';
+                        placeholder.innerHTML = `
+                            <div class="dsu-profile-card-placeholder__image">
+                                <div class="dsu-profile-card-placeholder__edit-icon">
+                                    <img src="images/plus.svg" alt="Add member">
+                                </div>
+                            </div>
+                            <div class="dsu-profile-card-placeholder__content">
+                                <div class="dsu-profile-card-placeholder__name-job">
+                                    <div class="dsu-profile-card-placeholder__name">Name</div>
+                                    <div class="dsu-profile-card-placeholder__job">Job position</div>
+                                </div>
+                                <div class="dsu-profile-card-placeholder__contact">
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">email</span>
+                                    </div>
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
                     }
+                    
+                    // Agregar el placeholder al final del grid
+                    teamMembersGrid.appendChild(placeholder);
+                    
+                    // Re-inicializar el evento click del placeholder para abrir el modal
+                    placeholder.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('🖱️ Profile Card Placeholder clickeado - abriendo modal');
+                        if (typeof window.openAddMemberModal === 'function') {
+                            window.openAddMemberModal();
+                        }
+                    });
                 }
 
                 // Actualizar costo del equipo
@@ -2699,6 +3061,50 @@
                 // Habilitar secondary-actions si hay miembros
                 if (membersList.length > 0) {
                     enableSecondaryActions();
+                }
+            } else {
+                // Si no hay miembros, asegurar que el placeholder esté presente y funcional
+                const teamMembersGrid = document.getElementById('teamMembersGrid');
+                if (teamMembersGrid) {
+                    let placeholder = document.getElementById('addMemberCard');
+                    if (!placeholder) {
+                        placeholder = document.createElement('div');
+                        placeholder.className = 'dsu-profile-card-placeholder';
+                        placeholder.id = 'addMemberCard';
+                        placeholder.innerHTML = `
+                            <div class="dsu-profile-card-placeholder__image">
+                                <div class="dsu-profile-card-placeholder__edit-icon">
+                                    <img src="images/plus.svg" alt="Add member">
+                                </div>
+                            </div>
+                            <div class="dsu-profile-card-placeholder__content">
+                                <div class="dsu-profile-card-placeholder__name-job">
+                                    <div class="dsu-profile-card-placeholder__name">Name</div>
+                                    <div class="dsu-profile-card-placeholder__job">Job position</div>
+                                </div>
+                                <div class="dsu-profile-card-placeholder__contact">
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">email</span>
+                                    </div>
+                                    <div class="dsu-profile-card-placeholder__contact-item">
+                                        <img src="images/whatsapp.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
+                                        <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        teamMembersGrid.appendChild(placeholder);
+                    }
+                    // Re-inicializar el evento click
+                    placeholder.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('🖱️ Profile Card Placeholder clickeado - abriendo modal');
+                        if (typeof window.openAddMemberModal === 'function') {
+                            window.openAddMemberModal();
+                        }
+                    });
                 }
             }
 

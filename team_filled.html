@@ -751,17 +751,11 @@
                             <div class="project-name-display" id="projectNameDisplay"></div>
                         </div>
                         <div class="primary-actions">
-                            <button class="dsu-button dsu-button--secondary dsu-button--medium" id="shareTeamBtn">
+                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareTeamBtn">
                                 <span class="dsu-button__icon">
                                     <img src="images/share.svg" alt="Share">
                                 </span>
                                 Share team
-                            </button>
-                            <button class="dsu-button dsu-button--primary dsu-button--medium" id="addMemberBtn">
-                                <span class="dsu-button__text">Add new member</span>
-                                <span class="dsu-button__icon">
-                                    <img src="images/plus.svg" alt="Plus">
-                                </span>
                             </button>
                         </div>
                     </div>
@@ -1046,17 +1040,22 @@
             const editGroupBtn = document.getElementById('editGroupBtn');
             if (editGroupBtn) {
                 editGroupBtn.addEventListener('click', function() {
-                    window.location.href = 'create_team.html';
+                    // Obtener el ID del team actual desde la URL o sessionStorage
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const teamId = urlParams.get('id') || sessionStorage.getItem('docu_selected_team_id');
+                    
+                    if (teamId) {
+                        // Redirigir a create_team.html con parámetros para editar
+                        sessionStorage.setItem('docu_edit_team_id', teamId);
+                        sessionStorage.setItem('docu_editing_mode', 'true');
+                        window.location.href = `create_team.html?edit=true&id=${teamId}`;
+                    } else {
+                        // Si no hay ID, ir a create_team.html sin parámetros
+                        window.location.href = 'create_team.html';
+                    }
                 });
             }
 
-            // Add new member
-            const addMemberBtn = document.getElementById('addMemberBtn');
-            if (addMemberBtn) {
-                addMemberBtn.addEventListener('click', function() {
-                    window.location.href = 'create_team.html';
-                });
-            }
         }
 
         /**
@@ -1840,20 +1839,6 @@
         
         function initMembersManagement() {
             console.log('initMembersManagement called');
-            
-            // Click en el botón "Add new member" del header
-            const addMemberBtn = document.getElementById('addMemberBtn');
-            console.log('addMemberBtn:', addMemberBtn);
-            if (addMemberBtn) {
-                addMemberBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('Add member button clicked');
-                    openAddMemberModal();
-                });
-            } else {
-                console.error('Add member button not found!');
-            }
             
             // Click en el profile-card-placeholder
             const addMemberCard = document.getElementById('addMemberCard');
