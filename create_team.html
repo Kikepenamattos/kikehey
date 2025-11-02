@@ -1274,6 +1274,15 @@
 
             console.log('📦 Datos del proyecto preparados:', projectData);
             console.log('🆔 ID del proyecto:', currentProjectId);
+            
+            // Verificar que los chips están incluidos en projectData
+            if (projectData.projects && Array.isArray(projectData.projects)) {
+                console.log('✅ Chips incluidos en projectData:', projectData.projects.length, 'chips');
+                console.log('📋 Chips:', projectData.projects);
+            } else {
+                console.warn('⚠️ No se encontraron chips en projectData antes de guardar');
+                console.log('📦 projectData completo:', projectData);
+            }
 
             // Guardar proyecto
             console.log('💾 Guardando proyecto...');
@@ -1352,13 +1361,23 @@
             const chipsContainer = document.getElementById('projectsChipsContainer');
             if (chipsContainer) {
                 const chips = chipsContainer.querySelectorAll('.project-chip');
+                console.log('📋 Chips encontrados en el DOM:', chips.length);
                 chips.forEach(chip => {
                     const chipText = chip.querySelector('.project-chip__text');
                     if (chipText) {
-                        projectsChips.push(chipText.textContent.trim());
+                        const chipValue = chipText.textContent.trim();
+                        if (chipValue) {
+                            projectsChips.push(chipValue);
+                            console.log('✅ Chip agregado:', chipValue);
+                        }
                     }
                 });
+            } else {
+                console.warn('⚠️ projectsChipsContainer no encontrado');
             }
+
+            console.log('📦 Total de chips extraídos:', projectsChips.length);
+            console.log('📋 Chips extraídos:', projectsChips);
 
             return {
                 name: document.getElementById('projectName').value.trim(),
@@ -1459,8 +1478,17 @@
                             console.log('📋 Team verificado:', {
                                 id: verifyTeam.id,
                                 name: verifyTeam.name,
-                                status: verifyTeam.status
+                                status: verifyTeam.status,
+                                projectsCount: verifyTeam.projects ? verifyTeam.projects.length : 0,
+                                projects: verifyTeam.projects || []
                             });
+                            
+                            // Verificación específica de chips
+                            if (verifyTeam.projects && Array.isArray(verifyTeam.projects) && verifyTeam.projects.length > 0) {
+                                console.log('✅ Chips de Associated Projects verificados en localStorage:', verifyTeam.projects.length);
+                            } else {
+                                console.warn('⚠️ Verificación: no se encontraron chips de Associated Projects después de guardar');
+                            }
                         } else {
                             console.warn('⚠️ Verificación: team no encontrado después de guardar');
                         }
@@ -2404,16 +2432,41 @@
             }
 
             // Cargar chips de Associated Projects
-            if (projectData.projects && Array.isArray(projectData.projects)) {
-                const chipsContainer = document.getElementById('projectsChipsContainer');
-                const associatedProjectsInput = document.getElementById('associatedProjects');
-                
+            // Limpiar chips existentes antes de cargar nuevos
+            const chipsContainer = document.getElementById('projectsChipsContainer');
+            const associatedProjectsInput = document.getElementById('associatedProjects');
+            
+            if (chipsContainer) {
+                // Limpiar todos los chips existentes
+                chipsContainer.innerHTML = '';
+                console.log('🧹 Chips de Associated Projects limpiados antes de cargar');
+            }
+            
+            if (associatedProjectsInput) {
+                // Limpiar el input también
+                associatedProjectsInput.value = '';
+            }
+            
+            // Cargar chips si hay proyectos guardados (independientemente del status)
+            // Los chips deben mostrarse para permitir edición
+            if (projectData.projects && Array.isArray(projectData.projects) && projectData.projects.length > 0) {
                 if (chipsContainer && associatedProjectsInput) {
+                    console.log('📋 Cargando chips de Associated Projects:', projectData.projects.length, 'chips');
+                    let chipsCargados = 0;
                     projectData.projects.forEach(projectName => {
-                        const chip = createProjectChip(projectName);
-                        chipsContainer.appendChild(chip);
+                        if (projectName && typeof projectName === 'string' && projectName.trim().length > 0) {
+                            const chip = createProjectChip(projectName.trim());
+                            chipsContainer.appendChild(chip);
+                            chipsCargados++;
+                            console.log('✅ Chip cargado:', projectName.trim());
+                        }
                     });
+                    console.log(`✅ Total de chips cargados: ${chipsCargados}/${projectData.projects.length}`);
+                } else {
+                    console.warn('⚠️ chipsContainer o associatedProjectsInput no encontrados');
                 }
+            } else {
+                console.log('ℹ️ No hay chips de Associated Projects para cargar');
             }
 
             // Cargar búsqueda si existe
