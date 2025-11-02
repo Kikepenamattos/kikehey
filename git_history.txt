@@ -1,3 +1,5 @@
+c0aa9325b49b71d13c422a0675c3067679bcc543|Ubits|ubits@macbookpro.lan|2025-11-01 21:15:11 -0500|Fix: Corregir persistencia de chips en Associated projects y evitar carga automática al seleccionar teams
+f70e3b112e331043bb98b27a140779878155f54f|Ubits|ubits@macbookpro.lan|2025-11-01 21:06:08 -0500|chore: Actualizar changelog después del push
 6901a82f9b6de7efe44c65345c20140796b4c944|Ubits|ubits@macbookpro.lan|2025-11-01 21:05:53 -0500|Merge: Resolver conflictos en changelog manteniendo versión local actualizada
 8953e858c2949bee2b508fbb4d0e3979623fda54|Ubits|ubits@macbookpro.lan|2025-11-01 21:04:55 -0500|chore: Actualizar changelog con últimos cambios
 f4b80a9626d9184ecd5cedeb2750bbb777ef5e64|Ubits|ubits@macbookpro.lan|2025-11-01 21:04:49 -0500|Fix: Implementar persistencia completa de teams en sidebar con validaciones y reintentos
