@@ -2153,42 +2153,102 @@
                 });
             }
             
-            // Función para comprimir imagen si es necesario
+            // Función optimizada para comprimir imágenes manteniendo alta calidad
             function compressImageIfNeeded(dataUrl, callback) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // Calcular nuevas dimensiones (máximo 200x200px para reducir tamaño)
-                    const maxWidth = 200;
-                    const maxHeight = 200;
+                    // Configurar calidad de renderizado mejorada
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
+                    // Tamaño máximo optimizado: 400x400px para mantener buena calidad
+                    // Los profile cards muestran 200px, pero usar 2x permite mejor calidad en pantallas Retina
+                    const maxWidth = 400;
+                    const maxHeight = 400;
+                    const maxFileSizeKB = 150; // Máximo 150KB por imagen
+                    
                     let width = img.width;
                     let height = img.height;
                     
+                    // Calcular dimensiones manteniendo aspect ratio
                     if (width > maxWidth || height > maxHeight) {
-                        if (width > height) {
-                            height = (height * maxWidth) / width;
-                            width = maxWidth;
-                        } else {
-                            width = (width * maxHeight) / height;
-                            height = maxHeight;
-                        }
+                        const ratio = Math.min(maxWidth / width, maxHeight / height);
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
                     }
                     
                     canvas.width = width;
                     canvas.height = height;
                     
-                    // Dibujar imagen redimensionada
+                    // Dibujar imagen con alta calidad
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Convertir a Data URL con calidad de 0.8 para reducir tamaño
-                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    // Detectar formato original
+                    const isPng = dataUrl.startsWith('data:image/png');
+                    const format = isPng ? 'image/png' : 'image/jpeg';
                     
-                    console.log('📷 Imagen comprimida:', {
-                        originalSize: Math.round(dataUrl.length / 1024) + ' KB',
-                        compressedSize: Math.round(compressedDataUrl.length / 1024) + ' KB',
-                        reduction: Math.round((1 - compressedDataUrl.length / dataUrl.length) * 100) + '%'
+                    // Función para comprimir con calidad adaptativa
+                    function compressWithQuality(quality) {
+                        if (format === 'image/png' && quality > 0.5) {
+                            // Para PNG, usar WebP si es posible, o mantener PNG con mejor calidad
+                            try {
+                                return canvas.toDataURL('image/webp', quality);
+                            } catch (e) {
+                                // Si WebP no está soportado, usar PNG (puede ser más grande pero mantiene transparencia)
+                                return canvas.toDataURL('image/png');
+                            }
+                        } else {
+                            // Para JPEG, usar calidad alta (0.92-0.95) pero ajustar si es necesario
+                            return canvas.toDataURL('image/jpeg', quality);
+                        }
+                    }
+                    
+                    // Intentar con calidad alta primero
+                    let quality = 0.92;
+                    let compressedDataUrl = compressWithQuality(quality);
+                    let sizeKB = Math.round(compressedDataUrl.length / 1024);
+                    
+                    // Si el tamaño es demasiado grande, reducir calidad progresivamente
+                    if (sizeKB > maxFileSizeKB) {
+                        console.log(`📷 Imagen grande (${sizeKB}KB), ajustando calidad...`);
+                        const qualitySteps = [0.88, 0.85, 0.80, 0.75, 0.70];
+                        
+                        for (let i = 0; i < qualitySteps.length; i++) {
+                            quality = qualitySteps[i];
+                            compressedDataUrl = compressWithQuality(quality);
+                            sizeKB = Math.round(compressedDataUrl.length / 1024);
+                            
+                            if (sizeKB <= maxFileSizeKB) {
+                                break;
+                            }
+                        }
+                        
+                        // Si aún es muy grande después de reducir calidad, redimensionar más
+                        if (sizeKB > maxFileSizeKB * 1.5) {
+                            console.log(`📷 Redimensionando más (${sizeKB}KB aún muy grande)...`);
+                            const smallerRatio = 0.85;
+                            width = Math.round(width * smallerRatio);
+                            height = Math.round(height * smallerRatio);
+                            canvas.width = width;
+                            canvas.height = height;
+                            ctx.imageSmoothingEnabled = true;
+                            ctx.imageSmoothingQuality = 'high';
+                            ctx.drawImage(img, 0, 0, width, height);
+                            compressedDataUrl = compressWithQuality(0.88);
+                            sizeKB = Math.round(compressedDataUrl.length / 1024);
+                        }
+                    }
+                    
+                    console.log('📷 Imagen optimizada:', {
+                        dimensiones: `${width}x${height}px`,
+                        formato: format === 'image/png' ? 'PNG/WebP' : 'JPEG',
+                        calidad: (quality * 100).toFixed(0) + '%',
+                        tamañoOriginal: Math.round(dataUrl.length / 1024) + ' KB',
+                        tamañoFinal: sizeKB + ' KB',
+                        reducción: Math.round((1 - compressedDataUrl.length / dataUrl.length) * 100) + '%'
                     });
                     
                     callback(compressedDataUrl);
