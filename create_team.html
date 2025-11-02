@@ -1022,40 +1022,92 @@
             // Inicializar datos si es necesario (asegurar que teams exista)
             DocuProjectData.initializeIfNeeded();
             
-            // Cargar equipos en el sidebar
+            // Cargar equipos en el sidebar PRIMERO
+            console.log('📋 Cargando teams en sidebar al iniciar...');
             loadTeamsInSidebar();
 
             // Guardar automáticamente cada 30 segundos (autosave)
             setInterval(autoSave, 30000);
             
             // Guardar antes de cerrar la página
+            // IMPORTANTE: Solo hacer autosave si es un draft, no si es un team publicado
             window.addEventListener('beforeunload', function() {
-                autoSave();
+                // Solo hacer autosave si es un draft o nuevo team
+                if (!currentProjectData || currentProjectData.status === 'draft') {
+                    autoSave();
+                } else {
+                    console.log('ℹ️ beforeunload: omitiendo autosave para team publicado');
+                }
             });
             
             // Cargar datos del proyecto actual si existe (después de inicializar todo)
+            // Usar múltiples delays para asegurar que el sidebar esté listo
             setTimeout(() => {
+                console.log('📋 Recargando teams en sidebar después de inicializar...');
+                loadTeamsInSidebar();
+            }, 300);
+            
+            setTimeout(() => {
+                console.log('📋 Cargando datos del proyecto actual...');
                 loadCurrentProjectData();
-            }, 500);
+            }, 800);
+            
+            // Verificación final después de cargar todo
+            setTimeout(() => {
+                console.log('🔍 Verificación final: recargando sidebar...');
+                loadTeamsInSidebar();
+            }, 1500);
         }
 
         // ============================================
         // Auto-save functionality
         // ============================================
         function autoSave() {
-            const projectName = document.getElementById('projectName')?.value.trim();
-            
-            // Solo hacer autosave si hay algún contenido
-            if (projectName || membersList.length > 0) {
-                const projectData = getFormData();
-                projectData.status = 'draft';
+            // NO hacer autosave si estamos viendo un team publicado sin modificar
+            // Solo hacer autosave si hay cambios no guardados en un draft o nuevo team
+            if (!currentProjectId || !currentProjectData) {
+                // Si no hay team cargado, puede ser un nuevo team o un draft nuevo
+                const projectName = document.getElementById('projectName')?.value.trim();
                 
-                if (!currentProjectId) {
-                    currentProjectId = Date.now().toString();
+                if (projectName || membersList.length > 0) {
+                    const projectData = getFormData();
+                    projectData.status = 'draft';
+                    
+                    if (!currentProjectId) {
+                        currentProjectId = Date.now().toString();
+                    }
+                    
+                    saveProjectToStorage(currentProjectId, projectData);
+                    console.log('💾 Auto-save realizado (nuevo team/draft)');
                 }
+                return;
+            }
+            
+            // Si hay team cargado, verificar si es un draft
+            // Solo hacer autosave si es un draft y hay cambios
+            if (currentProjectData && currentProjectData.status === 'draft') {
+                const projectName = document.getElementById('projectName')?.value.trim();
                 
-                saveProjectToStorage(currentProjectId, projectData);
-                console.log('Auto-save realizado');
+                if (projectName || membersList.length > 0) {
+                    // Verificar si hay cambios antes de guardar
+                    const currentData = getFormData();
+                    const hasChanges = 
+                        currentData.name !== (currentProjectData.name || '') ||
+                        currentData.teamCost !== (currentProjectData.teamCost || '') ||
+                        JSON.stringify(currentData.projects) !== JSON.stringify(currentProjectData.projects || []) ||
+                        JSON.stringify(currentData.members) !== JSON.stringify(currentProjectData.members || []);
+                    
+                    if (hasChanges) {
+                        currentData.status = 'draft';
+                        currentData.id = currentProjectId;
+                        saveProjectToStorage(currentProjectId, currentData);
+                        console.log('💾 Auto-save realizado (draft con cambios)');
+                    }
+                }
+            } else {
+                // Si es un team publicado, NO hacer autosave automático
+                // El usuario debe hacer cambios explícitos para guardar
+                console.log('ℹ️ Auto-save omitido: team publicado (no se autoguardan teams publicados)');
             }
         }
 
@@ -1158,6 +1210,14 @@
         // ============================================
         function createNewTeam() {
             console.log('=== INICIO createNewTeam ===');
+            
+            // Limpiar el team seleccionado en sessionStorage al crear un nuevo team
+            try {
+                sessionStorage.removeItem('docu_selected_team_id');
+                console.log('✅ Team seleccionado eliminado de sessionStorage');
+            } catch (error) {
+                console.warn('⚠️ No se pudo limpiar el team seleccionado:', error);
+            }
             
             // Limpiar todos los campos del formulario
             clearForm();
@@ -1438,7 +1498,26 @@
                 
                 if (existingIndex >= 0) {
                     console.log('🔄 Actualizando team existente en índice:', existingIndex);
-                    projectDataObj.teams[existingIndex] = projectData;
+                    const existingTeam = projectDataObj.teams[existingIndex];
+                    
+                    // Si el team existente está publicado y el nuevo tiene status diferente, preservar el status publicado
+                    if (existingTeam.status === 'published' && projectData.status !== 'published') {
+                        console.log('⚠️ Team existente está publicado, preservando status publicado');
+                        projectData.status = 'published';
+                        // Preservar también publishedAt si existe
+                        if (existingTeam.publishedAt) {
+                            projectData.publishedAt = existingTeam.publishedAt;
+                        }
+                    }
+                    
+                    // Hacer merge de datos en lugar de reemplazar completamente
+                    projectDataObj.teams[existingIndex] = {
+                        ...existingTeam, // Preservar datos existentes
+                        ...projectData,  // Actualizar con nuevos datos
+                        id: projectId,   // Asegurar que el ID se mantiene
+                        updatedAt: Date.now()
+                    };
+                    console.log('✅ Team actualizado preservando datos importantes');
                 } else {
                     console.log('➕ Agregando nuevo team');
                     projectDataObj.teams.push(projectData);
@@ -2155,12 +2234,20 @@
             // Verificar que DocuProjectData esté disponible
             if (typeof DocuProjectData === 'undefined') {
                 console.error('❌ DocuProjectData no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
                 return;
             }
             
             // Verificar que DocuAuth esté disponible
             if (typeof DocuAuth === 'undefined') {
                 console.error('❌ DocuAuth no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
                 return;
             }
             
@@ -2298,8 +2385,15 @@
                     // Agregar clase active al item clickeado
                     teamItem.classList.add('dsu-team-item--active', 'active');
                     
-                    // Cargar el team completo
+                    // Guardar el ID del team seleccionado en sessionStorage
                     if (team.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_team_id', team.id);
+                            console.log('✅ Team seleccionado guardado en sessionStorage:', team.id);
+                        } catch (error) {
+                            console.warn('⚠️ No se pudo guardar el team seleccionado en sessionStorage:', error);
+                        }
+                        
                         // Buscar el team completo en los datos
                         const fullTeam = teams.find(t => t.id === team.id);
                         if (fullTeam) {
@@ -2368,26 +2462,144 @@
         }
 
         function loadCurrentProjectData() {
+            console.log('=== loadCurrentProjectData llamado ===');
+            
             // Cargar datos del proyecto actual desde localStorage
             const projectDataObj = DocuProjectData.getProjectData();
             if (!projectDataObj || !projectDataObj.teams || projectDataObj.teams.length === 0) {
+                console.log('ℹ️ No hay teams para cargar');
                 return;
             }
 
-            // Buscar el proyecto draft más reciente o uno específico
+            console.log('📊 Total de teams disponibles:', projectDataObj.teams.length);
+
+            // PRIMERO: Intentar cargar el team que estaba seleccionado antes de recargar
+            try {
+                const selectedTeamId = sessionStorage.getItem('docu_selected_team_id');
+                if (selectedTeamId) {
+                    console.log('🔍 Team seleccionado encontrado en sessionStorage:', selectedTeamId);
+                    
+                    // Buscar el team en los datos
+                    const selectedTeam = projectDataObj.teams.find(t => t.id === selectedTeamId);
+                    if (selectedTeam) {
+                        console.log('✅ Team seleccionado encontrado en datos:', selectedTeam.name || selectedTeam.id);
+                        loadProjectData(selectedTeam);
+                        
+                        // Marcar como activo en el sidebar
+                        setTimeout(() => {
+                            const teamsList = document.getElementById('teamsList');
+                            if (teamsList) {
+                                const teamItems = teamsList.querySelectorAll('.dsu-team-item');
+                                teamItems.forEach(item => {
+                                    item.classList.remove('dsu-team-item--active', 'active');
+                                    const itemId = item.getAttribute('data-team-id');
+                                    if (itemId === selectedTeamId) {
+                                        item.classList.add('dsu-team-item--active', 'active');
+                                        console.log('✅ Team seleccionado marcado como activo en el sidebar');
+                                    }
+                                });
+                            }
+                        }, 500);
+                        
+                        return; // Salir aquí, ya cargamos el team seleccionado
+                    } else {
+                        console.warn('⚠️ Team seleccionado no encontrado en datos, limpiando sessionStorage');
+                        sessionStorage.removeItem('docu_selected_team_id');
+                    }
+                } else {
+                    console.log('ℹ️ No hay team seleccionado en sessionStorage');
+                }
+            } catch (error) {
+                console.warn('⚠️ Error al leer sessionStorage:', error);
+            }
+
+            // Si no hay team seleccionado, buscar el proyecto draft más reciente
             const drafts = projectDataObj.teams.filter(t => t.status === 'draft');
+            console.log('📝 Teams en draft:', drafts.length);
+            
             if (drafts.length > 0) {
                 // Cargar el draft más reciente
                 const latestDraft = drafts.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
+                console.log('📋 Cargando draft más reciente:', latestDraft.name || latestDraft.id);
                 loadProjectData(latestDraft);
+                
+                // Guardar como seleccionado
+                try {
+                    sessionStorage.setItem('docu_selected_team_id', latestDraft.id);
+                } catch (error) {
+                    console.warn('⚠️ No se pudo guardar el draft seleccionado:', error);
+                }
+                return;
+            }
+
+            // Si no hay drafts, cargar el team publicado más reciente
+            const publishedTeams = projectDataObj.teams.filter(t => 
+                t.status === 'published' && 
+                t.name && 
+                t.name.trim().length > 0
+            );
+            
+            console.log('📋 Teams publicados:', publishedTeams.length);
+            
+            if (publishedTeams.length > 0) {
+                // Ordenar por fecha de publicación (más reciente primero)
+                const sortedPublished = publishedTeams.sort((a, b) => {
+                    const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                    const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                    return dateB - dateA;
+                });
+                
+                const latestPublished = sortedPublished[0];
+                console.log('📋 Cargando team publicado más reciente:', latestPublished.name);
+                loadProjectData(latestPublished);
+                
+                // Guardar como seleccionado
+                try {
+                    sessionStorage.setItem('docu_selected_team_id', latestPublished.id);
+                } catch (error) {
+                    console.warn('⚠️ No se pudo guardar el team seleccionado:', error);
+                }
+                
+                // Marcar como activo en el sidebar
+                setTimeout(() => {
+                    const teamsList = document.getElementById('teamsList');
+                    if (teamsList) {
+                        const teamItems = teamsList.querySelectorAll('.dsu-team-item');
+                        teamItems.forEach(item => {
+                            item.classList.remove('dsu-team-item--active', 'active');
+                            const itemId = item.getAttribute('data-team-id');
+                            if (itemId === latestPublished.id) {
+                                item.classList.add('dsu-team-item--active', 'active');
+                                console.log('✅ Team marcado como activo en el sidebar');
+                            }
+                        });
+                    }
+                }, 500);
+            } else {
+                console.log('ℹ️ No hay teams publicados ni drafts para cargar');
             }
         }
 
         function loadProjectData(projectData) {
-            if (!projectData) return;
+            if (!projectData) {
+                console.warn('⚠️ loadProjectData: projectData es null o undefined');
+                return;
+            }
+
+            console.log('=== loadProjectData llamado ===');
+            console.log('📦 Datos del team a cargar:', {
+                id: projectData.id,
+                name: projectData.name,
+                status: projectData.status,
+                membersCount: projectData.members ? projectData.members.length : 0,
+                projectsCount: projectData.projects ? projectData.projects.length : 0
+            });
 
             currentProjectId = projectData.id || Date.now().toString();
-            currentProjectData = projectData;
+            currentProjectData = { ...projectData }; // Crear copia para no modificar el original directamente
+            
+            console.log('✅ currentProjectId establecido:', currentProjectId);
+            console.log('✅ currentProjectData establecido con status:', currentProjectData.status);
 
             // Cargar nombre del proyecto
             if (projectData.name) {
