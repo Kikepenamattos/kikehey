@@ -1125,6 +1125,18 @@
          * Muestra los datos del team en la vista
          */
         function displayTeamData(teamData) {
+            console.log('📦 Cargando datos del team:', {
+                id: teamData.id,
+                name: teamData.name,
+                membersCount: teamData.members ? teamData.members.length : 0,
+                members: teamData.members ? teamData.members.map(m => ({
+                    id: m.id,
+                    name: m.name,
+                    hasImage: !!(m.image || m.avatar),
+                    imageType: m.image ? 'image' : (m.avatar ? 'avatar' : 'none')
+                })) : []
+            });
+            
             // Mostrar nombre del team
             const projectNameDisplay = document.getElementById('projectNameDisplay');
             if (projectNameDisplay && teamData.name) {
@@ -1179,6 +1191,26 @@
                 teamData.members.forEach(member => {
                     const memberCard = createMemberCardHTML(member);
                     membersGrid.insertAdjacentHTML('beforeend', memberCard);
+                    
+                    // Agregar event listener al botón de editar después de insertar el HTML
+                    const cardElement = membersGrid.lastElementChild;
+                    if (cardElement) {
+                        const editButton = cardElement.querySelector('.dsu-profile-card__edit-button');
+                        if (editButton) {
+                            editButton.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                console.log('🖱️ Botón editar clickeado para miembro:', member.id);
+                                // Redirigir a create_team.html en modo edición
+                                const teamId = teamData.id;
+                                if (teamId) {
+                                    sessionStorage.setItem('docu_edit_team_id', teamId);
+                                    sessionStorage.setItem('docu_editing_mode', 'true');
+                                    window.location.href = `create_team.html?edit=true&id=${teamId}`;
+                                }
+                            });
+                        }
+                    }
                 });
             }
         }
@@ -1187,43 +1219,48 @@
          * Crea el HTML para una tarjeta de miembro
          */
         function createMemberCardHTML(member) {
+            // Usar member.image (consistente con create_team.html)
+            // También verificar member.avatar como fallback para compatibilidad
+            const memberImage = member.image || member.avatar || '';
             const memberName = escapeHtml(member.name || '');
             const memberLastName = escapeHtml(member.lastName || '');
             const memberJob = escapeHtml(member.jobPosition || '');
             const memberEmail = escapeHtml(member.email || '');
             const memberPhone = escapeHtml(member.phone || '');
-            const memberAvatar = member.avatar || '';
             
-            const fullName = `${memberName} ${memberLastName}`.trim() || 'Name';
+            // Construir imagen source exactamente igual que en create_team.html
+            const imageSrc = memberImage || 'images/avatar_icon.svg';
+            const imageAlt = memberImage ? `${escapeHtml(memberName)} ${escapeHtml(memberLastName || '')}`.trim() : 'Avatar';
+            const imageClass = 'dsu-profile-card__image';
+            
+            console.log('📷 Creando card para miembro:', {
+                id: member.id,
+                name: memberName,
+                imageSrc: imageSrc.substring(0, 50) + '...',
+                hasImage: !!memberImage
+            });
             
             return `
-                <div class="dsu-profile-card">
-                    <div class="dsu-profile-card__image">
-                        ${memberAvatar ? 
-                            `<img src="${escapeHtml(memberAvatar)}" alt="${fullName}" class="dsu-profile-card__avatar-img">` :
-                            `<div class="dsu-profile-card__avatar-placeholder">
-                                <img src="images/avatar_icon.svg" alt="Avatar">
-                             </div>`
-                        }
-                        <button class="dsu-profile-card__edit-icon" title="Edit member">
-                            <img src="images/Edit.svg" alt="Edit">
+                <div class="dsu-profile-card" data-member-id="${member.id || ''}">
+                    <div class="dsu-profile-card__image-wrapper">
+                        <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" class="${imageClass}">
+                        <button class="dsu-profile-card__edit-button">
+                            <img src="images/Edit.svg" alt="Edit" class="dsu-profile-card__edit-icon">
                         </button>
                     </div>
                     <div class="dsu-profile-card__content">
                         <div class="dsu-profile-card__name-job">
-                            <h3 class="dsu-profile-card__name">${fullName}</h3>
-                            <p class="dsu-profile-card__job">${memberJob || 'Job position'}</p>
+                            <p class="dsu-profile-card__name">${escapeHtml(memberName)} ${escapeHtml(memberLastName || '')}</p>
+                            <p class="dsu-profile-card__job">${escapeHtml(memberJob || 'Job position')}</p>
                         </div>
                         <div class="dsu-profile-card__contact">
-                            ${memberEmail ? `
-                            <div class="dsu-profile-card__contact-item">
+                            ${memberEmail ? `<div class="dsu-profile-card__contact-item">
                                 <img src="images/mail.svg" alt="Email" class="dsu-profile-card__contact-icon">
-                                <a href="mailto:${memberEmail}" class="dsu-profile-card__contact-text">${memberEmail}</a>
+                                <a href="mailto:${escapeHtml(memberEmail)}" class="dsu-profile-card__contact-text dsu-profile-card__contact-link">${escapeHtml(memberEmail)}</a>
                             </div>` : ''}
-                            ${memberPhone ? `
-                            <div class="dsu-profile-card__contact-item">
+                            ${memberPhone ? `<div class="dsu-profile-card__contact-item">
                                 <img src="images/whatsapp.svg" alt="Phone" class="dsu-profile-card__contact-icon">
-                                <a href="tel:${memberPhone}" class="dsu-profile-card__contact-text">${memberPhone}</a>
+                                <p class="dsu-profile-card__contact-text">${escapeHtml(memberPhone)}</p>
                             </div>` : ''}
                         </div>
                     </div>

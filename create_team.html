@@ -1632,11 +1632,37 @@
                     })));
                 }
 
+                // Verificar tamaño de los datos antes de guardar
+                try {
+                    const testJson = JSON.stringify(projectDataObj);
+                    const sizeInMB = new Blob([testJson]).size / (1024 * 1024);
+                    console.log(`💾 Tamaño total de datos del proyecto: ${sizeInMB.toFixed(2)} MB`);
+                    
+                    if (sizeInMB > 5) {
+                        console.warn(`⚠️ Advertencia: Los datos son mayores a 5MB (${sizeInMB.toFixed(2)} MB).`);
+                        console.warn('💡 Considera reducir el tamaño de las imágenes de los miembros.');
+                    }
+                } catch (sizeError) {
+                    console.warn('⚠️ No se pudo calcular el tamaño de los datos:', sizeError);
+                }
+                
                 // Guardar datos
                 const saved = DocuProjectData.saveProjectData(projectDataObj);
                 
                 if (!saved) {
                     console.error('❌ Error al guardar en DocuProjectData');
+                    // Verificar si es un error de cuota
+                    try {
+                        const testString = JSON.stringify(projectDataObj);
+                        localStorage.setItem('docu_test_quota', testString);
+                        localStorage.removeItem('docu_test_quota');
+                    } catch (quotaError) {
+                        if (quotaError.name === 'QuotaExceededError') {
+                            alert('Error: El almacenamiento está lleno. Por favor, elimina algunas imágenes grandes o reduce el tamaño de las imágenes de los miembros.');
+                        } else {
+                            alert('Error al guardar el proyecto. Por favor, intenta de nuevo.');
+                        }
+                    }
                     return false;
                 }
                 
@@ -2101,18 +2127,77 @@
                 modalAvatarInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
                     if (file) {
+                        // Validar tamaño del archivo (máximo 2MB)
+                        const maxSize = 2 * 1024 * 1024; // 2MB
+                        if (file.size > maxSize) {
+                            alert('La imagen es demasiado grande. Por favor, selecciona una imagen menor a 2MB.');
+                            e.target.value = '';
+                            return;
+                        }
+                        
                         const reader = new FileReader();
                         reader.onload = function(event) {
                             const imageUrl = event.target.result;
-                            if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
-                            if (modalAvatarPreview) {
-                                modalAvatarPreview.src = imageUrl;
-                                modalAvatarPreview.style.display = 'block';
-                            }
+                            
+                            // Comprimir imagen si es muy grande (Data URL)
+                            compressImageIfNeeded(imageUrl, function(compressedImageUrl) {
+                                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                                if (modalAvatarPreview) {
+                                    modalAvatarPreview.src = compressedImageUrl;
+                                    modalAvatarPreview.style.display = 'block';
+                                }
+                            });
                         };
                         reader.readAsDataURL(file);
                     }
                 });
+            }
+            
+            // Función para comprimir imagen si es necesario
+            function compressImageIfNeeded(dataUrl, callback) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Calcular nuevas dimensiones (máximo 200x200px para reducir tamaño)
+                    const maxWidth = 200;
+                    const maxHeight = 200;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > maxWidth || height > maxHeight) {
+                        if (width > height) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        } else {
+                            width = (width * maxHeight) / height;
+                            height = maxHeight;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    // Dibujar imagen redimensionada
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convertir a Data URL con calidad de 0.8 para reducir tamaño
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    console.log('📷 Imagen comprimida:', {
+                        originalSize: Math.round(dataUrl.length / 1024) + ' KB',
+                        compressedSize: Math.round(compressedDataUrl.length / 1024) + ' KB',
+                        reduction: Math.round((1 - compressedDataUrl.length / dataUrl.length) * 100) + '%'
+                    });
+                    
+                    callback(compressedDataUrl);
+                };
+                img.onerror = function() {
+                    console.error('Error al cargar imagen para compresión');
+                    callback(dataUrl); // Usar original si falla
+                };
+                img.src = dataUrl;
             }
 
             // Country codes dropdown removed
@@ -2149,6 +2234,20 @@
             // Handle Add/Save button
             if (modalAddBtn) {
                 modalAddBtn.addEventListener('click', function() {
+                    // Obtener imagen (puede ser Data URL comprimido o vacío)
+                    let memberImage = '';
+                    if (modalAvatarPreview && modalAvatarPreview.src) {
+                        // Solo usar la imagen si no es la ruta del placeholder
+                        if (modalAvatarPreview.src && !modalAvatarPreview.src.includes('avatar_icon.svg')) {
+                            memberImage = modalAvatarPreview.src;
+                            // Verificar tamaño de la imagen
+                            const imageSizeKB = Math.round(memberImage.length / 1024);
+                            if (imageSizeKB > 500) {
+                                console.warn(`⚠️ Imagen grande (${imageSizeKB}KB). Considera comprimirla.`);
+                            }
+                        }
+                    }
+                    
                     const memberData = {
                         id: currentEditingMemberId || Date.now().toString(),
                         name: document.getElementById('modalMemberName')?.value.trim() || '',
@@ -2157,7 +2256,7 @@
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
-                        image: modalAvatarPreview?.src || ''
+                        image: memberImage
                     };
 
                     // Validation

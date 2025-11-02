@@ -25,10 +25,29 @@ const DocuAuth = {
      */
     saveToStorage(key, data) {
         try {
-            localStorage.setItem(key, JSON.stringify(data));
+            const jsonString = JSON.stringify(data);
+            const sizeInMB = new Blob([jsonString]).size / (1024 * 1024);
+            console.log(`💾 Tamaño de datos a guardar (${key}): ${sizeInMB.toFixed(2)} MB`);
+            
+            if (sizeInMB > 5) {
+                console.warn(`⚠️ Advertencia: Los datos son mayores a 5MB (${sizeInMB.toFixed(2)} MB). Puede causar problemas en localStorage.`);
+            }
+            
+            localStorage.setItem(key, jsonString);
+            
+            // Verificar que se guardó correctamente
+            const saved = localStorage.getItem(key);
+            if (!saved) {
+                console.error(`❌ Error: Los datos no se guardaron correctamente en ${key}`);
+                return false;
+            }
+            
             return true;
         } catch (e) {
-            console.error(`Error saving to ${key}:`, e);
+            console.error(`❌ Error saving to ${key}:`, e);
+            if (e.name === 'QuotaExceededError') {
+                console.error('❌ QuotaExceededError: El almacenamiento local está lleno. Considera eliminar datos o reducir el tamaño de las imágenes.');
+            }
             return false;
         }
     },

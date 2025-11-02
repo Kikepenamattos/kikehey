@@ -1,3 +1,4 @@
+e9b4c8544eec10056e743bb6e08b0ee61a9e6644|Ubits|ubits@macbookpro.lan|2025-11-02 00:03:05 -0500|Fix: Ajustar posición del botón cerrar en vista de edición - Mover botón dentro de contenedor en data-level con gap de 8px
 6623197110af06ab10860dcabed0be377fab4aba|Ubits|ubits@macbookpro.lan|2025-11-01 23:57:31 -0500|Feat: Implementar edición y eliminación de miembros - Agregar botón cerrar en vista de edición - Ajustar botones en vista de teams publicados
 670554e21897d5363d7ea039247d574213e748f6|Ubits|ubits@macbookpro.lan|2025-11-01 23:20:41 -0500|Fix: Mostrar información real del team desde el primer momento - Eliminar valores de plantilla y optimizar orden de carga de datos - Asegurar que team cost siempre muestre un valor (USD 0.00 si no hay datos)
 09d96f8fae101a6f72da790ee78cd819e1659ef3|Ubits|ubits@macbookpro.lan|2025-11-01 21:30:21 -0500|Fix: Prevenir eliminación de teams publicados al recargar - Corregir autoSave y preservar estado de teams publicados
