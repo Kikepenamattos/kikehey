@@ -648,11 +648,47 @@
         }
 
 
-        /* Sticky Buttons - Usando design system, ajuste de centrado */
+        /* Sticky Buttons - Exactamente como design-system/components/button.css */
         .dsu-sticky-buttons {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            padding: var(--spacing-24) 173px var(--spacing-24) 136px;
+            border-top: 1px solid var(--color-status-disabled);
+            background-color: var(--color-surface-regular);
+            width: 100%;
+            box-sizing: border-box;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            justify-content: space-between;
+        }
+
+        .dsu-sticky-buttons__wrapper {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            flex: 1;
             justify-content: center;
-            /* width: 80%; */
+            max-width: 80%;
             margin: 0 auto;
+        }
+
+        .dsu-sticky-buttons__button {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* El botón Delete team no debe tener flex: 1 para que no se estire, solo ocupa el espacio necesario */
+        #deleteTeamBtn {
+            display: none; /* Oculto por defecto, se muestra cuando hay un team publicado */
+            flex: 0 0 auto;
+            min-width: auto;
+        }
+        
+        /* Cuando el botón Delete está visible, ajustar el orden para que esté primero */
+        .dsu-sticky-buttons__wrapper #deleteTeamBtn[style*="block"] {
+            order: -1;
         }
 
         /* Responsive */
@@ -907,8 +943,16 @@
 
             <!-- Sticky Buttons -->
             <div class="dsu-sticky-buttons">
-                <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Save draft</button>
-                <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
+                <div class="dsu-sticky-buttons__wrapper">
+                    <button class="dsu-button dsu-button--tertiary dsu-button--medium dsu-sticky-buttons__button" id="deleteTeamBtn">
+                        <span class="dsu-button__icon">
+                            <img src="images/trash.svg" alt="Delete">
+                        </span>
+                        Delete team
+                    </button>
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Save draft</button>
+                    <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1333,6 +1377,7 @@
             const projectNameInput = document.getElementById('projectName');
             const publishBtn = document.getElementById('publishBtn');
             const saveDraftBtn = document.getElementById('saveDraftBtn');
+            const deleteTeamBtn = document.getElementById('deleteTeamBtn');
 
             // Validación: Habilitar/deshabilitar botón Publish
             // El botón Share team permanece siempre deshabilitado en esta pantalla
@@ -1355,6 +1400,13 @@
             publishBtn.addEventListener('click', function() {
                 publishProject();
             });
+            
+            // Delete Team
+            if (deleteTeamBtn) {
+                deleteTeamBtn.addEventListener('click', function() {
+                    deleteTeam();
+                });
+            }
             
             // Close edit view
             const closeEditBtn = document.getElementById('closeEditBtn');
@@ -1435,6 +1487,12 @@
             }
             
             console.log('✅ Proyecto guardado exitosamente');
+
+            // Actualizar datos actuales
+            currentProjectData = projectData;
+            
+            // Actualizar visibilidad del botón Delete
+            updateDeleteButtonVisibility();
 
             // Agregar al sidebar con múltiples reintentos para asegurar persistencia
             console.log('📋 Actualizando sidebar...');
@@ -2927,6 +2985,249 @@
             }, 1500);
         }
 
+        function updateDeleteButtonVisibility() {
+            const deleteTeamBtn = document.getElementById('deleteTeamBtn');
+            if (deleteTeamBtn) {
+                // Solo mostrar el botón si hay un team publicado cargado
+                if (currentProjectData && currentProjectData.status === 'published' && currentProjectId) {
+                    deleteTeamBtn.style.display = 'block';
+                } else {
+                    deleteTeamBtn.style.display = 'none';
+                }
+            }
+        }
+
+        function deleteTeam() {
+            console.log('🗑️ === INICIO deleteTeam ===');
+            
+            // Solo permitir borrar si el team está publicado
+            if (!currentProjectData || currentProjectData.status !== 'published') {
+                console.warn('⚠️ Intento de eliminar team no publicado:', {
+                    hasCurrentProjectData: !!currentProjectData,
+                    status: currentProjectData?.status
+                });
+                alert('Solo puedes eliminar teams publicados.');
+                return;
+            }
+
+            const teamName = currentProjectData.name || 'este team';
+            
+            // Confirmar eliminación
+            if (!confirm(`¿Estás seguro de que deseas eliminar "${teamName}"?\n\nEsta acción no se puede deshacer.`)) {
+                console.log('❌ Usuario canceló la eliminación');
+                return;
+            }
+
+            console.log('🗑️ Eliminando team:', {
+                id: currentProjectId,
+                name: teamName,
+                status: currentProjectData.status
+            });
+
+            try {
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    alert('Error: El sistema de datos no está disponible. Por favor, recarga la página.');
+                    return;
+                }
+
+                // Obtener datos del proyecto
+                console.log('📦 Obteniendo datos del proyecto...');
+                const projectDataObj = DocuProjectData.getProjectData();
+                console.log('📦 Datos obtenidos:', {
+                    hasData: !!projectDataObj,
+                    hasTeams: !!(projectDataObj && projectDataObj.teams),
+                    teamsCount: projectDataObj?.teams?.length || 0
+                });
+                
+                if (!projectDataObj) {
+                    console.error('❌ No se encontraron datos del proyecto');
+                    alert('Error: No se pudieron cargar los datos del proyecto.');
+                    return;
+                }
+
+                if (!projectDataObj.teams || !Array.isArray(projectDataObj.teams)) {
+                    console.error('❌ Teams no es un array válido:', projectDataObj.teams);
+                    alert('Error: La estructura de datos no es válida.');
+                    return;
+                }
+
+                // Buscar y eliminar el team
+                // Normalizar IDs para comparación (convertir a string para evitar problemas de tipo)
+                const currentProjectIdStr = String(currentProjectId);
+                console.log('🔍 Buscando team con ID:', {
+                    original: currentProjectId,
+                    normalized: currentProjectIdStr,
+                    type: typeof currentProjectId
+                });
+                
+                const teamIndex = projectDataObj.teams.findIndex(t => {
+                    if (!t || !t.id) return false;
+                    // Comparar como strings para evitar problemas de tipo
+                    const tIdStr = String(t.id);
+                    const matches = tIdStr === currentProjectIdStr;
+                    if (matches) {
+                        console.log('✅ Team encontrado:', {
+                            id: t.id,
+                            idNormalized: tIdStr,
+                            name: t.name,
+                            status: t.status,
+                            index: projectDataObj.teams.indexOf(t)
+                        });
+                    }
+                    return matches;
+                });
+                
+                if (teamIndex === -1) {
+                    console.error('❌ Team no encontrado:', {
+                        buscandoId: currentProjectId,
+                        buscandoIdNormalized: currentProjectIdStr,
+                        teamsDisponibles: projectDataObj.teams.map(t => ({
+                            id: t.id,
+                            idNormalized: String(t.id),
+                            name: t.name,
+                            tipo: typeof t.id
+                        }))
+                    });
+                    alert('Error: El team no fue encontrado.');
+                    return;
+                }
+
+                console.log('🗑️ Eliminando team del índice:', teamIndex);
+                
+                // Eliminar el team del array
+                projectDataObj.teams.splice(teamIndex, 1);
+                
+                console.log('📦 Teams restantes:', projectDataObj.teams.length);
+                
+                // Guardar los datos actualizados
+                console.log('💾 Guardando datos actualizados...');
+                const saved = DocuProjectData.saveProjectData(projectDataObj);
+                console.log('💾 Resultado del guardado:', saved);
+                
+                if (!saved) {
+                    console.error('❌ Error al guardar después de eliminar');
+                    console.error('📦 Datos que intentaron guardarse:', projectDataObj);
+                    
+                    // Intentar verificar el problema
+                    const session = DocuAuth?.getCurrentSession();
+                    console.error('🔍 Diagnóstico:', {
+                        hasSession: !!session,
+                        sessionEmail: session?.email,
+                        hasDocuAuth: typeof DocuAuth !== 'undefined',
+                        projectDataKeys: projectDataObj ? Object.keys(projectDataObj) : 'null'
+                    });
+                    
+                    alert('Error al eliminar el team. Por favor, intenta de nuevo.');
+                    return;
+                }
+
+                console.log('✅ Team eliminado exitosamente');
+
+                // Guardar el ID eliminado antes de limpiar para verificación
+                const deletedTeamId = currentProjectIdStr;
+
+                // Limpiar datos locales
+                currentProjectData = null;
+                currentProjectId = null;
+                sessionStorage.removeItem('docu_selected_team_id');
+                sessionStorage.removeItem('docu_edit_team_id');
+                sessionStorage.removeItem('docu_editing_mode');
+
+                // Actualizar sidebar inmediatamente (igual que al publicar)
+                console.log('📋 Actualizando sidebar después de eliminar...');
+                
+                // Función para recargar el sidebar con verificación
+                const reloadSidebarAfterDelete = (attempt = 1, maxAttempts = 5) => {
+                    console.log(`🔄 Recarga del sidebar después de eliminar - Intento ${attempt}/${maxAttempts}`);
+                    
+                    loadTeamsInSidebar();
+                    
+                    // Verificar que el team fue eliminado del sidebar
+                    setTimeout(() => {
+                        const teamsList = document.getElementById('teamsList');
+                        if (teamsList) {
+                            const deletedTeamItem = teamsList.querySelector(`[data-team-id="${deletedTeamId}"]`);
+                            if (!deletedTeamItem) {
+                                console.log('✅ Team eliminado del sidebar confirmado');
+                            } else if (attempt < maxAttempts) {
+                                console.warn(`⚠️ Team aún aparece en sidebar (intento ${attempt}), reintentando...`);
+                                reloadSidebarAfterDelete(attempt + 1, maxAttempts);
+                            } else {
+                                console.error('❌ Team aún aparece en sidebar después de múltiples intentos');
+                            }
+                        } else {
+                            console.warn('⚠️ teamsList no encontrado en el DOM');
+                        }
+                    }, 300);
+                };
+                
+                // Iniciar recarga después de un delay inicial
+                setTimeout(() => {
+                    reloadSidebarAfterDelete();
+                }, 200);
+                
+                // Recargas adicionales para asegurar persistencia
+                setTimeout(() => {
+                    reloadSidebarAfterDelete();
+                }, 500);
+                
+                setTimeout(() => {
+                    reloadSidebarAfterDelete();
+                }, 1000);
+
+                // Mostrar mensaje de éxito
+                showSuccessMessage(
+                    'Team Deleted',
+                    `"${teamName}" has been deleted successfully.`
+                );
+
+                // Limpiar formulario
+                clearForm();
+
+                // Redirigir o limpiar después de un breve delay
+                setTimeout(() => {
+                    // Si no hay más teams, mantener la vista limpia
+                    // Si hay teams, podría redirigir al más reciente
+                    const updatedData = DocuProjectData.getProjectData();
+                    if (updatedData && updatedData.teams && updatedData.teams.length > 0) {
+                        const publishedTeams = updatedData.teams.filter(t => t.status === 'published');
+                        if (publishedTeams.length > 0) {
+                            // Redirigir al team publicado más reciente
+                            const latestTeam = publishedTeams.sort((a, b) => {
+                                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                                return dateB - dateA;
+                            })[0];
+                            window.location.href = `team_filled.html?id=${latestTeam.id}`;
+                        } else {
+                            // Si no hay teams publicados, mantener vista limpia
+                            window.location.href = 'create_team.html';
+                        }
+                    } else {
+                        // Si no hay teams, ir a create_team.html
+                        window.location.href = 'create_team.html';
+                    }
+                }, 1500);
+
+            } catch (error) {
+                console.error('❌ Error inesperado al eliminar team:', error);
+                console.error('📋 Detalles del error:', {
+                    message: error.message,
+                    stack: error.stack,
+                    name: error.name,
+                    currentProjectId: currentProjectId,
+                    hasCurrentProjectData: !!currentProjectData,
+                    hasDocuProjectData: typeof DocuProjectData !== 'undefined',
+                    hasDocuAuth: typeof DocuAuth !== 'undefined'
+                });
+                alert('Error inesperado al eliminar el team. Por favor, intenta de nuevo.');
+            }
+            
+            console.log('🗑️ === FIN deleteTeam ===');
+        }
+
         function loadCurrentProjectData() {
             console.log('=== loadCurrentProjectData llamado ===');
             
@@ -3135,6 +3436,9 @@
             
             // Asegurar que estamos en vista editable
             transformToEditableView();
+            
+            // Actualizar visibilidad del botón Delete
+            updateDeleteButtonVisibility();
 
             // Cargar nombre del proyecto
             if (projectData.name) {

@@ -1192,25 +1192,8 @@
                     const memberCard = createMemberCardHTML(member);
                     membersGrid.insertAdjacentHTML('beforeend', memberCard);
                     
-                    // Agregar event listener al botón de editar después de insertar el HTML
-                    const cardElement = membersGrid.lastElementChild;
-                    if (cardElement) {
-                        const editButton = cardElement.querySelector('.dsu-profile-card__edit-button');
-                        if (editButton) {
-                            editButton.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                console.log('🖱️ Botón editar clickeado para miembro:', member.id);
-                                // Redirigir a create_team.html en modo edición
-                                const teamId = teamData.id;
-                                if (teamId) {
-                                    sessionStorage.setItem('docu_edit_team_id', teamId);
-                                    sessionStorage.setItem('docu_editing_mode', 'true');
-                                    window.location.href = `create_team.html?edit=true&id=${teamId}`;
-                                }
-                            });
-                        }
-                    }
+                    // NOTA: En la vista publicada NO se muestra el botón de editar
+                    // El botón de editar solo aparece en create_team.html (vista de edición)
                 });
             }
         }
@@ -1240,13 +1223,11 @@
                 hasImage: !!memberImage
             });
             
+            // En la vista publicada NO mostrar el botón de editar
             return `
                 <div class="dsu-profile-card" data-member-id="${member.id || ''}">
                     <div class="dsu-profile-card__image-wrapper">
                         <img src="${escapeHtml(imageSrc)}" alt="${escapeHtml(imageAlt)}" class="${imageClass}">
-                        <button class="dsu-profile-card__edit-button">
-                            <img src="images/Edit.svg" alt="Edit" class="dsu-profile-card__edit-icon">
-                        </button>
                     </div>
                     <div class="dsu-profile-card__content">
                         <div class="dsu-profile-card__name-job">
