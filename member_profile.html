@@ -70,6 +70,315 @@
             opacity: 0.7;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(2px);
+            visibility: hidden;
+        }
+
+        .modal-overlay.active {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .modal-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 24px;
+            animation: modalContainerFadeIn 0.3s ease;
+        }
+
+        @keyframes modalContainerFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .add-member-modal {
+            background: var(--color-basics-white);
+            border: 1px solid var(--color-basics-mid-blue);
+            border-radius: 10px;
+            padding: 32px;
+            max-width: 856px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modal Header */
+        .modal-header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-title {
+            font-family: 'Lato', sans-serif;
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+            padding: 0;
+            flex: 1;
+            line-height: normal;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s ease;
+            margin: 0;
+            margin-left: auto;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal-description {
+            font-family: var(--font-family-secondary);
+            font-size: 16px;
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-basics-dark-blue);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Modal Content */
+        .modal-content-wrapper {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        .modal-profile-avatar {
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-inputs-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+            width: 424px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-row {
+            display: flex;
+            gap: 16px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-row .modal-input-group {
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-input-group {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+            width: 100%;
+        }
+
+        .modal-input-group .dsu-input-label {
+            font-weight: var(--font-weight-black);
+            font-size: 14px;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .modal-input-group .dsu-input-label span::after {
+            content: none;
+        }
+
+        .modal-input-group .dsu-input {
+            margin: 0;
+            padding: var(--spacing-12) var(--spacing-16);
+            width: 100%;
+            min-height: 48px;
+        }
+
+        /* Select dropdown styling with chevron padding */
+        .modal-input-group select.dsu-input {
+            padding-right: calc(20px + 12px + var(--spacing-16));
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('images/down-chevron.svg');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px 20px;
+        }
+
+        /* Rich Text Input in Modal */
+        .modal-input-group .dsu-rich-text-input {
+            margin: 0;
+            padding: var(--spacing-16);
+            width: 100%;
+        }
+
+        .modal-input-group .dsu-rich-text-input__editor {
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Portfolio Items Container */
+        .portfolio-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            margin-top: var(--spacing-12);
+            min-height: 24px;
+        }
+
+        .portfolio-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: var(--spacing-08) 0;
+        }
+
+        .portfolio-item__text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            flex: 1;
+            margin: 0;
+            text-decoration: none;
+            color: var(--color-primary, #007AFF);
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__text:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .portfolio-item__actions {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .portfolio-item__action {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__action:hover {
+            opacity: 0.7;
+        }
+
+        .portfolio-item__action img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Modal Footer Buttons */
+        .modal-buttons-level {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: var(--spacing-16);
+            margin: 0;
+            padding: 0;
+        }
+
         .profile-page-edit-btn {
             display: flex;
             align-items: center;
@@ -436,6 +745,279 @@
         </div>
     </div>
 
+    <!-- Add Member Modal -->
+    <div class="modal-overlay" id="addMemberModalOverlay" style="display: none;">
+        <div class="modal-container">
+            <div class="add-member-modal">
+                <div class="modal-wrapper">
+                    <!-- Modal Header -->
+                    <div class="modal-header-section">
+                        <div class="modal-headline">
+                            <h2 class="modal-title" id="modalTitle">Edit member</h2>
+                            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+                                <img src="images/close.svg" alt="Close" width="20" height="20">
+                            </button>
+                        </div>
+                        <p class="modal-description">-Implement personalized recommendation algorithms to enhance user engagement.</p>
+                    </div>
+
+                    <!-- Modal Content -->
+                    <div class="modal-content-wrapper">
+                        <!-- Profile Avatar -->
+                        <div class="modal-profile-avatar">
+                            <div class="dsu-profile-avatar">
+                                <img src="images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon" id="modalAvatarIcon">
+                                <img class="modal-avatar-preview" id="modalAvatarPreview" style="display: none;" alt="Avatar Preview">
+                                <button class="dsu-profile-avatar__edit-button" aria-label="Add image">
+                                    <img src="images/plus.svg" alt="Add" class="dsu-profile-avatar__edit-icon">
+                                </button>
+                                <input class="avatar-input" type="file" accept="image/*" aria-label="Upload profile image" id="modalAvatarInput" style="position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 2;">
+                            </div>
+                        </div>
+
+                        <!-- Inputs Form -->
+                        <div class="modal-inputs-wrapper">
+                            <!-- Name Row -->
+                            <div class="modal-input-row">
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>Name</span>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberName" placeholder="Placeholder">
+                                </div>
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>Last name</span>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="dsu-input" id="modalMemberLastName" placeholder="Placeholder">
+                                </div>
+                            </div>
+
+                            <!-- Professional description -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Professional description</span>
+                                    </div>
+                                </div>
+                                <div class="dsu-rich-text-input">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add professional description..." id="modalMemberProfessionalDescription"></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Job Position -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Job position</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="dsu-input" id="modalMemberJobPosition" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Job description -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Job description</span>
+                                    </div>
+                                </div>
+                                <div class="dsu-rich-text-input">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add job description..." id="modalMemberJobDescription"></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Skills (Input Chip) -->
+                            <div class="dsu-input-group modal-input-group associated-projects-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Skills:</span>
+                                    </div>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="modalMemberSkills" 
+                                    class="dsu-input" 
+                                    placeholder="Type skill and press Enter"
+                                >
+                                <div class="projects-chips-container" id="modalMemberSkillsChipsContainer">
+                                    <!-- Chips will be dynamically added here -->
+                                </div>
+                            </div>
+
+                            <!-- Work experience -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Work experience</span>
+                                    </div>
+                                </div>
+                                <select class="dsu-input" id="modalMemberWorkExperience">
+                                    <option value="">Select work experience</option>
+                                    <option value="1-3 Years">1 - 3 Years</option>
+                                    <option value="3-5 Years">3 - 5 Years</option>
+                                    <option value="5-10 Years">5 - 10 Years</option>
+                                    <option value="10+ Years">10+ Years</option>
+                                </select>
+                            </div>
+
+                            <!-- Portfolio -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Portfolio</span>
+                                    </div>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="modalMemberPortfolio" 
+                                    class="dsu-input" 
+                                    placeholder="Add portfolio URL (e.g., example.com or https://example.com) and press Enter"
+                                >
+                                <div class="portfolio-items-container" id="modalMemberPortfolioContainer">
+                                    <!-- Portfolio items will be dynamically added here -->
+                                </div>
+                            </div>
+
+                            <!-- Team -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Team</span>
+                                    </div>
+                                </div>
+                                <select class="dsu-input" id="modalMemberTeam">
+                                    <option value="">Select team</option>
+                                    <!-- Teams will be dynamically populated -->
+                                </select>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Email</span>
+                                    </div>
+                                </div>
+                                <input type="email" class="dsu-input" id="modalMemberEmail" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Contact -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Contact</span>
+                                    </div>
+                                </div>
+                                <input type="tel" class="dsu-input" id="modalMemberPhone" placeholder="Contact">
+                            </div>
+
+                            <!-- Individual Cost -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Individual cost</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-family: var(--font-family-secondary); font-size: var(--font-size-sm); color: var(--color-text-primary);">USD</span>
+                                    <input type="text" class="dsu-input" id="modalMemberCost" placeholder="0.00" style="flex: 1;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer Buttons -->
+                    <div class="modal-buttons-level">
+                        <button class="dsu-button dsu-button--tertiary dsu-button--medium modal-cancel-btn" id="modalCancelBtn">
+                            <span>Cancel</span>
+                        </button>
+                        <button class="dsu-button dsu-button--primary dsu-button--medium modal-add-btn" id="modalAddBtn">
+                            <span class="dsu-button__icon" id="modalAddBtnIcon">
+                                <img src="images/check.svg" alt="Check">
+                            </span>
+                            <span id="modalAddBtnText">Save</span>
+                        </button>
+                        <button class="dsu-button dsu-button--tertiary dsu-button--medium modal-delete-btn" id="modalDeleteBtn" style="display: none;">
+                            <span class="dsu-button__icon">
+                                <img src="images/trash.svg" alt="Delete">
+                            </span>
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         /**
          * Load member profile data
@@ -588,8 +1170,14 @@
             }
         }
 
+        // ============================================
+        // Modal Functionality
+        // ============================================
+        let currentEditingMemberId = null;
+        let currentMemberData = null;
+
         /**
-         * Open Edit Member modal (redirects to create_team.html with edit parameters)
+         * Open Edit Member modal (shows modal on current page)
          */
         function openEditMemberModal() {
             // Get member ID from URL
@@ -608,34 +1196,879 @@
                 return;
             }
             
-            // Find the team that contains this member
-            let teamId = null;
+            // Find the member in the teams
+            let member = null;
+            let currentTeamId = null;
             for (const team of projectData.teams) {
                 if (team.members && Array.isArray(team.members)) {
-                    const member = team.members.find(m => String(m.id) === String(memberId));
-                    if (member) {
-                        teamId = team.id;
+                    const foundMember = team.members.find(m => String(m.id) === String(memberId));
+                    if (foundMember) {
+                        member = foundMember;
+                        currentTeamId = team.id;
                         break;
                     }
                 }
             }
             
-            if (!teamId) {
-                console.error('Team not found for member');
+            if (!member) {
+                console.error('Member not found');
                 return;
             }
             
-            // Store member ID and team ID in sessionStorage
+            currentEditingMemberId = memberId;
+            currentMemberData = member;
+            
+            // Store current team ID in sessionStorage
             try {
-                sessionStorage.setItem('docu_edit_member_id', memberId);
-                sessionStorage.setItem('docu_selected_team_id', teamId);
-                sessionStorage.setItem('docu_editing_mode', 'true');
+                sessionStorage.setItem('docu_selected_team_id', currentTeamId);
             } catch (e) {
-                console.warn('Could not store edit parameters:', e);
+                console.warn('Could not store team ID:', e);
             }
             
-            // Redirect to create_team.html with edit parameters
-            window.location.href = `create_team.html?edit=true&id=${encodeURIComponent(teamId)}&memberId=${encodeURIComponent(memberId)}`;
+            // Open modal with member data
+            openEditMemberModalWithData(member, currentTeamId);
+        }
+        
+        function openEditMemberModalWithData(member, currentTeamId) {
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            if (!modalOverlay) {
+                console.error('Modal overlay not found!');
+                return;
+            }
+            
+            // Update modal title and buttons
+            const modalTitle = document.getElementById('modalTitle');
+            const modalAddBtnText = document.getElementById('modalAddBtnText');
+            const modalAddBtnIcon = document.getElementById('modalAddBtnIcon');
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            
+            if (modalTitle) modalTitle.textContent = 'Edit member';
+            if (modalAddBtnText) modalAddBtnText.textContent = 'Save';
+            if (modalAddBtnIcon) {
+                const iconImg = modalAddBtnIcon.querySelector('img');
+                if (iconImg) iconImg.src = 'images/check.svg';
+            }
+            if (modalDeleteBtn) modalDeleteBtn.style.display = 'flex';
+            
+            // Preload member data into form
+            document.getElementById('modalMemberName').value = member.name || '';
+            document.getElementById('modalMemberLastName').value = member.lastName || '';
+            document.getElementById('modalMemberJobPosition').value = member.jobPosition || '';
+            document.getElementById('modalMemberWorkExperience').value = member.workExperience || '';
+            document.getElementById('modalMemberEmail').value = member.email || '';
+            document.getElementById('modalMemberPhone').value = member.phone || '';
+            
+            // Professional description
+            const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+            if (professionalDescription) {
+                professionalDescription.innerHTML = member.professionalDescription || '';
+            }
+            
+            // Job description
+            const jobDescription = document.getElementById('modalMemberJobDescription');
+            if (jobDescription) {
+                jobDescription.innerHTML = member.jobDescription || '';
+            }
+            
+            // Cost
+            let costValue = member.cost || '';
+            if (costValue.includes('USD')) {
+                costValue = costValue.replace(/USD\s*/gi, '').trim();
+            }
+            document.getElementById('modalMemberCost').value = costValue;
+            
+            // Initialize Rich Text Input toolbars
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+            richTextInputs.forEach(function(input) {
+                input.dataset.initialized = 'false';
+            });
+            initRichTextToolbar();
+            
+            // Skills
+            const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
+            if (modalMemberSkillsInput) {
+                modalMemberSkillsInput.value = '';
+            }
+            const skillsArray = Array.isArray(member.skills) ? member.skills : [];
+            loadChipsIntoContainer('modalMemberSkillsChipsContainer', skillsArray);
+            initInputChip('modalMemberSkills', 'modalMemberSkillsChipsContainer');
+            
+            // Portfolio
+            const modalMemberPortfolioInput = document.getElementById('modalMemberPortfolio');
+            if (modalMemberPortfolioInput) {
+                modalMemberPortfolioInput.value = '';
+            }
+            const portfolioArray = Array.isArray(member.portfolio) ? member.portfolio : [];
+            loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', portfolioArray);
+            initPortfolioInput();
+            
+            // Team dropdown
+            loadTeamsIntoDropdown();
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam && currentTeamId) {
+                modalMemberTeam.value = currentTeamId;
+            }
+            
+            // Avatar
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            if (member.image && member.image.trim() !== '') {
+                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                if (modalAvatarPreview) {
+                    modalAvatarPreview.src = member.image;
+                    modalAvatarPreview.style.display = 'block';
+                }
+            } else {
+                if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                if (modalAvatarPreview) {
+                    modalAvatarPreview.style.display = 'none';
+                    modalAvatarPreview.src = '';
+                }
+            }
+            
+            // Validate form
+            validateModalForm();
+            
+            // Show modal
+            modalOverlay.classList.add('active');
+            modalOverlay.style.display = 'flex';
+            modalOverlay.style.opacity = '1';
+            modalOverlay.style.visibility = 'visible';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('active');
+                modalOverlay.style.display = 'none';
+                modalOverlay.style.opacity = '0';
+                modalOverlay.style.visibility = 'hidden';
+                document.body.style.overflow = '';
+                resetModalForm();
+            }
+        }
+        
+        function resetModalForm() {
+            document.getElementById('modalMemberName').value = '';
+            document.getElementById('modalMemberLastName').value = '';
+            document.getElementById('modalMemberJobPosition').value = '';
+            document.getElementById('modalMemberWorkExperience').value = '';
+            document.getElementById('modalMemberEmail').value = '';
+            document.getElementById('modalMemberPhone').value = '';
+            document.getElementById('modalMemberCost').value = '';
+            
+            const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+            if (professionalDescription) professionalDescription.innerHTML = '';
+            
+            const jobDescription = document.getElementById('modalMemberJobDescription');
+            if (jobDescription) jobDescription.innerHTML = '';
+            
+            const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
+            if (modalMemberSkillsInput) modalMemberSkillsInput.value = '';
+            loadChipsIntoContainer('modalMemberSkillsChipsContainer', []);
+            
+            const modalMemberPortfolioInput = document.getElementById('modalMemberPortfolio');
+            if (modalMemberPortfolioInput) modalMemberPortfolioInput.value = '';
+            loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', []);
+            
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam) {
+                modalMemberTeam.value = '';
+                loadTeamsIntoDropdown();
+            }
+            
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            const modalAvatarInput = document.getElementById('modalAvatarInput');
+            
+            if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+            if (modalAvatarPreview) {
+                modalAvatarPreview.style.display = 'none';
+                modalAvatarPreview.src = '';
+            }
+            if (modalAvatarInput) modalAvatarInput.value = '';
+            
+            currentEditingMemberId = null;
+            currentMemberData = null;
+        }
+        
+        function validateModalForm() {
+            const modalMemberName = document.getElementById('modalMemberName');
+            const modalAddBtn = document.getElementById('modalAddBtn');
+            
+            if (modalMemberName && modalAddBtn) {
+                const hasName = modalMemberName.value.trim().length > 0;
+                modalAddBtn.disabled = !hasName;
+            }
+        }
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function formatCurrencyInput(input) {
+            let value = input.value.replace(/[^\d.]/g, '');
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            if (parts.length === 2 && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+            input.value = value;
+        }
+        
+        function formatCurrencyOnBlur(input) {
+            let value = input.value.trim();
+            if (value && !isNaN(value)) {
+                const numValue = parseFloat(value);
+                if (!isNaN(numValue)) {
+                    input.value = numValue.toFixed(2);
+                }
+            }
+        }
+        
+        // Rich Text Input Toolbar
+        function initRichTextToolbar() {
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+            
+            richTextInputs.forEach(function(richTextInput) {
+                if (richTextInput.dataset.initialized === 'true') return;
+                
+                const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+                const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
+                const buttons = toolbar ? toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]') : [];
+                
+                if (!editor || !toolbar) return;
+                
+                buttons.forEach(function(button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const command = this.getAttribute('data-command');
+                        const value = this.getAttribute('data-value') || null;
+                        
+                        editor.focus();
+                        
+                        if (command === 'createLink') {
+                            const url = prompt('Enter URL:', value || 'https://');
+                            if (url) {
+                                document.execCommand('createLink', false, url);
+                            }
+                        } else {
+                            document.execCommand(command, false, value);
+                        }
+                        
+                        updateToolbarButtons(richTextInput);
+                    });
+                });
+                
+                editor.addEventListener('keyup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+                
+                editor.addEventListener('mouseup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+                
+                editor.addEventListener('input', function() {
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                    } else {
+                        editor.classList.remove('dsu-rich-text-input__editor--empty');
+                    }
+                });
+                
+                if (editor.textContent.trim() === '') {
+                    editor.classList.add('dsu-rich-text-input__editor--empty');
+                }
+                
+                richTextInput.dataset.initialized = 'true';
+            });
+        }
+        
+        function updateToolbarButtons(richTextInput) {
+            const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+            const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
+            const buttons = toolbar ? toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]') : [];
+            
+            if (!editor || !toolbar) return;
+            
+            buttons.forEach(function(button) {
+                const command = button.getAttribute('data-command');
+                let isActive = false;
+                
+                try {
+                    switch(command) {
+                        case 'bold':
+                            isActive = document.queryCommandState('bold');
+                            break;
+                        case 'italic':
+                            isActive = document.queryCommandState('italic');
+                            break;
+                        case 'underline':
+                            isActive = document.queryCommandState('underline');
+                            break;
+                        case 'insertUnorderedList':
+                        case 'insertOrderedList':
+                            isActive = document.queryCommandState(command);
+                            break;
+                    }
+                } catch(e) {}
+                
+                if (isActive) {
+                    button.classList.add('dsu-rich-text-input__toolbar-button--active');
+                } else {
+                    button.classList.remove('dsu-rich-text-input__toolbar-button--active');
+                }
+            });
+        }
+        
+        // Input Chip functionality
+        function initInputChip(inputId, containerId, onChipAdd, onChipRemove) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            if (!input || !container) return;
+            
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        const existingChips = Array.from(container.querySelectorAll('.project-chip'));
+                        const exists = existingChips.some(chip => 
+                            chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+                        );
+                        
+                        if (!exists) {
+                            const chip = createProjectChip(value, containerId, onChipRemove);
+                            container.appendChild(chip);
+                            this.value = '';
+                            
+                            if (onChipAdd && typeof onChipAdd === 'function') {
+                                onChipAdd(value);
+                            }
+                        } else {
+                            alert('Este skill ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createProjectChip(text, containerId, onChipRemove) {
+            const chip = document.createElement('div');
+            chip.className = 'project-chip';
+            chip.setAttribute('data-project', text.trim());
+            
+            const chipText = document.createElement('span');
+            chipText.className = 'project-chip__text';
+            chipText.textContent = text.trim();
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'project-chip__close';
+            closeBtn.setAttribute('aria-label', 'Remove skill');
+            closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            
+            closeBtn.addEventListener('click', function() {
+                const chipText = chip.querySelector('.project-chip__text').textContent;
+                chip.remove();
+                
+                if (onChipRemove && typeof onChipRemove === 'function') {
+                    onChipRemove(chipText);
+                }
+            });
+            
+            chip.appendChild(chipText);
+            chip.appendChild(closeBtn);
+            
+            return chip;
+        }
+        
+        function getChipsFromContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const chips = [];
+            const chipElements = container.querySelectorAll('.project-chip');
+            chipElements.forEach(chip => {
+                const chipText = chip.querySelector('.project-chip__text');
+                if (chipText) {
+                    chips.push(chipText.textContent.trim());
+                }
+            });
+            
+            return chips;
+        }
+        
+        function loadChipsIntoContainer(containerId, chipsArray, onChipRemove) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (Array.isArray(chipsArray) && chipsArray.length > 0) {
+                chipsArray.forEach(chipText => {
+                    if (chipText && typeof chipText === 'string' && chipText.trim().length > 0) {
+                        const chip = createProjectChip(chipText.trim(), containerId, onChipRemove);
+                        container.appendChild(chip);
+                    }
+                });
+            }
+        }
+        
+        // Portfolio functionality
+        function initPortfolioInput() {
+            const portfolioInput = document.getElementById('modalMemberPortfolio');
+            const portfolioContainer = document.getElementById('modalMemberPortfolioContainer');
+            
+            if (!portfolioInput || !portfolioContainer) return;
+            
+            portfolioInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        let url = value.trim();
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        
+                        const existingItems = Array.from(portfolioContainer.querySelectorAll('.portfolio-item'));
+                        const exists = existingItems.some(item => {
+                            const itemLink = item.querySelector('.portfolio-item__text');
+                            return itemLink && itemLink.href === url;
+                        });
+                        
+                        if (!exists) {
+                            const portfolioItem = createPortfolioItem(url);
+                            portfolioContainer.appendChild(portfolioItem);
+                            this.value = '';
+                        } else {
+                            alert('Este enlace ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createPortfolioItem(text) {
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            
+            const itemLink = document.createElement('a');
+            itemLink.className = 'portfolio-item__text';
+            itemLink.href = text.trim();
+            itemLink.target = '_blank';
+            itemLink.rel = 'noopener noreferrer';
+            itemLink.textContent = text.trim();
+            
+            let url = text.trim();
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                itemLink.href = url;
+            }
+            
+            const actions = document.createElement('div');
+            actions.className = 'portfolio-item__actions';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'portfolio-item__action';
+            deleteBtn.setAttribute('aria-label', 'Delete portfolio item');
+            deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+            deleteBtn.addEventListener('click', function() {
+                item.remove();
+            });
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'portfolio-item__action';
+            editBtn.setAttribute('aria-label', 'Edit portfolio item');
+            editBtn.innerHTML = '<img src="images/Edit.svg" alt="Edit">';
+            editBtn.addEventListener('click', function() {
+                const currentUrl = itemLink.href;
+                const newUrl = prompt('Edit portfolio item:', currentUrl);
+                if (newUrl && newUrl.trim()) {
+                    let url = newUrl.trim();
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                    }
+                    itemLink.href = url;
+                    itemLink.textContent = url;
+                }
+            });
+            
+            actions.appendChild(deleteBtn);
+            actions.appendChild(editBtn);
+            
+            item.appendChild(itemLink);
+            item.appendChild(actions);
+            
+            return item;
+        }
+        
+        function getPortfolioItemsFromContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const items = [];
+            const itemElements = container.querySelectorAll('.portfolio-item');
+            itemElements.forEach(item => {
+                const itemLink = item.querySelector('.portfolio-item__text');
+                if (itemLink && itemLink.href) {
+                    items.push(itemLink.href);
+                }
+            });
+            
+            return items;
+        }
+        
+        function loadPortfolioItemsIntoContainer(containerId, itemsArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            if (Array.isArray(itemsArray) && itemsArray.length > 0) {
+                itemsArray.forEach(itemUrl => {
+                    if (itemUrl && typeof itemUrl === 'string' && itemUrl.trim().length > 0) {
+                        const portfolioItem = createPortfolioItem(itemUrl);
+                        container.appendChild(portfolioItem);
+                    }
+                });
+            }
+        }
+        
+        // Team dropdown
+        function loadTeamsIntoDropdown() {
+            const teamSelect = document.getElementById('modalMemberTeam');
+            if (!teamSelect) return;
+            
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                return;
+            }
+            
+            const publishedTeams = projectData.teams.filter(team => {
+                return team.status === 'published' && 
+                       team.name && 
+                       typeof team.name === 'string' && 
+                       team.name.trim().length > 0;
+            });
+            
+            teamSelect.innerHTML = '<option value="">Select team</option>';
+            
+            publishedTeams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team.id;
+                option.textContent = team.name;
+                teamSelect.appendChild(option);
+            });
+        }
+        
+        function handleTeamChange(memberId, newTeamId) {
+            if (!memberId || !newTeamId) return;
+            
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                return;
+            }
+            
+            let currentTeamId = null;
+            try {
+                currentTeamId = sessionStorage.getItem('docu_selected_team_id');
+            } catch (e) {}
+            
+            if (!currentTeamId) {
+                for (const team of projectData.teams) {
+                    if (team.members && Array.isArray(team.members)) {
+                        const memberInTeam = team.members.find(m => m.id === memberId);
+                        if (memberInTeam) {
+                            currentTeamId = team.id;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if (currentTeamId === newTeamId) {
+                return;
+            }
+            
+            const currentTeam = projectData.teams.find(t => String(t.id) === String(currentTeamId));
+            const targetTeam = projectData.teams.find(t => String(t.id) === String(newTeamId));
+            
+            if (!currentTeam || !targetTeam) {
+                return;
+            }
+            
+            if (!currentTeam.members || !Array.isArray(currentTeam.members)) {
+                currentTeam.members = [];
+            }
+            
+            const memberIndex = currentTeam.members.findIndex(m => String(m.id) === String(memberId));
+            if (memberIndex === -1) {
+                return;
+            }
+            
+            const member = currentTeam.members[memberIndex];
+            currentTeam.members.splice(memberIndex, 1);
+            
+            if (!targetTeam.members || !Array.isArray(targetTeam.members)) {
+                targetTeam.members = [];
+            }
+            
+            const existingMemberIndex = targetTeam.members.findIndex(m => String(m.id) === String(memberId));
+            if (existingMemberIndex !== -1) {
+                targetTeam.members[existingMemberIndex] = member;
+            } else {
+                targetTeam.members.push(member);
+            }
+            
+            currentTeam.updatedAt = Date.now();
+            targetTeam.updatedAt = Date.now();
+            
+            const saved = DocuProjectData.saveProjectData(projectData);
+            if (!saved) {
+                alert('Error: No se pudo mover el miembro al team seleccionado.');
+                return;
+            }
+            
+            const currentTeamName = currentTeam.name || 'Team actual';
+            const targetTeamName = targetTeam.name || 'Team destino';
+            alert(`✅ Miembro movido exitosamente\n\nDe: ${currentTeamName}\nA: ${targetTeamName}`);
+            
+            // Reload page to reflect changes
+            window.location.reload();
+        }
+        
+        // Update member in project data and reload profile page
+        function updateMemberInProjectData(memberData) {
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.error('No project data available');
+                return false;
+            }
+            
+            // Find the team and member
+            let found = false;
+            for (const team of projectData.teams) {
+                if (team.members && Array.isArray(team.members)) {
+                    const memberIndex = team.members.findIndex(m => String(m.id) === String(memberData.id));
+                    if (memberIndex !== -1) {
+                        // Update member
+                        team.members[memberIndex] = {
+                            ...team.members[memberIndex],
+                            ...memberData
+                        };
+                        team.updatedAt = Date.now();
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!found) {
+                console.error('Member not found in project data');
+                return false;
+            }
+            
+            // Save project data
+            const saved = DocuProjectData.saveProjectData(projectData);
+            if (!saved) {
+                console.error('Failed to save project data');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Initialize modal functionality
+        function initModalFunctionality() {
+            const modalOverlay = document.getElementById('addMemberModalOverlay');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalAddBtn = document.getElementById('modalAddBtn');
+            const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+            const modalAvatarInput = document.getElementById('modalAvatarInput');
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', closeModal);
+            }
+            
+            if (modalCancelBtn) {
+                modalCancelBtn.addEventListener('click', closeModal);
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+            }
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay?.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+            
+            if (modalAvatarInput) {
+                modalAvatarInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const maxSize = 2 * 1024 * 1024;
+                        if (file.size > maxSize) {
+                            alert('La imagen es demasiado grande. Por favor, selecciona una imagen menor a 2MB.');
+                            e.target.value = '';
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const imageUrl = event.target.result;
+                            if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                            if (modalAvatarPreview) {
+                                modalAvatarPreview.src = imageUrl;
+                                modalAvatarPreview.style.display = 'block';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            const modalMemberName = document.getElementById('modalMemberName');
+            if (modalMemberName) {
+                modalMemberName.addEventListener('input', validateModalForm);
+            }
+            
+            const modalMemberEmail = document.getElementById('modalMemberEmail');
+            if (modalMemberEmail) {
+                modalMemberEmail.addEventListener('input', validateModalForm);
+            }
+            
+            const modalMemberCost = document.getElementById('modalMemberCost');
+            if (modalMemberCost) {
+                modalMemberCost.addEventListener('input', function(e) {
+                    formatCurrencyInput(e.target);
+                });
+                modalMemberCost.addEventListener('blur', function(e) {
+                    formatCurrencyOnBlur(e.target);
+                });
+            }
+            
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam) {
+                let savedTeamId = null;
+                try {
+                    savedTeamId = sessionStorage.getItem('docu_selected_team_id');
+                } catch (e) {}
+                
+                modalMemberTeam.addEventListener('change', function(e) {
+                    const selectedTeamId = e.target.value;
+                    if (selectedTeamId && currentEditingMemberId) {
+                        const confirmMove = confirm('¿Estás seguro de que deseas mover este miembro al team seleccionado?');
+                        if (confirmMove) {
+                            handleTeamChange(currentEditingMemberId, selectedTeamId);
+                        } else {
+                            e.target.value = savedTeamId || '';
+                        }
+                    }
+                });
+            }
+            
+            validateModalForm();
+            
+            if (modalAddBtn) {
+                modalAddBtn.addEventListener('click', function() {
+                    let memberImage = '';
+                    if (modalAvatarPreview && modalAvatarPreview.src) {
+                        if (modalAvatarPreview.src && !modalAvatarPreview.src.includes('avatar_icon.svg')) {
+                            memberImage = modalAvatarPreview.src;
+                        }
+                    }
+                    
+                    const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+                    const jobDescription = document.getElementById('modalMemberJobDescription');
+                    const skills = getChipsFromContainer('modalMemberSkillsChipsContainer');
+                    const portfolioItems = getPortfolioItemsFromContainer('modalMemberPortfolioContainer');
+                    
+                    const memberData = {
+                        id: currentEditingMemberId || Date.now().toString(),
+                        name: document.getElementById('modalMemberName')?.value.trim() || '',
+                        lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
+                        professionalDescription: professionalDescription ? professionalDescription.innerHTML : '',
+                        jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
+                        jobDescription: jobDescription ? jobDescription.innerHTML : '',
+                        skills: Array.isArray(skills) ? skills : [],
+                        workExperience: document.getElementById('modalMemberWorkExperience')?.value || '',
+                        portfolio: Array.isArray(portfolioItems) ? portfolioItems : [],
+                        email: document.getElementById('modalMemberEmail')?.value.trim() || '',
+                        phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
+                        cost: document.getElementById('modalMemberCost')?.value.trim() || '',
+                        image: memberImage
+                    };
+                    
+                    if (!memberData.name) {
+                        alert('Please fill in the Name field.');
+                        return;
+                    }
+                    
+                    if (memberData.email && !isValidEmail(memberData.email)) {
+                        alert('Please enter a valid email address.');
+                        return;
+                    }
+                    
+                    if (currentEditingMemberId) {
+                        const saved = updateMemberInProjectData(memberData);
+                        if (saved) {
+                            // Reload profile page to show updated data
+                            window.location.reload();
+                        } else {
+                            alert('Error al guardar los cambios');
+                        }
+                    }
+                    
+                    closeModal();
+                });
+            }
+            
+            if (modalDeleteBtn) {
+                modalDeleteBtn.addEventListener('click', function() {
+                    if (!currentEditingMemberId) {
+                        return;
+                    }
+                    
+                    if (confirm('Are you sure you want to delete this member?')) {
+                        const projectData = DocuProjectData.getProjectData();
+                        if (!projectData || !projectData.teams) {
+                            return;
+                        }
+                        
+                        // Find and remove member from team
+                        for (const team of projectData.teams) {
+                            if (team.members && Array.isArray(team.members)) {
+                                const memberIndex = team.members.findIndex(m => String(m.id) === String(currentEditingMemberId));
+                                if (memberIndex !== -1) {
+                                    team.members.splice(memberIndex, 1);
+                                    team.updatedAt = Date.now();
+                                    DocuProjectData.saveProjectData(projectData);
+                                    // Redirect back to team page
+                                    window.location.href = 'create_team.html';
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
         // Initialize when DOM is ready
@@ -662,6 +2095,9 @@
                     openEditMemberModal();
                 });
             }
+            
+            // Initialize modal functionality
+            initModalFunctionality();
         });
     </script>
 </body>
