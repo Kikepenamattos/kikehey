@@ -1,3 +1,4 @@
+ee2382fed63345c1f4f47afe8ad8eb659b7b1ef8|Ubits|ubits@macbookpro.lan|2025-11-03 17:06:39 -0500|Add: Agregar dropdown Work experience en modal Edit member y mejorar persistencia de campos
 fabdb4e2b8cd7b4b76c99cd175648ead0aafa57d|Ubits|ubits@macbookpro.lan|2025-11-03 16:53:14 -0500|Fix: Implementar persistencia completa para Professional description, Job description y Skills
 7213d2f6c6757d401be1235edf977920799707cf|Ubits|ubits@macbookpro.lan|2025-11-03 16:39:44 -0500|Update: Actualizar changelog con últimos cambios
 10d26f5350b72cc8442691dde646959df4409f56|Ubits|ubits@macbookpro.lan|2025-11-03 16:39:34 -0500|Add: Documentar componente Input Chip y agregar campo Skills en modal Edit member
