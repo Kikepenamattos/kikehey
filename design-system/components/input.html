@@ -2048,6 +2048,101 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             }
         }
         
+        // Portfolio Demo Functionality
+        function initPortfolioDemo() {
+            const portfolioInput = document.getElementById('demoPortfolioInput');
+            const portfolioContainer = document.getElementById('demoPortfolioContainer');
+            
+            if (!portfolioInput || !portfolioContainer) return;
+            
+            // Agregar item al presionar Enter
+            portfolioInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        // Formatear URL
+                        let url = value.trim();
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        
+                        // Verificar si el item ya existe
+                        const existingItems = Array.from(portfolioContainer.querySelectorAll('.portfolio-item'));
+                        const exists = existingItems.some(item => {
+                            const itemLink = item.querySelector('.portfolio-item__text');
+                            return itemLink && itemLink.href === url;
+                        });
+                        
+                        if (!exists) {
+                            const portfolioItem = createPortfolioDemoItem(url);
+                            portfolioContainer.appendChild(portfolioItem);
+                            this.value = ''; // Limpiar input después de crear item
+                        } else {
+                            alert('Este enlace ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createPortfolioDemoItem(text) {
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            
+            // Crear enlace externo
+            const itemLink = document.createElement('a');
+            itemLink.className = 'portfolio-item__text';
+            itemLink.href = text.trim();
+            itemLink.target = '_blank';
+            itemLink.rel = 'noopener noreferrer';
+            itemLink.textContent = text.trim();
+            
+            // Validar y formatear URL
+            let url = text.trim();
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                itemLink.href = url;
+            }
+            
+            const actions = document.createElement('div');
+            actions.className = 'portfolio-item__actions';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'portfolio-item__action';
+            deleteBtn.setAttribute('aria-label', 'Delete portfolio item');
+            deleteBtn.innerHTML = '<img src="../../images/trash.svg" alt="Delete">';
+            deleteBtn.addEventListener('click', function() {
+                item.remove();
+            });
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'portfolio-item__action';
+            editBtn.setAttribute('aria-label', 'Edit portfolio item');
+            editBtn.innerHTML = '<img src="../../images/Edit.svg" alt="Edit">';
+            editBtn.addEventListener('click', function() {
+                const currentUrl = itemLink.href;
+                const newUrl = prompt('Edit portfolio item:', currentUrl);
+                if (newUrl && newUrl.trim()) {
+                    let url = newUrl.trim();
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                    }
+                    itemLink.href = url;
+                    itemLink.textContent = url;
+                }
+            });
+            
+            actions.appendChild(deleteBtn);
+            actions.appendChild(editBtn);
+            
+            item.appendChild(itemLink);
+            item.appendChild(actions);
+            
+            return item;
+        }
+        
         // Inicializar al cargar
         document.addEventListener('DOMContentLoaded', function() {
             initHideSection();
@@ -2066,6 +2161,9 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
                     console.log('Chip eliminado:', chipText);
                 }
             );
+            
+            // Inicializar Portfolio demo
+            initPortfolioDemo();
             
             // Inicializar funcionalidad de eliminar para chips de ejemplo existentes
             const demoContainer = document.getElementById('demoProjectsChipsContainer');
@@ -2133,6 +2231,72 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             background-repeat: no-repeat;
             background-position: right 12px center;
             background-size: 20px 20px;
+        }
+        
+        /* Portfolio Items Container */
+        .portfolio-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            margin-top: var(--spacing-12);
+            min-height: 24px;
+        }
+
+        .portfolio-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: var(--spacing-08) 0;
+        }
+
+        .portfolio-item__text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            flex: 1;
+            margin: 0;
+            text-decoration: none;
+            color: var(--color-primary, #007AFF);
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__text:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .portfolio-item__actions {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .portfolio-item__action {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__action:hover {
+            opacity: 0.7;
+        }
+
+        .portfolio-item__action img,
+        .portfolio-item__action svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
     
@@ -2521,6 +2685,41 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</pre>
+        </div>
+    </div>
+    
+    <!-- Portfolio Section -->
+    <div class="variant-section">
+        <h2 class="variant-section__title">Portfolio</h2>
+        <p class="variant-section__description">
+            Componente input que permite agregar URLs de portfolio escribiendo y presionando Enter. Cada item se convierte en un enlace externo que se abre en una nueva pestaña (target="_blank"). Los items incluyen opciones de editar y eliminar, similar a la funcionalidad de Project agreements. El componente valida y formatea automáticamente las URLs agregando "https://" si no está presente.
+        </p>
+        
+        <!-- Interactive Example -->
+        <div class="variant-item" style="margin-top: var(--spacing-48);">
+            <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                Ejemplo Funcional Interactivo
+            </h3>
+            <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--spacing-24);">
+                Escribe una URL en el input (puedes usar solo el dominio o la URL completa) y presiona Enter para agregarla. Cada item se convierte en un enlace clicable que se abre en una nueva pestaña. Luego puedes editar o eliminar cada item.
+            </p>
+            
+            <div class="dsu-input-group">
+                <div class="dsu-input-label">
+                    <div class="dsu-input-label__text">
+                        <span>Portfolio</span>
+                    </div>
+                </div>
+                <input 
+                    type="text" 
+                    id="demoPortfolioInput" 
+                    class="dsu-input" 
+                    placeholder="Add portfolio URL (e.g., example.com or https://example.com) and press Enter"
+                >
+                <div class="portfolio-items-container" id="demoPortfolioContainer">
+                    <!-- Portfolio items will be dynamically added here -->
+                </div>
+            </div>
         </div>
     </div>
 </body>

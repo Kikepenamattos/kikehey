@@ -479,6 +479,72 @@
             overflow-y: auto;
         }
 
+        /* Portfolio Items Container */
+        .portfolio-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            margin-top: var(--spacing-12);
+            min-height: 24px;
+        }
+
+        .portfolio-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: var(--spacing-08) 0;
+        }
+
+        .portfolio-item__text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            flex: 1;
+            margin: 0;
+            text-decoration: none;
+            color: var(--color-primary, #007AFF);
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__text:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .portfolio-item__actions {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .portfolio-item__action {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .portfolio-item__action:hover {
+            opacity: 0.7;
+        }
+
+        .portfolio-item__action img,
+        .portfolio-item__action svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         /* Modal Buttons */
         .modal-buttons-level {
             display: flex;
@@ -1151,6 +1217,24 @@
                                     <option value="5-10 Years">5 - 10 Years</option>
                                     <option value="10+ Years">10+ Years</option>
                                 </select>
+                            </div>
+
+                            <!-- Portfolio -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Portfolio</span>
+                                    </div>
+                                </div>
+                <input 
+                    type="text" 
+                    id="modalMemberPortfolio" 
+                    class="dsu-input" 
+                    placeholder="Add portfolio URL (e.g., example.com or https://example.com) and press Enter"
+                >
+                                <div class="portfolio-items-container" id="modalMemberPortfolioContainer">
+                                    <!-- Portfolio items will be dynamically added here -->
+                                </div>
                             </div>
 
                             <!-- Email -->
@@ -2069,6 +2153,9 @@
                 }
             );
             
+            // Initialize Portfolio functionality
+            initPortfolioInput();
+            
             console.log('Modal opened successfully');
         }
         
@@ -2093,7 +2180,8 @@
                 jobDescription: member.jobDescription ? member.jobDescription.substring(0, 50) : 'none',
                 hasSkills: !!member.skills,
                 skillsCount: Array.isArray(member.skills) ? member.skills.length : 0,
-                skills: member.skills
+                hasPortfolio: !!member.portfolio,
+                portfolioCount: Array.isArray(member.portfolio) ? member.portfolio.length : 0
             });
             
             const modalOverlay = document.getElementById('addMemberModalOverlay');
@@ -2185,6 +2273,22 @@
                 }
             );
             
+            // Precargar Portfolio items si existen
+            const modalMemberPortfolioInput = document.getElementById('modalMemberPortfolio');
+            if (modalMemberPortfolioInput) {
+                modalMemberPortfolioInput.value = '';
+            }
+            const portfolioArray = Array.isArray(member.portfolio) ? member.portfolio : [];
+            if (portfolioArray.length > 0) {
+                console.log('✅ Cargando portfolio items:', portfolioArray.length, 'items');
+                loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', portfolioArray);
+            } else {
+                loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', []);
+            }
+            
+            // Re-inicializar Portfolio Input después de cargar
+            initPortfolioInput();
+            
             // Precargar imagen si existe
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
             const modalAvatarPreview = document.getElementById('modalAvatarPreview');
@@ -2256,6 +2360,11 @@
             const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
             if (modalMemberSkillsInput) modalMemberSkillsInput.value = '';
             loadChipsIntoContainer('modalMemberSkillsChipsContainer', []);
+            
+            // Clear Portfolio items
+            const modalMemberPortfolioInput = document.getElementById('modalMemberPortfolio');
+            if (modalMemberPortfolioInput) modalMemberPortfolioInput.value = '';
+            loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', []);
             
             // Reset avatar preview
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
@@ -2575,6 +2684,9 @@
                 }
             );
 
+            // Initialize Portfolio functionality
+            initPortfolioInput();
+
             // Initial validation to disable Add button
             validateModalForm();
 
@@ -2599,6 +2711,7 @@
                     const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
                     const jobDescription = document.getElementById('modalMemberJobDescription');
                     const skills = getChipsFromContainer('modalMemberSkillsChipsContainer');
+                    const portfolioItems = getPortfolioItemsFromContainer('modalMemberPortfolioContainer');
                     
                     const memberData = {
                         id: currentEditingMemberId || Date.now().toString(),
@@ -2609,6 +2722,7 @@
                         jobDescription: jobDescription ? jobDescription.innerHTML : '',
                         skills: Array.isArray(skills) ? skills : [],
                         workExperience: document.getElementById('modalMemberWorkExperience')?.value || '',
+                        portfolio: Array.isArray(portfolioItems) ? portfolioItems : [],
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
@@ -2658,7 +2772,140 @@
                 });
             }
         }
-
+        
+        // ============================================
+        // Portfolio Input Functionality
+        // ============================================
+        function initPortfolioInput() {
+            const portfolioInput = document.getElementById('modalMemberPortfolio');
+            const portfolioContainer = document.getElementById('modalMemberPortfolioContainer');
+            
+            if (!portfolioInput || !portfolioContainer) return;
+            
+            // Agregar item al presionar Enter
+            portfolioInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        // Formatear URL
+                        let url = value.trim();
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            url = 'https://' + url;
+                        }
+                        
+                        // Verificar si el item ya existe
+                        const existingItems = Array.from(portfolioContainer.querySelectorAll('.portfolio-item'));
+                        const exists = existingItems.some(item => {
+                            const itemLink = item.querySelector('.portfolio-item__text');
+                            return itemLink && itemLink.href === url;
+                        });
+                        
+                        if (!exists) {
+                            const portfolioItem = createPortfolioItem(url);
+                            portfolioContainer.appendChild(portfolioItem);
+                            this.value = ''; // Limpiar input después de crear item
+                        } else {
+                            alert('Este enlace ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createPortfolioItem(text) {
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            
+            // Crear enlace externo
+            const itemLink = document.createElement('a');
+            itemLink.className = 'portfolio-item__text';
+            itemLink.href = text.trim();
+            itemLink.target = '_blank';
+            itemLink.rel = 'noopener noreferrer';
+            itemLink.textContent = text.trim();
+            
+            // Validar y formatear URL
+            let url = text.trim();
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+                itemLink.href = url;
+            }
+            
+            const actions = document.createElement('div');
+            actions.className = 'portfolio-item__actions';
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'portfolio-item__action';
+            deleteBtn.setAttribute('aria-label', 'Delete portfolio item');
+            deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+            deleteBtn.addEventListener('click', function() {
+                item.remove();
+            });
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'portfolio-item__action';
+            editBtn.setAttribute('aria-label', 'Edit portfolio item');
+            editBtn.innerHTML = '<img src="images/Edit.svg" alt="Edit">';
+            editBtn.addEventListener('click', function() {
+                const currentUrl = itemLink.href;
+                const newUrl = prompt('Edit portfolio item:', currentUrl);
+                if (newUrl && newUrl.trim()) {
+                    let url = newUrl.trim();
+                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                        url = 'https://' + url;
+                    }
+                    itemLink.href = url;
+                    itemLink.textContent = url;
+                }
+            });
+            
+            actions.appendChild(deleteBtn);
+            actions.appendChild(editBtn);
+            
+            item.appendChild(itemLink);
+            item.appendChild(actions);
+            
+            return item;
+        }
+        
+        // Función helper para obtener todos los items del portfolio
+        function getPortfolioItemsFromContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const items = [];
+            const itemElements = container.querySelectorAll('.portfolio-item');
+            itemElements.forEach(item => {
+                const itemLink = item.querySelector('.portfolio-item__text');
+                if (itemLink && itemLink.href) {
+                    items.push(itemLink.href);
+                }
+            });
+            
+            return items;
+        }
+        
+        // Función helper para cargar items del portfolio en un contenedor
+        function loadPortfolioItemsIntoContainer(containerId, itemsArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            // Limpiar items existentes
+            container.innerHTML = '';
+            
+            // Cargar nuevos items
+            if (Array.isArray(itemsArray) && itemsArray.length > 0) {
+                itemsArray.forEach(itemText => {
+                    if (itemText && typeof itemText === 'string' && itemText.trim().length > 0) {
+                        const portfolioItem = createPortfolioItem(itemText.trim());
+                        container.appendChild(portfolioItem);
+                    }
+                });
+            }
+        }
+        
         // ============================================
         // Rich Text Input Toolbar Functionality
         // ============================================
@@ -3886,7 +4133,8 @@
                     professionalDescription: member.professionalDescription || '',
                     jobDescription: member.jobDescription || '',
                     skills: Array.isArray(member.skills) ? member.skills : [],
-                    workExperience: member.workExperience || ''
+                    workExperience: member.workExperience || '',
+                    portfolio: Array.isArray(member.portfolio) ? member.portfolio : []
                 }));
                 
                 console.log('📋 Cargando miembros:', membersList.length);
