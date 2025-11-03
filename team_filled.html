@@ -473,6 +473,189 @@
             z-index: 0;
         }
 
+        /* Profile Page Styles */
+        .profile-page-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: var(--spacing-24);
+        }
+
+        .profile-page-container {
+            width: 100%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background-color: var(--color-surface-regular, #ffffff);
+            border-radius: var(--radius-md, 8px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-page-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .profile-page-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: var(--spacing-24);
+            border-bottom: 1px solid var(--color-border-light, #e0e0e0);
+        }
+
+        .profile-page-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .profile-page-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .profile-page-content {
+            padding: var(--spacing-48) var(--spacing-64);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-32);
+        }
+
+        .profile-page-avatar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-24);
+        }
+
+        .profile-page-avatar .dsu-profile-avatar {
+            width: 200px;
+            height: 200px;
+        }
+
+        .profile-page-avatar-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .profile-page-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-24);
+        }
+
+        .profile-page-input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-24);
+        }
+
+        .profile-page-input-group {
+            margin-bottom: 0;
+        }
+
+        .profile-page-field {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            padding: var(--spacing-12) var(--spacing-16);
+            min-height: 44px;
+            border: 1px solid var(--color-border-light, #e0e0e0);
+            border-radius: var(--radius-sm, 4px);
+            background-color: var(--color-surface-regular, #ffffff);
+        }
+
+        .profile-page-field:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-rich-text {
+            min-height: 120px;
+            padding: var(--spacing-16);
+        }
+
+        .profile-page-chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            min-height: 44px;
+            border: 1px solid var(--color-border-light, #e0e0e0);
+            border-radius: var(--radius-sm, 4px);
+            background-color: var(--color-surface-regular, #ffffff);
+        }
+
+        .profile-page-chips-container:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--spacing-08) var(--spacing-12);
+            background-color: var(--color-surface-light, #f5f5f5);
+            border-radius: var(--radius-sm, 4px);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .profile-page-portfolio-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            min-height: 44px;
+            border: 1px solid var(--color-border-light, #e0e0e0);
+            border-radius: var(--radius-sm, 4px);
+            background-color: var(--color-surface-regular, #ffffff);
+        }
+
+        .profile-page-portfolio-container:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-portfolio-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-08) 0;
+        }
+
+        .profile-page-portfolio-item__link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-primary, #007AFF);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .profile-page-portfolio-item__link:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
         .btn-icon {
             width: 20px;
             height: 20px;
@@ -1195,6 +1378,9 @@
                     // NOTA: En la vista publicada NO se muestra el botón de editar
                     // El botón de editar solo aparece en create_team.html (vista de edición)
                 });
+                
+                // Add click listeners to profile cards (image and name)
+                attachProfileCardListeners();
             }
         }
 
@@ -1256,6 +1442,51 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+        
+        /**
+         * Attach click listeners to profile cards to open profile page
+         */
+        function attachProfileCardListeners() {
+            const profileCards = document.querySelectorAll('.dsu-profile-card');
+            profileCards.forEach(card => {
+                const memberId = card.getAttribute('data-member-id');
+                if (!memberId) return;
+                
+                // Get image and name elements
+                const imageWrapper = card.querySelector('.dsu-profile-card__image-wrapper');
+                const nameElement = card.querySelector('.dsu-profile-card__name');
+                
+                // Add click listener to image
+                if (imageWrapper) {
+                    imageWrapper.style.cursor = 'pointer';
+                    imageWrapper.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openMemberProfilePage(memberId);
+                    });
+                }
+                
+                // Add click listener to name
+                if (nameElement) {
+                    nameElement.style.cursor = 'pointer';
+                    nameElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openMemberProfilePage(memberId);
+                    });
+                }
+            });
+        }
+        
+        /**
+         * Open member profile page (redirects to member_profile.html)
+         */
+        function openMemberProfilePage(memberId) {
+            if (!memberId) return;
+            
+            // Redirect to member profile page with member ID
+            window.location.href = `member_profile.html?id=${encodeURIComponent(memberId)}`;
         }
 
         // ============================================

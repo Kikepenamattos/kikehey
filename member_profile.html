@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Profile - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/chip.css">
+    <link rel="stylesheet" href="design-system/components/card.css">
+    
+    <!-- Auth and Project Data Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+        }
+
+        /* Profile Page Container - Matching modal structure */
+        .profile-page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-48) var(--spacing-64);
+            min-height: 100vh;
+            position: relative;
+            padding-top: 64px;
+        }
+
+        .profile-page-header {
+            display: none;
+        }
+
+        .profile-page-close-btn-container {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            width: 100%;
+            /* margin-bottom: 48px; */
+        }
+
+        .profile-page-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+            margin-left: 32px;
+        }
+
+        .profile-page-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .profile-page-edit-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+        }
+
+        /* Content wrapper matching modal structure */
+        .profile-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: flex-start;
+            margin: 0 auto;
+            padding: 0;
+            width: 80%;
+        }
+
+        .profile-content-main {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .profile-page-avatar {
+            width: 200px;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-16);
+        }
+
+        .profile-page-edit-btn {
+            width: 100%;
+        }
+
+        .profile-page-edit-btn .dsu-button {
+            width: 100%;
+        }
+
+        .profile-page-avatar .dsu-profile-avatar {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .profile-page-avatar-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            z-index: 0;
+        }
+
+        /* Inputs wrapper matching modal */
+        .profile-inputs-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+            width: 424px;
+            margin-bottom: 64px;
+            padding: 0;
+        }
+
+        .profile-input-row {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-input-row .profile-input-group {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-input-group {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+            width: 100%;
+        }
+
+        .profile-input-group .dsu-input-label {
+            font-weight: var(--font-weight-black);
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+            margin-bottom: 4px;
+        }
+
+        .profile-input-group .dsu-input-label span::after {
+            content: none;
+        }
+
+        /* Fields without borders */
+        .profile-page-field {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            line-height: 1.5;
+            color: var(--color-text-primary);
+            padding: var(--spacing-12) var(--spacing-16);
+            min-height: 48px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .profile-page-field:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-rich-text {
+            min-height: 120px;
+            padding: var(--spacing-16);
+            border: none;
+            background-color: transparent;
+        }
+
+        .profile-page-rich-text:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-08);
+            padding: 0;
+            min-height: 24px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .profile-page-chips-container:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--spacing-08) var(--spacing-12);
+            background-color: var(--color-surface-light, #f5f5f5);
+            border-radius: var(--radius-sm, 4px);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .profile-page-portfolio-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            padding: 0;
+            min-height: 24px;
+            border: none;
+            background-color: transparent;
+        }
+
+        .profile-page-portfolio-container:empty::before {
+            content: '-';
+            color: var(--color-text-secondary, #666);
+        }
+
+        .profile-page-portfolio-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-08) 0;
+        }
+
+        .profile-page-portfolio-item__link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-primary, #007AFF);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .profile-page-portfolio-item__link:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-page-container {
+                padding: var(--spacing-24) var(--spacing-16);
+            }
+
+            .profile-input-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-page-container">
+        <!-- Profile Page Content - Matching modal structure -->
+        <div class="profile-content-wrapper">
+            <!-- Close Button - Top of content wrapper -->
+            <div class="profile-page-close-btn-container">
+                <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProfileBtn">
+                    <span class="dsu-button__icon">
+                        <img src="images/share.svg" alt="Share">
+                    </span>
+                    Share profile
+                </button>
+                <button class="profile-page-close-btn" id="profilePageCloseBtn" aria-label="Close profile" onclick="window.history.back()">
+                    <img src="images/close.svg" alt="Close" width="24" height="24">
+                </button>
+            </div>
+
+            <!-- Main Content -->
+            <div class="profile-content-main">
+                <!-- Profile Avatar -->
+                <div class="profile-page-avatar">
+                <div class="dsu-profile-avatar">
+                    <img src="images/avatar_icon.svg" alt="Avatar" class="dsu-profile-avatar__icon" id="profilePageAvatarIcon">
+                    <img class="profile-page-avatar-preview" id="profilePageAvatarPreview" style="display: none;" alt="Avatar Preview">
+                </div>
+                <div class="profile-page-edit-btn">
+                    <button class="dsu-button dsu-button--secondary dsu-button--x-small" id="editProfileBtn">
+                        <span class="dsu-button__icon">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </span>
+                        <span>Edit profile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Information - Matching modal-inputs-wrapper -->
+            <div class="profile-inputs-wrapper">
+                <!-- Name Row - Matching modal-input-row -->
+                <div class="profile-input-row">
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Name</span>
+                            </div>
+                        </div>
+                        <div class="profile-page-field" id="profilePageName">-</div>
+                    </div>
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Last name</span>
+                            </div>
+                        </div>
+                        <div class="profile-page-field" id="profilePageLastName">-</div>
+                    </div>
+                </div>
+
+                <!-- Professional description -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Professional description</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field profile-page-rich-text" id="profilePageProfessionalDescription">-</div>
+                </div>
+
+                <!-- Job Position -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Job position</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageJobPosition">-</div>
+                </div>
+
+                <!-- Job description -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Job description</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field profile-page-rich-text" id="profilePageJobDescription">-</div>
+                </div>
+
+                <!-- Skills -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Skills</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-chips-container" id="profilePageSkillsContainer">
+                        <!-- Skills chips will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Work experience -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Work experience</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageWorkExperience">-</div>
+                </div>
+
+                <!-- Portfolio -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Portfolio</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-portfolio-container" id="profilePagePortfolioContainer">
+                        <!-- Portfolio items will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Email</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageEmail">-</div>
+                </div>
+
+                <!-- Contact -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Contact</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePagePhone">-</div>
+                </div>
+
+                <!-- Individual Cost -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Individual cost</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageCost">-</div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Load member profile data
+         */
+        function loadMemberProfileData(member) {
+            // Avatar
+            const avatarIcon = document.getElementById('profilePageAvatarIcon');
+            const avatarPreview = document.getElementById('profilePageAvatarPreview');
+            if (member.image && member.image.trim() !== '') {
+                if (avatarIcon) avatarIcon.style.display = 'none';
+                if (avatarPreview) {
+                    avatarPreview.src = member.image;
+                    avatarPreview.style.display = 'block';
+                }
+            } else {
+                if (avatarIcon) avatarIcon.style.display = 'block';
+                if (avatarPreview) avatarPreview.style.display = 'none';
+            }
+            
+            // Basic fields
+            document.getElementById('profilePageName').textContent = member.name || '-';
+            document.getElementById('profilePageLastName').textContent = member.lastName || '-';
+            document.getElementById('profilePageJobPosition').textContent = member.jobPosition || '-';
+            document.getElementById('profilePageWorkExperience').textContent = member.workExperience || '-';
+            document.getElementById('profilePageEmail').textContent = member.email || '-';
+            document.getElementById('profilePagePhone').textContent = member.phone || '-';
+            
+            // Cost
+            let costValue = member.cost || '-';
+            if (costValue !== '-' && !costValue.includes('USD')) {
+                costValue = `USD ${costValue}`;
+            }
+            document.getElementById('profilePageCost').textContent = costValue;
+            
+            // Rich text fields
+            const professionalDesc = document.getElementById('profilePageProfessionalDescription');
+            if (professionalDesc) {
+                professionalDesc.innerHTML = member.professionalDescription || '-';
+                if (!member.professionalDescription || member.professionalDescription.trim() === '') {
+                    professionalDesc.innerHTML = '-';
+                }
+            }
+            
+            const jobDesc = document.getElementById('profilePageJobDescription');
+            if (jobDesc) {
+                jobDesc.innerHTML = member.jobDescription || '-';
+                if (!member.jobDescription || member.jobDescription.trim() === '') {
+                    jobDesc.innerHTML = '-';
+                }
+            }
+            
+            // Skills
+            const skillsContainer = document.getElementById('profilePageSkillsContainer');
+            if (skillsContainer) {
+                skillsContainer.innerHTML = '';
+                if (Array.isArray(member.skills) && member.skills.length > 0) {
+                    member.skills.forEach(skill => {
+                        if (skill && skill.trim()) {
+                            const chip = document.createElement('div');
+                            chip.className = 'profile-page-chip';
+                            chip.textContent = skill.trim();
+                            skillsContainer.appendChild(chip);
+                        }
+                    });
+                } else {
+                    skillsContainer.textContent = '-';
+                }
+            }
+            
+            // Portfolio
+            const portfolioContainer = document.getElementById('profilePagePortfolioContainer');
+            if (portfolioContainer) {
+                portfolioContainer.innerHTML = '';
+                if (Array.isArray(member.portfolio) && member.portfolio.length > 0) {
+                    member.portfolio.forEach(portfolioUrl => {
+                        if (portfolioUrl && portfolioUrl.trim()) {
+                            const portfolioItem = document.createElement('div');
+                            portfolioItem.className = 'profile-page-portfolio-item';
+                            
+                            const link = document.createElement('a');
+                            link.className = 'profile-page-portfolio-item__link';
+                            link.href = portfolioUrl.trim();
+                            link.target = '_blank';
+                            link.rel = 'noopener noreferrer';
+                            link.textContent = portfolioUrl.trim();
+                            
+                            portfolioItem.appendChild(link);
+                            portfolioContainer.appendChild(portfolioItem);
+                        }
+                    });
+                } else {
+                    portfolioContainer.textContent = '-';
+                }
+            }
+        }
+
+        /**
+         * Initialize profile page
+         */
+        function initProfilePage() {
+            // Get member ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const memberId = urlParams.get('id');
+            
+            if (!memberId) {
+                console.error('No member ID provided in URL');
+                document.body.innerHTML = '<div style="padding: 48px; text-align: center;"><h1>Error</h1><p>Member ID not found</p><button onclick="window.history.back()">Go Back</button></div>';
+                return;
+            }
+            
+            // Get project data
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('DocuProjectData is not available');
+                document.body.innerHTML = '<div style="padding: 48px; text-align: center;"><h1>Error</h1><p>Data system not available</p><button onclick="window.history.back()">Go Back</button></div>';
+                return;
+            }
+            
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.error('No project data available');
+                document.body.innerHTML = '<div style="padding: 48px; text-align: center;"><h1>Error</h1><p>No data available</p><button onclick="window.history.back()">Go Back</button></div>';
+                return;
+            }
+            
+            // Find member in all teams
+            let member = null;
+            for (const team of projectData.teams) {
+                if (team.members && Array.isArray(team.members)) {
+                    const foundMember = team.members.find(m => String(m.id) === String(memberId));
+                    if (foundMember) {
+                        member = foundMember;
+                        break;
+                    }
+                }
+            }
+            
+            if (!member) {
+                console.error('Member not found:', memberId);
+                document.body.innerHTML = '<div style="padding: 48px; text-align: center;"><h1>Member Not Found</h1><p>The requested member profile could not be found.</p><button onclick="window.history.back()">Go Back</button></div>';
+                return;
+            }
+            
+            // Load member data
+            loadMemberProfileData(member);
+            
+            // Update page title
+            const memberName = `${member.name || ''} ${member.lastName || ''}`.trim();
+            if (memberName) {
+                document.title = `${memberName} - Member Profile - Docu`;
+            }
+        }
+
+        /**
+         * Open Edit Member modal (redirects to create_team.html with edit parameters)
+         */
+        function openEditMemberModal() {
+            // Get member ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const memberId = urlParams.get('id');
+            
+            if (!memberId) {
+                console.error('No member ID available');
+                return;
+            }
+            
+            // Get project data to find which team contains this member
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.error('No project data available');
+                return;
+            }
+            
+            // Find the team that contains this member
+            let teamId = null;
+            for (const team of projectData.teams) {
+                if (team.members && Array.isArray(team.members)) {
+                    const member = team.members.find(m => String(m.id) === String(memberId));
+                    if (member) {
+                        teamId = team.id;
+                        break;
+                    }
+                }
+            }
+            
+            if (!teamId) {
+                console.error('Team not found for member');
+                return;
+            }
+            
+            // Store member ID and team ID in sessionStorage
+            try {
+                sessionStorage.setItem('docu_edit_member_id', memberId);
+                sessionStorage.setItem('docu_selected_team_id', teamId);
+                sessionStorage.setItem('docu_editing_mode', 'true');
+            } catch (e) {
+                console.warn('Could not store edit parameters:', e);
+            }
+            
+            // Redirect to create_team.html with edit parameters
+            window.location.href = `create_team.html?edit=true&id=${encodeURIComponent(teamId)}&memberId=${encodeURIComponent(memberId)}`;
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wait for DocuProjectData to be available
+            if (typeof DocuProjectData !== 'undefined') {
+                initProfilePage();
+            } else {
+                // Wait a bit for scripts to load
+                setTimeout(function() {
+                    if (typeof DocuProjectData !== 'undefined') {
+                        initProfilePage();
+                    } else {
+                        console.error('DocuProjectData failed to load');
+                        document.body.innerHTML = '<div style="padding: 48px; text-align: center;"><h1>Error</h1><p>Failed to load data system</p><button onclick="window.history.back()">Go Back</button></div>';
+                    }
+                }, 500);
+            }
+            
+            // Add event listener for Edit Profile button
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    openEditMemberModal();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

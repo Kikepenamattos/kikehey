@@ -4177,6 +4177,24 @@
                         sessionStorage.setItem('docu_selected_team_id', teamToEdit.id);
                         // Cargar el team en modo editable (sin redirección)
                         loadProjectData(teamToEdit, true); // true = permitir editar teams publicados
+                        
+                        // Check if there's a memberId parameter to open edit member modal
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const memberId = urlParams.get('memberId') || sessionStorage.getItem('docu_edit_member_id');
+                        if (memberId) {
+                            // Clear the stored member ID
+                            try {
+                                sessionStorage.removeItem('docu_edit_member_id');
+                            } catch (e) {
+                                console.warn('Could not clear stored member ID:', e);
+                            }
+                            
+                            // Wait a bit for the page to load, then open the modal
+                            setTimeout(function() {
+                                openEditMemberModal(memberId);
+                            }, 500);
+                        }
+                        
                         return;
                     } else {
                         console.warn('⚠️ Team a editar no encontrado con ID:', editTeamId);
