@@ -144,9 +144,7 @@
             flex: 1;
         }
 
-        .associated-projects-group {
-            /* flex: 1; */
-        }
+        /* Estilos de associated-projects-group ahora en design-system/components/input.css */
 
         /* Input width override para create_team */
         .dsu-input {
@@ -621,21 +619,10 @@
             background-color: var(--color-surface-especial, #f4f7fb);
         }
 
-        /* Associated Projects */
+        /* Associated Projects - Estilos ahora en design-system/components/input.css */
+        /* Se mantiene max-width específico para create_team */
         .associated-projects-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
             max-width: 839px;
-        }
-        
-        /* Chips Container */
-        .projects-chips-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-08);
-            margin-top: var(--spacing-12);
-            min-height: 24px;
         }
 
         /* Team Members Section */
@@ -1022,11 +1009,11 @@
                                 </div>
                             </div>
 
-                            <!-- Profile description -->
+                            <!-- Professional description -->
                             <div class="dsu-input-group modal-input-group">
                                 <div class="dsu-input-label">
                                     <div class="dsu-input-label__text">
-                                        <span>Profile description</span>
+                                        <span>Professional description</span>
                                     </div>
                                 </div>
                                 <div class="dsu-rich-text-input">
@@ -1052,7 +1039,7 @@
                                             <img src="images/link.svg" alt="Link">
                                         </button>
                                     </div>
-                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add profile description..." id="modalMemberProfileDescription"></div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add professional description..." id="modalMemberProfessionalDescription"></div>
                                     <div class="dsu-rich-text-input__footer">
                                         <div class="dsu-rich-text-input__footer-left">
                                             <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
@@ -1117,6 +1104,24 @@
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Skills (Input Chip) -->
+                            <div class="dsu-input-group modal-input-group associated-projects-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Skills:</span>
+                                    </div>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="modalMemberSkills" 
+                                    class="dsu-input" 
+                                    placeholder="Type skill and press Enter"
+                                >
+                                <div class="projects-chips-container" id="modalMemberSkillsChipsContainer">
+                                    <!-- Chips will be dynamically added here -->
                                 </div>
                             </div>
 
@@ -1429,12 +1434,9 @@
             // Limpiar todos los campos del formulario
             clearForm();
             
-            // Limpiar chips de Associated Projects
-            const chipsContainer = document.getElementById('projectsChipsContainer');
-            if (chipsContainer) {
-                chipsContainer.innerHTML = '';
-                console.log('✅ Chips de Associated Projects limpiados');
-            }
+            // Limpiar chips de Associated Projects usando función helper del componente
+            loadChipsIntoContainer('projectsChipsContainer', []);
+            console.log('✅ Chips de Associated Projects limpiados');
             
             // Resetear el ID del proyecto actual
             currentProjectId = null;
@@ -1655,25 +1657,12 @@
         }
 
         function getFormData() {
-            // Obtener chips de Associated Projects
-            const projectsChips = [];
-            const chipsContainer = document.getElementById('projectsChipsContainer');
-            if (chipsContainer) {
-                const chips = chipsContainer.querySelectorAll('.project-chip');
-                console.log('📋 Chips encontrados en el DOM:', chips.length);
-                chips.forEach(chip => {
-                    const chipText = chip.querySelector('.project-chip__text');
-                    if (chipText) {
-                        const chipValue = chipText.textContent.trim();
-                        if (chipValue) {
-                            projectsChips.push(chipValue);
-                            console.log('✅ Chip agregado:', chipValue);
-                        }
-                    }
-                });
-            } else {
-                console.warn('⚠️ projectsChipsContainer no encontrado');
-            }
+            // Obtener chips de Associated Projects usando función helper del componente
+            const projectsChips = getChipsFromContainer('projectsChipsContainer');
+            console.log('📋 Chips encontrados en el DOM:', projectsChips.length);
+            projectsChips.forEach(chipValue => {
+                console.log('✅ Chip agregado:', chipValue);
+            });
 
             console.log('📦 Total de chips extraídos:', projectsChips.length);
             console.log('📋 Chips extraídos:', projectsChips);
@@ -1902,11 +1891,8 @@
             membersList = [];
             updateTeamCost();
             
-            // Limpiar chips de Associated Projects
-            const chipsContainer = document.getElementById('projectsChipsContainer');
-            if (chipsContainer) {
-                chipsContainer.innerHTML = '';
-            }
+            // Limpiar chips de Associated Projects usando función helper del componente
+            loadChipsIntoContainer('projectsChipsContainer', []);
             
             // Limpiar grid de miembros (excepto el placeholder)
             const teamMembersGrid = document.getElementById('teamMembersGrid');
@@ -2037,6 +2023,24 @@
             
             // Reset form
             resetModalForm();
+            
+            // Reset initialization flags and initialize Rich Text Input toolbars
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+            richTextInputs.forEach(function(input) {
+                input.dataset.initialized = 'false';
+            });
+            initRichTextToolbar();
+            
+            // Initialize Skills Input Chip
+            initInputChip('modalMemberSkills', 'modalMemberSkillsChipsContainer', 
+                function(chipText) {
+                    console.log('Skill chip agregado:', chipText);
+                },
+                function(chipText) {
+                    console.log('Skill chip eliminado:', chipText);
+                }
+            );
+            
             console.log('Modal opened successfully');
         }
         
@@ -2078,19 +2082,12 @@
             document.getElementById('modalMemberEmail').value = member.email || '';
             document.getElementById('modalMemberPhone').value = member.phone || '';
             
-            // Formatear el costo (remover "USD" si existe)
-            let costValue = member.cost || '';
-            if (costValue.includes('USD')) {
-                costValue = costValue.replace(/USD\s*/gi, '').trim();
-            }
-            document.getElementById('modalMemberCost').value = costValue;
-            
-            // Precargar Profile description si existe
-            const profileDescription = document.getElementById('modalMemberProfileDescription');
-            if (profileDescription && member.profileDescription) {
-                profileDescription.innerHTML = member.profileDescription;
-            } else if (profileDescription) {
-                profileDescription.innerHTML = '';
+            // Precargar Professional description si existe
+            const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+            if (professionalDescription && member.professionalDescription) {
+                professionalDescription.innerHTML = member.professionalDescription;
+            } else if (professionalDescription) {
+                professionalDescription.innerHTML = '';
             }
             
             // Precargar Job description si existe
@@ -2100,6 +2097,45 @@
             } else if (jobDescription) {
                 jobDescription.innerHTML = '';
             }
+            
+            // Formatear el costo (remover "USD" si existe)
+            let costValue = member.cost || '';
+            if (costValue.includes('USD')) {
+                costValue = costValue.replace(/USD\s*/gi, '').trim();
+            }
+            document.getElementById('modalMemberCost').value = costValue;
+            
+            // Reset initialization flags and re-initialize Rich Text Input toolbars after loading content
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+            richTextInputs.forEach(function(input) {
+                input.dataset.initialized = 'false';
+            });
+            initRichTextToolbar();
+            
+            // Precargar Skills (chips) si existen
+            const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
+            if (modalMemberSkillsInput) {
+                modalMemberSkillsInput.value = '';
+            }
+            if (member.skills && Array.isArray(member.skills) && member.skills.length > 0) {
+                loadChipsIntoContainer('modalMemberSkillsChipsContainer', member.skills, 
+                    function(chipText) {
+                        console.log('Skill chip eliminado:', chipText);
+                    }
+                );
+            } else {
+                loadChipsIntoContainer('modalMemberSkillsChipsContainer', []);
+            }
+            
+            // Re-inicializar Skills Input Chip después de cargar
+            initInputChip('modalMemberSkills', 'modalMemberSkillsChipsContainer', 
+                function(chipText) {
+                    console.log('Skill chip agregado:', chipText);
+                },
+                function(chipText) {
+                    console.log('Skill chip eliminado:', chipText);
+                }
+            );
             
             // Precargar imagen si existe
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
@@ -2161,11 +2197,16 @@
             document.getElementById('modalMemberCost').value = '';
             
             // Clear Rich Text Inputs
-            const profileDescription = document.getElementById('modalMemberProfileDescription');
-            if (profileDescription) profileDescription.innerHTML = '';
+            const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+            if (professionalDescription) professionalDescription.innerHTML = '';
             
             const jobDescription = document.getElementById('modalMemberJobDescription');
             if (jobDescription) jobDescription.innerHTML = '';
+            
+            // Clear Skills Input Chip
+            const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
+            if (modalMemberSkillsInput) modalMemberSkillsInput.value = '';
+            loadChipsIntoContainer('modalMemberSkillsChipsContainer', []);
             
             // Reset avatar preview
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
@@ -2471,8 +2512,19 @@
             }
 
             // Initialize Rich Text Input toolbars
-            initRichTextInputToolbar('modalMemberProfileDescription');
-            initRichTextInputToolbar('modalMemberJobDescription');
+            initRichTextToolbar();
+
+            // Initialize Skills Input Chip
+            initInputChip('modalMemberSkills', 'modalMemberSkillsChipsContainer', 
+                function(chipText) {
+                    // Callback cuando se agrega un skill chip
+                    console.log('Skill chip agregado:', chipText);
+                },
+                function(chipText) {
+                    // Callback cuando se elimina un skill chip
+                    console.log('Skill chip eliminado:', chipText);
+                }
+            );
 
             // Initial validation to disable Add button
             validateModalForm();
@@ -2494,17 +2546,21 @@
                         }
                     }
                     
+                    // Obtener skills (chips)
+                    const skills = getChipsFromContainer('modalMemberSkillsChipsContainer');
+                    
                     const memberData = {
                         id: currentEditingMemberId || Date.now().toString(),
                         name: document.getElementById('modalMemberName')?.value.trim() || '',
                         lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
+                        professionalDescription: document.getElementById('modalMemberProfessionalDescription')?.innerHTML || '',
                         jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
+                        jobDescription: document.getElementById('modalMemberJobDescription')?.innerHTML || '',
+                        skills: skills, // Array de skills (chips)
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
-                        image: memberImage,
-                        profileDescription: document.getElementById('modalMemberProfileDescription')?.innerHTML || '',
-                        jobDescription: document.getElementById('modalMemberJobDescription')?.innerHTML || ''
+                        image: memberImage
                     };
 
                     // Validation
@@ -2552,62 +2608,105 @@
         // ============================================
         // Rich Text Input Toolbar Functionality
         // ============================================
-        function initRichTextInputToolbar(editorId) {
-            const editor = document.getElementById(editorId);
-            if (!editor) return;
-
-            const richTextInput = editor.closest('.dsu-rich-text-input');
-            if (!richTextInput) return;
-
-            const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
-            if (!toolbar) return;
-
-            const buttons = toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button');
+        function initRichTextToolbar() {
+            const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
             
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const command = this.dataset.command;
-                    
-                    if (!command) return;
-
-                    // Focus on editor before executing command
-                    editor.focus();
-
-                    if (command === 'createLink') {
-                        const url = prompt('Enter URL:', this.dataset.value || 'https://');
-                        if (url) {
-                            document.execCommand('createLink', false, url);
-                        }
-                    } else {
-                        document.execCommand(command, false, null);
-                    }
-
-                    // Update button active state
-                    updateToolbarButtonState(toolbar, editor);
-                });
-            });
-
-            // Update button states on selection change
-            editor.addEventListener('keyup', () => updateToolbarButtonState(toolbar, editor));
-            editor.addEventListener('mouseup', () => updateToolbarButtonState(toolbar, editor));
-        }
-
-        function updateToolbarButtonState(toolbar, editor) {
-            const commands = ['bold', 'italic', 'underline'];
-            commands.forEach(cmd => {
-                const button = toolbar.querySelector(`[data-command="${cmd}"]`);
-                if (button) {
-                    try {
-                        const isActive = document.queryCommandState(cmd);
-                        if (isActive) {
-                            button.classList.add('dsu-rich-text-input__toolbar-button--active');
+            richTextInputs.forEach(function(richTextInput) {
+                // Skip if already initialized
+                if (richTextInput.dataset.initialized === 'true') return;
+                
+                const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+                const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
+                const buttons = toolbar ? toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]') : [];
+                
+                if (!editor || !toolbar) return;
+                
+                buttons.forEach(function(button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const command = this.getAttribute('data-command');
+                        const value = this.getAttribute('data-value') || null;
+                        
+                        // Focus on editor before executing command
+                        editor.focus();
+                        
+                        if (command === 'createLink') {
+                            const url = prompt('Enter URL:', value || 'https://');
+                            if (url) {
+                                document.execCommand('createLink', false, url);
+                            }
                         } else {
-                            button.classList.remove('dsu-rich-text-input__toolbar-button--active');
+                            document.execCommand(command, false, value);
                         }
-                    } catch (e) {
-                        // Some commands might not be supported
+                        
+                        // Update button states
+                        updateToolbarButtons(richTextInput);
+                    });
+                });
+                
+                // Update button states on selection change
+                editor.addEventListener('keyup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+                
+                editor.addEventListener('mouseup', function() {
+                    updateToolbarButtons(richTextInput);
+                });
+                
+                // Handle placeholder
+                editor.addEventListener('input', function() {
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                    } else {
+                        editor.classList.remove('dsu-rich-text-input__editor--empty');
                     }
+                });
+                
+                // Initial placeholder check
+                if (editor.textContent.trim() === '') {
+                    editor.classList.add('dsu-rich-text-input__editor--empty');
+                }
+                
+                // Mark as initialized
+                richTextInput.dataset.initialized = 'true';
+            });
+        }
+        
+        function updateToolbarButtons(richTextInput) {
+            const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+            const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
+            const buttons = toolbar ? toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]') : [];
+            
+            if (!editor || !toolbar) return;
+            
+            buttons.forEach(function(button) {
+                const command = button.getAttribute('data-command');
+                let isActive = false;
+                
+                try {
+                    switch(command) {
+                        case 'bold':
+                            isActive = document.queryCommandState('bold');
+                            break;
+                        case 'italic':
+                            isActive = document.queryCommandState('italic');
+                            break;
+                        case 'underline':
+                            isActive = document.queryCommandState('underline');
+                            break;
+                        case 'insertUnorderedList':
+                        case 'insertOrderedList':
+                            isActive = document.queryCommandState(command);
+                            break;
+                    }
+                } catch(e) {
+                    // Some browsers may throw errors
+                }
+                
+                if (isActive) {
+                    button.classList.add('dsu-rich-text-input__toolbar-button--active');
+                } else {
+                    button.classList.remove('dsu-rich-text-input__toolbar-button--active');
                 }
             });
         }
@@ -2809,31 +2908,37 @@
         // ============================================
         // Associated Projects Chips Functionality
         // ============================================
-        function initAssociatedProjectsChips() {
-            const associatedProjectsInput = document.getElementById('associatedProjects');
-            const chipsContainer = document.getElementById('projectsChipsContainer');
+        // Usando funciones del componente Input Chip documentado en design-system/components/input.html
+        
+        // Input Chip Functionality (from design system)
+        function initInputChip(inputId, containerId, onChipAdd, onChipRemove) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
             
-            if (!associatedProjectsInput || !chipsContainer) return;
+            if (!input || !container) return;
             
             // Crear chip al presionar Enter
-            associatedProjectsInput.addEventListener('keypress', function(e) {
+            input.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     const value = this.value.trim();
                     
                     if (value) {
                         // Verificar si el chip ya existe
-                        const existingChips = Array.from(chipsContainer.querySelectorAll('.project-chip'));
+                        const existingChips = Array.from(container.querySelectorAll('.project-chip'));
                         const exists = existingChips.some(chip => 
                             chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
                         );
                         
                         if (!exists) {
-                            const chip = createProjectChip(value);
-                            chipsContainer.appendChild(chip);
+                            const chip = createProjectChip(value, containerId, onChipRemove);
+                            container.appendChild(chip);
                             this.value = ''; // Limpiar input después de crear chip
-                            // Guardar automáticamente después de agregar chip
-                            autoSave();
+                            
+                            // Callback cuando se agrega un chip
+                            if (onChipAdd && typeof onChipAdd === 'function') {
+                                onChipAdd(value);
+                            }
                         } else {
                             alert('Este proyecto ya está agregado');
                         }
@@ -2842,7 +2947,7 @@
             });
         }
         
-        function createProjectChip(text) {
+        function createProjectChip(text, containerId, onChipRemove) {
             const chip = document.createElement('div');
             chip.className = 'project-chip';
             chip.setAttribute('data-project', text.trim());
@@ -2857,15 +2962,69 @@
             closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
             
             closeBtn.addEventListener('click', function() {
+                const chipText = chip.querySelector('.project-chip__text').textContent;
                 chip.remove();
-                // Guardar automáticamente después de eliminar chip
-                autoSave();
+                
+                // Callback cuando se elimina un chip
+                if (onChipRemove && typeof onChipRemove === 'function') {
+                    onChipRemove(chipText);
+                }
             });
             
             chip.appendChild(chipText);
             chip.appendChild(closeBtn);
             
             return chip;
+        }
+        
+        // Función helper para obtener todos los chips de un contenedor
+        function getChipsFromContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const chips = [];
+            const chipElements = container.querySelectorAll('.project-chip');
+            chipElements.forEach(chip => {
+                const chipText = chip.querySelector('.project-chip__text');
+                if (chipText) {
+                    chips.push(chipText.textContent.trim());
+                }
+            });
+            
+            return chips;
+        }
+        
+        // Función helper para cargar chips en un contenedor
+        function loadChipsIntoContainer(containerId, chipsArray, onChipRemove) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            // Limpiar chips existentes
+            container.innerHTML = '';
+            
+            // Cargar nuevos chips
+            if (Array.isArray(chipsArray) && chipsArray.length > 0) {
+                chipsArray.forEach(chipText => {
+                    if (chipText && typeof chipText === 'string' && chipText.trim().length > 0) {
+                        const chip = createProjectChip(chipText.trim(), containerId, onChipRemove);
+                        container.appendChild(chip);
+                    }
+                });
+            }
+        }
+        
+        // Inicializar funcionalidad de chips para Associated Projects
+        function initAssociatedProjectsChips() {
+            initInputChip('associatedProjects', 'projectsChipsContainer', 
+                function(chipText) {
+                    // Callback cuando se agrega un chip - auto-guardar
+                    autoSave();
+                },
+                function(chipText) {
+                    // Callback cuando se elimina un chip - auto-guardar
+                    autoSave();
+                }
+            );
         }
 
         // ============================================
@@ -3768,42 +3927,28 @@
                 }
             }
 
-            // Cargar chips de Associated Projects
-            // Limpiar chips existentes antes de cargar nuevos
-            const chipsContainer = document.getElementById('projectsChipsContainer');
+            // Cargar chips de Associated Projects usando función helper del componente
             const associatedProjectsInput = document.getElementById('associatedProjects');
             
-            if (chipsContainer) {
-                // Limpiar todos los chips existentes
-                chipsContainer.innerHTML = '';
-                console.log('🧹 Chips de Associated Projects limpiados antes de cargar');
-            }
-            
             if (associatedProjectsInput) {
-                // Limpiar el input también
+                // Limpiar el input
                 associatedProjectsInput.value = '';
             }
             
-            // Cargar chips si hay proyectos guardados (independientemente del status)
-            // Los chips deben mostrarse para permitir edición
+            // Cargar chips si hay proyectos guardados usando función helper
             if (projectData.projects && Array.isArray(projectData.projects) && projectData.projects.length > 0) {
-                if (chipsContainer && associatedProjectsInput) {
-                    console.log('📋 Cargando chips de Associated Projects:', projectData.projects.length, 'chips');
-                    let chipsCargados = 0;
-                    projectData.projects.forEach(projectName => {
-                        if (projectName && typeof projectName === 'string' && projectName.trim().length > 0) {
-                            const chip = createProjectChip(projectName.trim());
-                            chipsContainer.appendChild(chip);
-                            chipsCargados++;
-                            console.log('✅ Chip cargado:', projectName.trim());
-                        }
-                    });
-                    console.log(`✅ Total de chips cargados: ${chipsCargados}/${projectData.projects.length}`);
-                } else {
-                    console.warn('⚠️ chipsContainer o associatedProjectsInput no encontrados');
-                }
+                console.log('📋 Cargando chips de Associated Projects:', projectData.projects.length, 'chips');
+                loadChipsIntoContainer('projectsChipsContainer', projectData.projects, 
+                    function(chipText) {
+                        // Callback cuando se elimina un chip después de cargar - auto-guardar
+                        autoSave();
+                    }
+                );
+                console.log(`✅ Total de chips cargados: ${projectData.projects.length}`);
             } else {
                 console.log('ℹ️ No hay chips de Associated Projects para cargar');
+                // Limpiar contenedor si no hay chips
+                loadChipsIntoContainer('projectsChipsContainer', []);
             }
 
             // Cargar búsqueda si existe

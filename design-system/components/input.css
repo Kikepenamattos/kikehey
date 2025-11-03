@@ -722,3 +722,24 @@
 
 /* Estilos del botón secondary ahora manejados por button.css */
 
+/* ==========================================
+   INPUT CHIP (Associated Projects Group)
+   ========================================== */
+
+/* Associated Projects Group */
+.associated-projects-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+/* Chips Container */
+.projects-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-08);
+  margin-top: var(--spacing-12);
+  min-height: 24px;
+}
+

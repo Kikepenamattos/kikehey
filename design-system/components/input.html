@@ -6,6 +6,7 @@
     <title>Input Component - Design System</title>
     <link rel="stylesheet" href="../tokens/index.css">
     <link rel="stylesheet" href="input.css">
+    <link rel="stylesheet" href="chip.css">
     <link rel="stylesheet" href="task-stages.css">
     <link rel="stylesheet" href="button.css">
     <link rel="stylesheet" href="status-button.css">
@@ -510,6 +511,108 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
     console.log('Enviar búsqueda:', searchInput.value);
   });
 &lt;/script&gt;</pre>
+            </div>
+        </div>
+
+        <!-- Input Chip (Associated Projects) -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Input Chip</h2>
+            <p class="variant-section__description">
+                Componente de input que permite agregar chips (etiquetas) al presionar Enter. Los chips se muestran debajo del input y pueden ser eliminados individualmente. Ideal para campos como "Associated projects" o cualquier lista de elementos etiquetados.
+            </p>
+            
+            <div class="variant-item">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Ejemplo Funcional
+                </h3>
+                <div class="dsu-input-group associated-projects-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Associated projects:</span>
+                        </div>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="demoAssociatedProjects" 
+                        class="dsu-input" 
+                        placeholder="Type project name and press Enter"
+                    >
+                    <div class="projects-chips-container" id="demoProjectsChipsContainer">
+                        <!-- Chips de ejemplo - se pueden eliminar y agregar nuevos -->
+                        <div class="project-chip">
+                            <span class="project-chip__text">app</span>
+                            <button class="project-chip__close" aria-label="Remove project">
+                                <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="project-chip">
+                            <span class="project-chip__text">growth</span>
+                            <button class="project-chip__close" aria-label="Remove project">
+                                <svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código HTML:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-input-group associated-projects-group"&gt;
+  &lt;div class="dsu-input-label"&gt;
+    &lt;div class="dsu-input-label__text"&gt;
+      &lt;span&gt;Associated projects:&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;input 
+    type="text" 
+    id="associatedProjects" 
+    class="dsu-input" 
+    placeholder="Type project name and press Enter"
+  &gt;
+  &lt;div class="projects-chips-container" id="projectsChipsContainer"&gt;
+    &lt;!-- Chips will be dynamically added here --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código JavaScript:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;script&gt;
+  // Inicializar Input Chip
+  initInputChip('associatedProjects', 'projectsChipsContainer', 
+    function(chipText) {
+      // Callback cuando se agrega un chip
+      console.log('Chip agregado:', chipText);
+      // Aquí puedes agregar lógica adicional, como auto-guardar
+      // autoSave();
+    },
+    function(chipText) {
+      // Callback cuando se elimina un chip
+      console.log('Chip eliminado:', chipText);
+      // Aquí puedes agregar lógica adicional, como auto-guardar
+      // autoSave();
+    }
+  );
+  
+  // Obtener todos los chips actuales
+  function getCurrentChips() {
+    return getChipsFromContainer('projectsChipsContainer');
+  }
+  
+  // Cargar chips desde un array
+  function loadChips(chipsArray) {
+    loadChipsIntoContainer('projectsChipsContainer', chipsArray, 
+      function(chipText) {
+        // Callback cuando se elimina un chip después de cargar
+        console.log('Chip eliminado:', chipText);
+      }
+    );
+  }
+&lt;/script&gt;</pre>
+                </div>
             </div>
         </div>
 
@@ -1781,6 +1884,109 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             }
         }
         
+        // Input Chip Functionality
+        function initInputChip(inputId, containerId, onChipAdd, onChipRemove) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            
+            if (!input || !container) return;
+            
+            // Crear chip al presionar Enter
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim();
+                    
+                    if (value) {
+                        // Verificar si el chip ya existe
+                        const existingChips = Array.from(container.querySelectorAll('.project-chip'));
+                        const exists = existingChips.some(chip => 
+                            chip.querySelector('.project-chip__text').textContent.toLowerCase() === value.toLowerCase()
+                        );
+                        
+                        if (!exists) {
+                            const chip = createProjectChip(value, containerId, onChipRemove);
+                            container.appendChild(chip);
+                            this.value = ''; // Limpiar input después de crear chip
+                            
+                            // Callback cuando se agrega un chip
+                            if (onChipAdd && typeof onChipAdd === 'function') {
+                                onChipAdd(value);
+                            }
+                        } else {
+                            alert('Este proyecto ya está agregado');
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createProjectChip(text, containerId, onChipRemove) {
+            const chip = document.createElement('div');
+            chip.className = 'project-chip';
+            chip.setAttribute('data-project', text.trim());
+            
+            const chipText = document.createElement('span');
+            chipText.className = 'project-chip__text';
+            chipText.textContent = text.trim();
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'project-chip__close';
+            closeBtn.setAttribute('aria-label', 'Remove project');
+            closeBtn.innerHTML = '<svg class="project-chip__close-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 3L3 9M3 3L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            
+            closeBtn.addEventListener('click', function() {
+                const chipText = chip.querySelector('.project-chip__text').textContent;
+                chip.remove();
+                
+                // Callback cuando se elimina un chip
+                if (onChipRemove && typeof onChipRemove === 'function') {
+                    onChipRemove(chipText);
+                }
+            });
+            
+            chip.appendChild(chipText);
+            chip.appendChild(closeBtn);
+            
+            return chip;
+        }
+        
+        // Función helper para obtener todos los chips de un contenedor
+        function getChipsFromContainer(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return [];
+            
+            const chips = [];
+            const chipElements = container.querySelectorAll('.project-chip');
+            chipElements.forEach(chip => {
+                const chipText = chip.querySelector('.project-chip__text');
+                if (chipText) {
+                    chips.push(chipText.textContent.trim());
+                }
+            });
+            
+            return chips;
+        }
+        
+        // Función helper para cargar chips en un contenedor
+        function loadChipsIntoContainer(containerId, chipsArray, onChipRemove) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            // Limpiar chips existentes
+            container.innerHTML = '';
+            
+            // Cargar nuevos chips
+            if (Array.isArray(chipsArray) && chipsArray.length > 0) {
+                chipsArray.forEach(chipText => {
+                    if (chipText && typeof chipText === 'string' && chipText.trim().length > 0) {
+                        const chip = createProjectChip(chipText.trim(), containerId, onChipRemove);
+                        container.appendChild(chip);
+                    }
+                });
+            }
+        }
+        
         // Inicializar al cargar
         document.addEventListener('DOMContentLoaded', function() {
             initHideSection();
@@ -1789,6 +1995,33 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             initAgreementsToggle();
             initInteractiveAgreements();
             initInputBuscador();
+            
+            // Inicializar Input Chip demo
+            initInputChip('demoAssociatedProjects', 'demoProjectsChipsContainer', 
+                function(chipText) {
+                    console.log('Chip agregado:', chipText);
+                },
+                function(chipText) {
+                    console.log('Chip eliminado:', chipText);
+                }
+            );
+            
+            // Inicializar funcionalidad de eliminar para chips de ejemplo existentes
+            const demoContainer = document.getElementById('demoProjectsChipsContainer');
+            if (demoContainer) {
+                const existingChips = demoContainer.querySelectorAll('.project-chip');
+                existingChips.forEach(chip => {
+                    const closeBtn = chip.querySelector('.project-chip__close');
+                    if (closeBtn && !closeBtn.hasAttribute('data-initialized')) {
+                        closeBtn.setAttribute('data-initialized', 'true');
+                        closeBtn.addEventListener('click', function() {
+                            const chipText = chip.querySelector('.project-chip__text').textContent;
+                            chip.remove();
+                            console.log('Chip eliminado:', chipText);
+                        });
+                    }
+                });
+            }
             
             // Handle placeholder for contenteditable
             const contentEditableEditors = document.querySelectorAll('.dsu-rich-text-input__editor[contenteditable="true"]');
