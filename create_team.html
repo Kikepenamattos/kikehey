@@ -2055,6 +2055,19 @@
                 return;
             }
             
+            // Debug: Verificar qué campos tiene el member
+            console.log('📋 Member data encontrado:', {
+                id: member.id,
+                name: member.name,
+                hasProfessionalDescription: !!member.professionalDescription,
+                professionalDescription: member.professionalDescription ? member.professionalDescription.substring(0, 50) : 'none',
+                hasJobDescription: !!member.jobDescription,
+                jobDescription: member.jobDescription ? member.jobDescription.substring(0, 50) : 'none',
+                hasSkills: !!member.skills,
+                skillsCount: Array.isArray(member.skills) ? member.skills.length : 0,
+                skills: member.skills
+            });
+            
             const modalOverlay = document.getElementById('addMemberModalOverlay');
             if (!modalOverlay) {
                 console.error('Modal overlay not found!');
@@ -2082,20 +2095,24 @@
             document.getElementById('modalMemberEmail').value = member.email || '';
             document.getElementById('modalMemberPhone').value = member.phone || '';
             
-            // Precargar Professional description si existe
+            // Precargar Professional description (igual que otros campos)
             const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
-            if (professionalDescription && member.professionalDescription) {
-                professionalDescription.innerHTML = member.professionalDescription;
-            } else if (professionalDescription) {
-                professionalDescription.innerHTML = '';
+            if (professionalDescription) {
+                const profDescValue = member.professionalDescription || '';
+                professionalDescription.innerHTML = profDescValue;
+                if (profDescValue.trim() !== '') {
+                    console.log('✅ Professional description cargado:', profDescValue.length, 'caracteres');
+                }
             }
             
-            // Precargar Job description si existe
+            // Precargar Job description (igual que otros campos)
             const jobDescription = document.getElementById('modalMemberJobDescription');
-            if (jobDescription && member.jobDescription) {
-                jobDescription.innerHTML = member.jobDescription;
-            } else if (jobDescription) {
-                jobDescription.innerHTML = '';
+            if (jobDescription) {
+                const jobDescValue = member.jobDescription || '';
+                jobDescription.innerHTML = jobDescValue;
+                if (jobDescValue.trim() !== '') {
+                    console.log('✅ Job description cargado:', jobDescValue.length, 'caracteres');
+                }
             }
             
             // Formatear el costo (remover "USD" si existe)
@@ -2112,13 +2129,15 @@
             });
             initRichTextToolbar();
             
-            // Precargar Skills (chips) si existen
+            // Precargar Skills (igual que otros campos)
             const modalMemberSkillsInput = document.getElementById('modalMemberSkills');
             if (modalMemberSkillsInput) {
                 modalMemberSkillsInput.value = '';
             }
-            if (member.skills && Array.isArray(member.skills) && member.skills.length > 0) {
-                loadChipsIntoContainer('modalMemberSkillsChipsContainer', member.skills, 
+            const skillsArray = Array.isArray(member.skills) ? member.skills : [];
+            if (skillsArray.length > 0) {
+                console.log('✅ Cargando skills:', skillsArray.length, 'skills');
+                loadChipsIntoContainer('modalMemberSkillsChipsContainer', skillsArray, 
                     function(chipText) {
                         console.log('Skill chip eliminado:', chipText);
                     }
@@ -2546,22 +2565,26 @@
                         }
                     }
                     
-                    // Obtener skills (chips)
+                    // Obtener todos los campos (igual que otros campos del modal)
+                    const professionalDescription = document.getElementById('modalMemberProfessionalDescription');
+                    const jobDescription = document.getElementById('modalMemberJobDescription');
                     const skills = getChipsFromContainer('modalMemberSkillsChipsContainer');
                     
                     const memberData = {
                         id: currentEditingMemberId || Date.now().toString(),
                         name: document.getElementById('modalMemberName')?.value.trim() || '',
                         lastName: document.getElementById('modalMemberLastName')?.value.trim() || '',
-                        professionalDescription: document.getElementById('modalMemberProfessionalDescription')?.innerHTML || '',
+                        professionalDescription: professionalDescription ? professionalDescription.innerHTML : '',
                         jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
-                        jobDescription: document.getElementById('modalMemberJobDescription')?.innerHTML || '',
-                        skills: skills, // Array de skills (chips)
+                        jobDescription: jobDescription ? jobDescription.innerHTML : '',
+                        skills: Array.isArray(skills) ? skills : [],
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
                         image: memberImage
                     };
+                    
+                    console.log('💾 Guardando memberData completo:', memberData);
 
                     // Validation
                     if (!memberData.name) {
@@ -2745,8 +2768,19 @@
                 return;
             }
             
-            // Actualizar el miembro en la lista
-            membersList[memberIndex] = { ...memberData };
+            // Actualizar el miembro en la lista (copiar todos los campos incluyendo los nuevos)
+            membersList[memberIndex] = {
+                ...membersList[memberIndex], // Preservar campos existentes
+                ...memberData // Sobrescribir con datos nuevos
+            };
+            
+            console.log('✅ Member actualizado en membersList:', {
+                id: membersList[memberIndex].id,
+                name: membersList[memberIndex].name,
+                hasProfessionalDescription: !!membersList[memberIndex].professionalDescription,
+                hasJobDescription: !!membersList[memberIndex].jobDescription,
+                skillsCount: Array.isArray(membersList[memberIndex].skills) ? membersList[memberIndex].skills.length : 0
+            });
             
             // Actualizar la tarjeta en el DOM
             const memberCard = document.querySelector(`[data-member-id="${memberData.id}"]`);
@@ -3815,7 +3849,23 @@
 
             // Cargar miembros
             if (projectData.members && Array.isArray(projectData.members)) {
-                membersList = projectData.members;
+                // Asegurar que todos los miembros tengan los campos nuevos inicializados
+                membersList = projectData.members.map(member => ({
+                    ...member,
+                    professionalDescription: member.professionalDescription || '',
+                    jobDescription: member.jobDescription || '',
+                    skills: Array.isArray(member.skills) ? member.skills : []
+                }));
+                
+                console.log('📋 Cargando miembros:', membersList.length);
+                membersList.forEach((member, index) => {
+                    console.log(`  Miembro ${index + 1}:`, {
+                        name: member.name,
+                        hasProfessionalDescription: !!member.professionalDescription,
+                        hasJobDescription: !!member.jobDescription,
+                        skillsCount: member.skills ? member.skills.length : 0
+                    });
+                });
                 
                 // Recrear las tarjetas de miembros
                 const teamMembersGrid = document.getElementById('teamMembersGrid');
@@ -3824,7 +3874,7 @@
                     teamMembersGrid.innerHTML = '';
                     
                     // Recrear las tarjetas de miembros existentes
-                    projectData.members.forEach(member => {
+                    membersList.forEach(member => {
                         createMemberCard(member);
                     });
                     
