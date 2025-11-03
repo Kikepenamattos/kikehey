@@ -1237,6 +1237,19 @@
                                 </div>
                             </div>
 
+                            <!-- Team -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Team</span>
+                                    </div>
+                                </div>
+                                <select class="dsu-input" id="modalMemberTeam">
+                                    <option value="">Select team</option>
+                                    <!-- Teams will be dynamically populated -->
+                                </select>
+                            </div>
+
                             <!-- Email -->
                             <div class="dsu-input-group modal-input-group">
                                 <div class="dsu-input-label">
@@ -2156,6 +2169,9 @@
             // Initialize Portfolio functionality
             initPortfolioInput();
             
+            // Initialize Team dropdown
+            loadTeamsIntoDropdown();
+            
             console.log('Modal opened successfully');
         }
         
@@ -2289,6 +2305,40 @@
             // Re-inicializar Portfolio Input después de cargar
             initPortfolioInput();
             
+            // Load teams into dropdown and set current team
+            loadTeamsIntoDropdown();
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam) {
+                // Get current team ID from sessionStorage or from projectData
+                let currentTeamId = null;
+                try {
+                    currentTeamId = sessionStorage.getItem('docu_selected_team_id');
+                } catch (e) {
+                    console.warn('Could not get current team ID from sessionStorage:', e);
+                }
+                
+                // If no ID in sessionStorage, try to get from projectData
+                if (!currentTeamId) {
+                    const projectData = DocuProjectData.getProjectData();
+                    if (projectData && projectData.teams && projectData.teams.length > 0) {
+                        // Find the team that contains this member
+                        for (const team of projectData.teams) {
+                            if (team.members && Array.isArray(team.members)) {
+                                const memberInTeam = team.members.find(m => m.id === memberId);
+                                if (memberInTeam) {
+                                    currentTeamId = team.id;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (currentTeamId) {
+                    modalMemberTeam.value = currentTeamId;
+                }
+            }
+            
             // Precargar imagen si existe
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
             const modalAvatarPreview = document.getElementById('modalAvatarPreview');
@@ -2365,6 +2415,13 @@
             const modalMemberPortfolioInput = document.getElementById('modalMemberPortfolio');
             if (modalMemberPortfolioInput) modalMemberPortfolioInput.value = '';
             loadPortfolioItemsIntoContainer('modalMemberPortfolioContainer', []);
+            
+            // Clear Team dropdown
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam) {
+                modalMemberTeam.value = '';
+                loadTeamsIntoDropdown();
+            }
             
             // Reset avatar preview
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
@@ -2686,6 +2743,50 @@
 
             // Initialize Portfolio functionality
             initPortfolioInput();
+            
+            // Initialize Team dropdown
+            loadTeamsIntoDropdown();
+            
+            // Add event listener for team change (only when editing)
+            const modalMemberTeam = document.getElementById('modalMemberTeam');
+            if (modalMemberTeam) {
+                // Remove any existing listeners by cloning the element
+                const newTeamSelect = modalMemberTeam.cloneNode(true);
+                modalMemberTeam.parentNode.replaceChild(newTeamSelect, modalMemberTeam);
+                
+                newTeamSelect.addEventListener('change', function(e) {
+                    const selectedTeamId = e.target.value;
+                    // Solo procesar si hay un member siendo editado
+                    if (selectedTeamId && currentEditingMemberId) {
+                        // Confirmar el cambio
+                        const confirmMove = confirm('¿Estás seguro de que deseas mover este miembro al team seleccionado?');
+                        if (confirmMove) {
+                            handleTeamChange(currentEditingMemberId, selectedTeamId);
+                        } else {
+                            // Restaurar el valor anterior
+                            const projectData = DocuProjectData.getProjectData();
+                            if (projectData && projectData.teams) {
+                                // Buscar el team actual del member
+                                let currentTeamId = null;
+                                for (const team of projectData.teams) {
+                                    if (team.members && Array.isArray(team.members)) {
+                                        const memberInTeam = team.members.find(m => m.id === currentEditingMemberId);
+                                        if (memberInTeam) {
+                                            currentTeamId = team.id;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (currentTeamId) {
+                                    e.target.value = currentTeamId;
+                                } else {
+                                    e.target.value = '';
+                                }
+                            }
+                        }
+                    }
+                });
+            }
 
             // Initial validation to disable Add button
             validateModalForm();
@@ -2904,6 +3005,163 @@
                     }
                 });
             }
+        }
+        
+        // ============================================
+        // Team Dropdown Functionality
+        // ============================================
+        function loadTeamsIntoDropdown() {
+            const teamSelect = document.getElementById('modalMemberTeam');
+            if (!teamSelect) return;
+            
+            // Obtener teams publicados
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.warn('No project data available');
+                return;
+            }
+            
+            // Filtrar solo teams publicados con nombre válido
+            const publishedTeams = projectData.teams.filter(team => {
+                return team.status === 'published' && 
+                       team.name && 
+                       typeof team.name === 'string' && 
+                       team.name.trim().length > 0;
+            });
+            
+            // Limpiar opciones actuales (excepto la primera opción por defecto)
+            teamSelect.innerHTML = '<option value="">Select team</option>';
+            
+            // Agregar teams publicados al dropdown
+            publishedTeams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team.id;
+                option.textContent = team.name;
+                teamSelect.appendChild(option);
+            });
+            
+            console.log('✅ Teams cargados en dropdown:', publishedTeams.length);
+        }
+        
+        function handleTeamChange(memberId, newTeamId) {
+            if (!memberId || !newTeamId) return;
+            
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.error('No project data available');
+                return;
+            }
+            
+            // Obtener el ID del team actual
+            let currentTeamId = null;
+            try {
+                currentTeamId = sessionStorage.getItem('docu_selected_team_id');
+            } catch (e) {
+                console.warn('Could not get current team ID from sessionStorage:', e);
+            }
+            
+            // Si no hay ID en sessionStorage, buscar el team que contiene este member
+            if (!currentTeamId) {
+                for (const team of projectData.teams) {
+                    if (team.members && Array.isArray(team.members)) {
+                        const memberInTeam = team.members.find(m => m.id === memberId);
+                        if (memberInTeam) {
+                            currentTeamId = team.id;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // Si el team nuevo es el mismo que el actual, no hacer nada
+            if (currentTeamId === newTeamId) {
+                return;
+            }
+            
+            // Encontrar el team actual y el team destino
+            const currentTeam = projectData.teams.find(t => String(t.id) === String(currentTeamId));
+            const targetTeam = projectData.teams.find(t => String(t.id) === String(newTeamId));
+            
+            if (!currentTeam || !targetTeam) {
+                console.error('Teams not found:', { currentTeamId, newTeamId });
+                return;
+            }
+            
+            // Encontrar el member en el team actual
+            if (!currentTeam.members || !Array.isArray(currentTeam.members)) {
+                currentTeam.members = [];
+            }
+            
+            const memberIndex = currentTeam.members.findIndex(m => String(m.id) === String(memberId));
+            if (memberIndex === -1) {
+                console.error('Member not found in current team');
+                return;
+            }
+            
+            // Obtener el member
+            const member = currentTeam.members[memberIndex];
+            
+            // Remover el member del team actual
+            currentTeam.members.splice(memberIndex, 1);
+            
+            // Agregar el member al team destino
+            if (!targetTeam.members || !Array.isArray(targetTeam.members)) {
+                targetTeam.members = [];
+            }
+            
+            // Verificar si el member ya existe en el team destino (por ID)
+            const existingMemberIndex = targetTeam.members.findIndex(m => String(m.id) === String(memberId));
+            if (existingMemberIndex !== -1) {
+                // Reemplazar el member existente
+                targetTeam.members[existingMemberIndex] = member;
+            } else {
+                // Agregar el member nuevo
+                targetTeam.members.push(member);
+            }
+            
+            // Actualizar timestamps
+            currentTeam.updatedAt = Date.now();
+            targetTeam.updatedAt = Date.now();
+            
+            // Guardar los cambios
+            const saved = DocuProjectData.saveProjectData(projectData);
+            if (!saved) {
+                console.error('Error al guardar cambios');
+                alert('Error: No se pudo mover el miembro al team seleccionado.');
+                return;
+            }
+            
+            // Mostrar alerta del sistema
+            const currentTeamName = currentTeam.name || 'Team actual';
+            const targetTeamName = targetTeam.name || 'Team destino';
+            alert(`✅ Miembro movido exitosamente\n\nDe: ${currentTeamName}\nA: ${targetTeamName}`);
+            
+            // Actualizar la lista de miembros local
+            const memberLocalIndex = membersList.findIndex(m => String(m.id) === String(memberId));
+            if (memberLocalIndex !== -1) {
+                membersList.splice(memberLocalIndex, 1);
+            }
+            
+            // Si el team actual es el que estamos viendo, actualizar la UI
+            if (String(currentTeamId) === String(sessionStorage.getItem('docu_selected_team_id'))) {
+                // Remover la tarjeta del member del DOM
+                const memberCard = document.querySelector(`[data-member-id="${memberId}"]`);
+                if (memberCard) {
+                    memberCard.remove();
+                }
+                
+                // Cerrar el modal
+                closeModal();
+                
+                // Actualizar el costo del equipo
+                updateTeamCost();
+            }
+            
+            console.log('✅ Member moved successfully:', {
+                memberId,
+                fromTeam: currentTeamName,
+                toTeam: targetTeamName
+            });
         }
         
         // ============================================
