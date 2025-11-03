@@ -616,6 +616,67 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             </div>
         </div>
 
+        <!-- Dropdown (Select) -->
+        <div class="variant-section">
+            <h2 class="variant-section__title">Dropdown</h2>
+            <p class="variant-section__description">
+                Componente dropdown (select) que permite al usuario seleccionar una opción de una lista predefinida. El componente incluye un icono chevron hacia abajo posicionado a 12px del borde derecho. Ideal para campos como "Work experience", "Status" o cualquier lista de opciones fijas.
+            </p>
+            
+            <div class="variant-item">
+                <h3 style="font-size: var(--font-size-base); font-weight: var(--font-weight-bold); margin-bottom: var(--spacing-16);">
+                    Ejemplo Funcional
+                </h3>
+                <div class="dsu-input-group modal-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Work experience</span>
+                        </div>
+                    </div>
+                    <select class="dsu-input" id="demoWorkExperience">
+                        <option value="">Select work experience</option>
+                        <option value="1-3 Years">1 - 3 Years</option>
+                        <option value="3-5 Years">3 - 5 Years</option>
+                        <option value="5-10 Years">5 - 10 Years</option>
+                        <option value="10+ Years">10+ Years</option>
+                    </select>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código HTML:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">&lt;div class="dsu-input-group modal-input-group"&gt;
+  &lt;div class="dsu-input-label"&gt;
+    &lt;div class="dsu-input-label__text"&gt;
+      &lt;span&gt;Work experience&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;select class="dsu-input" id="workExperience"&gt;
+    &lt;option value=""&gt;Select work experience&lt;/option&gt;
+    &lt;option value="1-3 Years"&gt;1 - 3 Years&lt;/option&gt;
+    &lt;option value="3-5 Years"&gt;3 - 5 Years&lt;/option&gt;
+    &lt;option value="5-10 Years"&gt;5 - 10 Years&lt;/option&gt;
+    &lt;option value="10+ Years"&gt;10+ Years&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;</pre>
+                </div>
+                
+                <div class="code-example" style="margin-top: var(--spacing-16);">
+                    <strong style="display: block; margin-bottom: var(--spacing-08);">Código CSS:</strong>
+                    <pre style="margin: 0; white-space: pre-wrap; word-wrap: break-word;">/* Select dropdown styling with chevron padding */
+.modal-input-group select.dsu-input {
+    padding-right: calc(20px + 12px + var(--spacing-16)); /* Icono (20px) + padding del icono (12px) + padding derecho base */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('images/down-chevron.svg');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px 20px;
+}</pre>
+                </div>
+            </div>
+        </div>
+
         <!-- States -->
         <div class="variant-section">
             <h2 class="variant-section__title">Input States</h2>
@@ -2055,6 +2116,23 @@ function initToggleSection(toggleSelector, targetSelector, iconElement) {
             content: attr(data-placeholder-text);
             color: var(--color-text-secondary);
             pointer-events: none;
+        }
+
+        /* Modal input group styles for dropdown example */
+        .modal-input-group {
+            margin-bottom: var(--spacing-24);
+        }
+
+        /* Select dropdown styling with chevron padding */
+        .modal-input-group select.dsu-input {
+            padding-right: calc(20px + 12px + var(--spacing-16)); /* Icono (20px) + padding del icono (12px) + padding derecho base */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('../../images/down-chevron.svg');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px 20px;
         }
     </style>
     

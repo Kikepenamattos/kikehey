@@ -454,6 +454,18 @@
             min-height: 48px;
         }
 
+        /* Select dropdown styling with chevron padding */
+        .modal-input-group select.dsu-input {
+            padding-right: calc(20px + 12px + var(--spacing-16)); /* Icono (20px) + padding del icono (12px) + padding derecho base */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('images/down-chevron.svg');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px 20px;
+        }
+
         /* Rich Text Input in Modal */
         .modal-input-group .dsu-rich-text-input {
             margin: 0;
