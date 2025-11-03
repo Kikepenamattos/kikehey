@@ -1,3 +1,7 @@
+10d26f5350b72cc8442691dde646959df4409f56|Ubits|ubits@macbookpro.lan|2025-11-03 16:39:34 -0500|Add: Documentar componente Input Chip y agregar campo Skills en modal Edit member
+cad9b181f1957cc903922ba7191e9359e36df5a0|Ubits|ubits@macbookpro.lan|2025-11-03 11:04:11 -0500|Add: Agregar campos Profile description y Job description con Rich Text Input en modal Edit member
+ee184cddd9b3b4f63930373223970ce95e270c99|Ubits|ubits@macbookpro.lan|2025-11-03 08:38:18 -0500|Update: Cambiar icono whatsapp.svg por chat.svg en profile cards y actualizar label 'Phone number' a 'Contact' en modal
+86a8ababeb13377b640d9c8d348143750a60c108|Ubits|ubits@macbookpro.lan|2025-11-02 11:47:28 -0500|Update: Actualizar changelog con ajuste de padding del sidebar
 326be627104360f444ddbc58f7d9f941b779eedd|Ubits|ubits@macbookpro.lan|2025-11-02 11:47:17 -0500|Update: Actualizar padding del sidebar y documentación
 a089efeaf730bbad1d214471d6ba6c5562d5cde9|Ubits|ubits@macbookpro.lan|2025-11-02 10:52:43 -0500|Update: Actualizar changelog con mejoras de eliminación de teams
 0b2c61f2d342c5ee9f7cd96695c0d5744fd54000|Ubits|ubits@macbookpro.lan|2025-11-02 10:52:28 -0500|Fix: Mejorar funcionalidad de eliminación de teams y ajustar sticky buttons
