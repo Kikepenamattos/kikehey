@@ -456,6 +456,19 @@
             min-height: 48px;
         }
 
+        /* Rich Text Input in Modal */
+        .modal-input-group .dsu-rich-text-input {
+            margin: 0;
+            padding: var(--spacing-16);
+            width: 100%;
+        }
+
+        .modal-input-group .dsu-rich-text-input__editor {
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
         /* Modal Buttons */
         .modal-buttons-level {
             display: flex;
@@ -1009,6 +1022,50 @@
                                 </div>
                             </div>
 
+                            <!-- Profile description -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Profile description</span>
+                                    </div>
+                                </div>
+                                <div class="dsu-rich-text-input">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add profile description..." id="modalMemberProfileDescription"></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Job Position -->
                             <div class="dsu-input-group modal-input-group">
                                 <div class="dsu-input-label">
@@ -1017,6 +1074,50 @@
                                     </div>
                                 </div>
                                 <input type="text" class="dsu-input" id="modalMemberJobPosition" placeholder="Placeholder">
+                            </div>
+
+                            <!-- Job description -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Job description</span>
+                                    </div>
+                                </div>
+                                <div class="dsu-rich-text-input">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add job description..." id="modalMemberJobDescription"></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Email -->
@@ -1984,6 +2085,22 @@
             }
             document.getElementById('modalMemberCost').value = costValue;
             
+            // Precargar Profile description si existe
+            const profileDescription = document.getElementById('modalMemberProfileDescription');
+            if (profileDescription && member.profileDescription) {
+                profileDescription.innerHTML = member.profileDescription;
+            } else if (profileDescription) {
+                profileDescription.innerHTML = '';
+            }
+            
+            // Precargar Job description si existe
+            const jobDescription = document.getElementById('modalMemberJobDescription');
+            if (jobDescription && member.jobDescription) {
+                jobDescription.innerHTML = member.jobDescription;
+            } else if (jobDescription) {
+                jobDescription.innerHTML = '';
+            }
+            
             // Precargar imagen si existe
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
             const modalAvatarPreview = document.getElementById('modalAvatarPreview');
@@ -2042,6 +2159,13 @@
             document.getElementById('modalMemberEmail').value = '';
             document.getElementById('modalMemberPhone').value = '';
             document.getElementById('modalMemberCost').value = '';
+            
+            // Clear Rich Text Inputs
+            const profileDescription = document.getElementById('modalMemberProfileDescription');
+            if (profileDescription) profileDescription.innerHTML = '';
+            
+            const jobDescription = document.getElementById('modalMemberJobDescription');
+            if (jobDescription) jobDescription.innerHTML = '';
             
             // Reset avatar preview
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
@@ -2346,6 +2470,10 @@
                 });
             }
 
+            // Initialize Rich Text Input toolbars
+            initRichTextInputToolbar('modalMemberProfileDescription');
+            initRichTextInputToolbar('modalMemberJobDescription');
+
             // Initial validation to disable Add button
             validateModalForm();
 
@@ -2374,7 +2502,9 @@
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
-                        image: memberImage
+                        image: memberImage,
+                        profileDescription: document.getElementById('modalMemberProfileDescription')?.innerHTML || '',
+                        jobDescription: document.getElementById('modalMemberJobDescription')?.innerHTML || ''
                     };
 
                     // Validation
@@ -2417,6 +2547,69 @@
                     }
                 });
             }
+        }
+
+        // ============================================
+        // Rich Text Input Toolbar Functionality
+        // ============================================
+        function initRichTextInputToolbar(editorId) {
+            const editor = document.getElementById(editorId);
+            if (!editor) return;
+
+            const richTextInput = editor.closest('.dsu-rich-text-input');
+            if (!richTextInput) return;
+
+            const toolbar = richTextInput.querySelector('.dsu-rich-text-input__toolbar');
+            if (!toolbar) return;
+
+            const buttons = toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const command = this.dataset.command;
+                    
+                    if (!command) return;
+
+                    // Focus on editor before executing command
+                    editor.focus();
+
+                    if (command === 'createLink') {
+                        const url = prompt('Enter URL:', this.dataset.value || 'https://');
+                        if (url) {
+                            document.execCommand('createLink', false, url);
+                        }
+                    } else {
+                        document.execCommand(command, false, null);
+                    }
+
+                    // Update button active state
+                    updateToolbarButtonState(toolbar, editor);
+                });
+            });
+
+            // Update button states on selection change
+            editor.addEventListener('keyup', () => updateToolbarButtonState(toolbar, editor));
+            editor.addEventListener('mouseup', () => updateToolbarButtonState(toolbar, editor));
+        }
+
+        function updateToolbarButtonState(toolbar, editor) {
+            const commands = ['bold', 'italic', 'underline'];
+            commands.forEach(cmd => {
+                const button = toolbar.querySelector(`[data-command="${cmd}"]`);
+                if (button) {
+                    try {
+                        const isActive = document.queryCommandState(cmd);
+                        if (isActive) {
+                            button.classList.add('dsu-rich-text-input__toolbar-button--active');
+                        } else {
+                            button.classList.remove('dsu-rich-text-input__toolbar-button--active');
+                        }
+                    } catch (e) {
+                        // Some commands might not be supported
+                    }
+                }
+            });
         }
         
         function createMember(memberData) {
