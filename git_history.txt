@@ -1,3 +1,5 @@
+fabdb4e2b8cd7b4b76c99cd175648ead0aafa57d|Ubits|ubits@macbookpro.lan|2025-11-03 16:53:14 -0500|Fix: Implementar persistencia completa para Professional description, Job description y Skills
+7213d2f6c6757d401be1235edf977920799707cf|Ubits|ubits@macbookpro.lan|2025-11-03 16:39:44 -0500|Update: Actualizar changelog con últimos cambios
 10d26f5350b72cc8442691dde646959df4409f56|Ubits|ubits@macbookpro.lan|2025-11-03 16:39:34 -0500|Add: Documentar componente Input Chip y agregar campo Skills en modal Edit member
 cad9b181f1957cc903922ba7191e9359e36df5a0|Ubits|ubits@macbookpro.lan|2025-11-03 11:04:11 -0500|Add: Agregar campos Profile description y Job description con Rich Text Input en modal Edit member
 ee184cddd9b3b4f63930373223970ce95e270c99|Ubits|ubits@macbookpro.lan|2025-11-03 08:38:18 -0500|Update: Cambiar icono whatsapp.svg por chat.svg en profile cards y actualizar label 'Phone number' a 'Contact' en modal

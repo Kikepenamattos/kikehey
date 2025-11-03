@@ -1125,6 +1125,22 @@
                                 </div>
                             </div>
 
+                            <!-- Work experience -->
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Work experience</span>
+                                    </div>
+                                </div>
+                                <select class="dsu-input" id="modalMemberWorkExperience">
+                                    <option value="">Select work experience</option>
+                                    <option value="1-3 Years">1 - 3 Years</option>
+                                    <option value="3-5 Years">3 - 5 Years</option>
+                                    <option value="5-10 Years">5 - 10 Years</option>
+                                    <option value="10+ Years">10+ Years</option>
+                                </select>
+                            </div>
+
                             <!-- Email -->
                             <div class="dsu-input-group modal-input-group">
                                 <div class="dsu-input-label">
@@ -2092,6 +2108,7 @@
             document.getElementById('modalMemberName').value = member.name || '';
             document.getElementById('modalMemberLastName').value = member.lastName || '';
             document.getElementById('modalMemberJobPosition').value = member.jobPosition || '';
+            document.getElementById('modalMemberWorkExperience').value = member.workExperience || '';
             document.getElementById('modalMemberEmail').value = member.email || '';
             document.getElementById('modalMemberPhone').value = member.phone || '';
             
@@ -2211,6 +2228,7 @@
             document.getElementById('modalMemberName').value = '';
             document.getElementById('modalMemberLastName').value = '';
             document.getElementById('modalMemberJobPosition').value = '';
+            document.getElementById('modalMemberWorkExperience').value = '';
             document.getElementById('modalMemberEmail').value = '';
             document.getElementById('modalMemberPhone').value = '';
             document.getElementById('modalMemberCost').value = '';
@@ -2578,6 +2596,7 @@
                         jobPosition: document.getElementById('modalMemberJobPosition')?.value.trim() || '',
                         jobDescription: jobDescription ? jobDescription.innerHTML : '',
                         skills: Array.isArray(skills) ? skills : [],
+                        workExperience: document.getElementById('modalMemberWorkExperience')?.value || '',
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
@@ -3854,7 +3873,8 @@
                     ...member,
                     professionalDescription: member.professionalDescription || '',
                     jobDescription: member.jobDescription || '',
-                    skills: Array.isArray(member.skills) ? member.skills : []
+                    skills: Array.isArray(member.skills) ? member.skills : [],
+                    workExperience: member.workExperience || ''
                 }));
                 
                 console.log('📋 Cargando miembros:', membersList.length);
