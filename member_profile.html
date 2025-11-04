@@ -439,7 +439,7 @@
         }
 
         .profile-page-avatar {
-            width: 200px;
+            /* width: 200px; */
             flex-shrink: 0;
             margin: 0;
             padding: 0;
@@ -458,8 +458,8 @@
         }
 
         .profile-page-avatar .dsu-profile-avatar {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
             position: relative;
         }
 
@@ -484,6 +484,15 @@
             width: 424px;
             margin-bottom: 64px;
             padding: 0;
+        }
+
+        .profile-personal-info-wrapper,
+        .profile-work-info-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            margin-bottom: 32px;
         }
 
         .profile-input-row {
@@ -661,87 +670,93 @@
 
             <!-- Profile Information - Matching modal-inputs-wrapper -->
             <div class="profile-inputs-wrapper">
-                <!-- Name Row - Matching modal-input-row -->
-                <div class="profile-input-row">
+                <!-- Personal Info Wrapper -->
+                <div class="profile-personal-info-wrapper">
+                    <!-- Name Row - Matching modal-input-row -->
+                    <div class="profile-input-row">
+                        <div class="dsu-input-group profile-input-group">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Name</span>
+                                </div>
+                            </div>
+                            <div class="profile-page-field" id="profilePageName">-</div>
+                        </div>
+                        <div class="dsu-input-group profile-input-group">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Last name</span>
+                                </div>
+                            </div>
+                            <div class="profile-page-field" id="profilePageLastName">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Professional description -->
                     <div class="dsu-input-group profile-input-group">
                         <div class="dsu-input-label">
                             <div class="dsu-input-label__text">
-                                <span>Name</span>
+                                <span>Professional description</span>
                             </div>
                         </div>
-                        <div class="profile-page-field" id="profilePageName">-</div>
+                        <div class="profile-page-field profile-page-rich-text" id="profilePageProfessionalDescription">-</div>
                     </div>
+                </div>
+
+                <!-- Work Info Wrapper -->
+                <div class="profile-work-info-wrapper">
+                    <!-- Job Position -->
                     <div class="dsu-input-group profile-input-group">
                         <div class="dsu-input-label">
                             <div class="dsu-input-label__text">
-                                <span>Last name</span>
+                                <span>Job position</span>
                             </div>
                         </div>
-                        <div class="profile-page-field" id="profilePageLastName">-</div>
+                        <div class="profile-page-field" id="profilePageJobPosition">-</div>
                     </div>
-                </div>
 
-                <!-- Professional description -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Professional description</span>
+                    <!-- Job description -->
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Job description</span>
+                            </div>
+                        </div>
+                        <div class="profile-page-field profile-page-rich-text" id="profilePageJobDescription">-</div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Skills</span>
+                            </div>
+                        </div>
+                        <div class="profile-page-chips-container" id="profilePageSkillsContainer">
+                            <!-- Skills chips will be dynamically added here -->
                         </div>
                     </div>
-                    <div class="profile-page-field profile-page-rich-text" id="profilePageProfessionalDescription">-</div>
-                </div>
 
-                <!-- Job Position -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Job position</span>
+                    <!-- Work experience -->
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Work experience</span>
+                            </div>
                         </div>
+                        <div class="profile-page-field" id="profilePageWorkExperience">-</div>
                     </div>
-                    <div class="profile-page-field" id="profilePageJobPosition">-</div>
-                </div>
 
-                <!-- Job description -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Job description</span>
+                    <!-- Portfolio -->
+                    <div class="dsu-input-group profile-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Portfolio</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="profile-page-field profile-page-rich-text" id="profilePageJobDescription">-</div>
-                </div>
-
-                <!-- Skills -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Skills</span>
+                        <div class="profile-page-portfolio-container" id="profilePagePortfolioContainer">
+                            <!-- Portfolio items will be dynamically added here -->
                         </div>
-                    </div>
-                    <div class="profile-page-chips-container" id="profilePageSkillsContainer">
-                        <!-- Skills chips will be dynamically added here -->
-                    </div>
-                </div>
-
-                <!-- Work experience -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Work experience</span>
-                        </div>
-                    </div>
-                    <div class="profile-page-field" id="profilePageWorkExperience">-</div>
-                </div>
-
-                <!-- Portfolio -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Portfolio</span>
-                        </div>
-                    </div>
-                    <div class="profile-page-portfolio-container" id="profilePagePortfolioContainer">
-                        <!-- Portfolio items will be dynamically added here -->
                     </div>
                 </div>
 
