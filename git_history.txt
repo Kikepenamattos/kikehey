@@ -1,3 +1,15 @@
+c3ca5d1cc516a9944b39d6f4aa0c36afb2ad06cd|Ubits|ubits@macbookpro.lan|2025-11-22 11:57:54 -0500|Update: Ajustes de max-width en inputs y grupos de búsqueda
+ac74433661643a54488345e71d0b074569806d3d|Ubits|ubits@macbookpro.lan|2025-11-22 11:44:27 -0500|Revert "Update: Reorganización de campos de contacto en página de perfil"
+28fe5d7f2f8f54dbed2ad92e56715ff54ea4f18d|Ubits|ubits@macbookpro.lan|2025-11-03 19:50:17 -0500|Update: Reorganización de campos de contacto en página de perfil
+bbad730ed74fe32c3971c8c990f878225886ee38|Ubits|ubits@macbookpro.lan|2025-11-03 19:32:17 -0500|Add: Campo Team en página de perfil y mejoras de estilo
+4ddf6f1f8c77d3a137318ba952aa6af657a5f737|Ubits|ubits@macbookpro.lan|2025-11-03 19:21:17 -0500|Update: Wrappers en página de perfil y ajustes de avatar
+567f2c79fc0229c2583c8c0e8841d6bd8a9052ce|Ubits|ubits@macbookpro.lan|2025-11-03 19:11:04 -0500|Update: Reorganización de campos del modal Edit member y validación de cierre
+6d5138e03a8a438396a163904b58412dfad7f223|Ubits|ubits@macbookpro.lan|2025-11-03 18:54:41 -0500|Update: Ajustes en botones de modales y layout de perfil
+281fcbe0e0682e8fc8e7875c75c001618888ebf3|Ubits|ubits@macbookpro.lan|2025-11-03 18:41:50 -0500|Add: Modal Edit member integrado en member_profile.html
+2ee3b0f19000db14cb0e26e3e925807d7daa5af7|Ubits|ubits@macbookpro.lan|2025-11-03 18:28:07 -0500|Add: Página de perfil de miembro independiente (member_profile.html)
+24e8cc3933988f7dcab5dae67de55ee9317862da|Ubits|ubits@macbookpro.lan|2025-11-03 17:47:22 -0500|Add: Componente Team dropdown para mover miembros entre teams en modal Edit member
+3ad6aae9d0d5ab0a9a661fe039c59fe3093dc819|Ubits|ubits@macbookpro.lan|2025-11-03 17:39:07 -0500|Add: Componente Portfolio con enlaces externos en modal Edit member
+39efe23cefb871b880fca964dfab0634d225863f|Ubits|ubits@macbookpro.lan|2025-11-03 17:14:20 -0500|Update: Actualizar changelog con últimos cambios
 557e942df210bd483154e3d09721f54afe87c420|Ubits|ubits@macbookpro.lan|2025-11-03 17:14:14 -0500|Add: Documentar componente Dropdown y agregar campo Work experience en modal Edit member
 b0b3a5d04575a2ad4474c99b5c386abb5cfd520a|Ubits|ubits@macbookpro.lan|2025-11-03 17:06:44 -0500|Update: Actualizar changelog con últimos cambios
 ee2382fed63345c1f4f47afe8ad8eb659b7b1ef8|Ubits|ubits@macbookpro.lan|2025-11-03 17:06:39 -0500|Add: Agregar dropdown Work experience en modal Edit member y mejorar persistencia de campos
