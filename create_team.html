@@ -1338,7 +1338,93 @@
     <!-- Scripts -->
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
     <script>
+        // ============================================
+        // Helper function para obtener imagen (IndexedDB o base64)
+        // ============================================
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        return imageData || 'images/avatar_icon.svg';
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+        
+        // ============================================
+        // Función de Limpieza de Imágenes No Utilizadas
+        // ============================================
+        async function cleanUnusedImages() {
+            if (typeof DocuImageStorage === 'undefined' || !DocuImageStorage.isAvailable()) {
+                console.warn('⚠️ IndexedDB no disponible para limpieza');
+                return null;
+            }
+
+            const session = DocuAuth.getCurrentSession();
+            if (!session) {
+                console.warn('⚠️ No hay sesión activa');
+                return null;
+            }
+
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData) {
+                console.warn('⚠️ No hay datos del proyecto');
+                return null;
+            }
+
+            console.log('🧹 Iniciando limpieza de imágenes no utilizadas...');
+            
+            try {
+                const stats = await DocuImageStorage.cleanUnusedImages(session.email, projectData);
+                
+                if (stats.deletedCount > 0) {
+                    const message = `✅ Limpieza completada:\n` +
+                        `- Imágenes eliminadas: ${stats.deletedCount}\n` +
+                        `- Espacio liberado: ${stats.deletedSizeMB} MB (${stats.deletedSizeKB} KB)\n` +
+                        `- Total de imágenes: ${stats.totalImages}\n` +
+                        `- Imágenes en uso: ${stats.usedImages}`;
+                    
+                    console.log(message);
+                    alert(message);
+                } else {
+                    console.log('✅ No hay imágenes no utilizadas para eliminar');
+                    alert('✅ No hay imágenes no utilizadas para eliminar. Todo está limpio.');
+                }
+                
+                return stats;
+            } catch (error) {
+                console.error('❌ Error en limpieza de imágenes:', error);
+                alert('❌ Error al limpiar imágenes: ' + error.message);
+                return null;
+            }
+        }
+
+        // Exponer función globalmente para uso desde consola
+        window.cleanUnusedImages = cleanUnusedImages;
+
         // ============================================
         // Verificación de Sesión
         // ============================================
@@ -1365,6 +1451,18 @@
             }
 
             console.log('Inicializando create_team.html');
+
+            // Ejecutar limpieza automática de imágenes no utilizadas al cargar
+            setTimeout(async () => {
+                try {
+                    const stats = await cleanUnusedImages();
+                    if (stats && stats.deletedCount > 0) {
+                        console.log(`🧹 Limpieza automática al iniciar: ${stats.deletedCount} imágenes eliminadas`);
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Error en limpieza automática al iniciar:', error);
+                }
+            }, 2000); // Esperar 2 segundos para que todo esté cargado
 
             // Inicializar navegación del sidebar
             initSidebarNavigation();
@@ -1406,7 +1504,7 @@
             window.addEventListener('beforeunload', function() {
                 // Solo hacer autosave si es un draft o nuevo team
                 if (!currentProjectData || currentProjectData.status === 'draft') {
-                    autoSave();
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
                 } else {
                     console.log('ℹ️ beforeunload: omitiendo autosave para team publicado');
                 }
@@ -1423,7 +1521,7 @@
         // ============================================
         // Auto-save functionality
         // ============================================
-        function autoSave() {
+        async function autoSave() {
             // NO hacer autosave si estamos viendo un team publicado sin modificar
             // Solo hacer autosave si hay cambios no guardados en un draft o nuevo team
             if (!currentProjectId || !currentProjectData) {
@@ -1438,7 +1536,7 @@
                         currentProjectId = Date.now().toString();
                     }
                     
-                    saveProjectToStorage(currentProjectId, projectData);
+                    saveProjectToStorage(currentProjectId, projectData).catch(err => console.error('Error al guardar:', err));
                     console.log('💾 Auto-save realizado (nuevo team/draft)');
                 }
                 return;
@@ -1639,7 +1737,7 @@
                 
                 // Guardar automáticamente cuando se escribe el nombre
                 if (hasProjectName) {
-                    autoSave();
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
                 }
             });
 
@@ -1679,7 +1777,7 @@
             }
         }
 
-        function saveDraft() {
+        async function saveDraft() {
             const projectData = getFormData();
             projectData.status = 'draft';
             
@@ -1687,11 +1785,11 @@
                 currentProjectId = Date.now().toString();
             }
 
-            saveProjectToStorage(currentProjectId, projectData);
+            await saveProjectToStorage(currentProjectId, projectData).catch(err => console.error('Error al guardar draft:', err));
             console.log('Draft guardado');
         }
 
-        function publishProject() {
+        async function publishProject() {
             console.log('=== INICIO publishProject ===');
             
             const projectName = document.getElementById('projectName').value.trim();
@@ -1730,7 +1828,7 @@
 
             // Guardar proyecto
             console.log('💾 Guardando proyecto...');
-            const saved = saveProjectToStorage(currentProjectId, projectData);
+            const saved = await saveProjectToStorage(currentProjectId, projectData);
             
             if (!saved) {
                 console.error('❌ Error al guardar el proyecto');
@@ -1842,7 +1940,7 @@
             };
         }
 
-        function saveProjectToStorage(projectId, projectData) {
+        async function saveProjectToStorage(projectId, projectData) {
             console.log('=== saveProjectToStorage ===');
             console.log('projectId:', projectId);
             console.log('projectData:', projectData);
@@ -1929,15 +2027,105 @@
                     })));
                 }
 
-                // Verificar tamaño de los datos antes de guardar
+                // Migrar imágenes base64 a IndexedDB antes de guardar (si es posible)
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    const session = DocuAuth.getCurrentSession();
+                    if (session) {
+                        let migratedCount = 0;
+                        for (const team of projectDataObj.teams) {
+                            if (team.members && Array.isArray(team.members)) {
+                                for (const member of team.members) {
+                                    if (member.image && member.image.startsWith('data:')) {
+                                        try {
+                                            const imageId = await DocuImageStorage.saveImage(
+                                                member.image,
+                                                session.email,
+                                                member.id,
+                                                team.id
+                                            );
+                                            if (imageId) {
+                                                member.image = `indexeddb:${imageId}`;
+                                                migratedCount++;
+                                                console.log(`✅ Imagen migrada a IndexedDB para miembro ${member.id}`);
+                                            }
+                                        } catch (error) {
+                                            console.warn(`⚠️ No se pudo migrar imagen del miembro ${member.id}:`, error);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (migratedCount > 0) {
+                            console.log(`🔄 ${migratedCount} imágenes migradas automáticamente a IndexedDB`);
+                        }
+                    }
+                }
+
+                // Verificar tamaño de los datos ANTES de guardar (sin imágenes base64)
                 try {
-                    const testJson = JSON.stringify(projectDataObj);
-                    const sizeInMB = new Blob([testJson]).size / (1024 * 1024);
-                    console.log(`💾 Tamaño total de datos del proyecto: ${sizeInMB.toFixed(2)} MB`);
+                    // Crear una copia sin imágenes base64 para calcular el tamaño real
+                    const dataWithoutBase64 = JSON.parse(JSON.stringify(projectDataObj));
+                    let base64ImageSize = 0;
+                    let base64ImageCount = 0;
                     
+                    dataWithoutBase64.teams.forEach(team => {
+                        if (team.members && Array.isArray(team.members)) {
+                            team.members.forEach(member => {
+                                if (member.image) {
+                                    if (member.image.startsWith('data:')) {
+                                        base64ImageSize += member.image.length;
+                                        base64ImageCount++;
+                                        // Reemplazar con referencia pequeña para cálculo
+                                        member.image = 'indexeddb:migrated';
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    
+                    const testJson = JSON.stringify(dataWithoutBase64);
+                    const sizeInMB = new Blob([testJson]).size / (1024 * 1024);
+                    const sizeInKB = new Blob([testJson]).size / 1024;
+                    const base64SizeMB = base64ImageSize / (1024 * 1024);
+                    
+                    console.log(`💾 Tamaño de datos (sin imágenes base64): ${sizeInMB.toFixed(2)} MB (${sizeInKB.toFixed(0)} KB)`);
+                    if (base64ImageCount > 0) {
+                        console.log(`📷 Imágenes base64 restantes: ${base64ImageCount} (${base64SizeMB.toFixed(2)} MB)`);
+                    }
+                    
+                    // Contar imágenes en IndexedDB
+                    let indexedDBCount = 0;
+                    projectDataObj.teams.forEach(team => {
+                        if (team.members && Array.isArray(team.members)) {
+                            team.members.forEach(member => {
+                                if (member.image && member.image.startsWith('indexeddb:')) {
+                                    indexedDBCount++;
+                                }
+                            });
+                        }
+                    });
+                    
+                    if (indexedDBCount > 0) {
+                        console.log(`✅ ${indexedDBCount} imágenes en IndexedDB (no afectan localStorage)`);
+                    }
+                    
+                    // Solo mostrar advertencia si hay muchas imágenes base64 o datos muy grandes sin imágenes
+                    if (base64ImageCount > 10 || sizeInMB > 3) {
+                        console.warn(`⚠️ Advertencia: ${base64ImageCount} imágenes base64 restantes (${base64SizeMB.toFixed(2)} MB)`);
+                        console.warn('💡 Las imágenes se están migrando automáticamente a IndexedDB.');
+                    }
+                    
+                    // Solo bloquear si el tamaño SIN imágenes base64 es muy grande (más de 5MB)
+                    // Esto es raro ya que las imágenes están en IndexedDB
                     if (sizeInMB > 5) {
-                        console.warn(`⚠️ Advertencia: Los datos son mayores a 5MB (${sizeInMB.toFixed(2)} MB).`);
-                        console.warn('💡 Considera reducir el tamaño de las imágenes de los miembros.');
+                        const confirmContinue = confirm(
+                            `⚠️ Advertencia: Los datos son muy grandes (${sizeInMB.toFixed(2)} MB sin imágenes). ` +
+                            `Esto puede causar problemas de almacenamiento.\n\n` +
+                            `¿Deseas continuar guardando?`
+                        );
+                        if (!confirmContinue) {
+                            return false;
+                        }
                     }
                 } catch (sizeError) {
                     console.warn('⚠️ No se pudo calcular el tamaño de los datos:', sizeError);
@@ -1955,7 +2143,44 @@
                         localStorage.removeItem('docu_test_quota');
                     } catch (quotaError) {
                         if (quotaError.name === 'QuotaExceededError') {
-                            alert('Error: El almacenamiento está lleno. Por favor, elimina algunas imágenes grandes o reduce el tamaño de las imágenes de los miembros.');
+                            // Calcular estadísticas para el mensaje
+                            let imageCount = 0;
+                            let indexedDBCount = 0;
+                            let totalImageSize = 0;
+                            projectDataObj.teams.forEach(team => {
+                                if (team.members && Array.isArray(team.members)) {
+                                    team.members.forEach(member => {
+                                        if (member.image) {
+                                            if (member.image.startsWith('data:')) {
+                                                imageCount++;
+                                                totalImageSize += member.image.length;
+                                            } else if (member.image.startsWith('indexeddb:')) {
+                                                indexedDBCount++;
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            const totalImageSizeMB = (totalImageSize / (1024 * 1024)).toFixed(2);
+                            const avgImageSizeKB = imageCount > 0 ? (totalImageSize / imageCount / 1024).toFixed(0) : 0;
+                            
+                            const errorMessage = 
+                                '❌ Error: El almacenamiento está lleno.\n\n' +
+                                `📊 Estadísticas:\n` +
+                                `- Imágenes en base64: ${imageCount}\n` +
+                                `- Imágenes en IndexedDB: ${indexedDBCount}\n` +
+                                `- Tamaño total base64: ${totalImageSizeMB} MB\n` +
+                                `${imageCount > 0 ? `- Promedio base64: ${avgImageSizeKB} KB\n` : ''}\n` +
+                                `💡 Soluciones:\n` +
+                                `1. Las nuevas imágenes se guardarán automáticamente en IndexedDB (más espacio)\n` +
+                                `2. Elimina imágenes base64 de miembros antiguos\n` +
+                                `3. Edita miembros existentes y elimina sus imágenes base64\n\n` +
+                                `Nota: IndexedDB permite almacenar muchas más imágenes con mejor calidad.`;
+                            
+                            alert(errorMessage);
+                            console.error('💾 No se pudo guardar debido a falta de espacio en localStorage');
+                            console.log('💡 Sugerencia: Elimina imágenes de miembros antiguos desde el modal de edición');
                         } else {
                             alert('Error al guardar el proyecto. Por favor, intenta de nuevo.');
                         }
@@ -1994,6 +2219,25 @@
                 }, 100);
                 
                 console.log('✅ Datos guardados exitosamente');
+                
+                // Limpiar imágenes no utilizadas después de guardar
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    const session = DocuAuth.getCurrentSession();
+                    if (session) {
+                        // Ejecutar limpieza en segundo plano (no bloquear el guardado)
+                        setTimeout(async () => {
+                            try {
+                                const stats = await DocuImageStorage.cleanUnusedImages(session.email, projectDataObj);
+                                if (stats.deletedCount > 0) {
+                                    console.log(`🧹 Limpieza automática: ${stats.deletedCount} imágenes no utilizadas eliminadas (${stats.deletedSizeMB} MB liberados)`);
+                                }
+                            } catch (error) {
+                                console.warn('⚠️ Error en limpieza automática de imágenes:', error);
+                            }
+                        }, 1000);
+                    }
+                }
+                
                 return true;
             } catch (error) {
                 console.error('❌ Excepción en saveProjectToStorage:', error);
@@ -2367,10 +2611,38 @@
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
             const modalAvatarPreview = document.getElementById('modalAvatarPreview');
             if (member.image && member.image.trim() !== '') {
-                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
-                if (modalAvatarPreview) {
-                    modalAvatarPreview.src = member.image;
-                    modalAvatarPreview.style.display = 'block';
+                // Verificar si es una referencia de IndexedDB
+                if (member.image.startsWith('indexeddb:')) {
+                    const imageId = member.image.replace('indexeddb:', '');
+                    // Cargar desde IndexedDB
+                    if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                        DocuImageStorage.getImage(imageId).then(imageData => {
+                            if (imageData && modalAvatarPreview) {
+                                modalAvatarPreview.src = imageData;
+                                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                                modalAvatarPreview.style.display = 'block';
+                            } else {
+                                console.warn('⚠️ No se encontró imagen en IndexedDB:', imageId);
+                                if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                                if (modalAvatarPreview) modalAvatarPreview.style.display = 'none';
+                            }
+                        }).catch(error => {
+                            console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                            if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                            if (modalAvatarPreview) modalAvatarPreview.style.display = 'none';
+                        });
+                    } else {
+                        console.warn('⚠️ IndexedDB no disponible para cargar imagen');
+                        if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                        if (modalAvatarPreview) modalAvatarPreview.style.display = 'none';
+                    }
+                } else {
+                    // Es base64, cargar directamente
+                    if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                    if (modalAvatarPreview) {
+                        modalAvatarPreview.src = member.image;
+                        modalAvatarPreview.style.display = 'block';
+                    }
                 }
             } else {
                 if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
@@ -2628,11 +2900,11 @@
                     ctx.imageSmoothingEnabled = true;
                     ctx.imageSmoothingQuality = 'high';
                     
-                    // Tamaño máximo optimizado: 400x400px para mantener buena calidad
-                    // Los profile cards muestran 200px, pero usar 2x permite mejor calidad en pantallas Retina
+                    // Tamaño máximo optimizado: 400x400px para buena calidad
+                    // Con IndexedDB podemos usar imágenes más grandes sin problemas de almacenamiento
                     const maxWidth = 400;
                     const maxHeight = 400;
-                    const maxFileSizeKB = 150; // Máximo 150KB por imagen
+                    const maxFileSizeKB = 200; // Máximo 200KB por imagen (IndexedDB permite mucho más espacio)
                     
                     let width = img.width;
                     let height = img.height;
@@ -2670,15 +2942,15 @@
                         }
                     }
                     
-                    // Intentar con calidad alta primero
-                    let quality = 0.92;
+                    // Intentar con calidad alta primero (IndexedDB permite más espacio)
+                    let quality = 0.90;
                     let compressedDataUrl = compressWithQuality(quality);
                     let sizeKB = Math.round(compressedDataUrl.length / 1024);
                     
                     // Si el tamaño es demasiado grande, reducir calidad progresivamente
                     if (sizeKB > maxFileSizeKB) {
                         console.log(`📷 Imagen grande (${sizeKB}KB), ajustando calidad...`);
-                        const qualitySteps = [0.88, 0.85, 0.80, 0.75, 0.70];
+                        const qualitySteps = [0.85, 0.80, 0.75, 0.70, 0.65, 0.60];
                         
                         for (let i = 0; i < qualitySteps.length; i++) {
                             quality = qualitySteps[i];
@@ -2819,17 +3091,63 @@
 
             // Handle Add/Save button
             if (modalAddBtn) {
-                modalAddBtn.addEventListener('click', function() {
+                modalAddBtn.addEventListener('click', async function() {
                     // Obtener imagen (puede ser Data URL comprimido o vacío)
-                    let memberImage = '';
+                    let memberImageRef = '';
+                    let memberImageData = '';
+                    
                     if (modalAvatarPreview && modalAvatarPreview.src) {
                         // Solo usar la imagen si no es la ruta del placeholder
                         if (modalAvatarPreview.src && !modalAvatarPreview.src.includes('avatar_icon.svg')) {
-                            memberImage = modalAvatarPreview.src;
+                            memberImageData = modalAvatarPreview.src;
+                            
                             // Verificar tamaño de la imagen
-                            const imageSizeKB = Math.round(memberImage.length / 1024);
-                            if (imageSizeKB > 500) {
-                                console.warn(`⚠️ Imagen grande (${imageSizeKB}KB). Considera comprimirla.`);
+                            const imageSizeKB = Math.round(memberImageData.length / 1024);
+                            console.log(`📷 Imagen del miembro: ${imageSizeKB}KB`);
+                            
+                            // Guardar en IndexedDB si está disponible
+                            if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                                try {
+                                    const session = DocuAuth.getCurrentSession();
+                                    if (session) {
+                                        const memberId = currentEditingMemberId || Date.now().toString();
+                                        const teamId = urlParams.get('id') || sessionStorage.getItem('docu_selected_team_id');
+                                        
+                                        // Guardar imagen en IndexedDB
+                                        memberImageRef = await DocuImageStorage.saveImage(
+                                            memberImageData,
+                                            session.email,
+                                            memberId,
+                                            teamId
+                                        );
+                                        
+                                        console.log(`✅ Imagen guardada en IndexedDB con referencia: ${memberImageRef}`);
+                                        
+                                        // Si había una imagen anterior (edición), eliminarla
+                                        if (currentEditingMemberId) {
+                                            const projectData = DocuProjectData.getProjectData();
+                                            if (projectData && projectData.teams) {
+                                                for (const team of projectData.teams) {
+                                                    if (team.members) {
+                                                        const oldMember = team.members.find(m => m.id === currentEditingMemberId);
+                                                        if (oldMember && oldMember.image && oldMember.image.startsWith('indexeddb:')) {
+                                                            const oldImageId = oldMember.image.replace('indexeddb:', '');
+                                                            await DocuImageStorage.deleteImage(oldImageId);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('❌ Error al guardar imagen en IndexedDB, usando base64:', error);
+                                    // Fallback: usar base64 si IndexedDB falla
+                                    memberImageRef = memberImageData;
+                                }
+                            } else {
+                                // Fallback: usar base64 si IndexedDB no está disponible
+                                console.warn('⚠️ IndexedDB no disponible, usando base64 (limitado)');
+                                memberImageRef = memberImageData;
                             }
                         }
                     }
@@ -2839,6 +3157,9 @@
                     const jobDescription = document.getElementById('modalMemberJobDescription');
                     const skills = getChipsFromContainer('modalMemberSkillsChipsContainer');
                     const portfolioItems = getPortfolioItemsFromContainer('modalMemberPortfolioContainer');
+                    
+                    // Usar referencia de IndexedDB si está disponible, sino usar base64
+                    const imageValue = memberImageRef.startsWith('img_') ? `indexeddb:${memberImageRef}` : memberImageRef;
                     
                     const memberData = {
                         id: currentEditingMemberId || Date.now().toString(),
@@ -2853,10 +3174,10 @@
                         email: document.getElementById('modalMemberEmail')?.value.trim() || '',
                         phone: document.getElementById('modalMemberPhone')?.value.trim() || '',
                         cost: document.getElementById('modalMemberCost')?.value.trim() || '',
-                        image: memberImage
+                        image: imageValue
                     };
                     
-                    console.log('💾 Guardando memberData completo:', memberData);
+                    console.log('💾 Guardando memberData completo:', { ...memberData, image: imageValue ? 'imagen guardada' : 'sin imagen' });
 
                     // Validation
                     if (!memberData.name) {
@@ -3310,13 +3631,13 @@
             }
             
             // Crear tarjeta de miembro visual
-            createMemberCard(memberData);
+            createMemberCard(memberData).catch(err => console.error('Error al crear card:', err));
             
             // Actualizar costo del equipo
             updateTeamCost();
             
             // Guardar automáticamente después de agregar miembro
-            autoSave();
+            autoSave().catch(err => console.error('Error en autoSave:', err));
             
             console.log('Miembro creado:', memberData);
             console.log('Total de miembros:', membersList.length);
@@ -3352,13 +3673,13 @@
             }
             
             // Recrear la tarjeta con los datos actualizados
-            createMemberCard(memberData);
+            createMemberCard(memberData).catch(err => console.error('Error al crear card:', err));
             
             // Actualizar el costo del equipo
             updateTeamCost();
             
             // Guardar automáticamente después de actualizar miembro
-            autoSave();
+            autoSave().catch(err => console.error('Error en autoSave:', err));
             
             console.log('Miembro actualizado:', memberData);
         }
@@ -3389,7 +3710,7 @@
             updateTeamCost();
             
             // Guardar automáticamente después de eliminar miembro
-            autoSave();
+            autoSave().catch(err => console.error('Error en autoSave:', err));
             
             console.log('Miembro eliminado:', memberId);
             console.log('Total de miembros restantes:', membersList.length);
@@ -3417,7 +3738,7 @@
             teamCostInput.value = `USD ${totalCost.toFixed(2)}`;
         }
 
-        function createMemberCard(memberData) {
+        async function createMemberCard(memberData) {
             const teamMembersGrid = document.getElementById('teamMembersGrid');
             if (!teamMembersGrid) return;
 
@@ -3426,8 +3747,8 @@
             memberCard.className = 'dsu-profile-card';
             memberCard.dataset.memberId = memberData.id;
             
-            // Construir HTML de la tarjeta según la estructura del design system
-            const imageSrc = memberData.image || 'images/avatar_icon.svg';
+            // Obtener imagen (desde IndexedDB o base64)
+            const imageSrc = await getMemberImage(memberData.image);
             const imageAlt = memberData.image ? `${escapeHtml(memberData.name)} ${escapeHtml(memberData.lastName || '')}` : 'Avatar';
             const imageClass = memberData.image ? 'dsu-profile-card__image' : 'dsu-profile-card__image';
             
@@ -3614,11 +3935,11 @@
             initInputChip('associatedProjects', 'projectsChipsContainer', 
                 function(chipText) {
                     // Callback cuando se agrega un chip - auto-guardar
-                    autoSave();
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
                 },
                 function(chipText) {
                     // Callback cuando se elimina un chip - auto-guardar
-                    autoSave();
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
                 }
             );
         }
@@ -4573,7 +4894,7 @@
                 loadChipsIntoContainer('projectsChipsContainer', projectData.projects, 
                     function(chipText) {
                         // Callback cuando se elimina un chip después de cargar - auto-guardar
-                        autoSave();
+                        autoSave().catch(err => console.error('Error en autoSave:', err));
                     }
                 );
                 console.log(`✅ Total de chips cargados: ${projectData.projects.length}`);

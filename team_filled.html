@@ -1129,7 +1129,42 @@
     <!-- Scripts -->
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
     <script>
+        // ============================================
+        // Helper function para obtener imagen (IndexedDB o base64)
+        // ============================================
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        return imageData || 'images/avatar_icon.svg';
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+        
         // ============================================
         // Verificación de Sesión
         // ============================================
@@ -1270,7 +1305,7 @@
                                 return dateB - dateA;
                             })[0];
                             
-                            displayTeamData(latestTeam);
+                            displayTeamData(latestTeam).catch(err => console.error('Error al mostrar team:', err));
                         }
                     }
                     return;
@@ -1281,7 +1316,7 @@
                 if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
                     const team = projectData.teams.find(t => t.id === teamId && t.status === 'published');
                     if (team) {
-                        displayTeamData(team);
+                        displayTeamData(team).catch(err => console.error('Error al mostrar team:', err));
                         // Marcar el team como activo en el sidebar después de cargar la lista
                         setTimeout(() => {
                             const teamsList = document.getElementById('teamsList');
@@ -1309,7 +1344,7 @@
         /**
          * Muestra los datos del team en la vista
          */
-        function displayTeamData(teamData) {
+        async function displayTeamData(teamData) {
             console.log('📦 Cargando datos del team:', {
                 id: teamData.id,
                 name: teamData.name,
@@ -1373,13 +1408,11 @@
             const membersGrid = document.getElementById('teamMembersGrid');
             if (membersGrid && teamData.members && Array.isArray(teamData.members)) {
                 membersGrid.innerHTML = '';
-                teamData.members.forEach(member => {
-                    const memberCard = createMemberCardHTML(member);
+                // Usar for...of para soportar async/await
+                for (const member of teamData.members) {
+                    const memberCard = await createMemberCardHTML(member);
                     membersGrid.insertAdjacentHTML('beforeend', memberCard);
-                    
-                    // NOTA: En la vista publicada NO se muestra el botón de editar
-                    // El botón de editar solo aparece en create_team.html (vista de edición)
-                });
+                }
                 
                 // Add click listeners to profile cards (image and name)
                 attachProfileCardListeners();
@@ -1387,9 +1420,9 @@
         }
 
         /**
-         * Crea el HTML para una tarjeta de miembro
+         * Crea el HTML para una tarjeta de miembro (async para IndexedDB)
          */
-        function createMemberCardHTML(member) {
+        async function createMemberCardHTML(member) {
             // Usar member.image (consistente con create_team.html)
             // También verificar member.avatar como fallback para compatibilidad
             const memberImage = member.image || member.avatar || '';
@@ -1399,16 +1432,16 @@
             const memberEmail = escapeHtml(member.email || '');
             const memberPhone = escapeHtml(member.phone || '');
             
-            // Construir imagen source exactamente igual que en create_team.html
-            const imageSrc = memberImage || 'images/avatar_icon.svg';
+            // Obtener imagen desde IndexedDB o base64
+            const imageSrc = await getMemberImage(memberImage);
             const imageAlt = memberImage ? `${escapeHtml(memberName)} ${escapeHtml(memberLastName || '')}`.trim() : 'Avatar';
             const imageClass = 'dsu-profile-card__image';
             
             console.log('📷 Creando card para miembro:', {
                 id: member.id,
                 name: memberName,
-                imageSrc: imageSrc.substring(0, 50) + '...',
-                hasImage: !!memberImage
+                hasImage: !!memberImage,
+                imageType: memberImage.startsWith('indexeddb:') ? 'IndexedDB' : memberImage.startsWith('data:') ? 'base64' : 'none'
             });
             
             // En la vista publicada NO mostrar el botón de editar
@@ -2412,7 +2445,7 @@
             }
             
             // Crear tarjeta de miembro visual
-            createMemberCard(memberData);
+            createMemberCard(memberData).catch(err => console.error('Error al crear card:', err));
             
             // Actualizar costo del equipo
             updateTeamCost();
@@ -2449,7 +2482,7 @@
             }
         }
 
-        function createMemberCard(memberData) {
+        async function createMemberCard(memberData) {
             const teamMembersGrid = document.getElementById('teamMembersGrid');
             if (!teamMembersGrid) return;
 
@@ -2458,10 +2491,10 @@
             memberCard.className = 'dsu-profile-card';
             memberCard.dataset.memberId = memberData.id;
             
-            // Construir HTML de la tarjeta según la estructura del design system
-            const imageSrc = memberData.image || 'images/avatar_icon.svg';
-            const imageAlt = memberData.image ? `${escapeHtml(memberData.name)} ${escapeHtml(memberData.lastName || '')}` : 'Avatar';
-            const imageClass = memberData.image ? 'dsu-profile-card__image' : 'dsu-profile-card__image';
+            // Obtener imagen desde IndexedDB o base64
+            const imageSrc = await getMemberImage(memberData.image || memberData.avatar || '');
+            const imageAlt = memberData.image || memberData.avatar ? `${escapeHtml(memberData.name)} ${escapeHtml(memberData.lastName || '')}` : 'Avatar';
+            const imageClass = memberData.image || memberData.avatar ? 'dsu-profile-card__image' : 'dsu-profile-card__image';
             
             memberCard.innerHTML = `
                 <div class="dsu-profile-card__image-wrapper">
@@ -2900,7 +2933,7 @@
                     const selectedTeam = projectDataObj.teams.find(t => t.id === selectedTeamId);
                     if (selectedTeam) {
                         console.log('✅ Team seleccionado encontrado en datos:', selectedTeam.name || selectedTeam.id);
-                        loadProjectData(selectedTeam);
+                        loadProjectData(selectedTeam).catch(err => console.error('Error al cargar project data:', err));
                         
                         // Marcar como activo en el sidebar
                         setTimeout(() => {
@@ -2938,7 +2971,7 @@
                 // Cargar el draft más reciente
                 const latestDraft = drafts.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0];
                 console.log('📋 Cargando draft más reciente:', latestDraft.name || latestDraft.id);
-                loadProjectData(latestDraft);
+                loadProjectData(latestDraft).catch(err => console.error('Error al cargar draft:', err));
                 
                 // Guardar como seleccionado
                 try {
@@ -2968,7 +3001,7 @@
                 
                 const latestPublished = sortedPublished[0];
                 console.log('📋 Cargando team publicado más reciente:', latestPublished.name);
-                loadProjectData(latestPublished);
+                loadProjectData(latestPublished).catch(err => console.error('Error al cargar published:', err));
                 
                 // Guardar como seleccionado
                 try {
@@ -2997,7 +3030,7 @@
             }
         }
 
-        function loadProjectData(projectData) {
+        async function loadProjectData(projectData) {
             if (!projectData) {
                 console.warn('⚠️ loadProjectData: projectData es null o undefined');
                 return;
@@ -3042,9 +3075,10 @@
                     const placeholder = document.getElementById('addMemberCard');
                     teamMembersGrid.innerHTML = '';
                     
-                    projectData.members.forEach(member => {
-                        createMemberCard(member);
-                    });
+                    // Usar for...of para soportar async/await
+                    for (const member of projectData.members) {
+                        await createMemberCard(member);
+                    }
                     
                     if (placeholder) {
                         teamMembersGrid.appendChild(placeholder);
