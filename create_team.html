@@ -738,6 +738,7 @@
             gap: 24px;
             flex-wrap: wrap;
             align-items: flex-start;
+            justify-content: space-between;
         }
 
 
@@ -1408,16 +1409,16 @@
                         `- Imágenes en uso: ${stats.usedImages}`;
                     
                     console.log(message);
-                    alert(message);
+                    // Alert eliminado - solo logs en consola
                 } else {
                     console.log('✅ No hay imágenes no utilizadas para eliminar');
-                    alert('✅ No hay imágenes no utilizadas para eliminar. Todo está limpio.');
+                    // Alert eliminado - solo logs en consola
                 }
                 
                 return stats;
             } catch (error) {
                 console.error('❌ Error en limpieza de imágenes:', error);
-                alert('❌ Error al limpiar imágenes: ' + error.message);
+                // Alert eliminado - solo logs en consola
                 return null;
             }
         }
@@ -1452,17 +1453,7 @@
 
             console.log('Inicializando create_team.html');
 
-            // Ejecutar limpieza automática de imágenes no utilizadas al cargar
-            setTimeout(async () => {
-                try {
-                    const stats = await cleanUnusedImages();
-                    if (stats && stats.deletedCount > 0) {
-                        console.log(`🧹 Limpieza automática al iniciar: ${stats.deletedCount} imágenes eliminadas`);
-                    }
-                } catch (error) {
-                    console.warn('⚠️ Error en limpieza automática al iniciar:', error);
-                }
-            }, 2000); // Esperar 2 segundos para que todo esté cargado
+            // Limpieza automática deshabilitada - se ejecuta solo después de guardar
 
             // Inicializar navegación del sidebar
             initSidebarNavigation();
