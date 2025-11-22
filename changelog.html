@@ -500,8 +500,25 @@
             if (commits.length === 0) {
                 console.error('❌ No se encontraron commits válidos en el historial');
             }
-            // git log ya devuelve commits de más reciente a más antiguo
-            // Mantener ese orden (no hacer reverse)
+            
+            // Ordenar commits por fecha (más reciente primero)
+            commits.sort((a, b) => {
+                // Parsear fechas para comparar
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                
+                // Si las fechas son inválidas, usar el hash como fallback
+                if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+                    // Comparar por hash (más reciente primero en git log)
+                    return b.hash.localeCompare(a.hash);
+                }
+                
+                // Ordenar por fecha descendente (más reciente primero)
+                return dateB.getTime() - dateA.getTime();
+            });
+            
+            console.log(`📅 Commits ordenados: más reciente primero (${commits[0]?.date || 'N/A'})`);
+            
             return commits;
         }
 

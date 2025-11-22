@@ -1044,7 +1044,7 @@
                         </span>
                         Delete team
                     </button>
-                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Copy team</button>
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Duplicate team</button>
                     <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
                 </div>
             </div>
@@ -1732,7 +1732,7 @@
                 }
             });
 
-            // Copy Team
+            // Duplicate Team
             saveDraftBtn.addEventListener('click', function() {
                 copyTeam();
             });
@@ -1797,6 +1797,14 @@
             const currentTeam = projectData.teams.find(t => t.id === currentProjectId);
             if (!currentTeam) {
                 alert('No se encontró el team actual.');
+                return;
+            }
+
+            const teamName = currentTeam.name || 'este team';
+            
+            // Confirmar duplicación
+            if (!confirm(`¿Estás seguro de que deseas duplicar "${teamName}"?\n\nSe creará una copia del team con el nombre "${teamName} (Copy)".`)) {
+                console.log('❌ Usuario canceló la duplicación');
                 return;
             }
 
@@ -1936,10 +1944,16 @@
             console.log('✅ Proyecto publicado:', projectData);
             
             // Mostrar mensaje de éxito
-            alert(`El team "${projectName}" ha sido publicado exitosamente y está disponible en el sidebar.`);
+            alert(`El team "${projectName}" ha sido publicado exitosamente.`);
             
-            // Limpiar formulario para nuevo proyecto
-            clearForm();
+            // Redirigir a la vista publicada del team
+            console.log('🔄 Redirigiendo a la vista publicada del team...');
+            try {
+                window.location.href = `team_filled.html?id=${currentProjectId}`;
+            } catch (error) {
+                console.error('❌ Error al redirigir:', error);
+                alert(`El team "${projectName}" ha sido publicado exitosamente. Por favor, selecciónalo desde el sidebar para verlo.`);
+            }
             
             console.log('=== FIN publishProject ===');
         }
