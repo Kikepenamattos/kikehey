@@ -1,3 +1,4 @@
+4bf2e6805a8346b52716a17f93fd9ca37e7e4537|Ubits|ubits@macbookpro.lan|2025-11-22 12:09:42 -0500|Update: Actualizar changelog con últimos cambios
 2a08e6111e6a55489f4b7ee1adb7bf1cf7962f1c|Ubits|ubits@macbookpro.lan|2025-11-22 11:59:56 -0500|Update: Agregar último commit al historial del changelog
 4b69e5c0fc25db1b79e30251cc2cc5de71621b52|Ubits|ubits@macbookpro.lan|2025-11-22 12:09:34 -0500|Update: Mejorar diseño de cards en changelog y ajustar secondary-actions
 e4d4f581c708b9daf3e36511c8df22679866f554|Ubits|ubits@macbookpro.lan|2025-11-22 11:58:14 -0500|Update: Actualizar changelog con últimos cambios

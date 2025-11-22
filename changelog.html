@@ -275,7 +275,7 @@
                 <strong>Última actualización:</strong>
                 <span id="lastUpdate">-</span>
             </div>
-            <button class="refresh-btn" onclick="loadChangelog()">🔄 Actualizar</button>
+            <button class="refresh-btn" onclick="refreshChangelog()">🔄 Actualizar</button>
         </div>
 
         <div class="filter-section">
@@ -403,32 +403,37 @@
             return [];
         }
 
-        // Función para cargar el historial
+        // Función para cargar el historial - Crea una card por cada commit encontrado
         async function loadChangelog() {
             const container = document.getElementById('changelogContainer');
             container.innerHTML = '<div class="loading">Cargando historial de cambios...</div>';
 
             try {
                 // Intentar cargar el archivo git_history.txt si existe
-                const response = await fetch('git_history.txt');
+                // Agregar timestamp para evitar cache del navegador
+                const timestamp = new Date().getTime();
+                const response = await fetch(`git_history.txt?t=${timestamp}`);
                 if (response.ok) {
                     const text = await response.text();
                     const commits = parseGitHistory(text);
+                    console.log(`📝 Cargados ${commits.length} commits del historial`);
+                    // Renderizar commits - esto creará una card changelog-item por cada uno
                     renderCommits(commits);
                     return;
                 }
             } catch (error) {
-                console.log('No se pudo cargar git_history.txt');
+                console.log('No se pudo cargar git_history.txt:', error);
             }
             
             // Si no se puede cargar el archivo, usar datos embebidos
+            console.log('Usando datos embebidos como fallback');
             renderCommits(realCommits);
         }
         
-        // Función para parsear el historial de git
+        // Función para parsear el historial de git - Cada línea se convierte en una card
         function parseGitHistory(text) {
             const lines = text.trim().split('\n').filter(line => line.trim());
-            const commits = lines.map(line => {
+            const commits = lines.map((line, index) => {
                 const parts = line.split('|');
                 if (parts.length >= 5) {
                     // Convertir fecha ISO a formato legible
@@ -442,9 +447,11 @@
                         message: parts.slice(4).join('|') // Por si el mensaje tiene |
                     };
                 }
+                console.warn(`Línea ${index + 1} del historial no tiene el formato correcto: ${line}`);
                 return null;
             }).filter(commit => commit !== null);
             
+            console.log(`✓ Parseados ${commits.length} commits válidos de ${lines.length} líneas`);
             // git log ya devuelve commits de más reciente a más antiguo
             // Mantener ese orden (no hacer reverse)
             return commits;
@@ -461,14 +468,21 @@
             });
         }
 
+        // Función para refrescar el changelog (fuerza recarga)
+        function refreshChangelog() {
+            console.log('🔄 Refrescando changelog...');
+            loadChangelog();
+        }
+        
         // Cargar al iniciar
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('📋 Inicializando changelog...');
             loadChangelog();
         });
     </script>
     
     <script>
-        // Función para renderizar commits
+        // Función para renderizar commits - Crea una card changelog-item por cada commit
         function renderCommits(commits) {
             const container = document.getElementById('changelogContainer');
             
@@ -484,11 +498,14 @@
             }
             
             let html = '';
+            let cardsCreated = 0;
             
+            // Crear una card changelog-item por cada commit en el historial
             commits.forEach(commit => {
                 const dateInfo = formatDate(commit.date);
                 const initials = getInitials(commit.author);
                 
+                // Crear card changelog-item con toda la información del commit
                 html += `
                     <div class="changelog-item">
                         <div class="changelog-header">
@@ -508,12 +525,15 @@
                         <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
                     </div>
                 `;
+                cardsCreated++;
             });
             
             container.innerHTML = html;
             document.getElementById('totalCommits').textContent = commits.length;
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('es-ES');
             allCommits = commits;
+            
+            console.log(`✓ Se crearon ${cardsCreated} cards changelog-item`);
         }
         
         function escapeHtml(text) {
