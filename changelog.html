@@ -408,24 +408,39 @@
             const container = document.getElementById('changelogContainer');
             container.innerHTML = '<div class="loading">Cargando historial de cambios...</div>';
 
+            const timestamp = new Date().getTime();
+            const githubUrl = 'https://raw.githubusercontent.com/Kikepenamattos/kikehey/main/git_history.txt';
+            
+            // Intentar cargar desde ruta local primero
             try {
-                // Intentar cargar el archivo git_history.txt si existe
-                // Agregar timestamp para evitar cache del navegador
-                const timestamp = new Date().getTime();
-                const response = await fetch(`git_history.txt?t=${timestamp}`);
-                if (response.ok) {
-                    const text = await response.text();
+                const localResponse = await fetch(`git_history.txt?t=${timestamp}`);
+                if (localResponse.ok) {
+                    const text = await localResponse.text();
                     const commits = parseGitHistory(text);
-                    console.log(`📝 Cargados ${commits.length} commits del historial`);
-                    // Renderizar commits - esto creará una card changelog-item por cada uno
+                    console.log(`📝 Cargados ${commits.length} commits del historial local`);
                     renderCommits(commits);
                     return;
                 }
             } catch (error) {
-                console.log('No se pudo cargar git_history.txt:', error);
+                console.log('No se pudo cargar git_history.txt localmente:', error);
             }
             
-            // Si no se puede cargar el archivo, usar datos embebidos
+            // Si falla local, intentar desde GitHub
+            try {
+                console.log('Intentando cargar desde GitHub...');
+                const githubResponse = await fetch(`${githubUrl}?t=${timestamp}`);
+                if (githubResponse.ok) {
+                    const text = await githubResponse.text();
+                    const commits = parseGitHistory(text);
+                    console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
+                    renderCommits(commits);
+                    return;
+                }
+            } catch (error) {
+                console.log('No se pudo cargar git_history.txt desde GitHub:', error);
+            }
+            
+            // Si ambas fallan, usar datos embebidos
             console.log('Usando datos embebidos como fallback');
             renderCommits(realCommits);
         }
