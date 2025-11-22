@@ -1,0 +1,15 @@
+# Flujo de Push - Referencia Rápida
+
+## Comando estándar para push:
+./git-push-with-changelog.sh
+
+## Proceso completo:
+1. git add [archivos]
+2. git commit -m "mensaje"
+3. ./git-push-with-changelog.sh
+
+## Resultado:
+- Push a GitHub ✓
+- Changelog actualizado ✓
+- Cards generadas automáticamente ✓
+
