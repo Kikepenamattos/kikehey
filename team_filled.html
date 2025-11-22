@@ -73,6 +73,7 @@
 
         .project-name-group {
             flex: 1;
+            max-width: 1606px;
         }
 
         /* Project name display para teams publicados */
@@ -92,7 +93,10 @@
 
         .team-cost-group {
             flex: 1;
-            max-width: 839px;
+            max-width: 1606px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .search-input-group {
@@ -105,7 +109,7 @@
 
         /* Input width override para create_team */
         .dsu-input {
-            width: 840px;
+            max-width: 840px;
         }
         
         /* Asegurar que el icono del buscador esté dentro del input */
@@ -722,12 +726,12 @@
         
         /* Input Buscador - Override width para create_team */
         .search-input-group.dsu-input-buscador {
-            width: 100%;
+            /* width: 100%; */
             max-width: 840px;
         }
         
         .search-input-group.dsu-input-buscador .dsu-input {
-            width: 100%;
+            max-width: 840px;
         }
 
         .view-controls {
@@ -763,10 +767,7 @@
 
         /* Associated Projects */
         .associated-projects-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            max-width: 839px;
+            max-width: 73%;
         }
         
         /* Chips Container */
