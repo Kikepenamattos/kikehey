@@ -139,35 +139,49 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-top: 8px;
+            margin-top: 12px;
             padding-top: 12px;
             border-top: 1px solid #f4f7fb;
             font-size: 13px;
             color: #6b7b8a;
         }
 
+        .changelog-author-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
         .changelog-author-icon {
-            width: 16px;
-            height: 16px;
+            width: 24px;
+            height: 24px;
             background-color: #0a243f;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .changelog-author-email {
+            margin-left: auto;
+            color: #6b7b8a;
         }
 
         .changelog-hash {
             font-family: 'Courier New', monospace;
             font-size: 11px;
-            color: #9dff00;
-            background-color: #0a243f;
-            padding: 2px 6px;
-            border-radius: 4px;
+            color: #ffffff;
+            background-color: #2d7a2d;
+            padding: 4px 8px;
+            border-radius: 6px;
             display: inline-block;
-            margin-top: 4px;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         .empty-state {
@@ -320,13 +334,14 @@
             const now = new Date();
             const diff = now - date;
             
-            // Formato completo
+            // Formato completo: "3 de noviembre de 2025, 19:50"
             const options = { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
+                hour12: false
             };
             const fullDate = date.toLocaleDateString('es-ES', options);
             
@@ -484,9 +499,11 @@
                             </div>
                         </div>
                         <div class="changelog-author">
-                            <div class="changelog-author-icon">${initials}</div>
-                            <span>${escapeHtml(commit.author)}</span>
-                            <span style="margin-left: auto;">${escapeHtml(commit.email)}</span>
+                            <div class="changelog-author-info">
+                                <div class="changelog-author-icon">${initials}</div>
+                                <span>${escapeHtml(commit.author)}</span>
+                            </div>
+                            <span class="changelog-author-email">${escapeHtml(commit.email)}</span>
                         </div>
                         <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
                     </div>
@@ -506,6 +523,86 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '28fe5d7',
+                fullHash: '28fe5d7f2f8f54dbed2ad92e56715ff54ea4f18d',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 19:50:17 -0500',
+                message: 'Update: Reorganización de campos de contacto en página de perfil'
+            },
+            {
+                hash: 'bbad730',
+                fullHash: 'bbad730ed74fe32c3971c8c990f878225886ee38',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 19:32:17 -0500',
+                message: 'Add: Campo Team en página de perfil y mejoras de estilo'
+            },
+            {
+                hash: '4ddf6f1',
+                fullHash: '4ddf6f1f8c77d3a137318ba952aa6af657a5f737',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 19:21:17 -0500',
+                message: 'Update: Wrappers en página de perfil y ajustes de avatar'
+            },
+            {
+                hash: '567f2c7',
+                fullHash: '567f2c79fc0229c2583c8c0e8841d6bd8a9052ce',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 19:11:04 -0500',
+                message: 'Update: Reorganización de campos del modal Edit member y validación de cierre'
+            },
+            {
+                hash: '6d5138e',
+                fullHash: '6d5138e03a8a438396a163904b58412dfad7f223',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 18:54:41 -0500',
+                message: 'Update: Ajustes en botones de modales y layout de perfil'
+            },
+            {
+                hash: '281fcbe',
+                fullHash: '281fcbe0e0682e8fc8e7875c75c001618888ebf3',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 18:41:50 -0500',
+                message: 'Add: Modal Edit member integrado en member_profile.html'
+            },
+            {
+                hash: '2ee3b0f',
+                fullHash: '2ee3b0f19000db14cb0e26e3e925807d7daa5af7',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 18:28:07 -0500',
+                message: 'Add: Página de perfil de miembro independiente (member_profile.html)'
+            },
+            {
+                hash: '24e8cc3',
+                fullHash: '24e8cc3933988f7dcab5dae67de55ee9317862da',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 17:47:22 -0500',
+                message: 'Add: Componente Team dropdown para mover miembros entre teams en modal Edit member'
+            },
+            {
+                hash: '3ad6aae',
+                fullHash: '3ad6aae9d0d5ab0a9a661fe039c59fe3093dc819',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 17:39:07 -0500',
+                message: 'Add: Componente Portfolio con enlaces externos en modal Edit member'
+            },
+            {
+                hash: '39efe23',
+                fullHash: '39efe23cefb871b880fca964dfab0634d225863f',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-11-03 17:14:20 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: '557e942',
                 fullHash: '557e942df210bd483154e3d09721f54afe87c420',
