@@ -447,7 +447,14 @@
         
         // Función para parsear el historial de git - Cada línea se convierte en una card
         function parseGitHistory(text) {
+            if (!text || text.trim().length === 0) {
+                console.error('El archivo git_history.txt está vacío');
+                return [];
+            }
+            
             const lines = text.trim().split('\n').filter(line => line.trim());
+            console.log(`📄 Procesando ${lines.length} líneas del historial`);
+            
             const commits = lines.map((line, index) => {
                 const parts = line.split('|');
                 if (parts.length >= 5) {
@@ -462,11 +469,14 @@
                         message: parts.slice(4).join('|') // Por si el mensaje tiene |
                     };
                 }
-                console.warn(`Línea ${index + 1} del historial no tiene el formato correcto: ${line}`);
+                console.warn(`⚠️ Línea ${index + 1} del historial no tiene el formato correcto (${parts.length} partes): ${line.substring(0, 50)}...`);
                 return null;
             }).filter(commit => commit !== null);
             
             console.log(`✓ Parseados ${commits.length} commits válidos de ${lines.length} líneas`);
+            if (commits.length === 0) {
+                console.error('❌ No se encontraron commits válidos en el historial');
+            }
             // git log ya devuelve commits de más reciente a más antiguo
             // Mantener ese orden (no hacer reverse)
             return commits;
@@ -501,54 +511,81 @@
         function renderCommits(commits) {
             const container = document.getElementById('changelogContainer');
             
-            if (commits.length === 0) {
+            if (!commits || commits.length === 0) {
+                console.warn('⚠️ No hay commits para renderizar');
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">📝</div>
                         <p>No hay commits en el historial</p>
+                        <p style="margin-top: 8px; font-size: 12px; color: #6b7b8a;">Verifica que git_history.txt esté actualizado en el repositorio</p>
                     </div>
                 `;
                 document.getElementById('totalCommits').textContent = '0';
                 return;
             }
             
+            console.log(`🎨 Renderizando ${commits.length} commits...`);
             let html = '';
             let cardsCreated = 0;
             
             // Crear una card changelog-item por cada commit en el historial
-            commits.forEach(commit => {
-                const dateInfo = formatDate(commit.date);
-                const initials = getInitials(commit.author);
-                
-                // Crear card changelog-item con toda la información del commit
-                html += `
-                    <div class="changelog-item">
-                        <div class="changelog-header">
-                            <div class="changelog-title">${escapeHtml(commit.message)}</div>
-                            <div class="changelog-meta">
-                                <div class="changelog-date">${dateInfo.full}</div>
-                                <div class="changelog-time">${dateInfo.relative}</div>
+            commits.forEach((commit, index) => {
+                try {
+                    const dateInfo = formatDate(commit.date);
+                    const initials = getInitials(commit.author);
+                    
+                    // Crear card changelog-item con toda la información del commit
+                    html += `
+                        <div class="changelog-item">
+                            <div class="changelog-header">
+                                <div class="changelog-title">${escapeHtml(commit.message)}</div>
+                                <div class="changelog-meta">
+                                    <div class="changelog-date">${dateInfo.full}</div>
+                                    <div class="changelog-time">${dateInfo.relative}</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="changelog-author">
-                            <div class="changelog-author-info">
-                                <div class="changelog-author-icon">${initials}</div>
-                                <span>${escapeHtml(commit.author)}</span>
+                            <div class="changelog-author">
+                                <div class="changelog-author-info">
+                                    <div class="changelog-author-icon">${initials}</div>
+                                    <span>${escapeHtml(commit.author)}</span>
+                                </div>
+                                <span class="changelog-author-email">${escapeHtml(commit.email)}</span>
                             </div>
-                            <span class="changelog-author-email">${escapeHtml(commit.email)}</span>
+                            <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
                         </div>
-                        <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
+                    `;
+                    cardsCreated++;
+                } catch (error) {
+                    console.error(`❌ Error al renderizar commit ${index + 1}:`, error, commit);
+                }
+            });
+            
+            if (html.length === 0) {
+                console.error('❌ No se generó HTML para las cards');
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <p>Error al generar las cards del changelog</p>
+                        <p style="margin-top: 8px; font-size: 12px; color: #6b7b8a;">Revisa la consola para más detalles</p>
                     </div>
                 `;
-                cardsCreated++;
-            });
+                return;
+            }
             
             container.innerHTML = html;
             document.getElementById('totalCommits').textContent = commits.length;
             document.getElementById('lastUpdate').textContent = new Date().toLocaleString('es-ES');
             allCommits = commits;
             
-            console.log(`✓ Se crearon ${cardsCreated} cards changelog-item`);
+            console.log(`✅ Se crearon ${cardsCreated} cards changelog-item exitosamente`);
+            
+            // Verificar que las cards se insertaron en el DOM
+            const insertedCards = document.querySelectorAll('.changelog-item');
+            if (insertedCards.length !== cardsCreated) {
+                console.warn(`⚠️ Advertencia: Se esperaban ${cardsCreated} cards pero se encontraron ${insertedCards.length} en el DOM`);
+            } else {
+                console.log(`✓ Verificación: ${insertedCards.length} cards encontradas en el DOM`);
+            }
         }
         
         function escapeHtml(text) {
