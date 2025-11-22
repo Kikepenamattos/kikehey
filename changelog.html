@@ -117,6 +117,17 @@
             min-width: 200px;
         }
 
+        .changelog-title a {
+            color: #0a243f;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .changelog-title a:hover {
+            color: #9dff00;
+            text-decoration: underline;
+        }
+
         .changelog-meta {
             display: flex;
             flex-direction: column;
@@ -182,6 +193,18 @@
             display: inline-block;
             margin-top: 8px;
             font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+
+        .changelog-hash:hover {
+            background-color: #1f5a1f;
+        }
+
+        .changelog-hash a {
+            color: #ffffff;
+            text-decoration: none;
         }
 
         .empty-state {
@@ -534,11 +557,23 @@
                     const dateInfo = formatDate(commit.date);
                     const initials = getInitials(commit.author);
                     
+                    // Crear URLs para GitHub
+                    const repoUrl = 'https://github.com/Kikepenamattos/kikehey';
+                    const commitHash = commit.fullHash || commit.hash;
+                    const commitUrl = `${repoUrl}/commit/${commitHash}`;
+                    // Usar el hash completo para buscar el commit específico (más preciso que buscar por mensaje)
+                    const searchUrl = `${repoUrl}/search?q=${encodeURIComponent(commitHash)}&type=commits`;
+                    const shortHash = commit.hash || commit.fullHash?.substring(0, 7);
+                    
                     // Crear card changelog-item con toda la información del commit
                     html += `
                         <div class="changelog-item">
                             <div class="changelog-header">
-                                <div class="changelog-title">${escapeHtml(commit.message)}</div>
+                                <div class="changelog-title">
+                                    <a href="${commitUrl}" target="_blank" rel="noopener noreferrer" title="Ver commit '${escapeHtml(commit.message)}' en GitHub (${shortHash})">
+                                        ${escapeHtml(commit.message)}
+                                    </a>
+                                </div>
                                 <div class="changelog-meta">
                                     <div class="changelog-date">${dateInfo.full}</div>
                                     <div class="changelog-time">${dateInfo.relative}</div>
@@ -551,7 +586,9 @@
                                 </div>
                                 <span class="changelog-author-email">${escapeHtml(commit.email)}</span>
                             </div>
-                            <div class="changelog-hash">${commit.hash || commit.fullHash?.substring(0, 7)}</div>
+                            <a href="${commitUrl}" target="_blank" rel="noopener noreferrer" class="changelog-hash" title="Ver commit ${shortHash} completo en GitHub">
+                                ${shortHash}
+                            </a>
                         </div>
                     `;
                     cardsCreated++;

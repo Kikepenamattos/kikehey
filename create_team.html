@@ -735,10 +735,10 @@
 
         .team-members-grid {
             display: flex;
-            gap: 24px;
+            gap: 41px;
             flex-wrap: wrap;
             align-items: flex-start;
-            justify-content: space-between;
+            /* justify-content: start; */
         }
 
 
@@ -1044,7 +1044,7 @@
                         </span>
                         Delete team
                     </button>
-                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Save draft</button>
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Copy team</button>
                     <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
                 </div>
             </div>
@@ -1732,9 +1732,9 @@
                 }
             });
 
-            // Save Draft
+            // Copy Team
             saveDraftBtn.addEventListener('click', function() {
-                saveDraft();
+                copyTeam();
             });
 
             // Publish
@@ -1778,6 +1778,56 @@
 
             await saveProjectToStorage(currentProjectId, projectData).catch(err => console.error('Error al guardar draft:', err));
             console.log('Draft guardado');
+        }
+
+        // Función para duplicar el team actual
+        async function copyTeam() {
+            if (!currentProjectId) {
+                alert('No hay un team para duplicar. Por favor, crea o edita un team primero.');
+                return;
+            }
+
+            // Obtener datos del team actual
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                alert('No se pudieron obtener los datos del team.');
+                return;
+            }
+
+            const currentTeam = projectData.teams.find(t => t.id === currentProjectId);
+            if (!currentTeam) {
+                alert('No se encontró el team actual.');
+                return;
+            }
+
+            // Crear copia del team
+            const copiedTeam = {
+                ...currentTeam,
+                id: Date.now().toString(), // Nuevo ID único
+                name: `${currentTeam.name} (Copy)`,
+                status: 'published', // Publicar automáticamente para que aparezca en el sidebar
+                createdAt: Date.now(),
+                updatedAt: Date.now(),
+                publishedAt: Date.now() // Publicar inmediatamente
+            };
+
+            // Agregar el team copiado a la lista
+            projectData.teams.push(copiedTeam);
+
+            // Guardar los datos
+            const saved = await DocuProjectData.saveProjectData(projectData);
+            if (!saved) {
+                alert('Error al guardar la copia del team.');
+                return;
+            }
+
+            console.log('✅ Team duplicado:', copiedTeam.name);
+
+            // Recargar el sidebar para mostrar el nuevo team
+            loadTeamsInSidebar();
+
+            // Mostrar mensaje de éxito
+            alert(`Team "${currentTeam.name}" ha sido duplicado como "${copiedTeam.name}"`);
         }
 
         async function publishProject() {
