@@ -1,3 +1,5 @@
+d284b94c1824acc7fcee6dda092e7dcfbd0320b6|Ubits|ubits@macbookpro.lan|2025-11-22 12:22:39 -0500|Update: Mejorar logging y manejo de errores en carga del changelog
+9f33e478489b982d19051d01cf8bb0c3486805ba|Ubits|ubits@macbookpro.lan|2025-11-22 12:17:16 -0500|Update: Actualizar changelog con últimos cambios
 25998414daa70a2470338b043ff1eed431e691e4|Ubits|ubits@macbookpro.lan|2025-11-22 12:17:12 -0500|Fix: Cargar git_history.txt desde GitHub cuando falla carga local
 38324686239261032714123346d04e850de5db8e|Ubits|ubits@macbookpro.lan|2025-11-22 12:13:42 -0500|Update: Actualizar changelog con últimos cambios
 d5cd0cf95c7c6f19dab65fa001ce6a5431a0f7af|Ubits|ubits@macbookpro.lan|2025-11-22 12:13:33 -0500|Update: Mejorar generación automática de cards changelog-item por cada commit
