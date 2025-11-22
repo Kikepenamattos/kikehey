@@ -1,3 +1,5 @@
+6f0951e5beef0b1da134092ff7f1f7e0d962ca0f|Ubits|ubits@macbookpro.lan|2025-11-22 18:29:03 -0500|Fix: Integrar IndexedDB para cargar imágenes de perfil en member_profile.html
+6b44558faef6f16db08398243e82864390da9f8e|Ubits|ubits@macbookpro.lan|2025-11-22 18:19:47 -0500|Update: Actualizar changelog con últimos cambios
 17fb522b3bb15165e5bf5ff4c0f52eb2f1b3ff6a|Ubits|ubits@macbookpro.lan|2025-11-22 18:19:12 -0500|Update: Mejoras en duplicación de teams, ordenamiento de changelog y redirección después de publicar
 8b2c314ca9600e8721404cb55c37fdd8fde0535e|Ubits|ubits@macbookpro.lan|2025-11-22 17:55:37 -0500|Update: Actualizar changelog con últimos cambios
 6a3362682b4faeb5bf6583cd8432e4236f7edc21|Ubits|ubits@macbookpro.lan|2025-11-22 17:21:07 -0500|Update: Actualizar changelog con últimos cambios
