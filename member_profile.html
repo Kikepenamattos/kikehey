@@ -16,6 +16,7 @@
     <!-- Auth and Project Data Scripts -->
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
     
     <style>
         * {
@@ -1089,17 +1090,65 @@
 
     <script>
         /**
+         * Helper function to get member image from IndexedDB or return base64/default
+         */
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB, obtener la imagen
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        if (imageData) {
+                            return imageData;
+                        } else {
+                            console.warn('⚠️ Imagen no encontrada en IndexedDB:', imageId);
+                            return 'images/avatar_icon.svg';
+                        }
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+
+        /**
          * Load member profile data
          */
-        function loadMemberProfileData(member) {
-            // Avatar
+        async function loadMemberProfileData(member) {
+            // Avatar - Cargar desde IndexedDB si es necesario
             const avatarIcon = document.getElementById('profilePageAvatarIcon');
             const avatarPreview = document.getElementById('profilePageAvatarPreview');
-            if (member.image && member.image.trim() !== '') {
-                if (avatarIcon) avatarIcon.style.display = 'none';
-                if (avatarPreview) {
-                    avatarPreview.src = member.image;
-                    avatarPreview.style.display = 'block';
+            
+            const memberImageRef = member.image || member.avatar || '';
+            if (memberImageRef && memberImageRef.trim() !== '') {
+                try {
+                    const imageSrc = await getMemberImage(memberImageRef);
+                    if (avatarIcon) avatarIcon.style.display = 'none';
+                    if (avatarPreview) {
+                        avatarPreview.src = imageSrc;
+                        avatarPreview.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('❌ Error al cargar imagen del miembro:', error);
+                    if (avatarIcon) avatarIcon.style.display = 'block';
+                    if (avatarPreview) avatarPreview.style.display = 'none';
                 }
             } else {
                 if (avatarIcon) avatarIcon.style.display = 'block';
@@ -1251,8 +1300,8 @@
                 return;
             }
             
-            // Load member data
-            loadMemberProfileData(member);
+            // Load member data (async)
+            loadMemberProfileData(member).catch(err => console.error('Error al cargar datos del miembro:', err));
             
             // Update page title
             const memberName = `${member.name || ''} ${member.lastName || ''}`.trim();
@@ -1400,15 +1449,25 @@
                 modalMemberTeam.value = currentTeamId;
             }
             
-            // Avatar
+            // Avatar - Cargar desde IndexedDB si es necesario
             const modalAvatarIcon = document.getElementById('modalAvatarIcon');
             const modalAvatarPreview = document.getElementById('modalAvatarPreview');
-            if (member.image && member.image.trim() !== '') {
-                if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
-                if (modalAvatarPreview) {
-                    modalAvatarPreview.src = member.image;
-                    modalAvatarPreview.style.display = 'block';
-                }
+            const memberImageRef = member.image || member.avatar || '';
+            if (memberImageRef && memberImageRef.trim() !== '') {
+                getMemberImage(memberImageRef).then(imageSrc => {
+                    if (modalAvatarIcon) modalAvatarIcon.style.display = 'none';
+                    if (modalAvatarPreview) {
+                        modalAvatarPreview.src = imageSrc;
+                        modalAvatarPreview.style.display = 'block';
+                    }
+                }).catch(error => {
+                    console.error('❌ Error al cargar imagen en modal:', error);
+                    if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
+                    if (modalAvatarPreview) {
+                        modalAvatarPreview.style.display = 'none';
+                        modalAvatarPreview.src = '';
+                    }
+                });
             } else {
                 if (modalAvatarIcon) modalAvatarIcon.style.display = 'block';
                 if (modalAvatarPreview) {
