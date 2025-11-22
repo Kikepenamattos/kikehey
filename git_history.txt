@@ -1,3 +1,5 @@
+6a3362682b4faeb5bf6583cd8432e4236f7edc21|Ubits|ubits@macbookpro.lan|2025-11-22 17:21:07 -0500|Update: Actualizar changelog con últimos cambios
+474ab619292c62b34892cd885a8a344ff8b66ff7|Ubits|ubits@macbookpro.lan|2025-11-22 17:55:29 -0500|Add: Funcionalidad de duplicar team y enlaces a commits en changelog
 9cc07edd2894585261124370d2444519f5bba42d|Ubits|ubits@macbookpro.lan|2025-11-22 17:20:57 -0500|Update: Ajustar layout de team-members-grid y eliminar alertas de limpieza automática
 6b9f0582f61149190f6e33f42ff19234a95e2531|Ubits|ubits@macbookpro.lan|2025-11-22 16:58:01 -0500|Update: Actualizar changelog con últimos cambios
 35a59d6f338eba8bc6a4b43c665f521c8196550a|Ubits|ubits@macbookpro.lan|2025-11-22 16:57:05 -0500|Add: Sistema IndexedDB para almacenamiento de imágenes y migración automática de base64
