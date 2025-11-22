@@ -1,3 +1,4 @@
+e4d4f581c708b9daf3e36511c8df22679866f554|Ubits|ubits@macbookpro.lan|2025-11-22 11:58:14 -0500|Update: Actualizar changelog con últimos cambios
 c3ca5d1cc516a9944b39d6f4aa0c36afb2ad06cd|Ubits|ubits@macbookpro.lan|2025-11-22 11:57:54 -0500|Update: Ajustes de max-width en inputs y grupos de búsqueda
 ac74433661643a54488345e71d0b074569806d3d|Ubits|ubits@macbookpro.lan|2025-11-22 11:44:27 -0500|Revert "Update: Reorganización de campos de contacto en página de perfil"
 28fe5d7f2f8f54dbed2ad92e56715ff54ea4f18d|Ubits|ubits@macbookpro.lan|2025-11-03 19:50:17 -0500|Update: Reorganización de campos de contacto en página de perfil
