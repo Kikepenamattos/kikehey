@@ -1,3 +1,5 @@
+17fb522b3bb15165e5bf5ff4c0f52eb2f1b3ff6a|Ubits|ubits@macbookpro.lan|2025-11-22 18:19:12 -0500|Update: Mejoras en duplicación de teams, ordenamiento de changelog y redirección después de publicar
+8b2c314ca9600e8721404cb55c37fdd8fde0535e|Ubits|ubits@macbookpro.lan|2025-11-22 17:55:37 -0500|Update: Actualizar changelog con últimos cambios
 6a3362682b4faeb5bf6583cd8432e4236f7edc21|Ubits|ubits@macbookpro.lan|2025-11-22 17:21:07 -0500|Update: Actualizar changelog con últimos cambios
 474ab619292c62b34892cd885a8a344ff8b66ff7|Ubits|ubits@macbookpro.lan|2025-11-22 17:55:29 -0500|Add: Funcionalidad de duplicar team y enlaces a commits en changelog
 9cc07edd2894585261124370d2444519f5bba42d|Ubits|ubits@macbookpro.lan|2025-11-22 17:20:57 -0500|Update: Ajustar layout de team-members-grid y eliminar alertas de limpieza automática
