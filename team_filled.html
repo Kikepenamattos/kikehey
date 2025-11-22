@@ -1656,6 +1656,7 @@
                     // Limpiar sessionStorage para crear un team nuevo
                     try {
                         sessionStorage.removeItem('docu_selected_team_id');
+                        sessionStorage.setItem('docu_create_new_team', 'true'); // Marcar que se está creando un nuevo team
                     } catch (error) {
                         console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
                     }

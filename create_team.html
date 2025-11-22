@@ -62,6 +62,10 @@
             display: flex;
             justify-content: flex-end;
             margin-bottom: 8px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
         }
         
         .edit-close-button {
@@ -1664,6 +1668,7 @@
             // Limpiar el team seleccionado en sessionStorage al crear un nuevo team
             try {
                 sessionStorage.removeItem('docu_selected_team_id');
+                sessionStorage.setItem('docu_create_new_team', 'true'); // Marcar que se está creando un nuevo team
                 console.log('✅ Team seleccionado eliminado de sessionStorage');
             } catch (error) {
                 console.warn('⚠️ No se pudo limpiar el team seleccionado:', error);
@@ -2354,6 +2359,22 @@
             
             // Deshabilitar secondary-actions
             disableSecondaryActions();
+            
+            // Limpiar imágenes del modal si está abierto
+            const modalAvatarIcon = document.getElementById('modalAvatarIcon');
+            const modalAvatarPreview = document.getElementById('modalAvatarPreview');
+            const modalAvatarInput = document.getElementById('modalAvatarInput');
+            
+            if (modalAvatarIcon) {
+                modalAvatarIcon.style.display = 'block';
+            }
+            if (modalAvatarPreview) {
+                modalAvatarPreview.style.display = 'none';
+                modalAvatarPreview.src = '';
+            }
+            if (modalAvatarInput) {
+                modalAvatarInput.value = '';
+            }
             
             console.log('✅ Formulario limpiado completamente');
         }
@@ -4567,6 +4588,9 @@
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
                     closeEditBtn.style.display = 'flex';
+                    console.log('✅ Botón cerrar mostrado en modo edición');
+                } else {
+                    console.warn('⚠️ Botón cerrar no encontrado en el DOM');
                 }
                 
                 const projectDataObj = DocuProjectData.getProjectData();
@@ -4659,6 +4683,20 @@
                 console.warn('⚠️ Error al leer sessionStorage:', error);
             }
 
+            // Verificar si se está creando un nuevo team (no cargar drafts automáticamente)
+            try {
+                const isCreatingNewTeam = sessionStorage.getItem('docu_create_new_team') === 'true';
+                if (isCreatingNewTeam) {
+                    console.log('🆕 Modo "Create new team" activo - no cargar drafts automáticamente');
+                    sessionStorage.removeItem('docu_create_new_team'); // Limpiar la marca
+                    // Asegurar que el formulario esté limpio
+                    clearForm();
+                    return; // No cargar ningún draft
+                }
+            } catch (error) {
+                console.warn('⚠️ Error al verificar modo create new team:', error);
+            }
+            
             // Si no hay team seleccionado, buscar el proyecto draft más reciente
             const drafts = projectDataObj.teams.filter(t => t.status === 'draft');
             console.log('📝 Teams en draft:', drafts.length);
@@ -4678,7 +4716,14 @@
                 return;
             }
 
-            // Si no hay drafts, cargar el team publicado más reciente
+            // Si no hay drafts y no hay team seleccionado, mostrar formulario vacío
+            // NO cargar automáticamente el team publicado más reciente
+            console.log('ℹ️ No hay team seleccionado ni drafts - mostrando formulario vacío');
+            clearForm();
+            return;
+            
+            // Código comentado: No cargar automáticamente el team publicado más reciente
+            /*
             const publishedTeams = projectDataObj.teams.filter(t => 
                 t.status === 'published' && 
                 t.name && 
@@ -4724,6 +4769,7 @@
             } else {
                 console.log('ℹ️ No hay teams publicados ni drafts para cargar');
             }
+            */
         }
 
         function loadProjectData(projectData, allowEditPublished = false) {
@@ -4767,6 +4813,9 @@
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
                     closeEditBtn.style.display = 'flex';
+                    console.log('✅ Botón cerrar mostrado para team publicado');
+                } else {
+                    console.warn('⚠️ Botón cerrar no encontrado en el DOM');
                 }
             } else {
                 // Ocultar botón de cerrar si no estamos en modo edición
