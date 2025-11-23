@@ -1,3 +1,5 @@
+04758d0ead27c76ef63fe0b22c1e00bb4f2cd6f8|Ubits|ubits@macbookpro.lan|2025-11-22 19:11:53 -0500|Update: Habilitar botón Duplicate team cuando la plantilla tiene información
+7e5c08763359070810d7309f699915a3068f0c3b|Ubits|ubits@macbookpro.lan|2025-11-22 18:43:52 -0500|Update: Actualizar changelog con últimos cambios
 ccdb716815a19b7cc786b30bd541442c21177a2a|Ubits|ubits@macbookpro.lan|2025-11-22 18:40:27 -0500|Revert "Fix: Integrar IndexedDB para cargar imágenes de perfil en member_profile.html"
 186b05ef792bef82a68529a8202cf34dab978cc4|Ubits|ubits@macbookpro.lan|2025-11-22 18:43:47 -0500|Fix: Integrar IndexedDB para cargar imágenes de perfil en member_profile.html
 c6dc20cf71710675899240ee23b680d53833085f|Ubits|ubits@macbookpro.lan|2025-11-22 18:29:12 -0500|Update: Actualizar changelog con últimos cambios
