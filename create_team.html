@@ -95,7 +95,7 @@
         .data-level {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 24px;
             position: relative;
         }
         
@@ -188,17 +188,33 @@
             justify-content: center;
             cursor: pointer;
             z-index: 2;
-            opacity: 0;
-            pointer-events: none;
+            opacity: 1;
+            pointer-events: auto;
             transition: opacity 0.2s ease, transform 0.2s ease;
-            /* Asegurar que el icono esté dentro del área del input */
             margin: 0;
             padding: 0;
         }
         
         .dsu-input-buscador__send-icon--active {
-            opacity: 1;
-            pointer-events: auto;
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        .dsu-input-buscador__send-icon:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .dsu-input-buscador__send-icon img,
+        .dsu-input-buscador__send-icon svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Asegurar que el icono no se vea afectado por el estado disabled del contenedor */
+        .secondary-actions.disabled .dsu-input-buscador__send-icon--active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
         }
 
         /* Primary Actions Level */
@@ -657,6 +673,7 @@
             align-items: center;
             gap: 32px;
             justify-content: space-between;
+            margin-bottom: 16px;
         }
         
         /* Estado deshabilitado de secondary-actions */
@@ -724,7 +741,7 @@
         /* Associated Projects - Estilos ahora en design-system/components/input.css */
         /* Se mantiene max-width específico para create_team */
         .associated-projects-group {
-            max-width: 73%;
+            /* max-width: 73%; */
         }
 
         /* Team Members Section */
@@ -965,56 +982,57 @@
                             >
                         </div>
                     </div>
-                </div>
 
-                <!-- Secondary Action Levels -->
-                <div class="secondary-actions disabled">
-                    <div class="dsu-input-buscador search-input-group">
+                    <!-- Associated Projects -->
+                    <div class="dsu-input-group associated-projects-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Associated projects:</span>
+                            </div>
+                        </div>
                         <input 
                             type="text" 
-                            id="searchInput" 
-                            class="dsu-input dsu-input--only" 
-                            placeholder="Missing someone? find it here."
+                            id="associatedProjects" 
+                            class="dsu-input" 
+                            placeholder="Type project name and press Enter"
                         >
-                        <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
-                            <img src="images/send.svg" alt="Send">
-                        </span>
-                    </div>
-                    <div class="view-controls">
-                        <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
-                            <img src="images/grid.svg" alt="Grid" class="btn-icon">
-                        </button>
-                        <button class="view-control-btn" id="listViewBtn" title="List view">
-                            <img src="images/list.svg" alt="List" class="btn-icon">
-                        </button>
-                        <button class="view-control-btn" id="filtersBtn">
-                            <span>Filters</span>
-                            <img src="images/filter.svg" alt="Filter" class="btn-icon">
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Associated Projects -->
-                <div class="dsu-input-group associated-projects-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Associated projects:</span>
-                        </div>
-                    </div>
-                    <input 
-                        type="text" 
-                        id="associatedProjects" 
-                        class="dsu-input" 
-                        placeholder="Type project name and press Enter"
-                    >
                     <div class="projects-chips-container" id="projectsChipsContainer">
                         <!-- Chips will be dynamically added here -->
+                        </div>
                     </div>
                 </div>
 
                 <!-- Team Members Section -->
                 <div class="team-members-section">
                     <h2 class="team-members-title">Team members</h2>
+                    
+                    <!-- Secondary Action Levels -->
+                    <div class="secondary-actions disabled">
+                        <div class="dsu-input-buscador search-input-group">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                class="dsu-input dsu-input--only" 
+                                placeholder="Missing someone? find it here."
+                            >
+                            <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
+                                <img src="images/send.svg" alt="Send">
+                            </span>
+                        </div>
+                        <div class="view-controls">
+                            <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
+                                <img src="images/grid.svg" alt="Grid" class="btn-icon">
+                            </button>
+                            <button class="view-control-btn" id="listViewBtn" title="List view">
+                                <img src="images/list.svg" alt="List" class="btn-icon">
+                            </button>
+                            <button class="view-control-btn" id="filtersBtn">
+                                <span>Filters</span>
+                                <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div class="team-members-grid" id="teamMembersGrid">
                         <!-- Placeholder Profile Card -->
                         <div class="dsu-profile-card-placeholder" id="addMemberCard">
