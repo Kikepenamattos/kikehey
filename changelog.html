@@ -433,38 +433,56 @@
 
             const timestamp = new Date().getTime();
             const githubUrl = 'https://raw.githubusercontent.com/Kikepenamattos/kikehey/main/git_history.txt';
+            const isFileProtocol = window.location.protocol === 'file:';
             
-            // Intentar cargar desde ruta local primero
-            try {
-                const localResponse = await fetch(`git_history.txt?t=${timestamp}`);
-                if (localResponse.ok) {
-                    const text = await localResponse.text();
-                    const commits = parseGitHistory(text);
-                    console.log(`📝 Cargados ${commits.length} commits del historial local`);
-                    renderCommits(commits);
-                    return;
+            // Si estamos en file://, intentar GitHub primero (más confiable)
+            if (isFileProtocol) {
+                try {
+                    console.log('📂 Modo file:// detectado, cargando desde GitHub...');
+                    const githubResponse = await fetch(`${githubUrl}?t=${timestamp}`);
+                    if (githubResponse.ok) {
+                        const text = await githubResponse.text();
+                        const commits = parseGitHistory(text);
+                        console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
+                        renderCommits(commits);
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('⚠️ No se pudo cargar git_history.txt desde GitHub:', error);
                 }
-            } catch (error) {
-                console.log('No se pudo cargar git_history.txt localmente:', error);
-            }
-            
-            // Si falla local, intentar desde GitHub
-            try {
-                console.log('Intentando cargar desde GitHub...');
-                const githubResponse = await fetch(`${githubUrl}?t=${timestamp}`);
-                if (githubResponse.ok) {
-                    const text = await githubResponse.text();
-                    const commits = parseGitHistory(text);
-                    console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
-                    renderCommits(commits);
-                    return;
+            } else {
+                // Si estamos en http/https, intentar local primero
+                try {
+                    const localResponse = await fetch(`git_history.txt?t=${timestamp}`);
+                    if (localResponse.ok) {
+                        const text = await localResponse.text();
+                        const commits = parseGitHistory(text);
+                        console.log(`📝 Cargados ${commits.length} commits del historial local`);
+                        renderCommits(commits);
+                        return;
+                    }
+                } catch (error) {
+                    console.log('No se pudo cargar git_history.txt localmente:', error);
                 }
-            } catch (error) {
-                console.log('No se pudo cargar git_history.txt desde GitHub:', error);
+                
+                // Si falla local, intentar desde GitHub
+                try {
+                    console.log('Intentando cargar desde GitHub...');
+                    const githubResponse = await fetch(`${githubUrl}?t=${timestamp}`);
+                    if (githubResponse.ok) {
+                        const text = await githubResponse.text();
+                        const commits = parseGitHistory(text);
+                        console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
+                        renderCommits(commits);
+                        return;
+                    }
+                } catch (error) {
+                    console.log('No se pudo cargar git_history.txt desde GitHub:', error);
+                }
             }
             
             // Si ambas fallan, usar datos embebidos
-            console.log('Usando datos embebidos como fallback');
+            console.warn('⚠️ Usando datos embebidos como fallback (pueden estar desactualizados)');
             renderCommits(realCommits);
         }
         
