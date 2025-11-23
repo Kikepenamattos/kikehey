@@ -1,3 +1,5 @@
+b213a5b9117ac184f096769da18acb5e650e98a7|Ubits|ubits@macbookpro.lan|2025-11-22 19:30:35 -0500|Update: Ajustar espaciado del botón cerrar en modo edición con padding-top de 48px
+5a26a39045e306f9fbb08427c3d9e3445630a16a|Ubits|ubits@macbookpro.lan|2025-11-22 19:11:59 -0500|Update: Actualizar changelog con últimos cambios
 04758d0ead27c76ef63fe0b22c1e00bb4f2cd6f8|Ubits|ubits@macbookpro.lan|2025-11-22 19:11:53 -0500|Update: Habilitar botón Duplicate team cuando la plantilla tiene información
 7e5c08763359070810d7309f699915a3068f0c3b|Ubits|ubits@macbookpro.lan|2025-11-22 18:43:52 -0500|Update: Actualizar changelog con últimos cambios
 ccdb716815a19b7cc786b30bd541442c21177a2a|Ubits|ubits@macbookpro.lan|2025-11-22 18:40:27 -0500|Revert "Fix: Integrar IndexedDB para cargar imágenes de perfil en member_profile.html"
