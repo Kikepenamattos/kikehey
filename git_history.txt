@@ -1,3 +1,5 @@
+2357b352ced20d2e6e6012f5ad664746b782cc0c|Ubits|ubits@macbookpro.lan|2025-11-23 16:31:19 -0500|Update: Mover secondary-actions a team-members-section y hacer icono de buscador siempre visible en team_filled.html
+3c4b156c9259a7a45769953984db5138368745f8|Ubits|ubits@macbookpro.lan|2025-11-22 20:05:07 -0500|Update: Actualizar changelog con últimos cambios
 d4e275c129d5000476f6ac25f35d8b8aa36e4a62|Ubits|ubits@macbookpro.lan|2025-11-22 20:04:41 -0500|Update: Comentar justify-content en secondary-actions y comentar max-width en associated-projects-group
 4e4d5a3a6a3e2195ba2c301cb3f5de743cd6a9c5|Ubits|ubits@macbookpro.lan|2025-11-22 20:00:01 -0500|Update: Actualizar changelog con últimos cambios
 29d3149a2b291b8f3403185517af33b1afc9de43|Ubits|ubits@macbookpro.lan|2025-11-22 19:59:55 -0500|Update: Reorganizar layout de data-level, mover secondary-actions a team-members-section y hacer icono de buscador siempre visible
