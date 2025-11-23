@@ -1,3 +1,4 @@
+bff3745188c7ceb09d239257092b02a93c574925|Ubits|ubits@macbookpro.lan|2025-11-23 17:33:05 -0500|Update: Actualizar changelog con últimos cambios
 bc6c6909a5c5e649e70d1f9a67db5d81c3ad6266|Ubits|ubits@macbookpro.lan|2025-11-23 17:33:02 -0500|Update: Comentar max-width en search-input-group y dsu-input en team_filled.html
 fcc2188fd2269d1926261341747f30ece20f14dc|Ubits|ubits@macbookpro.lan|2025-11-23 17:26:31 -0500|Update: Actualizar changelog con últimos cambios
 e7cab06dafd60e5c20e7e4658ea0a86b4c2a81ef|Ubits|ubits@macbookpro.lan|2025-11-23 17:26:26 -0500|Fix: Mejorar carga de changelog desde file:// protocol
