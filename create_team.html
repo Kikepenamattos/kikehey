@@ -61,11 +61,11 @@
         .edit-close-button-container {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 8px;
             position: absolute;
             top: 0;
             right: 0;
             z-index: 10;
+            height: 32px; /* Altura del botón */
         }
         
         .edit-close-button {
@@ -97,6 +97,11 @@
             flex-direction: column;
             gap: 16px;
             position: relative;
+        }
+        
+        /* Agregar padding-top cuando el botón cerrar está presente */
+        .data-level:has(.edit-close-button-container) {
+            padding-top: 48px;
         }
 
         /* Name Level */
