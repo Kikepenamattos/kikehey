@@ -1048,7 +1048,7 @@
                         </span>
                         Delete team
                     </button>
-                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">Duplicate team</button>
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn" disabled>Duplicate team</button>
                     <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
                 </div>
             </div>
@@ -1685,6 +1685,11 @@
             currentProjectId = null;
             currentProjectData = null;
             
+            // Deshabilitar botón Duplicate team al crear nuevo team
+            if (typeof window.updateDuplicateButtonState === 'function') {
+                window.updateDuplicateButtonState();
+            }
+            
             // Deshabilitar secondary-actions
             disableSecondaryActions();
             
@@ -1725,11 +1730,40 @@
             const saveDraftBtn = document.getElementById('saveDraftBtn');
             const deleteTeamBtn = document.getElementById('deleteTeamBtn');
 
+            // Verificar si la plantilla tiene información para habilitar/deshabilitar botón Duplicate team
+            function updateDuplicateButtonState() {
+                if (!saveDraftBtn) return;
+                
+                // Verificar si hay información en la plantilla
+                const projectNameInput = document.getElementById('projectName');
+                const hasProjectName = projectNameInput && projectNameInput.value.trim().length > 0;
+                const hasMembers = typeof membersList !== 'undefined' && membersList.length > 0;
+                const hasProjectId = currentProjectId !== null && currentProjectId !== undefined;
+                
+                // Habilitar si hay nombre de proyecto O miembros O un projectId cargado
+                const hasInformation = hasProjectName || hasMembers || hasProjectId;
+                
+                saveDraftBtn.disabled = !hasInformation;
+                if (!hasInformation) {
+                    saveDraftBtn.style.opacity = '0.5';
+                    saveDraftBtn.style.cursor = 'not-allowed';
+                } else {
+                    saveDraftBtn.style.opacity = '1';
+                    saveDraftBtn.style.cursor = 'pointer';
+                }
+            }
+            
+            // Actualizar estado inicial del botón
+            updateDuplicateButtonState();
+
             // Validación: Habilitar/deshabilitar botón Publish
             // El botón Share team permanece siempre deshabilitado en esta pantalla
             projectNameInput.addEventListener('input', function() {
                 const hasProjectName = projectNameInput.value.trim().length > 0;
                 publishBtn.disabled = !hasProjectName;
+                
+                // Actualizar estado del botón Duplicate team cuando cambia el nombre
+                updateDuplicateButtonState();
                 
                 // Guardar automáticamente cuando se escribe el nombre
                 if (hasProjectName) {
@@ -1737,10 +1771,19 @@
                 }
             });
 
-            // Duplicate Team
+            // Duplicate Team - Solo funciona en modo edición
             saveDraftBtn.addEventListener('click', function() {
+                if (saveDraftBtn.disabled) {
+                    return; // No hacer nada si el botón está deshabilitado
+                }
                 copyTeam();
             });
+            
+            // Actualizar estado del botón cuando cambie la URL o se cargue un proyecto
+            window.addEventListener('popstate', updateDuplicateButtonState);
+            
+            // Exponer función para actualizar el estado desde otras partes del código
+            window.updateDuplicateButtonState = updateDuplicateButtonState;
 
             // Publish
             publishBtn.addEventListener('click', function() {
@@ -2308,6 +2351,11 @@
 
         function clearForm() {
             console.log('=== clearForm llamado ===');
+            
+            // Deshabilitar botón Duplicate team al limpiar formulario
+            if (typeof window.updateDuplicateButtonState === 'function') {
+                window.updateDuplicateButtonState();
+            }
             
             // Limpiar campos de texto
             const projectNameInput = document.getElementById('projectName');
@@ -3706,6 +3754,11 @@
                 enableSecondaryActions();
             }
             
+            // Actualizar estado del botón Duplicate team
+            if (typeof window.updateDuplicateButtonState === 'function') {
+                window.updateDuplicateButtonState();
+            }
+            
             // Crear tarjeta de miembro visual
             createMemberCard(memberData).catch(err => console.error('Error al crear card:', err));
             
@@ -3780,6 +3833,11 @@
             // Si no hay miembros, deshabilitar secondary-actions
             if (membersList.length === 0) {
                 disableSecondaryActions();
+            }
+            
+            // Actualizar estado del botón Duplicate team
+            if (typeof window.updateDuplicateButtonState === 'function') {
+                window.updateDuplicateButtonState();
             }
             
             // Actualizar el costo del equipo
@@ -4593,6 +4651,11 @@
                     console.warn('⚠️ Botón cerrar no encontrado en el DOM');
                 }
                 
+                // Actualizar estado del botón Duplicate team (siempre deshabilitado)
+                if (typeof window.updateDuplicateButtonState === 'function') {
+                    window.updateDuplicateButtonState();
+                }
+                
                 const projectDataObj = DocuProjectData.getProjectData();
                 if (projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams)) {
                     const teamToEdit = projectDataObj.teams.find(t => t.id === editTeamId);
@@ -4603,6 +4666,11 @@
                         sessionStorage.setItem('docu_selected_team_id', teamToEdit.id);
                         // Cargar el team en modo editable (sin redirección)
                         loadProjectData(teamToEdit, true); // true = permitir editar teams publicados
+                        
+                        // Actualizar estado del botón después de cargar
+                        if (typeof window.updateDuplicateButtonState === 'function') {
+                            window.updateDuplicateButtonState();
+                        }
                         
                         // Check if there's a memberId parameter to open edit member modal
                         const urlParams = new URLSearchParams(window.location.search);
@@ -4793,6 +4861,11 @@
             
             console.log('✅ currentProjectId establecido:', currentProjectId);
             console.log('✅ currentProjectData establecido con status:', currentProjectData.status);
+            
+            // Actualizar estado del botón Duplicate team después de cargar proyecto
+            if (typeof window.updateDuplicateButtonState === 'function') {
+                window.updateDuplicateButtonState();
+            }
 
             // create_team.html siempre debe estar en modo editable
             // Si se intenta cargar un team publicado aquí, redirigir a team_filled.html
@@ -4937,6 +5010,11 @@
                 // Habilitar secondary-actions si hay miembros
                 if (membersList.length > 0) {
                     enableSecondaryActions();
+                }
+                
+                // Actualizar estado del botón Duplicate team después de cargar miembros
+                if (typeof window.updateDuplicateButtonState === 'function') {
+                    window.updateDuplicateButtonState();
                 }
             } else {
                 // Si no hay miembros, asegurar que el placeholder esté presente y funcional
