@@ -1,3 +1,5 @@
+5fc8187526dcc9f732815ecbccfe586192fda48e|Ubits|ubits@macbookpro.lan|2025-11-23 17:20:30 -0500|Update: Comentar max-width en search-input-group y actualizar CSS de project-name-group y team-cost-group
+02ff75a1817f2767d74a62f1ca9522939e7c5a05|Ubits|ubits@macbookpro.lan|2025-11-23 17:14:40 -0500|Update: Actualizar changelog con últimos cambios
 88f386d74d09027e4883fe8f2d14590c47bf0cca|Ubits|ubits@macbookpro.lan|2025-11-23 16:31:24 -0500|Update: Actualizar changelog con últimos cambios
 a308d939086fcf15a02b5f4f253d013145f8b7e1|Ubits|ubits@macbookpro.lan|2025-11-23 17:14:01 -0500|Update: Eliminar primary-actions, actualizar CSS de inputs y reorganizar secondary-actions en team_filled.html
 2357b352ced20d2e6e6012f5ad664746b782cc0c|Ubits|ubits@macbookpro.lan|2025-11-23 16:31:19 -0500|Update: Mover secondary-actions a team-members-section y hacer icono de buscador siempre visible en team_filled.html
