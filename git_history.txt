@@ -1,3 +1,5 @@
+e7cab06dafd60e5c20e7e4658ea0a86b4c2a81ef|Ubits|ubits@macbookpro.lan|2025-11-23 17:26:26 -0500|Fix: Mejorar carga de changelog desde file:// protocol
+5190016f32d5a765c4e1f953b5867d5058004355|Ubits|ubits@macbookpro.lan|2025-11-23 17:25:26 -0500|Update: Actualizar git_history.txt con últimos commits
 2ddc1222966652572ead1406824daccfd5b79881|Ubits|ubits@macbookpro.lan|2025-11-23 17:20:35 -0500|Update: Actualizar changelog con últimos cambios
 5fc8187526dcc9f732815ecbccfe586192fda48e|Ubits|ubits@macbookpro.lan|2025-11-23 17:20:30 -0500|Update: Comentar max-width en search-input-group y actualizar CSS de project-name-group y team-cost-group
 02ff75a1817f2767d74a62f1ca9522939e7c5a05|Ubits|ubits@macbookpro.lan|2025-11-23 17:14:40 -0500|Update: Actualizar changelog con últimos cambios
