@@ -1,3 +1,5 @@
+8180f27ec8b6e965fcfceba81598f4c766694ea9|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:01 -0500|Fix: Asegurar que dsu-profile-card-placeholder siempre quede primero en el grid
+f6b0606fef77c668aa677a234509b5759d3b56a9|Ubits|ubits@macbookpro.lan|2025-11-23 17:36:08 -0500|Update: Actualizar changelog con últimos cambios
 6e1751f7e436c1b694a0336ce18f3863303495f5|Ubits|ubits@macbookpro.lan|2025-11-23 17:36:04 -0500|Update: Actualizar changelog con últimos cambios
 bff3745188c7ceb09d239257092b02a93c574925|Ubits|ubits@macbookpro.lan|2025-11-23 17:33:05 -0500|Update: Actualizar changelog con últimos cambios
 bc6c6909a5c5e649e70d1f9a67db5d81c3ad6266|Ubits|ubits@macbookpro.lan|2025-11-23 17:33:02 -0500|Update: Comentar max-width en search-input-group y dsu-input en team_filled.html
