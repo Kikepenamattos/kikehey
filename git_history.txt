@@ -1,3 +1,4 @@
+fa122edc7920efe11bc2b8a58aeb5c2accfebbfa|Ubits|ubits@macbookpro.lan|2025-11-24 10:13:03 -0500|Update: Actualizar changelog con últimos cambios
 c339a95ef84bd7653864a793b42327ccbdb82e37|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:05 -0500|Update: Actualizar changelog con últimos cambios
 8180f27ec8b6e965fcfceba81598f4c766694ea9|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:01 -0500|Fix: Asegurar que dsu-profile-card-placeholder siempre quede primero en el grid
 f6b0606fef77c668aa677a234509b5759d3b56a9|Ubits|ubits@macbookpro.lan|2025-11-23 17:36:08 -0500|Update: Actualizar changelog con últimos cambios
