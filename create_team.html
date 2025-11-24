@@ -2415,6 +2415,8 @@
                 teamMembersGrid.innerHTML = '';
                 if (placeholder) {
                     teamMembersGrid.appendChild(placeholder);
+                    // Asegurar que el placeholder siempre quede primero
+                    ensurePlaceholderFirst();
                 }
             }
             
@@ -3924,11 +3926,16 @@
                 </div>
             `;
 
-            // Insertar antes del placeholder card (addMemberCard)
+            // Insertar después del placeholder card (addMemberCard) para que el placeholder siempre quede primero
             const addMemberCard = document.getElementById('addMemberCard');
-            if (addMemberCard) {
-                teamMembersGrid.insertBefore(memberCard, addMemberCard);
+            if (addMemberCard && addMemberCard.nextSibling) {
+                // Insertar después del placeholder, antes del siguiente elemento
+                teamMembersGrid.insertBefore(memberCard, addMemberCard.nextSibling);
+            } else if (addMemberCard) {
+                // Si el placeholder no tiene siguiente hermano, insertar al final
+                teamMembersGrid.appendChild(memberCard);
             } else {
+                // Si no hay placeholder, insertar al final
                 teamMembersGrid.appendChild(memberCard);
             }
             
@@ -3941,6 +3948,22 @@
                     console.log('🖱️ Botón editar clickeado para miembro:', memberData.id);
                     openEditMemberModal(memberData.id);
                 });
+            }
+            
+            // Asegurar que el placeholder siempre quede primero
+            ensurePlaceholderFirst();
+        }
+        
+        // Función helper para asegurar que el placeholder siempre esté primero en el grid
+        function ensurePlaceholderFirst() {
+            const teamMembersGrid = document.getElementById('teamMembersGrid');
+            const addMemberCard = document.getElementById('addMemberCard');
+            
+            if (!teamMembersGrid || !addMemberCard) return;
+            
+            // Si el placeholder no es el primer hijo, moverlo al principio
+            if (teamMembersGrid.firstChild !== addMemberCard) {
+                teamMembersGrid.insertBefore(addMemberCard, teamMembersGrid.firstChild);
             }
         }
         
@@ -4971,6 +4994,9 @@
                         createMemberCard(member);
                     });
                     
+                    // Asegurar que el placeholder siempre quede primero después de cargar miembros
+                    ensurePlaceholderFirst();
+                    
                     // Asegurar que el Profile Card Placeholder esté presente
                     let placeholder = document.getElementById('addMemberCard');
                     if (!placeholder) {
@@ -5003,8 +5029,15 @@
                         `;
                     }
                     
-                    // Agregar el placeholder al final del grid
-                    teamMembersGrid.appendChild(placeholder);
+                    // Agregar el placeholder al principio del grid para que siempre quede primero
+                    if (teamMembersGrid.firstChild) {
+                        teamMembersGrid.insertBefore(placeholder, teamMembersGrid.firstChild);
+                    } else {
+                        teamMembersGrid.appendChild(placeholder);
+                    }
+                    
+                    // Asegurar que el placeholder siempre quede primero
+                    ensurePlaceholderFirst();
                     
                     // Re-inicializar el evento click del placeholder para abrir el modal
                     placeholder.addEventListener('click', function(e) {
@@ -5061,7 +5094,15 @@
                                 </div>
                             </div>
                         `;
-                        teamMembersGrid.appendChild(placeholder);
+                        // Agregar el placeholder al principio del grid
+                        if (teamMembersGrid.firstChild) {
+                            teamMembersGrid.insertBefore(placeholder, teamMembersGrid.firstChild);
+                        } else {
+                            teamMembersGrid.appendChild(placeholder);
+                        }
+                        
+                        // Asegurar que el placeholder siempre quede primero
+                        ensurePlaceholderFirst();
                     }
                     // Re-inicializar el evento click
                     placeholder.addEventListener('click', function(e) {
@@ -5373,7 +5414,15 @@
                             window.openAddMemberModal();
                         }
                     });
-                    teamMembersGrid.appendChild(placeholder);
+                    // Agregar el placeholder al principio del grid
+                    if (teamMembersGrid.firstChild) {
+                        teamMembersGrid.insertBefore(placeholder, teamMembersGrid.firstChild);
+                    } else {
+                        teamMembersGrid.appendChild(placeholder);
+                    }
+                    
+                    // Asegurar que el placeholder siempre quede primero
+                    ensurePlaceholderFirst();
                 }
             }
         }
