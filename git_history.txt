@@ -1,3 +1,4 @@
+e7bb7976a8f3c49d5a02efddb4c21598676fbe79|Ubits|ubits@macbookpro.lan|2025-12-02 12:11:11 -0500|Update: Convertir botón date picker a terciario, eliminar sección project-stages, actualizar iconos chevron del date picker
 173a26b8c19fa5073b66b39039ca0611f1b48490|Ubits|ubits@macbookpro.lan|2025-12-02 11:35:30 -0500|Update: Actualizar changelog con últimos cambios
 c10e4ee43adfa1abea30bc429832b2125706ed89|Ubits|ubits@macbookpro.lan|2025-12-02 11:35:24 -0500|Add: Crear project_empty.html con sidebar completo y sticky buttons, agregar funcionalidad de redirección desde createProjectBtn
 733b4b11ce6370358c8b1bee050ad83d2ee77326|Ubits|ubits@macbookpro.lan|2025-12-02 10:47:20 -0500|Update: Actualizar changelog con últimos cambios
