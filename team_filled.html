@@ -1696,6 +1696,25 @@
                 console.error('❌ Botón "Create new team" no encontrado');
             }
 
+            // Create New Project Button - Redirigir a project_empty.html
+            const createProjectBtn = document.getElementById('createProjectBtn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🆕 Botón "Create new project" clickeado, redirigiendo a project_empty.html');
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.setItem('docu_create_new_project', 'true');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'project_empty.html';
+                });
+            } else {
+                console.error('❌ Botón "Create new project" no encontrado');
+            }
+
             // Logout
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {

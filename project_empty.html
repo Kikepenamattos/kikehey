@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .project-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenido Principal */
+        .project-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .project-content {
+            flex: 1;
+            padding: 64px 173px 48px 135px;
+            display: flex;
+            flex-direction: column;
+            gap: 48px;
+            width: 80%;
+            margin: 0 auto;
+            position: relative;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Sticky Buttons */
+        .dsu-sticky-buttons {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            padding: var(--spacing-24) 173px var(--spacing-24) 136px;
+            border-top: 1px solid var(--color-status-disabled);
+            background-color: var(--color-surface-regular);
+            width: 100%;
+            box-sizing: border-box;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
+            justify-content: center;
+        }
+
+        .dsu-sticky-buttons__wrapper {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            flex: 1;
+            justify-content: center;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .dsu-sticky-buttons__button {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .project-content {
+                padding: 24px 16px;
+                width: 100%;
+            }
+
+            .dsu-sticky-buttons {
+                padding: var(--spacing-24) 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <!-- Sidebar Navigation -->
+        <nav class="dsu-sidebar">
+            <div class="dsu-sidebar__main">
+                <!-- Logo Container -->
+                <div class="dsu-sidebar__logo-container">
+                    <a href="#" class="dsu-sidebar__logo">
+                        <img src="images/logo.svg" alt="Docu Logo">
+                    </a>
+                </div>
+                
+                <!-- Navigation Wrapper -->
+                <div class="dsu-sidebar__navigation-wrapper">
+                    <!-- Navigation Main -->
+                    <div class="dsu-sidebar__navigation">
+                        <!-- Teams Level -->
+                        <div class="dsu-teams-level">
+                            <button class="dsu-teams-button dsu-teams-button--active">
+                                <span class="dsu-teams-button__icon">
+                                    <img src="images/team.svg" alt="Teams">
+                                </span>
+                                <span class="dsu-nav-button__text">Teams</span>
+                            </button>
+                            <div class="dsu-teams-chevron">
+                                <img src="images/down-chevron.svg" alt="Chevron">
+                            </div>
+                        </div>
+                        
+                        <!-- Teams Dropdown -->
+                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                            <button class="dsu-teams-create" id="createTeamBtn">
+                                <span>Create new team</span>
+                                <span class="dsu-teams-create__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
+                            <div class="dsu-teams-list" id="teamsList">
+                                <!-- Teams list se poblará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Projects Level -->
+                        <div class="dsu-projects-button">
+                            <div class="dsu-projects-level">
+                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                                    <span class="dsu-projects-button__icon">
+                                        <img src="images/project.svg" alt="Projects">
+                                    </span>
+                                    <span class="dsu-projects-button__text">Projects</span>
+                                </button>
+                                <div class="dsu-projects-chevron">
+                                    <img src="images/up-chevron.svg" alt="Chevron">
+                                </div>
+                            </div>
+                            
+                            <!-- Projects Dropdown -->
+                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                <button class="dsu-projects-create" id="createProjectBtn">
+                                    <span>Create new project</span>
+                                    <span class="dsu-projects-create__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
+                                <!-- Projects list -->
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/avatar.svg" alt="Profile">
+                            </span>
+                            <span class="dsu-nav-button__text">Profile</span>
+                        </button>
+                        
+                        <!-- Feedback Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/chat.svg" alt="Feedback">
+                            </span>
+                            <span class="dsu-nav-button__text">Give us feedback</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="dsu-sidebar__footer">
+                        <button class="dsu-nav-button" id="darkModeBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/moon.svg" alt="Dark Mode">
+                            </span>
+                            <span class="dsu-nav-button__text">Dark mode</span>
+                        </button>
+                        <button class="dsu-nav-button" id="logoutBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/exit.svg" alt="Logout">
+                            </span>
+                            <span class="dsu-nav-button__text">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="project-content-wrapper">
+            <div class="project-content">
+                <!-- Contenido del proyecto se agregará aquí -->
+            </div>
+
+            <!-- Sticky Buttons -->
+            <div class="dsu-sticky-buttons">
+                <div class="dsu-sticky-buttons__wrapper">
+                    <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">
+                        Save draft
+                    </button>
+                    <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>
+                        Publish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    <script>
+        // ============================================
+        // Verificación de Sesión
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si hay sesión activa
+            if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
+                // Redirigir al login si no hay sesión
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Inicializar la página
+            initProjectEmptyPage();
+        });
+
+        // ============================================
+        // Inicialización
+        // ============================================
+        function initProjectEmptyPage() {
+            // Esperar a que los scripts se carguen
+            if (typeof window.DocuAuth === 'undefined' || typeof window.DocuProjectData === 'undefined') {
+                setTimeout(initProjectEmptyPage, 100);
+                return;
+            }
+
+            console.log('Inicializando project_empty.html');
+
+            // Inicializar navegación del sidebar
+            initSidebarNavigation();
+
+            // Cargar teams en el sidebar
+            console.log('📋 Cargando teams en sidebar...');
+            loadTeamsInSidebar();
+
+            // Inicializar sticky buttons
+            initStickyButtons();
+        }
+
+        // ============================================
+        // Sidebar Navigation
+        // ============================================
+        function initSidebarNavigation() {
+            // Teams Dropdown
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                button.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                        button.classList.remove('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-teams-dropdown--expanded');
+                        button.classList.add('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-teams-chevron')) {
+                    chevron.closest('.dsu-teams-chevron').addEventListener('click', function() {
+                        button.click();
+                    });
+                }
+            });
+
+            // Projects Dropdown
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Inicializar expandido para que el botón "Create new project" sea visible
+                dropdown.classList.add('dsu-projects-dropdown--expanded');
+                trigger.classList.add('dsu-projects-button__trigger--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // Permitir toggle normal
+                trigger.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                        trigger.classList.remove('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-projects-dropdown--expanded');
+                        trigger.classList.add('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-projects-chevron')) {
+                    chevron.closest('.dsu-projects-chevron').addEventListener('click', function() {
+                        trigger.click();
+                    });
+                }
+            });
+
+            // Create New Team Button - Redirigir a create_team.html
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            if (createTeamBtn) {
+                createTeamBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🆕 Botón "Create new team" clickeado, redirigiendo a create_team.html');
+                    // Limpiar sessionStorage para crear un team nuevo
+                    try {
+                        sessionStorage.removeItem('docu_selected_team_id');
+                        sessionStorage.setItem('docu_create_new_team', 'true'); // Marcar que se está creando un nuevo team
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'create_team.html';
+                });
+            } else {
+                console.error('❌ Botón "Create new team" no encontrado');
+            }
+
+            // Create New Project Button - Redirigir a project_empty.html
+            const createProjectBtn = document.getElementById('createProjectBtn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🆕 Botón "Create new project" clickeado, redirigiendo a project_empty.html');
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.setItem('docu_create_new_project', 'true');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'project_empty.html';
+                });
+            } else {
+                console.error('❌ Botón "Create new project" no encontrado');
+            }
+
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        DocuAuth.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // ============================================
+        // Load Teams in Sidebar
+        // ============================================
+        function loadTeamsInSidebar() {
+            console.log('=== loadTeamsInSidebar llamado ===');
+            
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) {
+                console.error('❌ Elemento teamsList no encontrado en el DOM');
+                return;
+            }
+
+            console.log('✅ Elemento teamsList encontrado');
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar que DocuAuth esté disponible
+            if (typeof DocuAuth === 'undefined') {
+                console.error('❌ DocuAuth no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar sesión activa
+            const session = DocuAuth.getCurrentSession();
+            if (!session) {
+                console.warn('⚠️ No hay sesión activa, no se pueden cargar teams');
+                return;
+            }
+            
+            console.log('✅ Sesión activa encontrada:', session.email);
+
+            // Obtener datos del proyecto
+            let projectData = null;
+            try {
+                projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos obtenidos de DocuProjectData:', projectData);
+                
+                // Verificación adicional: leer directamente de localStorage
+                const directData = DocuAuth.loadProjectData(session.email);
+                console.log('📦 Datos leídos directamente de localStorage:', directData);
+                
+                if (directData && directData.teams) {
+                    console.log('✅ Teams encontrados directamente en localStorage:', directData.teams.length);
+                }
+            } catch (error) {
+                console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                console.error('Stack:', error.stack);
+                return;
+            }
+
+            // Asegurar que projectData tenga la estructura correcta
+            // IMPORTANTE: No llamar initializeIfNeeded() aquí porque podría borrar teams existentes
+            // Solo inicializar si realmente no hay datos en absoluto
+            if (!projectData) {
+                console.warn('⚠️ No hay datos del proyecto');
+                // Intentar leer directamente de localStorage antes de inicializar
+                const directData = DocuAuth.loadProjectData(session.email);
+                if (directData && directData.teams && Array.isArray(directData.teams) && directData.teams.length > 0) {
+                    console.log('✅ Teams encontrados directamente en localStorage, usando esos datos');
+                    projectData = directData;
+                } else {
+                    console.log('ℹ️ No hay teams en localStorage, inicializando estructura vacía');
+                    DocuProjectData.initializeIfNeeded();
+                    projectData = DocuProjectData.getProjectData();
+                }
+            }
+
+            const teams = (projectData && projectData.teams && Array.isArray(projectData.teams)) ? projectData.teams : [];
+            console.log('📊 Total de teams encontrados:', teams.length);
+            
+            // Log detallado de todos los teams para debugging
+            if (teams.length > 0) {
+                console.log('📋 Todos los teams (detalle):', teams.map(t => ({
+                    id: t.id,
+                    name: t.name,
+                    status: t.status,
+                    publishedAt: t.publishedAt
+                })));
+            }
+
+            // Filtrar solo equipos publicados con nombre válido
+            const publishedTeams = teams.filter(team => {
+                if (!team) {
+                    console.warn('⚠️ Team nulo encontrado');
+                    return false;
+                }
+                
+                // Verificar que el team esté publicado
+                const isPublished = team.status === 'published';
+                
+                // Verificar que tenga nombre válido
+                const hasValidName = team.name && 
+                                   typeof team.name === 'string' &&
+                                   team.name.trim().length > 0;
+                
+                const isValid = isPublished && hasValidName;
+                
+                if (!isValid) {
+                    if (team.status === 'published' && !hasValidName) {
+                        console.warn('⚠️ Team publicado sin nombre válido:', team);
+                    } else if (!isPublished) {
+                        console.log('ℹ️ Team no publicado, omitiendo:', team.name || team.id);
+                    }
+                } else {
+                    console.log('✅ Team válido:', team.name, '(ID:', team.id, ')');
+                }
+                
+                return isValid;
+            });
+
+            console.log('✅ Teams publicados válidos:', publishedTeams.length);
+
+            // Ordenar por fecha de publicación (más reciente primero, más antiguo al final)
+            publishedTeams.sort((a, b) => {
+                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                return dateB - dateA; // Orden descendente (más reciente primero)
+            });
+
+            console.log('📋 Teams ordenados (más reciente primero)');
+
+            // Limpiar lista
+            teamsList.innerHTML = '';
+
+            // Si no hay teams, mostrar mensaje vacío (opcional) o simplemente lista vacía
+            if (publishedTeams.length === 0) {
+                console.log('ℹ️ No hay teams publicados para mostrar');
+                return;
+            }
+
+            // Asegurar que el dropdown esté expandido
+            const teamsDropdown = teamsList.closest('.dsu-teams-dropdown');
+            if (teamsDropdown) {
+                teamsDropdown.classList.add('dsu-teams-dropdown--expanded');
+                console.log('✅ Dropdown expandido');
+            } else {
+                console.warn('⚠️ Dropdown de teams no encontrado');
+            }
+
+            // Agregar equipos a la lista
+            publishedTeams.forEach((team, index) => {
+                const teamItem = document.createElement('button');
+                teamItem.className = 'dsu-team-item';
+                teamItem.setAttribute('data-team-id', team.id || '');
+                teamItem.setAttribute('data-team-name', escapeHtml(team.name || 'Sin nombre'));
+                
+                // Crear el texto del team
+                const teamText = document.createElement('span');
+                teamText.className = 'dsu-team-item__text';
+                teamText.textContent = team.name || 'Sin nombre';
+                teamItem.appendChild(teamText);
+                
+                // Event listener para cargar el proyecto al hacer clic
+                teamItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Team clicked:', team.name, '(ID:', team.id, ')');
+                    
+                    // Remover clase active de todos los items
+                    teamsList.querySelectorAll('.dsu-team-item').forEach(item => {
+                        item.classList.remove('dsu-team-item--active', 'active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    teamItem.classList.add('dsu-team-item--active', 'active');
+                    
+                    // Todos los teams mostrados están publicados
+                    // Redirigir a team_filled.html con el ID del team
+                    if (team.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_team_id', team.id);
+                            console.log('✅ Team publicado seleccionado, redirigiendo a team_filled.html');
+                            window.location.href = `team_filled.html?id=${team.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    } else {
+                        console.error('❌ Team sin ID, no se puede cargar');
+                    }
+                });
+                
+                teamsList.appendChild(teamItem);
+                console.log(`✅ Team agregado a la lista: "${team.name}" (${index + 1}/${publishedTeams.length})`);
+            });
+
+            // Verificar que los elementos se agregaron correctamente al DOM
+            const finalItems = teamsList.querySelectorAll('.dsu-team-item');
+            console.log(`📊 Verificación: ${finalItems.length} items encontrados en el DOM`);
+            
+            if (finalItems.length !== publishedTeams.length) {
+                console.warn(`⚠️ Discrepancia: se esperaban ${publishedTeams.length} items pero se encontraron ${finalItems.length}`);
+            } else {
+                console.log('✅ Todos los teams agregados correctamente al DOM');
+            }
+
+            // Verificar visibilidad del dropdown
+            if (teamsDropdown) {
+                const isExpanded = teamsDropdown.classList.contains('dsu-teams-dropdown--expanded');
+                const computedStyle = window.getComputedStyle(teamsDropdown);
+                const maxHeight = computedStyle.maxHeight;
+                const opacity = computedStyle.opacity;
+                
+                console.log('📋 Estado del dropdown:', {
+                    expanded: isExpanded,
+                    maxHeight: maxHeight,
+                    opacity: opacity,
+                    display: computedStyle.display
+                });
+            }
+
+            console.log(`=== loadTeamsInSidebar completado: ${publishedTeams.length} teams mostrados ===`);
+        }
+
+        function addTeamToSidebar(teamData) {
+            console.log('=== addTeamToSidebar llamado ===');
+            console.log('Team data:', teamData);
+            
+            // Recargar la lista completa de teams publicados
+            // Usar múltiples delays para asegurar que el guardado se complete
+            setTimeout(() => {
+                console.log('🔄 Recarga 1 del sidebar...');
+                loadTeamsInSidebar();
+            }, 200);
+            
+            setTimeout(() => {
+                console.log('🔄 Recarga 2 del sidebar...');
+                loadTeamsInSidebar();
+            }, 800);
+            
+            setTimeout(() => {
+                console.log('🔄 Recarga 3 del sidebar (verificación final)...');
+                loadTeamsInSidebar();
+            }, 1500);
+        }
+
+        // ============================================
+        // Sticky Buttons
+        // ============================================
+        function initStickyButtons() {
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+            const publishBtn = document.getElementById('publishBtn');
+            
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', function() {
+                    console.log('💾 Guardando borrador del proyecto...');
+                    // Implementar lógica de guardado
+                });
+            }
+            
+            if (publishBtn) {
+                publishBtn.addEventListener('click', function() {
+                    console.log('🚀 Publicando proyecto...');
+                    // Implementar lógica de publicación
+                });
+            }
+        }
+
+        // ============================================
+        // Utilities
+        // ============================================
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
