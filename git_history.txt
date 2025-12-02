@@ -1,3 +1,5 @@
+b5bc3fb14c549e670c7e658e8f06fba2cec1311a|Ubits|ubits@macbookpro.lan|2025-12-02 15:08:25 -0500|Update: Implementar múltiples teams y funcionalidad hide section en project_empty.html
+969a49ed2747bf693be61c068a015a321b99c844|Ubits|ubits@macbookpro.lan|2025-12-02 14:01:33 -0500|Update: Actualizar changelog con últimos cambios
 cd6053610ac98573095fed4350df37475762729f|Ubits|ubits@macbookpro.lan|2025-12-02 14:01:27 -0500|Update: Implementar vista 'with members' al seleccionar team en project_empty.html
 2c386fc424b100376937898d4a13127a3fcfbdb9|Ubits|ubits@macbookpro.lan|2025-12-02 12:11:16 -0500|Update: Actualizar changelog con últimos cambios
 e7bb7976a8f3c49d5a02efddb4c21598676fbe79|Ubits|ubits@macbookpro.lan|2025-12-02 12:11:11 -0500|Update: Convertir botón date picker a terciario, eliminar sección project-stages, actualizar iconos chevron del date picker
