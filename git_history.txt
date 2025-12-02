@@ -1,3 +1,5 @@
+d424b8a323a13ce8dde35948bf51d04adf953033|Ubits|ubits@macbookpro.lan|2025-12-02 09:40:29 -0500|Add: Botón 'Create new project' en sidebar Projects con funcionalidad de colapsar/expandir
+7cc89811f1941ecc3301ed4508b111b62d950b8c|Ubits|ubits@macbookpro.lan|2025-11-24 10:13:06 -0500|Update: Actualizar changelog con últimos cambios
 fa122edc7920efe11bc2b8a58aeb5c2accfebbfa|Ubits|ubits@macbookpro.lan|2025-11-24 10:13:03 -0500|Update: Actualizar changelog con últimos cambios
 c339a95ef84bd7653864a793b42327ccbdb82e37|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:05 -0500|Update: Actualizar changelog con últimos cambios
 8180f27ec8b6e965fcfceba81598f4c766694ea9|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:01 -0500|Fix: Asegurar que dsu-profile-card-placeholder siempre quede primero en el grid
