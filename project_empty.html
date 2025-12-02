@@ -176,6 +176,435 @@
             color: var(--color-text-primary);
         }
 
+        /* Project Stages Section */
+        .project-stages-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-stages-section--hidden {
+            display: none;
+        }
+
+        .project-stages-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-stages-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-stages-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-stages-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-stages-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-stages-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+            margin-bottom: 16px;
+        }
+
+        .project-stages-list {
+            display: flex;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-stage-item {
+            flex: 1;
+        }
+
+        .project-stage-button {
+            width: 100%;
+            padding: var(--spacing-16);
+            background-color: var(--color-status-disabled);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-basics-dark-blue);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+        }
+
+        .project-stage-button:hover {
+            background-color: var(--color-basics-gray);
+        }
+
+        .project-stage-button--add {
+            background-color: var(--color-status-disabled);
+        }
+
+        .project-stage-button--add img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .project-stage-button__text {
+            pointer-events: none;
+        }
+
+        .project-stage-button--editing {
+            padding: 0;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-mid-blue);
+        }
+
+        .project-stage-button--editing input {
+            width: 100%;
+            padding: var(--spacing-16);
+            background-color: transparent;
+            border: none;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-basics-dark-blue);
+            text-align: center;
+            outline: none;
+        }
+
+        .project-stages-section--disabled .project-stage-button {
+            background-color: var(--color-status-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-stages-section--disabled .project-stage-button--add {
+            pointer-events: auto;
+            cursor: not-allowed;
+        }
+
+        /* Team Members Section */
+        .team-members-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .team-members-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .team-members-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-members-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .team-members-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-members-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .team-add-member-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Add Member Component (from add-members.html) */
+        .team-add-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .with-members-row .team-add-cta {
+            margin-left: 0;
+        }
+
+        .team-add-dashed {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1.5px dashed var(--color-basics-mid-blue);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-basics-mid-blue);
+            font-size: 24px;
+            line-height: 1;
+            flex-shrink: 0;
+            cursor: pointer;
+            background: var(--color-surface-regular);
+            transition: background-color 0.2s ease;
+        }
+
+        .team-add-dashed:hover {
+            background: var(--color-surface-especial);
+        }
+
+        .team-add-label {
+            font-family: var(--font-family-secondary);
+            font-size: 12px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin-left: 8px;
+        }
+
+        .team-members-section--disabled .team-add-cta {
+            cursor: not-allowed;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .team-members-section--disabled .team-add-dashed {
+            cursor: not-allowed;
+        }
+
+        /* With Members Component Styles */
+        .with-members-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .with-members-row__left {
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+        }
+
+        .avatars-row {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .avatar {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .avatar + .avatar {
+            margin-left: -12px;
+        }
+
+        .avatar__ring {
+            display: none;
+        }
+
+        .avatar__img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar:focus-visible {
+            outline: 2px solid var(--color-basics-dark-blue);
+            outline-offset: 2px;
+        }
+
+        .avatars-overflow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-surface-especial);
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0A243F;
+            font-family: var(--font-family-secondary);
+            font-weight: var(--font-weight-bold);
+            font-size: 14px;
+            margin-left: -12px;
+            flex-shrink: 0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .modal {
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-basics-mid-blue);
+            width: min(520px, 92vw);
+            padding: var(--spacing-24);
+            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: var(--spacing-12);
+        }
+
+        .modal__title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal__body {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
+        .modal-teams-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .modal-team-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-12) var(--spacing-16);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .modal-team-item:hover {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+        }
+
+        .modal-team-item--selected {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+            border-width: 2px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .project-content {
@@ -412,6 +841,96 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Project Stages Section -->
+                <div class="project-stages-section" id="projectStagesSection">
+                    <div class="project-stages-header">
+                        <h2 class="project-stages-title">Define your project stages</h2>
+                        <div class="project-stages-hide" id="hideStagesSectionBtn">
+                            <span>Hide section</span>
+                            <span class="project-stages-hide-icon">
+                                <img src="images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <p class="project-stages-description">Provide all the available information to star solid.</p>
+                    <div class="project-stages-list" id="projectStagesList">
+                        <div class="project-stage-item">
+                            <button class="project-stage-button" data-stage-id="stage-1">
+                                <span class="project-stage-button__text">Stage 1</span>
+                            </button>
+                        </div>
+                        <div class="project-stage-item">
+                            <button class="project-stage-button" data-stage-id="stage-2">
+                                <span class="project-stage-button__text">Stage 1</span>
+                            </button>
+                        </div>
+                        <div class="project-stage-item">
+                            <button class="project-stage-button" data-stage-id="stage-3">
+                                <span class="project-stage-button__text">Stage 1</span>
+                            </button>
+                        </div>
+                        <div class="project-stage-item">
+                            <button class="project-stage-button" data-stage-id="stage-4">
+                                <span class="project-stage-button__text">Stage 1</span>
+                            </button>
+                        </div>
+                        <div class="project-stage-item">
+                            <button class="project-stage-button project-stage-button--add" id="addStageBtn">
+                                <img src="images/plus.svg" alt="Add stage">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Members Section -->
+                <div class="team-members-section" id="teamMembersSection">
+                    <div class="team-members-header">
+                        <h2 class="team-members-title">Team members</h2>
+                        <div class="team-members-hide" id="hideTeamMembersSectionBtn">
+                            <span>Hide section</span>
+                            <span class="team-members-hide-icon">
+                                <img src="images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="team-add-member-wrapper" id="teamAddMemberWrapper">
+                        <!-- Empty state (default) -->
+                        <button type="button" class="team-add-cta" id="addMemberBtn" aria-label="Add a new team">
+                            <span class="team-add-dashed">+</span>
+                            <span class="team-add-label">Add a new team</span>
+                        </button>
+                        <!-- With members state (hidden by default) -->
+                        <div class="with-members-row" id="withMembersRow" style="display: none;">
+                            <div class="with-members-row__left">
+                                <div class="avatars-row" id="avatarsRow">
+                                    <!-- Avatares se cargarán aquí dinámicamente -->
+                                </div>
+                            </div>
+                            <button type="button" class="team-add-cta" id="addMoreTeamBtn" aria-label="Add a new team">
+                                <span class="team-add-dashed">+</span>
+                                <span class="team-add-label">Add a new team</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para seleccionar teams -->
+            <div class="modal-overlay" id="selectTeamModal">
+                <div class="modal">
+                    <div class="modal-headline">
+                        <div class="modal__title">Select a team</div>
+                        <button class="modal-close-btn" id="closeTeamModalBtn" aria-label="Close modal">
+                            <img src="images/close.svg" alt="Close" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <div class="modal-teams-list" id="modalTeamsList">
+                            <!-- Teams se cargarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Sticky Buttons -->
@@ -430,7 +949,42 @@
 
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
     <script>
+        // ============================================
+        // Helper function para obtener imagen (IndexedDB o base64)
+        // ============================================
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        return imageData || 'images/avatar_icon.svg';
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+
         // ============================================
         // Verificación de Sesión
         // ============================================
@@ -476,6 +1030,12 @@
 
             // Inicializar date picker y status dropdown
             initDateAndStatus();
+
+            // Inicializar project stages
+            initProjectStages();
+
+            // Inicializar team members
+            initTeamMembers();
         }
 
         // ============================================
@@ -1136,6 +1696,377 @@
                     if (chevron) {
                         chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
                     }
+                }
+            });
+        }
+
+        // ============================================
+        // Project Stages
+        // ============================================
+        function initProjectStages() {
+            const stagesSection = document.getElementById('projectStagesSection');
+            const hideStagesBtn = document.getElementById('hideStagesSectionBtn');
+            const stagesList = document.getElementById('projectStagesList');
+            const addStageBtn = document.getElementById('addStageBtn');
+
+            if (!stagesSection || !hideStagesBtn || !stagesList || !addStageBtn) {
+                console.warn('⚠️ Elementos de project stages no encontrados');
+                return;
+            }
+
+            let stageCounter = 4; // Empezamos en 4 porque ya hay 4 stages iniciales
+
+            // Funcionalidad de Hide Section - Deshabilitar cards en lugar de ocultar
+            let isDisabled = false;
+            hideStagesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isDisabled = !isDisabled;
+
+                if (isDisabled) {
+                    stagesSection.classList.add('project-stages-section--disabled');
+                    console.log('🔒 Cards de stages deshabilitados');
+                } else {
+                    stagesSection.classList.remove('project-stages-section--disabled');
+                    console.log('🔓 Cards de stages habilitados');
+                }
+            });
+
+            // Funcionalidad de editar nombre de stage
+            function makeStageEditable(stageButton) {
+                const textSpan = stageButton.querySelector('.project-stage-button__text');
+                if (!textSpan) return;
+
+                const currentText = textSpan.textContent.trim();
+                stageButton.classList.add('project-stage-button--editing');
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = currentText;
+                input.className = 'project-stage-edit-input';
+                
+                // Reemplazar el span con el input
+                textSpan.style.display = 'none';
+                stageButton.appendChild(input);
+                
+                // Seleccionar todo el texto y enfocar
+                input.focus();
+                input.select();
+
+                // Guardar al presionar Enter o perder foco
+                function saveStageName() {
+                    const newName = input.value.trim() || currentText;
+                    textSpan.textContent = newName;
+                    textSpan.style.display = '';
+                    input.remove();
+                    stageButton.classList.remove('project-stage-button--editing');
+                }
+
+                input.addEventListener('blur', saveStageName);
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveStageName();
+                    }
+                    if (e.key === 'Escape') {
+                        e.preventDefault();
+                        textSpan.style.display = '';
+                        input.remove();
+                        stageButton.classList.remove('project-stage-button--editing');
+                    }
+                });
+            }
+
+            // Agregar event listeners a los stages existentes
+            stagesList.querySelectorAll('.project-stage-button:not(.project-stage-button--add)').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    makeStageEditable(this);
+                });
+            });
+
+            // Funcionalidad de agregar nuevo stage
+            addStageBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                stageCounter++;
+                const newStageId = `stage-${stageCounter}`;
+                
+                const newStageItem = document.createElement('div');
+                newStageItem.className = 'project-stage-item';
+                
+                const newStageButton = document.createElement('button');
+                newStageButton.className = 'project-stage-button';
+                newStageButton.setAttribute('data-stage-id', newStageId);
+                
+                const newStageText = document.createElement('span');
+                newStageText.className = 'project-stage-button__text';
+                newStageText.textContent = `Stage ${stageCounter}`;
+                
+                newStageButton.appendChild(newStageText);
+                newStageItem.appendChild(newStageButton);
+                
+                // Insertar antes del botón de agregar
+                stagesList.insertBefore(newStageItem, addStageBtn.parentElement);
+                
+                // Hacer editable inmediatamente
+                setTimeout(() => {
+                    makeStageEditable(newStageButton);
+                }, 10);
+                
+                console.log(`✅ Nuevo stage creado: ${newStageId}`);
+            });
+        }
+
+        // ============================================
+        // Team Members
+        // ============================================
+        function initTeamMembers() {
+            const teamMembersSection = document.getElementById('teamMembersSection');
+            const hideTeamMembersBtn = document.getElementById('hideTeamMembersSectionBtn');
+            const addMemberBtn = document.getElementById('addMemberBtn');
+            const selectTeamModal = document.getElementById('selectTeamModal');
+            const modalTeamsList = document.getElementById('modalTeamsList');
+            const closeTeamModalBtn = document.getElementById('closeTeamModalBtn');
+            const teamAddMemberWrapper = document.getElementById('teamAddMemberWrapper');
+            const addMemberBtnEmpty = document.getElementById('addMemberBtn');
+            const withMembersRow = document.getElementById('withMembersRow');
+            const avatarsRow = document.getElementById('avatarsRow');
+            const addMoreTeamBtn = document.getElementById('addMoreTeamBtn');
+
+            if (!teamMembersSection || !hideTeamMembersBtn || !addMemberBtn || !selectTeamModal) {
+                console.warn('⚠️ Elementos de team members no encontrados');
+                return;
+            }
+
+            // Funcionalidad de Hide Section - Deshabilitar componente
+            let isDisabled = false;
+            hideTeamMembersBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isDisabled = !isDisabled;
+
+                if (isDisabled) {
+                    teamMembersSection.classList.add('team-members-section--disabled');
+                    console.log('🔒 Componente add member deshabilitado');
+                } else {
+                    teamMembersSection.classList.remove('team-members-section--disabled');
+                    console.log('🔓 Componente add member habilitado');
+                }
+            });
+
+            // Función para cargar teams en el modal
+            function loadTeamsInModal() {
+                if (!modalTeamsList) return;
+
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined' || typeof DocuAuth === 'undefined') {
+                    console.warn('⚠️ DocuProjectData o DocuAuth no están disponibles');
+                    return;
+                }
+
+                // Verificar sesión activa
+                const session = DocuAuth.getCurrentSession();
+                if (!session) {
+                    console.warn('⚠️ No hay sesión activa');
+                    return;
+                }
+
+                // Obtener datos del proyecto
+                let projectData = null;
+                try {
+                    projectData = DocuProjectData.getProjectData();
+                } catch (error) {
+                    console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                    return;
+                }
+
+                const teams = (projectData && projectData.teams && Array.isArray(projectData.teams)) ? projectData.teams : [];
+                
+                // Filtrar solo equipos publicados con nombre válido
+                const publishedTeams = teams.filter(team => {
+                    if (!team) return false;
+                    const isPublished = team.status === 'published';
+                    const hasValidName = team.name && 
+                                       typeof team.name === 'string' &&
+                                       team.name.trim().length > 0;
+                    return isPublished && hasValidName;
+                });
+
+                // Limpiar lista
+                modalTeamsList.innerHTML = '';
+
+                if (publishedTeams.length === 0) {
+                    const emptyMessage = document.createElement('div');
+                    emptyMessage.className = 'modal-team-item';
+                    emptyMessage.style.cursor = 'default';
+                    emptyMessage.style.opacity = '0.6';
+                    emptyMessage.textContent = 'No hay teams disponibles';
+                    modalTeamsList.appendChild(emptyMessage);
+                    return;
+                }
+
+                // Agregar teams a la lista
+                publishedTeams.forEach((team) => {
+                    const teamItem = document.createElement('div');
+                    teamItem.className = 'modal-team-item';
+                    teamItem.setAttribute('data-team-id', team.id || '');
+                    teamItem.textContent = team.name || 'Sin nombre';
+                    
+                    teamItem.addEventListener('click', async function() {
+                        // Toggle selección
+                        const isSelected = teamItem.classList.contains('modal-team-item--selected');
+                        
+                        // Remover selección de otros items
+                        modalTeamsList.querySelectorAll('.modal-team-item--selected').forEach(item => {
+                            item.classList.remove('modal-team-item--selected');
+                        });
+                        
+                        if (!isSelected) {
+                            teamItem.classList.add('modal-team-item--selected');
+                            console.log('✅ Team seleccionado:', team.name, '(ID:', team.id, ')');
+                            
+                            // Cerrar modal
+                            selectTeamModal.classList.remove('modal-overlay--visible');
+                            
+                            // Cargar y mostrar miembros del team
+                            await loadTeamMembers(team.id);
+                        } else {
+                            console.log('❌ Selección removida');
+                        }
+                    });
+                    
+                    modalTeamsList.appendChild(teamItem);
+                });
+            }
+
+            // Función para cargar y mostrar miembros de un team
+            async function loadTeamMembers(teamId) {
+                if (!teamId) {
+                    console.warn('⚠️ No se proporcionó teamId');
+                    return;
+                }
+
+                // Obtener datos del proyecto
+                let projectData = null;
+                try {
+                    projectData = DocuProjectData.getProjectData();
+                } catch (error) {
+                    console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                    return;
+                }
+
+                const teams = (projectData && projectData.teams && Array.isArray(projectData.teams)) ? projectData.teams : [];
+                const selectedTeam = teams.find(t => t.id === teamId);
+
+                if (!selectedTeam) {
+                    console.warn('⚠️ Team no encontrado:', teamId);
+                    return;
+                }
+
+                const members = selectedTeam.members || [];
+                console.log('👥 Miembros del team:', members.length);
+
+                // Cambiar vista de Empty a With members
+                if (addMemberBtnEmpty && withMembersRow) {
+                    addMemberBtnEmpty.style.display = 'none';
+                    withMembersRow.style.display = 'flex';
+                }
+
+                // Limpiar avatares existentes
+                if (avatarsRow) {
+                    avatarsRow.innerHTML = '';
+                }
+
+                // Mostrar máximo 5 avatares, el resto en overflow
+                const maxVisible = 5;
+                const visibleMembers = members.slice(0, maxVisible);
+                const remainingCount = members.length - maxVisible;
+
+                // Cargar avatares visibles
+                for (const member of visibleMembers) {
+                    const avatarElement = document.createElement('span');
+                    avatarElement.className = 'avatar';
+                    avatarElement.setAttribute('role', 'button');
+                    avatarElement.setAttribute('tabindex', '0');
+                    avatarElement.setAttribute('aria-label', `${member.name || ''} ${member.lastName || ''}`.trim() || 'member');
+                    
+                    const avatarImg = document.createElement('img');
+                    avatarImg.className = 'avatar__img';
+                    avatarImg.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
+                    
+                    // Obtener imagen del miembro
+                    const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                    avatarImg.src = imageSrc;
+                    
+                    avatarElement.appendChild(avatarImg);
+                    avatarsRow.appendChild(avatarElement);
+                }
+
+                // Agregar overflow badge si hay más miembros
+                if (remainingCount > 0) {
+                    const overflowBadge = document.createElement('span');
+                    overflowBadge.className = 'avatars-overflow';
+                    overflowBadge.textContent = `+ ${remainingCount}`;
+                    avatarsRow.appendChild(overflowBadge);
+                }
+            }
+
+            // Funcionalidad de abrir modal al hacer clic en add member (empty state)
+            addMemberBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Verificar que no esté deshabilitado
+                if (teamMembersSection.classList.contains('team-members-section--disabled')) {
+                    return;
+                }
+
+                // Cargar teams en el modal
+                loadTeamsInModal();
+                
+                // Mostrar modal
+                selectTeamModal.classList.add('modal-overlay--visible');
+                console.log('📋 Modal de selección de teams abierto');
+            });
+
+            // Funcionalidad de abrir modal al hacer clic en add more (with members state)
+            if (addMoreTeamBtn) {
+                addMoreTeamBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Verificar que no esté deshabilitado
+                    if (teamMembersSection.classList.contains('team-members-section--disabled')) {
+                        return;
+                    }
+
+                    // Cargar teams en el modal
+                    loadTeamsInModal();
+                    
+                    // Mostrar modal
+                    selectTeamModal.classList.add('modal-overlay--visible');
+                    console.log('📋 Modal de selección de teams abierto');
+                });
+            }
+
+            // Funcionalidad de cerrar modal
+            if (closeTeamModalBtn) {
+                closeTeamModalBtn.addEventListener('click', function() {
+                    selectTeamModal.classList.remove('modal-overlay--visible');
+                    console.log('❌ Modal cerrado');
+                });
+            }
+
+            // Cerrar modal al hacer clic fuera
+            selectTeamModal.addEventListener('click', function(e) {
+                if (e.target === selectTeamModal) {
+                    selectTeamModal.classList.remove('modal-overlay--visible');
+                    console.log('❌ Modal cerrado (click fuera)');
                 }
             });
         }
