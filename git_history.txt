@@ -1,3 +1,14 @@
+dff050249370153e592c4a169f84d6418f96cc0f|Ubits|ubits@macbookpro.lan|2025-12-02 09:45:42 -0500|Fix: Actualizar datos embebidos automáticamente después de cada commit y mejorar carga con file://
+4b74d6df26c8423ae98ba5a974d90b4f77f90c60|Ubits|ubits@macbookpro.lan|2025-12-02 09:45:38 -0500|Test: Verificar actualización automática de cards en changelog
+fa01851bb594e622c765ac0506d0edd75b6aa2d4|Ubits|ubits@macbookpro.lan|2025-12-02 09:45:27 -0500|Update: Actualizar datos embebidos con commit más reciente
+b768391296bd3a8528352cc92749f64e87a83426|Ubits|ubits@macbookpro.lan|2025-12-02 09:43:51 -0500|Update: Actualizar changelog con commit de prueba
+9207b3bcef4c741c5b684474699bcac9b33bdb40|Ubits|ubits@macbookpro.lan|2025-12-02 09:43:36 -0500|Test: Verificar creación de cards en changelog
+a52dae39054e64ed3600f655f279caf0a5f48994|Ubits|ubits@macbookpro.lan|2025-12-02 09:42:11 -0500|Update: Actualizar datos embebidos en changelog.html
+5eb2a36e7428fbb8cfd9f9aba0a8f5d3beab1e55|Ubits|ubits@macbookpro.lan|2025-12-02 09:42:01 -0500|Update: Actualizar datos embebidos en changelog.html con commits recientes
+90fe6dacfe348037236ac4c2676885648e0660cf|Ubits|ubits@macbookpro.lan|2025-12-02 09:40:36 -0500|Update: Actualizar changelog con últimos cambios
+d424b8a323a13ce8dde35948bf51d04adf953033|Ubits|ubits@macbookpro.lan|2025-12-02 09:40:29 -0500|Add: Botón 'Create new project' en sidebar Projects con funcionalidad de colapsar/expandir
+7cc89811f1941ecc3301ed4508b111b62d950b8c|Ubits|ubits@macbookpro.lan|2025-11-24 10:13:06 -0500|Update: Actualizar changelog con últimos cambios
+74096e83d8370975de5a14f8065a4a3f48912020|Ubits|ubits@macbookpro.lan|2025-12-02 10:47:14 -0500|Update: Actualizar gap en dsu-projects-create y revertir cambios de changelog
 fa122edc7920efe11bc2b8a58aeb5c2accfebbfa|Ubits|ubits@macbookpro.lan|2025-11-24 10:13:03 -0500|Update: Actualizar changelog con últimos cambios
 c339a95ef84bd7653864a793b42327ccbdb82e37|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:05 -0500|Update: Actualizar changelog con últimos cambios
 8180f27ec8b6e965fcfceba81598f4c766694ea9|Ubits|ubits@macbookpro.lan|2025-11-24 10:11:01 -0500|Fix: Asegurar que dsu-profile-card-placeholder siempre quede primero en el grid
