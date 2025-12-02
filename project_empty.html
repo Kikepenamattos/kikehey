@@ -45,6 +45,13 @@
             height: 100vh;
             overflow-y: auto;
             position: relative;
+            /* Ocultar scrollbar pero mantener funcionalidad */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+
+        .project-content-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
         
         .project-content {
@@ -56,7 +63,6 @@
             width: 80%;
             margin: 0 auto;
             position: relative;
-            min-height: calc(100vh - 200px);
         }
 
         /* Sticky Buttons */
@@ -430,6 +436,56 @@
         }
 
         .team-members-section--disabled .teams-list-container {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Project Agreements Section */
+        .project-agreements-section {
+            margin-top: 48px;
+        }
+
+        .project-agreements-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .project-agreements-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-agreements-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-agreements-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-agreements-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-agreements-section--disabled .dsu-agreements {
             opacity: 0.6;
             pointer-events: none;
         }
@@ -941,6 +997,36 @@
                         <!-- Teams list container (hidden by default) -->
                         <div class="teams-list-container" id="teamsListContainer" style="display: none;">
                             <!-- Teams se agregarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Agreements Section -->
+                <div class="project-agreements-section" id="projectAgreementsSection">
+                    <div class="project-agreements-header">
+                        <h2 class="project-agreements-title">Project agreements</h2>
+                        <div class="project-agreements-hide" id="hideAgreementsSectionBtn">
+                            <span>Hide section</span>
+                            <span class="project-agreements-hide-icon">
+                                <img src="images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Default State (Empty) -->
+                    <div class="dsu-agreements dsu-agreements--default" id="agreementsDefaultState">
+                        <div class="dsu-agreements__wrapper">
+                            <div class="dsu-agreements__empty-illustration">
+                                <img src="images/perro_agreements.svg" alt="Empty agreements illustration">
+                            </div>
+                            <div class="dsu-agreements__content">
+                                <p class="dsu-agreements__headline-text">Project agreements</p>
+                                <p class="dsu-agreements__empty-message">Start solid and create your project's next steps.</p>
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="addAgreementBtn">
+                                    Add one
+                                    <span class="dsu-button__icon"><img src="images/plus.svg" alt="Plus"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2171,6 +2257,44 @@
                     console.log('❌ Modal cerrado (click fuera)');
                 }
             });
+        }
+
+        // ============================================
+        // Project Agreements
+        // ============================================
+        function initAgreements() {
+            const agreementsSection = document.getElementById('projectAgreementsSection');
+            const hideAgreementsBtn = document.getElementById('hideAgreementsSectionBtn');
+            const addAgreementBtn = document.getElementById('addAgreementBtn');
+
+            if (!agreementsSection || !hideAgreementsBtn) {
+                console.warn('⚠️ Elementos de agreements no encontrados');
+                return;
+            }
+
+            // Funcionalidad de Hide Section
+            let isAgreementsDisabled = false;
+            hideAgreementsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isAgreementsDisabled = !isAgreementsDisabled;
+
+                if (isAgreementsDisabled) {
+                    agreementsSection.classList.add('project-agreements-section--disabled');
+                    console.log('🔒 Componente agreements deshabilitado');
+                } else {
+                    agreementsSection.classList.remove('project-agreements-section--disabled');
+                    console.log('🔓 Componente agreements habilitado');
+                }
+            });
+
+            // Botón Add one (por ahora solo log, se implementará funcionalidad completa después)
+            if (addAgreementBtn) {
+                addAgreementBtn.addEventListener('click', function() {
+                    console.log('📝 Botón Add one clickeado - Funcionalidad completa por implementar');
+                });
+            }
         }
 
         // ============================================
