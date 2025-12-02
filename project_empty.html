@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="design-system/tokens/index.css">
     <link rel="stylesheet" href="design-system/components/navigation.css">
     <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/date-picker.css">
+    <link rel="stylesheet" href="design-system/components/status-button.css">
     
     <style>
         * {
@@ -87,6 +90,92 @@
             min-width: 0;
         }
 
+        /* Close Button */
+        .edit-close-button-container {
+            display: flex;
+            justify-content: flex-end;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+            height: 32px;
+        }
+        
+        .edit-close-button {
+            width: 32px;
+            height: 32px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .edit-close-button:hover {
+            opacity: 0.7;
+        }
+        
+        .edit-close-button__icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Name Section */
+        .project-name-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            position: relative;
+        }
+
+        /* Agregar padding-top cuando el botón cerrar está presente */
+        .project-name-section:has(.edit-close-button-container) {
+            padding-top: 48px;
+        }
+
+        /* Budget Section */
+        .project-budget-section {
+            display: flex;
+            gap: var(--spacing-16);
+            width: 100%;
+            align-items: flex-end;
+        }
+
+        .project-budget-input {
+            flex: 1;
+        }
+
+        .project-currency-input {
+            flex: 1;
+        }
+
+        /* Date & Status Section */
+        .project-date-status-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-status-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-16);
+        }
+
+        .project-status-label {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .project-content {
@@ -96,6 +185,10 @@
 
             .dsu-sticky-buttons {
                 padding: var(--spacing-24) 16px;
+            }
+
+            .project-budget-section {
+                flex-direction: column;
             }
         }
     </style>
@@ -207,7 +300,118 @@
         <!-- Main Content -->
         <div class="project-content-wrapper">
             <div class="project-content">
-                <!-- Contenido del proyecto se agregará aquí -->
+                <!-- Name Section -->
+                <div class="project-name-section">
+                    <!-- Close Button Container -->
+                    <div class="edit-close-button-container">
+                        <button class="edit-close-button" id="closeProjectBtn" aria-label="Close project view">
+                            <img src="images/close.svg" alt="Close" class="edit-close-button__icon">
+                        </button>
+                    </div>
+                    <!-- Project Name Input -->
+                    <div class="dsu-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Project name</span>
+                            </div>
+                        </div>
+                        <div class="dsu-input-container">
+                            <input 
+                                type="text" 
+                                class="dsu-input" 
+                                placeholder="Choose an unique name"
+                                id="projectNameInput"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Budget Allocation Section -->
+                    <div class="project-budget-section">
+                        <!-- Budget Allocation Input -->
+                        <div class="dsu-input-group project-budget-input">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Budget allocation</span>
+                                </div>
+                            </div>
+                            <div class="dsu-input-container">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input" 
+                                    placeholder="Choose an unique name"
+                                    id="budgetAllocationInput"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- Currency Input -->
+                        <div class="dsu-input-group project-currency-input">
+                            <div class="dsu-input-label">
+                                <div class="dsu-input-label__text">
+                                    <span>Currency</span>
+                                </div>
+                                <div class="dsu-input-label__hide" id="hideBudgetSectionBtn">
+                                    <span>Hide section</span>
+                                    <span class="dsu-input-label__hide-icon">
+                                        <img src="images/eye.svg" alt="Hide">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="dsu-input-container">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input" 
+                                    placeholder="COP"
+                                    value="COP"
+                                    id="currencyInput"
+                                    readonly
+                                >
+                                <span class="dsu-input-container__icon">
+                                    <img src="images/eye.svg" alt="Toggle visibility">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date & Status Section -->
+                <div class="project-date-status-section">
+                    <div class="dsu-date-button-wrapper">
+                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="projectDateButton">
+                            <span class="dsu-agreements__date-button-icon">
+                                <img src="images/calendar.svg" alt="Calendar">
+                            </span>
+                            <span id="projectDateButtonText">Select a date to deliver the project</span>
+                        </button>
+                        <div class="dsu-date-picker" id="projectDatePicker"></div>
+                    </div>
+                    
+                    <div class="project-status-wrapper">
+                        <span class="project-status-label">Project status:</span>
+                        <div class="dsu-status-button-wrapper">
+                            <button class="dsu-status-button dsu-status-button--to-start" id="projectStatusButton">
+                                <span id="projectStatusButtonText">To start</span>
+                                <span class="dsu-status-button__chevron">
+                                    <img src="images/down-chevron.svg" alt="Chevron" id="projectStatusChevron">
+                                </span>
+                            </button>
+                            <div class="dsu-status-dropdown" id="projectStatusDropdown">
+                                <div class="dsu-status-dropdown__item" data-status="to-start">
+                                    <span class="dsu-status-dropdown__text">To start</span>
+                                </div>
+                                <div class="dsu-status-dropdown__item" data-status="in-progress">
+                                    <span class="dsu-status-dropdown__text">In progress</span>
+                                </div>
+                                <div class="dsu-status-dropdown__item" data-status="done">
+                                    <span class="dsu-status-dropdown__text">Done</span>
+                                </div>
+                                <div class="dsu-status-dropdown__item" data-status="paused">
+                                    <span class="dsu-status-dropdown__text">Paused</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Sticky Buttons -->
@@ -263,6 +467,15 @@
 
             // Inicializar sticky buttons
             initStickyButtons();
+
+            // Inicializar funcionalidad de hide section
+            initHideBudgetSection();
+
+            // Inicializar botón de cerrar
+            initCloseButton();
+
+            // Inicializar date picker y status dropdown
+            initDateAndStatus();
         }
 
         // ============================================
@@ -636,6 +849,295 @@
                 console.log('🔄 Recarga 3 del sidebar (verificación final)...');
                 loadTeamsInSidebar();
             }, 1500);
+        }
+
+        // ============================================
+        // Hide Budget Section
+        // ============================================
+        function initHideBudgetSection() {
+            const hideBudgetSectionBtn = document.getElementById('hideBudgetSectionBtn');
+            const budgetAllocationInput = document.getElementById('budgetAllocationInput');
+            const currencyInput = document.getElementById('currencyInput');
+            const budgetInputGroup = document.querySelector('.project-budget-input');
+            const currencyInputGroup = document.querySelector('.project-currency-input');
+
+            if (!hideBudgetSectionBtn || !budgetAllocationInput || !currencyInput) {
+                console.warn('⚠️ Elementos de hide budget section no encontrados');
+                return;
+            }
+
+            let isHidden = false;
+
+            hideBudgetSectionBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isHidden = !isHidden;
+
+                if (isHidden) {
+                    // Deshabilitar ambos campos
+                    budgetAllocationInput.disabled = true;
+                    currencyInput.disabled = true;
+                    
+                    // Agregar clase para estilo deshabilitado
+                    if (budgetInputGroup) {
+                        budgetInputGroup.classList.add('dsu-input-group--hidden');
+                    }
+                    if (currencyInputGroup) {
+                        currencyInputGroup.classList.add('dsu-input-group--hidden');
+                    }
+
+                    console.log('🔒 Sección de budget deshabilitada');
+                } else {
+                    // Habilitar ambos campos
+                    budgetAllocationInput.disabled = false;
+                    currencyInput.disabled = false;
+                    
+                    // Remover clase de estilo deshabilitado
+                    if (budgetInputGroup) {
+                        budgetInputGroup.classList.remove('dsu-input-group--hidden');
+                    }
+                    if (currencyInputGroup) {
+                        currencyInputGroup.classList.remove('dsu-input-group--hidden');
+                    }
+
+                    console.log('🔓 Sección de budget habilitada');
+                }
+            });
+        }
+
+        // ============================================
+        // Close Button
+        // ============================================
+        function initCloseButton() {
+            const closeBtn = document.getElementById('closeProjectBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    // Redirigir a team_filled.html
+                    window.location.href = 'team_filled.html';
+                });
+            }
+        }
+
+        // ============================================
+        // Date Picker and Status Dropdown
+        // ============================================
+        function initDateAndStatus() {
+            // Initialize Date Picker
+            initDatePicker('projectDatePicker', 'projectDateButton', 'projectDateButtonText');
+            
+            // Initialize Status Dropdown
+            initStatusDropdown('projectStatusButton', 'projectStatusDropdown', 'projectStatusChevron', 'projectStatusButtonText');
+        }
+
+        // Function to initialize date picker
+        function initDatePicker(pickerId, buttonId, buttonTextId) {
+            const picker = document.getElementById(pickerId);
+            const button = document.getElementById(buttonId);
+            const buttonText = document.getElementById(buttonTextId);
+            
+            if (!picker || !button) return;
+            
+            let currentDate = new Date();
+            let selectedDate = null;
+            
+            function renderDatePicker(date) {
+                const year = date.getFullYear();
+                const month = date.getMonth();
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const daysInPrevMonth = new Date(year, month, 0).getDate();
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                
+                let html = `
+                    <div class="dsu-date-picker__header">
+                        <button class="dsu-date-picker__nav-button" data-action="prev">
+                            <img src="images/left-chevron.svg" alt="Previous">
+                        </button>
+                        <div class="dsu-date-picker__month-year">${monthNames[month]} ${year}</div>
+                        <button class="dsu-date-picker__nav-button" data-action="next">
+                            <img src="images/right-chevron.svg" alt="Next">
+                        </button>
+                    </div>
+                    <div class="dsu-date-picker__calendar">
+                        <div class="dsu-date-picker__weekdays">
+                            ${weekdays.map(day => `<div class="dsu-date-picker__weekday">${day}</div>`).join('')}
+                        </div>
+                        <div class="dsu-date-picker__days">
+                `;
+                
+                // Previous month days
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const day = daysInPrevMonth - i;
+                    html += `<div class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</div>`;
+                }
+                
+                // Current month days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateObj = new Date(year, month, day);
+                    const isToday = dateObj.getTime() === today.getTime();
+                    const isSelected = selectedDate && dateObj.getTime() === selectedDate.getTime();
+                    const classes = ['dsu-date-picker__day'];
+                    if (isToday) classes.push('dsu-date-picker__day--today');
+                    if (isSelected) classes.push('dsu-date-picker__day--selected');
+                    
+                    html += `<div class="${classes.join(' ')}" data-day="${day}">${day}</div>`;
+                }
+                
+                // Next month days
+                const totalCells = firstDay + daysInMonth;
+                const remainingCells = 42 - totalCells;
+                for (let day = 1; day <= remainingCells && day <= 14; day++) {
+                    html += `<div class="dsu-date-picker__day dsu-date-picker__day--other-month">${day}</div>`;
+                }
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+                
+                picker.innerHTML = html;
+                
+                // Event listeners for navigation
+                picker.querySelector('[data-action="prev"]').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    currentDate = new Date(year, month - 1, 1);
+                    renderDatePicker(currentDate);
+                });
+                
+                picker.querySelector('[data-action="next"]').addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    currentDate = new Date(year, month + 1, 1);
+                    renderDatePicker(currentDate);
+                });
+                
+                // Event listeners for day selection
+                picker.querySelectorAll('.dsu-date-picker__day[data-day]').forEach(dayEl => {
+                    dayEl.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const day = parseInt(dayEl.dataset.day);
+                        selectedDate = new Date(year, month, day);
+                        renderDatePicker(currentDate);
+                        
+                        // Update button text
+                        if (buttonText) {
+                            const dateStr = selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                            buttonText.textContent = dateStr;
+                        }
+                        
+                        picker.classList.remove('dsu-date-picker--visible');
+                    });
+                });
+            }
+            
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isVisible = picker.classList.contains('dsu-date-picker--visible');
+                
+                // Close all other pickers
+                document.querySelectorAll('.dsu-date-picker--visible').forEach(p => {
+                    if (p !== picker) p.classList.remove('dsu-date-picker--visible');
+                });
+                
+                if (isVisible) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                } else {
+                    currentDate = selectedDate || new Date();
+                    renderDatePicker(currentDate);
+                    picker.classList.add('dsu-date-picker--visible');
+                }
+            });
+            
+            // Close picker when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!picker.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-date-button-wrapper')) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                }
+            }, true);
+        }
+
+        // Function to initialize status dropdown
+        function initStatusDropdown(buttonId, dropdownId, chevronId, textId) {
+            const button = document.getElementById(buttonId);
+            const dropdown = document.getElementById(dropdownId);
+            const chevron = document.getElementById(chevronId);
+            const text = document.getElementById(textId);
+            
+            if (!button || !dropdown) return;
+            
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isExpanded = dropdown.classList.contains('dsu-status-dropdown--expanded');
+                
+                // Close all other dropdowns
+                document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(d => {
+                    if (d !== dropdown) {
+                        d.style.maxHeight = '0px';
+                        d.classList.remove('dsu-status-dropdown--expanded');
+                        const btn = d.parentElement.querySelector('.dsu-status-button');
+                        const chv = btn?.querySelector('.dsu-status-button__chevron img');
+                        if (chv) {
+                            chv.src = chv.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
+                    }
+                });
+                
+                if (isExpanded) {
+                    dropdown.style.maxHeight = '0px';
+                    dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    if (chevron) {
+                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                    }
+                } else {
+                    dropdown.classList.add('dsu-status-dropdown--expanded');
+                    dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
+                    if (chevron) {
+                        chevron.src = chevron.src.replace('down-chevron.svg', 'up-chevron.svg');
+                    }
+                }
+            });
+            
+            // Handle option selection
+            const dropdownItems = dropdown.querySelectorAll('.dsu-status-dropdown__item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const newStatus = this.getAttribute('data-status');
+                    const statusTextContent = this.querySelector('.dsu-status-dropdown__text').textContent;
+                    
+                    // Update button
+                    button.className = 'dsu-status-button dsu-status-button--' + newStatus;
+                    if (text) text.textContent = statusTextContent;
+                    
+                    // Remove active from all items and add to selected
+                    dropdownItems.forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
+                    this.classList.add('dsu-status-dropdown__item--active');
+                    
+                    // Close dropdown
+                    dropdown.style.maxHeight = '0px';
+                    dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    if (chevron) {
+                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                    }
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-status-button-wrapper')) {
+                    dropdown.style.maxHeight = '0px';
+                    dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    if (chevron) {
+                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                    }
+                }
+            });
         }
 
         // ============================================

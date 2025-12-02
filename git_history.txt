@@ -1,3 +1,4 @@
+173a26b8c19fa5073b66b39039ca0611f1b48490|Ubits|ubits@macbookpro.lan|2025-12-02 11:35:30 -0500|Update: Actualizar changelog con últimos cambios
 c10e4ee43adfa1abea30bc429832b2125706ed89|Ubits|ubits@macbookpro.lan|2025-12-02 11:35:24 -0500|Add: Crear project_empty.html con sidebar completo y sticky buttons, agregar funcionalidad de redirección desde createProjectBtn
 733b4b11ce6370358c8b1bee050ad83d2ee77326|Ubits|ubits@macbookpro.lan|2025-12-02 10:47:20 -0500|Update: Actualizar changelog con últimos cambios
 dff050249370153e592c4a169f84d6418f96cc0f|Ubits|ubits@macbookpro.lan|2025-12-02 09:45:42 -0500|Fix: Actualizar datos embebidos automáticamente después de cada commit y mejorar carga con file://
