@@ -435,21 +435,11 @@
             const githubUrl = 'https://raw.githubusercontent.com/Kikepenamattos/kikehey/main/git_history.txt';
             const isFileProtocol = window.location.protocol === 'file:';
             
-            // Si estamos en file://, intentar GitHub primero (más confiable)
+            // Si estamos en file://, usar datos embebidos directamente (más rápido y confiable)
             if (isFileProtocol) {
-                try {
-                    console.log('📂 Modo file:// detectado, cargando desde GitHub...');
-                    const githubResponse = await fetch(`${githubUrl}?t=${timestamp}`);
-                    if (githubResponse.ok) {
-                        const text = await githubResponse.text();
-                        const commits = parseGitHistory(text);
-                        console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
-                        renderCommits(commits);
-                        return;
-                    }
-                } catch (error) {
-                    console.warn('⚠️ No se pudo cargar git_history.txt desde GitHub:', error);
-                }
+                console.log('📂 Modo file:// detectado, usando datos embebidos (actualizados automáticamente después de cada commit)');
+                renderCommits(realCommits);
+                return;
             } else {
                 // Si estamos en http/https, intentar local primero
                 try {
@@ -481,8 +471,8 @@
                 }
             }
             
-            // Si ambas fallan, usar datos embebidos (actualizados automáticamente por git-push-with-changelog.sh)
-            console.log('📦 Usando datos embebidos (actualizados automáticamente después de cada push)');
+            // Si ambas fallan, usar datos embebidos (actualizados automáticamente después de cada commit)
+            console.log('📦 Usando datos embebidos (actualizados automáticamente después de cada commit)');
             renderCommits(realCommits);
         }
         
@@ -667,6 +657,22 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '4b74d6d',
+                fullHash: '4b74d6df26c8423ae98ba5a974d90b4f77f90c60',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-02 09:45:38 -0500',
+                message: 'Test: Verificar actualización automática de cards en changelog'
+            },
+            {
+                hash: 'fa01851',
+                fullHash: 'fa01851bb594e622c765ac0506d0edd75b6aa2d4',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-02 09:45:27 -0500',
+                message: 'Update: Actualizar datos embebidos con commit más reciente'
+            },
             {
                 hash: 'b768391',
                 fullHash: 'b768391296bd3a8528352cc92749f64e87a83426',
