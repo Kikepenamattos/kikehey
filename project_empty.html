@@ -424,6 +424,16 @@
             cursor: not-allowed;
         }
 
+        .team-members-section--disabled .team-item {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .team-members-section--disabled .teams-list-container {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
         /* With Members Component Styles */
         .with-members-row {
             display: flex;
@@ -491,6 +501,34 @@
             font-size: 14px;
             margin-left: -12px;
             flex-shrink: 0;
+        }
+
+        /* Team Title (from Figma) */
+        .team-name-title {
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            margin: 0;
+            margin-bottom: 8px;
+        }
+
+        /* Teams List Container */
+        .teams-list-container {
+            display: flex;
+            flex-direction: row;
+            gap: 32px;
+            width: 100%;
+            align-content: center;
+            align-items: end;
+        }
+
+        /* Individual Team Item */
+        .team-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         /* Modal Styles */
@@ -900,17 +938,9 @@
                             <span class="team-add-dashed">+</span>
                             <span class="team-add-label">Add a new team</span>
                         </button>
-                        <!-- With members state (hidden by default) -->
-                        <div class="with-members-row" id="withMembersRow" style="display: none;">
-                            <div class="with-members-row__left">
-                                <div class="avatars-row" id="avatarsRow">
-                                    <!-- Avatares se cargarán aquí dinámicamente -->
-                                </div>
-                            </div>
-                            <button type="button" class="team-add-cta" id="addMoreTeamBtn" aria-label="Add a new team">
-                                <span class="team-add-dashed">+</span>
-                                <span class="team-add-label">Add a new team</span>
-                            </button>
+                        <!-- Teams list container (hidden by default) -->
+                        <div class="teams-list-container" id="teamsListContainer" style="display: none;">
+                            <!-- Teams se agregarán aquí dinámicamente -->
                         </div>
                     </div>
                 </div>
@@ -1833,16 +1863,17 @@
             const closeTeamModalBtn = document.getElementById('closeTeamModalBtn');
             const teamAddMemberWrapper = document.getElementById('teamAddMemberWrapper');
             const addMemberBtnEmpty = document.getElementById('addMemberBtn');
-            const withMembersRow = document.getElementById('withMembersRow');
-            const avatarsRow = document.getElementById('avatarsRow');
-            const addMoreTeamBtn = document.getElementById('addMoreTeamBtn');
+            const teamsListContainer = document.getElementById('teamsListContainer');
+
+            // Array para almacenar los teams seleccionados
+            let selectedTeams = [];
 
             if (!teamMembersSection || !hideTeamMembersBtn || !addMemberBtn || !selectTeamModal) {
                 console.warn('⚠️ Elementos de team members no encontrados');
                 return;
             }
 
-            // Funcionalidad de Hide Section - Deshabilitar componente
+            // Funcionalidad de Hide Section - Deshabilitar componente y teams agregados
             let isDisabled = false;
             hideTeamMembersBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1852,10 +1883,10 @@
 
                 if (isDisabled) {
                     teamMembersSection.classList.add('team-members-section--disabled');
-                    console.log('🔒 Componente add member deshabilitado');
+                    console.log('🔒 Componente add member y teams agregados deshabilitados');
                 } else {
                     teamMembersSection.classList.remove('team-members-section--disabled');
-                    console.log('🔓 Componente add member habilitado');
+                    console.log('🔓 Componente add member y teams agregados habilitados');
                 }
             });
 
@@ -1910,44 +1941,62 @@
                     return;
                 }
 
-                // Agregar teams a la lista
+                // Agregar teams a la lista (excluir los que ya están agregados)
                 publishedTeams.forEach((team) => {
+                    // Verificar si el team ya está agregado
+                    const isAlreadyAdded = selectedTeams.includes(team.id);
+                    
                     const teamItem = document.createElement('div');
                     teamItem.className = 'modal-team-item';
                     teamItem.setAttribute('data-team-id', team.id || '');
-                    teamItem.textContent = team.name || 'Sin nombre';
                     
-                    teamItem.addEventListener('click', async function() {
-                        // Toggle selección
-                        const isSelected = teamItem.classList.contains('modal-team-item--selected');
-                        
-                        // Remover selección de otros items
-                        modalTeamsList.querySelectorAll('.modal-team-item--selected').forEach(item => {
-                            item.classList.remove('modal-team-item--selected');
+                    if (isAlreadyAdded) {
+                        teamItem.textContent = `${team.name || 'Sin nombre'} (ya agregado)`;
+                        teamItem.style.opacity = '0.6';
+                        teamItem.style.cursor = 'not-allowed';
+                    } else {
+                        teamItem.textContent = team.name || 'Sin nombre';
+                    }
+                    
+                    if (!isAlreadyAdded) {
+                        teamItem.addEventListener('click', async function() {
+                            // Toggle selección
+                            const isSelected = teamItem.classList.contains('modal-team-item--selected');
+                            
+                            // Remover selección de otros items
+                            modalTeamsList.querySelectorAll('.modal-team-item--selected').forEach(item => {
+                                item.classList.remove('modal-team-item--selected');
+                            });
+                            
+                            if (!isSelected) {
+                                teamItem.classList.add('modal-team-item--selected');
+                                console.log('✅ Team seleccionado:', team.name, '(ID:', team.id, ')');
+                                
+                                // Cerrar modal
+                                selectTeamModal.classList.remove('modal-overlay--visible');
+                                
+                                // Agregar team a la lista (no reemplazar)
+                                await addTeamToList(team.id);
+                            } else {
+                                console.log('❌ Selección removida');
+                            }
                         });
-                        
-                        if (!isSelected) {
-                            teamItem.classList.add('modal-team-item--selected');
-                            console.log('✅ Team seleccionado:', team.name, '(ID:', team.id, ')');
-                            
-                            // Cerrar modal
-                            selectTeamModal.classList.remove('modal-overlay--visible');
-                            
-                            // Cargar y mostrar miembros del team
-                            await loadTeamMembers(team.id);
-                        } else {
-                            console.log('❌ Selección removida');
-                        }
-                    });
+                    }
                     
                     modalTeamsList.appendChild(teamItem);
                 });
             }
 
-            // Función para cargar y mostrar miembros de un team
-            async function loadTeamMembers(teamId) {
+            // Función para agregar un team a la lista
+            async function addTeamToList(teamId) {
                 if (!teamId) {
                     console.warn('⚠️ No se proporcionó teamId');
+                    return;
+                }
+
+                // Verificar si el team ya está agregado
+                if (selectedTeams.includes(teamId)) {
+                    console.log('ℹ️ Team ya está agregado:', teamId);
                     return;
                 }
 
@@ -1969,18 +2018,37 @@
                 }
 
                 const members = selectedTeam.members || [];
-                console.log('👥 Miembros del team:', members.length);
+                const teamName = selectedTeam.name || 'Team';
+                console.log('👥 Agregando team:', teamName, 'con', members.length, 'miembros');
 
-                // Cambiar vista de Empty a With members
-                if (addMemberBtnEmpty && withMembersRow) {
+                // Agregar team al array de teams seleccionados
+                selectedTeams.push(teamId);
+
+                // Ocultar botón empty y mostrar contenedor de teams
+                if (addMemberBtnEmpty && teamsListContainer) {
                     addMemberBtnEmpty.style.display = 'none';
-                    withMembersRow.style.display = 'flex';
+                    teamsListContainer.style.display = 'flex';
                 }
 
-                // Limpiar avatares existentes
-                if (avatarsRow) {
-                    avatarsRow.innerHTML = '';
-                }
+                // Crear elemento del team
+                const teamItem = document.createElement('div');
+                teamItem.className = 'team-item';
+                teamItem.setAttribute('data-team-id', teamId);
+
+                // Crear título del team
+                const teamTitle = document.createElement('p');
+                teamTitle.className = 'team-name-title';
+                teamTitle.textContent = teamName;
+
+                // Crear fila de miembros
+                const withMembersRow = document.createElement('div');
+                withMembersRow.className = 'with-members-row';
+
+                const withMembersRowLeft = document.createElement('div');
+                withMembersRowLeft.className = 'with-members-row__left';
+
+                const avatarsRow = document.createElement('div');
+                avatarsRow.className = 'avatars-row';
 
                 // Mostrar máximo 5 avatares, el resto en overflow
                 const maxVisible = 5;
@@ -2014,6 +2082,56 @@
                     overflowBadge.textContent = `+ ${remainingCount}`;
                     avatarsRow.appendChild(overflowBadge);
                 }
+
+                withMembersRowLeft.appendChild(avatarsRow);
+                withMembersRow.appendChild(withMembersRowLeft);
+
+                // Agregar título y fila al item del team
+                teamItem.appendChild(teamTitle);
+                teamItem.appendChild(withMembersRow);
+
+                // Agregar el team al contenedor
+                if (teamsListContainer) {
+                    // Buscar el botón "Add a new team" si existe
+                    const existingAddBtn = teamsListContainer.querySelector('.team-add-cta');
+                    
+                    // Si existe, insertar el team antes del botón
+                    if (existingAddBtn) {
+                        teamsListContainer.insertBefore(teamItem, existingAddBtn);
+                    } else {
+                        // Si no existe, agregar el team y luego el botón
+                        teamsListContainer.appendChild(teamItem);
+                        
+                        // Agregar botón "Add a new team" al final
+                        const addNewTeamBtn = document.createElement('button');
+                        addNewTeamBtn.type = 'button';
+                        addNewTeamBtn.className = 'team-add-cta';
+                        addNewTeamBtn.setAttribute('aria-label', 'Add a new team');
+                        addNewTeamBtn.innerHTML = `
+                            <span class="team-add-dashed">+</span>
+                            <span class="team-add-label">Add a new team</span>
+                        `;
+                        
+                        addNewTeamBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Verificar que no esté deshabilitado
+                            if (teamMembersSection.classList.contains('team-members-section--disabled')) {
+                                return;
+                            }
+
+                            // Cargar teams en el modal
+                            loadTeamsInModal();
+                            
+                            // Mostrar modal
+                            selectTeamModal.classList.add('modal-overlay--visible');
+                            console.log('📋 Modal de selección de teams abierto');
+                        });
+
+                        teamsListContainer.appendChild(addNewTeamBtn);
+                    }
+                }
             }
 
             // Funcionalidad de abrir modal al hacer clic en add member (empty state)
@@ -2034,25 +2152,9 @@
                 console.log('📋 Modal de selección de teams abierto');
             });
 
-            // Funcionalidad de abrir modal al hacer clic en add more (with members state)
-            if (addMoreTeamBtn) {
-                addMoreTeamBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Verificar que no esté deshabilitado
-                    if (teamMembersSection.classList.contains('team-members-section--disabled')) {
-                        return;
-                    }
-
-                    // Cargar teams en el modal
-                    loadTeamsInModal();
-                    
-                    // Mostrar modal
-                    selectTeamModal.classList.add('modal-overlay--visible');
-                    console.log('📋 Modal de selección de teams abierto');
-                });
-            }
+            // Funcionalidad de abrir modal al hacer clic en add member (siempre visible al final)
+            // El botón "Add a new team" siempre estará visible al final de la lista
+            // Se agrega dinámicamente después de cada team agregado
 
             // Funcionalidad de cerrar modal
             if (closeTeamModalBtn) {
