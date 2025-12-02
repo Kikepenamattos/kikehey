@@ -449,6 +449,16 @@
   line-height: var(--line-height-normal);
 }
 
+/* Create Project Button - Always Visible (outside dropdown) */
+.dsu-projects-create-wrapper {
+  padding-left: 29px;
+  margin-bottom: 0;
+}
+
+.dsu-projects-create-wrapper .dsu-projects-create {
+  margin-bottom: 0;
+}
+
 .dsu-projects-create__icon {
   width: 20px;
   height: 20px;

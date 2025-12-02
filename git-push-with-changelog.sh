@@ -51,16 +51,26 @@ if [ $PUSH_EXIT_CODE -eq 0 ]; then
         UPDATED=true
     done
     
-    # Si se actualizó el historial, hacer commit y push
+    # Si se actualizó el historial, actualizar también los datos embebidos en changelog.html
     if [ -f "$HISTORY_FILE" ] && [ -n "$(git diff --name-only HEAD "$HISTORY_FILE" 2>/dev/null)" ]; then
         echo ""
-        echo "💾 Guardando cambios en git_history.txt..."
+        echo "📄 Actualizando datos embebidos en changelog.html..."
+        if [ -f "./update-changelog-html.js" ]; then
+            node update-changelog-html.js || echo "⚠️  Error ejecutando update-changelog-html.js"
+        else
+            echo "⚠️  Script update-changelog-html.js no encontrado"
+        fi
+        
+        echo ""
+        echo "💾 Guardando cambios en git_history.txt y changelog.html..."
         git add "$HISTORY_FILE"
+        git add changelog.html
         git commit -m "Update: Actualizar changelog con últimos cambios" --no-verify
         echo "🚀 Haciendo push del changelog actualizado..."
         git push "$@" --no-verify
         echo ""
         echo "✅ Changelog actualizado y sincronizado con el repositorio"
+        echo "📊 Los commits ahora se reflejarán en changelog.html (tanto desde GitHub como desde datos embebidos)"
     else
         echo ""
         echo "ℹ️  El changelog ya está actualizado"

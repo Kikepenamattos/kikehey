@@ -890,19 +890,25 @@
                         <!-- Projects Level -->
                         <div class="dsu-projects-button">
                             <div class="dsu-projects-level">
-                                <button class="dsu-projects-button__trigger">
+                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
                                     <span class="dsu-projects-button__icon">
                                         <img src="images/project.svg" alt="Projects">
                                     </span>
                                     <span class="dsu-projects-button__text">Projects</span>
                                 </button>
                                 <div class="dsu-projects-chevron">
-                                    <img src="images/down-chevron.svg" alt="Chevron">
+                                    <img src="images/up-chevron.svg" alt="Chevron">
                                 </div>
                             </div>
                             
                             <!-- Projects Dropdown -->
-                            <div class="dsu-projects-dropdown">
+                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                <button class="dsu-projects-create" id="createProjectBtn">
+                                    <span>Create new project</span>
+                                    <span class="dsu-projects-create__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
                                 <!-- Projects list -->
                             </div>
                         </div>
@@ -1643,6 +1649,12 @@
                 
                 if (!dropdown) return;
                 
+                // Inicializar expandido para que el botón "Create new project" sea visible
+                dropdown.classList.add('dsu-projects-dropdown--expanded');
+                trigger.classList.add('dsu-projects-button__trigger--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // Permitir toggle normal
                 trigger.addEventListener('click', function() {
                     const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
                     
