@@ -262,6 +262,168 @@
             text-decoration: underline;
         }
 
+        /* Protocol Section Styles */
+        .protocol-section {
+            background-color: #f4f7fb;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            border: 1px solid #e0e4e8;
+        }
+
+        .protocol-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .protocol-header:hover {
+            opacity: 0.8;
+        }
+
+        .protocol-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0a243f;
+            margin: 0;
+        }
+
+        .protocol-toggle {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #9dff00;
+            border-radius: 50%;
+            color: #0a243f;
+            font-size: 18px;
+            font-weight: 800;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .protocol-section--collapsed .protocol-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .protocol-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            max-height: 10000px;
+            opacity: 1;
+        }
+
+        .protocol-section--collapsed .protocol-content {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .protocol-description {
+            font-size: 14px;
+            color: #6b7b8a;
+            margin-bottom: 24px;
+            margin-top: 16px;
+        }
+
+        .protocol-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .protocol-step {
+            background-color: #ffffff;
+            border: 1px solid #e0e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .protocol-step-number {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            background-color: #9dff00;
+            color: #0a243f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .protocol-step-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0a243f;
+            margin-bottom: 8px;
+        }
+
+        .protocol-step-description {
+            font-size: 14px;
+            color: #6b7b8a;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .protocol-step-details {
+            background-color: #f4f7fb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #0a243f;
+            border-left: 3px solid #9dff00;
+        }
+
+        .protocol-step-details code {
+            background-color: transparent;
+            padding: 0;
+            color: #0a243f;
+        }
+
+        .protocol-card-example {
+            background-color: #ffffff;
+            border: 2px solid #9dff00;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .protocol-card-example-title {
+            font-weight: 700;
+            color: #0a243f;
+            margin-bottom: 8px;
+        }
+
+        .protocol-card-example-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .protocol-card-example-label {
+            font-weight: 600;
+            color: #6b7b8a;
+            min-width: 80px;
+        }
+
+        .protocol-card-example-value {
+            color: #0a243f;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -279,6 +441,20 @@
             .changelog-meta {
                 align-items: flex-start;
             }
+
+            .protocol-section {
+                padding: 20px;
+            }
+
+            .protocol-step {
+                padding-left: 50px;
+            }
+
+            .protocol-step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -288,6 +464,185 @@
         
         <h1>Historial de Cambios</h1>
         <p class="subtitle">Registro completo de todos los commits y modificaciones del proyecto Docu</p>
+
+        <!-- Protocol Section -->
+        <div class="protocol-section" id="protocolSection">
+            <div class="protocol-header" onclick="toggleProtocol()">
+                <h2 class="protocol-title">📋 Protocolo de Push y Actualización de Changelog</h2>
+                <div class="protocol-toggle" id="protocolToggle">▼</div>
+            </div>
+            <div class="protocol-content" id="protocolContent">
+                <p class="protocol-description">Documentación completa del proceso que se ejecuta cada vez que se solicita hacer push al repositorio y actualizar el changelog. Este protocolo garantiza que cada commit genere una card única con toda su información.</p>
+                
+                <div class="protocol-steps">
+                <!-- Step 1 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">1</div>
+                    <div class="protocol-step-title">Commit de Cambios</div>
+                    <div class="protocol-step-description">
+                        Se realiza un commit de los archivos modificados con un mensaje descriptivo que explica los cambios realizados.
+                    </div>
+                    <div class="protocol-step-details">
+                        <code>git add [archivos]</code><br>
+                        <code>git commit -m "Mensaje descriptivo del commit"</code>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">2</div>
+                    <div class="protocol-step-title">Ejecución del Hook post-commit</div>
+                    <div class="protocol-step-description">
+                        Automáticamente se ejecuta el hook <code>.git/hooks/post-commit</code> que captura la información del commit recién creado.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Información capturada:</strong><br>
+                        • Hash completo del commit<br>
+                        • Autor (nombre)<br>
+                        • Email del autor<br>
+                        • Fecha y hora del commit<br>
+                        • Mensaje del commit
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">3</div>
+                    <div class="protocol-step-title">Actualización de git_history.txt</div>
+                    <div class="protocol-step-description">
+                        El hook agrega una nueva línea al archivo <code>git_history.txt</code> con el formato: <code>hash|author|email|date|message</code>
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Formato:</strong><br>
+                        <code>3168b1be66503216339d71d5b6e6292ec3217bf3|Ubits|ubits@macbookpro.lan|2025-12-02 15:08:34 -0500|Update: Actualizar changelog con últimos cambios</code>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">4</div>
+                    <div class="protocol-step-title">Actualización de Datos Embebidos</div>
+                    <div class="protocol-step-description">
+                        Se ejecuta el script <code>update-changelog-html.js</code> que lee <code>git_history.txt</code> y actualiza el array <code>realCommits</code> en <code>changelog.html</code>.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Proceso:</strong><br>
+                        1. Lee todas las líneas de git_history.txt<br>
+                        2. Parsea cada línea en un objeto commit<br>
+                        3. Genera el array JavaScript con todos los commits<br>
+                        4. Reemplaza el bloque <code>realCommits</code> en changelog.html
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">5</div>
+                    <div class="protocol-step-title">Push al Repositorio</div>
+                    <div class="protocol-step-description">
+                        Se ejecuta el script <code>git-push-with-changelog.sh</code> que hace push de los commits al repositorio remoto en GitHub.
+                    </div>
+                    <div class="protocol-step-details">
+                        <code>./git-push-with-changelog.sh</code><br>
+                        <strong>Acciones:</strong><br>
+                        • Hace push de los commits al repositorio<br>
+                        • Sincroniza commits remotos con git_history.txt<br>
+                        • Actualiza datos embebidos si hay cambios<br>
+                        • Hace commit y push de los archivos actualizados
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">6</div>
+                    <div class="protocol-step-title">Carga del Changelog</div>
+                    <div class="protocol-step-description">
+                        Cuando se abre <code>changelog.html</code>, la función <code>loadChangelog()</code> intenta cargar los commits desde GitHub o usa los datos embebidos como fallback.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Orden de carga:</strong><br>
+                        1. Intenta cargar desde GitHub (git_history.txt)<br>
+                        2. Si falla, intenta cargar localmente<br>
+                        3. Si falla, usa datos embebidos (realCommits)
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">7</div>
+                    <div class="protocol-step-title">Parsing de Commits</div>
+                    <div class="protocol-step-description">
+                        La función <code>parseGitHistory()</code> convierte cada línea del historial en un objeto commit con toda su información estructurada.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Estructura del objeto commit:</strong><br>
+                        • hash: Hash corto (7 caracteres)<br>
+                        • fullHash: Hash completo<br>
+                        • author: Nombre del autor<br>
+                        • email: Email del autor<br>
+                        • date: Fecha y hora del commit<br>
+                        • message: Mensaje del commit
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">8</div>
+                    <div class="protocol-step-title">Renderizado de Cards</div>
+                    <div class="protocol-step-description">
+                        La función <code>renderCommits()</code> crea una card <code>.changelog-item</code> única para cada commit, validando que no haya duplicados y que toda la información esté presente.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Validaciones:</strong><br>
+                        • Verifica que el commit tenga hash válido<br>
+                        • Evita duplicados usando Set de hashes<br>
+                        • Valida que el mensaje exista<br>
+                        • Maneja casos donde autor/email estén vacíos<br>
+                        • Agrega atributo <code>data-commit-hash</code> único
+                    </div>
+                    <div class="protocol-card-example">
+                        <div class="protocol-card-example-title">Ejemplo de Card Generada:</div>
+                        <div class="protocol-card-example-item">
+                            <span class="protocol-card-example-label">Título:</span>
+                            <span class="protocol-card-example-value">Update: Implementar múltiples teams y funcionalidad hide section</span>
+                        </div>
+                        <div class="protocol-card-example-item">
+                            <span class="protocol-card-example-label">Hash:</span>
+                            <span class="protocol-card-example-value">b5bc3fb</span>
+                        </div>
+                        <div class="protocol-card-example-item">
+                            <span class="protocol-card-example-label">Autor:</span>
+                            <span class="protocol-card-example-value">Ubits (ubits@macbookpro.lan)</span>
+                        </div>
+                        <div class="protocol-card-example-item">
+                            <span class="protocol-card-example-label">Fecha:</span>
+                            <span class="protocol-card-example-value">2025-12-02 15:08:25</span>
+                        </div>
+                        <div class="protocol-card-example-item">
+                            <span class="protocol-card-example-label">Enlace:</span>
+                            <span class="protocol-card-example-value">GitHub commit link</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 9 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">9</div>
+                    <div class="protocol-step-title">Inserción en el DOM</div>
+                    <div class="protocol-step-description">
+                        Todas las cards se insertan en el contenedor <code>#changelogContainer</code> y se actualiza el contador de commits totales y la fecha de última actualización.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Resultado:</strong><br>
+                        • Cada commit tiene su propia card única<br>
+                        • Las cards están ordenadas (más reciente primero)<br>
+                        • Se muestra el total de commits<br>
+                        • Se registra la fecha de última actualización<br>
+                        • Se valida que el número de cards coincida con commits
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
 
         <div class="info-bar">
             <div class="info-item">
@@ -556,11 +911,34 @@
             console.log('🔄 Refrescando changelog...');
             loadChangelog();
         }
+
+        // Función para colapsar/expandir la sección del protocolo
+        function toggleProtocol() {
+            const protocolSection = document.getElementById('protocolSection');
+            const protocolToggle = document.getElementById('protocolToggle');
+            
+            if (protocolSection && protocolToggle) {
+                protocolSection.classList.toggle('protocol-section--collapsed');
+                
+                // Cambiar el ícono según el estado
+                if (protocolSection.classList.contains('protocol-section--collapsed')) {
+                    protocolToggle.textContent = '▶';
+                } else {
+                    protocolToggle.textContent = '▼';
+                }
+            }
+        }
         
         // Cargar al iniciar
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📋 Inicializando changelog...');
             loadChangelog();
+            
+            // Inicializar la sección del protocolo como expandida por defecto
+            const protocolSection = document.getElementById('protocolSection');
+            if (protocolSection) {
+                protocolSection.classList.remove('protocol-section--collapsed');
+            }
         });
     </script>
     
@@ -586,27 +964,47 @@
             let html = '';
             let cardsCreated = 0;
             
+            // Usar un Set para evitar duplicados basados en el hash del commit
+            const seenHashes = new Set();
+            
             // Crear una card changelog-item por cada commit en el historial
             commits.forEach((commit, index) => {
                 try {
+                    // Validar que el commit tenga la información necesaria
+                    if (!commit || (!commit.hash && !commit.fullHash)) {
+                        console.warn(`⚠️ Commit ${index + 1} no tiene hash válido, omitiendo...`, commit);
+                        return;
+                    }
+                    
+                    const commitHash = commit.fullHash || commit.hash;
+                    const shortHash = commit.hash || commit.fullHash?.substring(0, 7);
+                    
+                    // Verificar si ya se procesó este commit (evitar duplicados)
+                    if (seenHashes.has(commitHash)) {
+                        console.warn(`⚠️ Commit duplicado detectado: ${shortHash}, omitiendo...`);
+                        return;
+                    }
+                    seenHashes.add(commitHash);
+                    
                     const dateInfo = formatDate(commit.date);
                     const initials = getInitials(commit.author);
                     
                     // Crear URLs para GitHub
                     const repoUrl = 'https://github.com/Kikepenamattos/kikehey';
-                    const commitHash = commit.fullHash || commit.hash;
                     const commitUrl = `${repoUrl}/commit/${commitHash}`;
                     // Usar el hash completo para buscar el commit específico (más preciso que buscar por mensaje)
                     const searchUrl = `${repoUrl}/search?q=${encodeURIComponent(commitHash)}&type=commits`;
-                    const shortHash = commit.hash || commit.fullHash?.substring(0, 7);
+                    
+                    // Validar que el mensaje del commit exista
+                    const commitMessage = commit.message || 'Sin mensaje';
                     
                     // Crear card changelog-item con toda la información del commit
                     html += `
-                        <div class="changelog-item">
+                        <div class="changelog-item" data-commit-hash="${commitHash}">
                             <div class="changelog-header">
                                 <div class="changelog-title">
-                                    <a href="${commitUrl}" target="_blank" rel="noopener noreferrer" title="Ver commit '${escapeHtml(commit.message)}' en GitHub (${shortHash})">
-                                        ${escapeHtml(commit.message)}
+                                    <a href="${commitUrl}" target="_blank" rel="noopener noreferrer" title="Ver commit '${escapeHtml(commitMessage)}' en GitHub (${shortHash})">
+                                        ${escapeHtml(commitMessage)}
                                     </a>
                                 </div>
                                 <div class="changelog-meta">
@@ -617,9 +1015,9 @@
                             <div class="changelog-author">
                                 <div class="changelog-author-info">
                                     <div class="changelog-author-icon">${initials}</div>
-                                    <span>${escapeHtml(commit.author)}</span>
+                                    <span>${escapeHtml(commit.author || 'Desconocido')}</span>
                                 </div>
-                                <span class="changelog-author-email">${escapeHtml(commit.email)}</span>
+                                <span class="changelog-author-email">${escapeHtml(commit.email || '')}</span>
                             </div>
                             <a href="${commitUrl}" target="_blank" rel="noopener noreferrer" class="changelog-hash" title="Ver commit ${shortHash} completo en GitHub">
                                 ${shortHash}
@@ -667,6 +1065,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '3168b1b',
+                fullHash: '3168b1be66503216339d71d5b6e6292ec3217bf3',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-02 15:08:34 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: 'b5bc3fb',
                 fullHash: 'b5bc3fb14c549e670c7e658e8f06fba2cec1311a',
