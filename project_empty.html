@@ -1151,7 +1151,7 @@
                                         <input type="text" class="dsu-input dsu-input--only" id="projectAgreementItem1" placeholder="Create and send an agreement">
                                     </div>
                                     <div class="dsu-agreements__agreement-form-buttons">
-                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn" disabled>
+                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn">
                                             Delete agreement
                                         </button>
                                         <button class="dsu-agreements__send-button" id="projectSendButton" disabled>
@@ -1210,7 +1210,7 @@
                                         <input type="text" class="dsu-input dsu-input--only" id="projectActiveInput" placeholder="Create and send an agreement">
                                     </div>
                                     <div class="dsu-agreements__agreement-form-buttons">
-                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectActiveDeleteAgreementBtn" disabled>
+                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectActiveDeleteAgreementBtn">
                                             Delete agreement
                                         </button>
                                         <button class="dsu-agreements__send-button" id="projectActiveSendBtn">
@@ -2604,7 +2604,7 @@
                                     <input type="text" class="dsu-input dsu-input--only" id="projectAgreementItem1" placeholder="Create and send an agreement">
                                 </div>
                                 <div class="dsu-agreements__agreement-form-buttons">
-                                    <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn" disabled>
+                                    <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn">
                                         Delete agreement
                                     </button>
                                     <button class="dsu-agreements__send-button" id="projectSendButton" disabled>
@@ -2797,11 +2797,6 @@
             
             if (agreementNameInput) {
                 agreementNameInput.addEventListener('input', function() {
-                    // Enable/disable delete button based on input
-                    if (deleteAgreementBtn) {
-                        deleteAgreementBtn.disabled = !this.value.trim();
-                    }
-                    
                     // Enable send button if there's content, but don't disable it once enabled
                     if (sendButton && this.value.trim() && sendButton.disabled) {
                         sendButton.disabled = false;
@@ -2816,10 +2811,6 @@
                         if (agreementNameEditBtn) {
                             agreementNameEditBtn.style.display = 'block';
                         }
-                        // Enable delete button
-                        if (deleteAgreementBtn) {
-                            deleteAgreementBtn.disabled = false;
-                        }
                         if (sendButton) {
                             sendButton.disabled = false;
                         }
@@ -2832,10 +2823,6 @@
                         // Show edit button on blur if there's text
                         if (agreementNameEditBtn) {
                             agreementNameEditBtn.style.display = 'block';
-                        }
-                        // Enable delete button
-                        if (deleteAgreementBtn) {
-                            deleteAgreementBtn.disabled = false;
                         }
                         if (sendButton) {
                             sendButton.disabled = false;
@@ -3188,7 +3175,7 @@
                         <input type="text" class="dsu-input dsu-input--only" id="projectAgreementItem1_${uniqueId}" placeholder="Create and send an agreement">
                     </div>
                     <div class="dsu-agreements__agreement-form-buttons">
-                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn_${uniqueId}" disabled>
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectDeleteAgreementBtn_${uniqueId}">
                             Delete agreement
                         </button>
                         <button class="dsu-agreements__send-button" id="projectSendButton_${uniqueId}" disabled>
@@ -3243,11 +3230,6 @@
                 
                 if (agreementNameInput) {
                     agreementNameInput.addEventListener('input', function() {
-                        // Enable/disable delete button based on input
-                        if (deleteAgreementBtnGroup) {
-                            deleteAgreementBtnGroup.disabled = !this.value.trim();
-                        }
-                        
                         // Enable send button if there's content, but don't disable it once enabled
                         if (sendButton && this.value.trim() && sendButton.disabled) {
                             sendButton.disabled = false;
@@ -3262,10 +3244,6 @@
                             if (agreementNameEditBtnGroup) {
                                 agreementNameEditBtnGroup.style.display = 'block';
                             }
-                            // Enable delete button
-                            if (deleteAgreementBtnGroup) {
-                                deleteAgreementBtnGroup.disabled = false;
-                            }
                             if (sendButton) {
                                 sendButton.disabled = false;
                             }
@@ -3278,10 +3256,6 @@
                             // Show edit button on blur if there's text
                             if (agreementNameEditBtnGroup) {
                                 agreementNameEditBtnGroup.style.display = 'block';
-                            }
-                            // Enable delete button
-                            if (deleteAgreementBtnGroup) {
-                                deleteAgreementBtnGroup.disabled = false;
                             }
                             if (sendButton) {
                                 sendButton.disabled = false;
