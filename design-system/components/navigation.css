@@ -444,9 +444,10 @@
   margin-bottom: var(--spacing-08);
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-sm);
-  font-weight: 600; /* SemiBold */
+  font-weight: 600;
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
+  gap: 24px;
 }
 
 /* Create Project Button - Always Visible (outside dropdown) */
