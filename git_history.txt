@@ -1,3 +1,5 @@
+c2399961c593f150b96a7363ada2e89e91b152e5|Ubits|ubits@macbookpro.lan|2025-12-02 16:28:16 -0500|Update: Agregar sección de protocolo colapsable en changelog.html
+3168b1be66503216339d71d5b6e6292ec3217bf3|Ubits|ubits@macbookpro.lan|2025-12-02 15:08:34 -0500|Update: Actualizar changelog con últimos cambios
 b5bc3fb14c549e670c7e658e8f06fba2cec1311a|Ubits|ubits@macbookpro.lan|2025-12-02 15:08:25 -0500|Update: Implementar múltiples teams y funcionalidad hide section en project_empty.html
 969a49ed2747bf693be61c068a015a321b99c844|Ubits|ubits@macbookpro.lan|2025-12-02 14:01:33 -0500|Update: Actualizar changelog con últimos cambios
 cd6053610ac98573095fed4350df37475762729f|Ubits|ubits@macbookpro.lan|2025-12-02 14:01:27 -0500|Update: Implementar vista 'with members' al seleccionar team en project_empty.html
