@@ -1,3 +1,5 @@
+030c79e11291d06c0a663247ad095d00a752d832|Ubits|ubits@macbookpro.lan|2025-12-02 18:50:07 -0500|Fix: Ajustar componente Agreements - eliminar header, posicionar date picker a la derecha, agregar botón edit, botón Delete agreement y mejorar lógica de estados
+a3884c74788005ea4f2fa2e6a09d1bb4fb0d7693|Ubits|ubits@macbookpro.lan|2025-12-02 17:51:24 -0500|Update: Actualizar changelog con últimos cambios
 67662d01a91324239cd1a2e1024e9d06e4301987|Ubits|ubits@macbookpro.lan|2025-12-02 17:51:18 -0500|Fix: Implementar funcionalidad completa del componente Agreements con todas las características del ejemplo interactivo
 9fb79b6f18e040f53e36f73856a45ae6546ed7e3|Ubits|ubits@macbookpro.lan|2025-12-02 16:50:24 -0500|Update: Actualizar changelog con últimos cambios
 8ca047f39d670f1f111cb5239c57557152be09ba|Ubits|ubits@macbookpro.lan|2025-12-02 16:29:27 -0500|Update: Actualizar changelog con últimos cambios
