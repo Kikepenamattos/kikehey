@@ -1,3 +1,5 @@
+537773f5964c9de03cc516d3bab2ce07f849165d|Ubits|ubits@macbookpro.lan|2025-12-03 15:51:49 -0500|Update: Actualizar changelog con últimos cambios
+563eece9780996135b1c4b7b53c6355247048466|Ubits|ubits@macbookpro.lan|2025-12-03 16:47:34 -0500|Feature: Agregar botón de cerrar (X) en la parte superior derecha del componente Project agreements y cambiar botón 'New agreement' a estilo terciario
 484a8ad5e1c4a175f56a1ad70d67663d9a3524d0|Ubits|ubits@macbookpro.lan|2025-12-03 15:51:39 -0500|Feature: Agregar secciones 'What do you want to solve?', 'Assets or Links' y 'Deliverables' con funcionalidad de upload de archivos, imágenes y links
 305e821482b8f2305d02b7dd40702ad3cd8589c0|Ubits|ubits@macbookpro.lan|2025-12-03 15:36:43 -0500|Update: Actualizar changelog con últimos cambios
 2e539e63aa1a051d5e08e76cf1d78e6f9b351697|Ubits|ubits@macbookpro.lan|2025-12-03 15:36:36 -0500|Feature: Agregar sección 'What do you want to accomplish?' con tabs Goals/KPIs y funcionalidad de bullets independientes por tab
