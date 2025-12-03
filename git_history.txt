@@ -1,3 +1,5 @@
+ab4005a778c73228389a38ec1182db712d3822ee|Ubits|ubits@macbookpro.lan|2025-12-03 12:15:20 -0500|Feat: Agregar sección Project context con RichTextInput y funcionalidad Hide section
+22a900d45ab1e8235306b926303cb3e786c6dfc2|Ubits|ubits@macbookpro.lan|2025-12-02 18:59:23 -0500|Update: Actualizar changelog con últimos cambios
 3d7fceb344c561a9ed196e57e77985f369031cc5|Ubits|ubits@macbookpro.lan|2025-12-02 18:59:10 -0500|Fix: Hacer botón Delete agreement siempre activo para permitir borrar información desde el inicio
 fa4ce64cbbd3c10eea07e542923c512bf3245edd|Ubits|ubits@macbookpro.lan|2025-12-02 18:50:13 -0500|Update: Actualizar changelog con últimos cambios
 030c79e11291d06c0a663247ad095d00a752d832|Ubits|ubits@macbookpro.lan|2025-12-02 18:50:07 -0500|Fix: Ajustar componente Agreements - eliminar header, posicionar date picker a la derecha, agregar botón edit, botón Delete agreement y mejorar lógica de estados
