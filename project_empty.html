@@ -481,6 +481,89 @@
             cursor: not-allowed;
         }
 
+        /* Test Section (Componente de Prueba) */
+        .project-test-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-test-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-test-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-test-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-test-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-test-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-test-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-test-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-test-content {
+            width: 100%;
+        }
+
+        .project-test-section--disabled .dsu-rich-text-input {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-test-section--disabled .project-test-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .project-test-section--disabled .dsu-rich-text-input__editor {
+            cursor: not-allowed;
+        }
+
         /* Rich Text Input Placeholder */
         .dsu-rich-text-input__editor[data-placeholder]:empty::before {
             content: attr(data-placeholder);
@@ -1248,7 +1331,69 @@
                         </div>
                     </div>
                 </div>
+                <!-- END: Project Agreements Section -->
+
+                <!-- Test Section (Rich Text Input) -->
+                <div class="project-test-section" id="projectTestSection">
+                    <div class="project-test-header">
+                        <div class="project-test-headline">
+                            <h2 class="project-test-title">Project context</h2>
+                            <div class="project-test-hide" id="hideTestSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-test-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-test-description">Provide all the available information to star solid.</p>
+                    </div>
+                    <div class="project-test-content">
+                        <div class="dsu-rich-text-input" id="projectTestRichTextInput">
+                            <div class="dsu-rich-text-input__toolbar">
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                    <img src="images/bold.svg" alt="Bold">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                    <img src="images/italic.svg" alt="Italic">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                    <img src="images/underline.svg" alt="Underline">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                    <img src="images/list-bullet.svg" alt="Bullet List">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                    <img src="images/number_list.svg" alt="Numbered List">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                    <img src="images/link.svg" alt="Link">
+                                </button>
+                            </div>
+                            <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."></div>
+                            <div class="dsu-rich-text-input__footer">
+                                <div class="dsu-rich-text-input__footer-left">
+                                    <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                        <img src="images/attachment.svg" alt="Attachment">
+                                    </button>
+                                    <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                        <img src="images/trash.svg" alt="Delete">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Test Section -->
+
+                <!-- ========================================== -->
+                <!-- NUEVOS COMPONENTES: Agregar aquí arriba -->
+                <!-- ========================================== -->
+                <!-- IMPORTANTE: Todos los nuevos componentes deben agregarse ANTES de este comentario -->
+                <!-- para que queden dentro de <div class="project-content"> -->
             </div>
+            <!-- END: project-content div -->
 
             <!-- Modal para seleccionar teams -->
             <div class="modal-overlay" id="selectTeamModal">
@@ -1373,6 +1518,9 @@
 
             // Inicializar agreements
             initAgreements();
+
+            // Inicializar test section (componente de prueba)
+            initTestSection();
         }
 
         // ============================================
@@ -3638,6 +3786,44 @@
                     textElement.textContent = '-' + newText.trim();
                 }
             };
+        }
+
+        // ============================================
+        // Test Section (Rich Text Input)
+        // ============================================
+        function initTestSection() {
+            const testSection = document.getElementById('projectTestSection');
+            const hideTestBtn = document.getElementById('hideTestSectionBtn');
+            const richTextInput = document.getElementById('projectTestRichTextInput');
+            
+            if (!testSection || !hideTestBtn) {
+                console.warn('⚠️ Elementos de Test Section no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideTestBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = testSection.classList.contains('project-test-section--disabled');
+                
+                if (isDisabled) {
+                    testSection.classList.remove('project-test-section--disabled');
+                    console.log('🔓 Test Section habilitado');
+                } else {
+                    testSection.classList.add('project-test-section--disabled');
+                    console.log('🔒 Test Section deshabilitado');
+                }
+            });
+
+            // Inicializar Rich Text Input
+            if (richTextInput) {
+                initRichTextInput(richTextInput);
+                console.log('✅ Rich Text Input inicializado en Test Section');
+            }
+
+            console.log('✅ Test Section inicializado correctamente');
         }
 
         // ============================================
