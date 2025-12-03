@@ -640,6 +640,37 @@
                         • Se valida que el número de cards coincida con commits
                     </div>
                 </div>
+
+                <!-- Step 10 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">10</div>
+                    <div class="protocol-step-title">Verificación y Visualización de la Card del Último Commit</div>
+                    <div class="protocol-step-description">
+                        <strong>PASO MANDATORIO ANTES DE FINALIZAR:</strong> Se verifica que el último commit creado tenga su card correctamente generada y se muestra su información para confirmar que el proceso se completó exitosamente.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Proceso:</strong><br>
+                        1. Se obtiene el último commit usando <code>git log -1</code><br>
+                        2. Se verifica que el commit esté presente en <code>git_history.txt</code> (debe ser la primera línea)<br>
+                        3. Se verifica que el commit esté presente en <code>realCommits</code> (debe ser el primer elemento del array)<br>
+                        4. Se confirma que la primera card en el DOM corresponda al commit más reciente<br>
+                        5. Se valida que el ordenamiento sea correcto (más reciente primero)<br>
+                        6. Se muestra la información del último commit (hash, mensaje, autor, fecha)<br>
+                        7. Se valida que el enlace a GitHub funcione correctamente
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Validaciones CRÍTICAS:</strong><br>
+                        • El hash del último commit debe ser la primera línea en git_history.txt<br>
+                        • El último commit debe ser el primer elemento en realCommits<br>
+                        • La primera card en el DOM debe tener el hash del último commit<br>
+                        • La card debe tener el atributo <code>data-commit-hash</code> correcto<br>
+                        • El mensaje del commit debe coincidir<br>
+                        • La fecha y autor deben ser correctos<br>
+                        • El ordenamiento debe ser descendente (más reciente primero)<br>
+                        • El enlace a GitHub debe ser válido<br>
+                        <strong style="color: #d32f2f;">⚠️ Si la primera card no es el último commit, hay un problema de ordenamiento que debe corregirse</strong>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -838,7 +869,25 @@
             
             // Si ambas fallan, usar datos embebidos
             console.warn('⚠️ Usando datos embebidos como fallback (pueden estar desactualizados)');
-            renderCommits(realCommits);
+            
+            // Asegurar que los datos embebidos estén ordenados (más reciente primero)
+            const sortedRealCommits = [...realCommits].sort((a, b) => {
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                
+                if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+                    return b.hash.localeCompare(a.hash);
+                }
+                
+                return dateB.getTime() - dateA.getTime();
+            });
+            
+            console.log(`📋 Usando ${sortedRealCommits.length} commits de datos embebidos`);
+            if (sortedRealCommits.length > 0) {
+                console.log(`📅 Primer commit (más reciente): ${sortedRealCommits[0].hash} - ${sortedRealCommits[0].message}`);
+            }
+            
+            renderCommits(sortedRealCommits);
         }
         
         // Función para parsear el historial de git - Cada línea se convierte en una card
@@ -1056,6 +1105,28 @@
             } else {
                 console.log(`✓ Verificación: ${insertedCards.length} cards encontradas en el DOM`);
             }
+            
+            // VERIFICACIÓN CRÍTICA: Asegurar que el commit más reciente sea el primero
+            if (commits.length > 0) {
+                const firstCommit = commits[0];
+                const firstCard = insertedCards[0];
+                
+                // Obtener el último commit de git para comparar
+                console.log('🔍 Verificando que el commit más reciente sea el primero...');
+                console.log(`📋 Primer commit en array: ${firstCommit.hash} - ${firstCommit.message}`);
+                console.log(`📅 Fecha del primer commit: ${firstCommit.date}`);
+                
+                // Verificar que la primera card corresponda al primer commit
+                if (firstCard) {
+                    const firstCardHash = firstCard.getAttribute('data-commit-hash');
+                    if (firstCardHash && firstCardHash !== firstCommit.fullHash) {
+                        console.error(`❌ ERROR: La primera card (${firstCardHash.substring(0, 7)}) no coincide con el primer commit (${firstCommit.hash})`);
+                        console.error('⚠️ El ordenamiento puede estar incorrecto. Revisar parseGitHistory y orden de commits.');
+                    } else {
+                        console.log(`✅ Verificación exitosa: Primera card (${firstCommit.hash}) coincide con el commit más reciente`);
+                    }
+                }
+            }
         }
         
         function escapeHtml(text) {
@@ -1065,6 +1136,22 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '3c03587',
+                fullHash: '3c03587017deac2f6a2370cff4d332a01711cfe2',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-03 12:36:36 -0500',
+                message: 'Fix: Eliminar sección project-context-section y limpiar código relacionado'
+            },
+            {
+                hash: '346d3e2',
+                fullHash: '346d3e2db49b6e14b6906fc8a9f499f887dba03f',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-03 12:15:26 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: 'ab4005a',
                 fullHash: 'ab4005a778c73228389a38ec1182db712d3822ee',
