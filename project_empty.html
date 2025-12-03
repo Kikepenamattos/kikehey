@@ -481,6 +481,95 @@
             cursor: not-allowed;
         }
 
+        /* Project Context Section */
+        .project-context-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-context-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-context-title-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-context-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-context-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-context-hide-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-context-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-context-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-context-input-wrapper {
+            width: 100%;
+        }
+
+        .project-context-section--disabled .dsu-rich-text-input {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-context-section--disabled .dsu-rich-text-input__toolbar-button,
+        .project-context-section--disabled .dsu-rich-text-input__footer-button {
+            cursor: not-allowed;
+        }
+
+        /* Rich Text Input Placeholder */
+        .dsu-rich-text-input__editor[data-placeholder]:empty::before {
+            content: attr(data-placeholder);
+            color: var(--color-text-secondary, #6b7b8a);
+            pointer-events: none;
+        }
+
+        .dsu-rich-text-input__editor[data-placeholder]:not(:empty)::before {
+            display: none;
+        }
+
         /* Date Picker positioning for agreements */
         .dsu-agreements .dsu-date-button-wrapper {
             position: relative;
@@ -1239,6 +1328,59 @@
                 </div>
             </div>
 
+            <!-- Project Context Section -->
+            <div class="project-context-section" id="projectContextSection">
+                <div class="project-context-header">
+                    <div class="project-context-title-wrapper">
+                        <h2 class="project-context-title">Project context</h2>
+                        <div class="project-context-hide" id="hideProjectContextSectionBtn">
+                            <span>Hide section</span>
+                            <span class="project-context-hide-icon">
+                                <img src="images/eye.svg" alt="Hide">
+                            </span>
+                        </div>
+                    </div>
+                    <p class="project-context-description">Provide all the available information to star solid.</p>
+                </div>
+                <div class="project-context-input-wrapper">
+                    <div class="dsu-rich-text-input" id="projectContextRichText">
+                        <div class="dsu-rich-text-input__toolbar">
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                <img src="images/bold.svg" alt="Bold">
+                            </button>
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                <img src="images/italic.svg" alt="Italic">
+                            </button>
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                <img src="images/underline.svg" alt="Underline">
+                            </button>
+                            <div class="dsu-rich-text-input__toolbar-separator"></div>
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                <img src="images/list-bullet.svg" alt="Bullet List">
+                            </button>
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                <img src="images/number_list.svg" alt="Numbered List">
+                            </button>
+                            <div class="dsu-rich-text-input__toolbar-separator"></div>
+                            <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                <img src="images/link.svg" alt="Link">
+                            </button>
+                        </div>
+                        <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."></div>
+                        <div class="dsu-rich-text-input__footer">
+                            <div class="dsu-rich-text-input__footer-left">
+                                <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                    <img src="images/attachment.svg" alt="Attachment">
+                                </button>
+                                <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                    <img src="images/trash.svg" alt="Delete">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal para seleccionar teams -->
             <div class="modal-overlay" id="selectTeamModal">
                 <div class="modal">
@@ -1362,6 +1504,7 @@
 
             // Inicializar agreements
             initAgreements();
+            initProjectContext();
         }
 
         // ============================================
@@ -3627,6 +3770,152 @@
                     textElement.textContent = '-' + newText.trim();
                 }
             };
+        }
+
+        // ============================================
+        // Project Context Section
+        // ============================================
+        function initProjectContext() {
+            const contextSection = document.getElementById('projectContextSection');
+            const hideContextBtn = document.getElementById('hideProjectContextSectionBtn');
+            const richTextInput = document.getElementById('projectContextRichText');
+            
+            if (!contextSection || !hideContextBtn || !richTextInput) {
+                console.warn('⚠️ Elementos de Project Context no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideContextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = contextSection.classList.contains('project-context-section--disabled');
+                
+                if (isDisabled) {
+                    contextSection.classList.remove('project-context-section--disabled');
+                    console.log('🔓 Project Context habilitado');
+                } else {
+                    contextSection.classList.add('project-context-section--disabled');
+                    console.log('🔒 Project Context deshabilitado');
+                }
+            });
+
+            // Initialize Rich Text Input
+            initRichTextInput(richTextInput);
+        }
+
+        // ============================================
+        // Rich Text Input Functionality
+        // ============================================
+        function initRichTextInput(richTextInput) {
+            if (!richTextInput) return;
+            
+            const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+            const buttons = richTextInput.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]');
+            const footerButtons = richTextInput.querySelectorAll('.dsu-rich-text-input__footer-button[data-command]');
+            
+            if (!editor) return;
+            
+            // Handle placeholder
+            function checkPlaceholder() {
+                if (editor.textContent.trim() === '') {
+                    editor.classList.add('dsu-rich-text-input__editor--empty');
+                } else {
+                    editor.classList.remove('dsu-rich-text-input__editor--empty');
+                }
+            }
+            
+            editor.addEventListener('input', checkPlaceholder);
+            editor.addEventListener('blur', checkPlaceholder);
+            checkPlaceholder();
+            
+            // Toolbar buttons
+            buttons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const command = this.getAttribute('data-command');
+                    const value = this.getAttribute('data-value') || null;
+                    
+                    editor.focus();
+                    
+                    if (command === 'createLink') {
+                        const url = prompt('Enter URL:', value || 'https://');
+                        if (url) {
+                            document.execCommand('createLink', false, url);
+                        }
+                    } else {
+                        document.execCommand(command, false, value);
+                    }
+                    
+                    updateToolbarButtons(richTextInput);
+                });
+            });
+            
+            // Footer buttons
+            footerButtons.forEach(function(button) {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const command = this.getAttribute('data-command');
+                    
+                    if (command === 'delete') {
+                        if (confirm('¿Estás seguro de que quieres eliminar todo el contenido?')) {
+                            editor.textContent = '';
+                            checkPlaceholder();
+                        }
+                    } else if (command === 'attachment') {
+                        // Implementar funcionalidad de adjuntar archivo
+                        console.log('📎 Adjuntar archivo');
+                    }
+                });
+            });
+            
+            // Update button states
+            editor.addEventListener('keyup', function() {
+                updateToolbarButtons(richTextInput);
+            });
+            
+            editor.addEventListener('mouseup', function() {
+                updateToolbarButtons(richTextInput);
+            });
+        }
+        
+        function updateToolbarButtons(richTextInput) {
+            const editor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+            const buttons = richTextInput.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]');
+            
+            if (!editor) return;
+            
+            buttons.forEach(function(button) {
+                const command = button.getAttribute('data-command');
+                let isActive = false;
+                
+                try {
+                    switch(command) {
+                        case 'bold':
+                            isActive = document.queryCommandState('bold');
+                            break;
+                        case 'italic':
+                            isActive = document.queryCommandState('italic');
+                            break;
+                        case 'underline':
+                            isActive = document.queryCommandState('underline');
+                            break;
+                        case 'insertUnorderedList':
+                        case 'insertOrderedList':
+                            isActive = document.queryCommandState(command);
+                            break;
+                    }
+                } catch(e) {
+                    // Some browsers may throw errors
+                }
+                
+                if (isActive) {
+                    button.classList.add('dsu-rich-text-input__toolbar-button--active');
+                } else {
+                    button.classList.remove('dsu-rich-text-input__toolbar-button--active');
+                }
+            });
         }
 
         // ============================================
