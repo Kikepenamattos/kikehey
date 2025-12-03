@@ -1,3 +1,5 @@
+a7e7bc26bb86fcf79f7f7507dbdc805a9ac5e991|Ubits|ubits@macbookpro.lan|2025-12-03 14:30:38 -0500|Feature: Agregar componente Rich Text Input en Project context con headline y descripción, y corregir funcionalidad Hide section
+442bb671bcaa274c755ba62914ff1aca5a12a1c4|Ubits|ubits@macbookpro.lan|2025-12-03 12:36:43 -0500|Update: Actualizar changelog con últimos cambios
 3c03587017deac2f6a2370cff4d332a01711cfe2|Ubits|ubits@macbookpro.lan|2025-12-03 12:36:36 -0500|Fix: Eliminar sección project-context-section y limpiar código relacionado
 346d3e2db49b6e14b6906fc8a9f499f887dba03f|Ubits|ubits@macbookpro.lan|2025-12-03 12:15:26 -0500|Update: Actualizar changelog con últimos cambios
 ab4005a778c73228389a38ec1182db712d3822ee|Ubits|ubits@macbookpro.lan|2025-12-03 12:15:20 -0500|Feat: Agregar sección Project context con RichTextInput y funcionalidad Hide section
