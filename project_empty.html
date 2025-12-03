@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="design-system/components/input.css">
     <link rel="stylesheet" href="design-system/components/date-picker.css">
     <link rel="stylesheet" href="design-system/components/status-button.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
     
     <style>
         * {
@@ -561,6 +562,150 @@
         }
 
         .project-test-section--disabled .dsu-rich-text-input__editor {
+            cursor: not-allowed;
+        }
+
+        /* Project Objective Section */
+        .project-objective-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-objective-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-objective-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-objective-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-objective-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-objective-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-objective-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-objective-subtitle {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-objective-tabs {
+            display: flex;
+            gap: var(--spacing-08);
+            align-items: center;
+        }
+
+        .project-objective-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-objective-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+        }
+
+        .project-objective-items-container[style*="display: none"] {
+            display: none !important;
+        }
+
+        .project-objective-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .project-objective-item-text {
+            flex: 1;
+            margin: 0;
+        }
+
+        .project-objective-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-objective-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-objective-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-objective-section--disabled .dsu-input,
+        .project-objective-section--disabled .project-objective-items-container,
+        .project-objective-section--disabled .dsu-chip {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-objective-section--disabled .project-objective-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .project-objective-section--disabled .dsu-chip {
             cursor: not-allowed;
         }
 
@@ -1387,6 +1532,51 @@
                 </div>
                 <!-- END: Test Section -->
 
+                <!-- What do you want to accomplish? Section -->
+                <div class="project-objective-section" id="projectObjectiveSection">
+                    <div class="project-objective-header">
+                        <div class="project-objective-headline">
+                            <h2 class="project-objective-title">What do you want to accomplish?</h2>
+                            <div class="project-objective-hide" id="hideObjectiveSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-objective-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-objective-subtitle">Define how you want to succeed.</p>
+                        <div class="project-objective-tabs">
+                            <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
+                                <span class="dsu-chip__text">Goals</span>
+                            </button>
+                            <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
+                                <span class="dsu-chip__text">KPIs</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="project-objective-content">
+                        <!-- Goals Items Container -->
+                        <div class="project-objective-items-container" id="goalsItemsContainer" data-tab="goals">
+                            <!-- Items de Goals se agregarán aquí dinámicamente -->
+                        </div>
+                        <!-- KPIs Items Container -->
+                        <div class="project-objective-items-container" id="kpisItemsContainer" data-tab="kpis" style="display: none;">
+                            <!-- Items de KPIs se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="objectiveInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: What do you want to accomplish? Section -->
+
                 <!-- ========================================== -->
                 <!-- NUEVOS COMPONENTES: Agregar aquí arriba -->
                 <!-- ========================================== -->
@@ -1521,6 +1711,9 @@
 
             // Inicializar test section (componente de prueba)
             initTestSection();
+
+            // Inicializar objective section
+            initObjectiveSection();
         }
 
         // ============================================
@@ -3824,6 +4017,124 @@
             }
 
             console.log('✅ Test Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Project Objective Section
+        // ============================================
+        function initObjectiveSection() {
+            const objectiveSection = document.getElementById('projectObjectiveSection');
+            const hideObjectiveBtn = document.getElementById('hideObjectiveSectionBtn');
+            const goalsTabBtn = document.getElementById('goalsTabBtn');
+            const kpisTabBtn = document.getElementById('kpisTabBtn');
+            const objectiveInput = document.getElementById('objectiveInput');
+            const goalsItemsContainer = document.getElementById('goalsItemsContainer');
+            const kpisItemsContainer = document.getElementById('kpisItemsContainer');
+            
+            if (!objectiveSection || !hideObjectiveBtn) {
+                console.warn('⚠️ Elementos de Objective Section no encontrados');
+                return;
+            }
+
+            // Variable para trackear el tab activo
+            let activeTab = 'goals';
+
+            // Function to get current active container
+            function getActiveContainer() {
+                return activeTab === 'goals' ? goalsItemsContainer : kpisItemsContainer;
+            }
+
+            // Hide section functionality
+            hideObjectiveBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = objectiveSection.classList.contains('project-objective-section--disabled');
+                
+                if (isDisabled) {
+                    objectiveSection.classList.remove('project-objective-section--disabled');
+                    console.log('🔓 Objective Section habilitado');
+                } else {
+                    objectiveSection.classList.add('project-objective-section--disabled');
+                    console.log('🔒 Objective Section deshabilitado');
+                }
+            });
+
+            // Tabs functionality
+            if (goalsTabBtn && kpisTabBtn) {
+                goalsTabBtn.addEventListener('click', function() {
+                    goalsTabBtn.classList.remove('dsu-chip--inactive');
+                    goalsTabBtn.classList.add('dsu-chip--active');
+                    kpisTabBtn.classList.remove('dsu-chip--active');
+                    kpisTabBtn.classList.add('dsu-chip--inactive');
+                    
+                    // Cambiar contenedor visible
+                    if (goalsItemsContainer) goalsItemsContainer.style.display = 'flex';
+                    if (kpisItemsContainer) kpisItemsContainer.style.display = 'none';
+                    activeTab = 'goals';
+                    
+                    console.log('📋 Tab Goals seleccionado');
+                });
+
+                kpisTabBtn.addEventListener('click', function() {
+                    kpisTabBtn.classList.remove('dsu-chip--inactive');
+                    kpisTabBtn.classList.add('dsu-chip--active');
+                    goalsTabBtn.classList.remove('dsu-chip--active');
+                    goalsTabBtn.classList.add('dsu-chip--inactive');
+                    
+                    // Cambiar contenedor visible
+                    if (kpisItemsContainer) kpisItemsContainer.style.display = 'flex';
+                    if (goalsItemsContainer) goalsItemsContainer.style.display = 'none';
+                    activeTab = 'kpis';
+                    
+                    console.log('📊 Tab KPIs seleccionado');
+                });
+            }
+
+            // Function to add objective item (bullet) to active container
+            function addObjectiveItem(text) {
+                const activeContainer = getActiveContainer();
+                if (!activeContainer || !text.trim()) return;
+                
+                const item = document.createElement('div');
+                item.className = 'project-objective-item';
+                item.innerHTML = `
+                    <p class="project-objective-item-text">-${text}</p>
+                    <div class="project-objective-item-actions">
+                        <button class="project-objective-item-action" onclick="this.closest('.project-objective-item').remove()">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="project-objective-item-action" onclick="editObjectiveItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                activeContainer.appendChild(item);
+            }
+
+            // Edit item functionality
+            window.editObjectiveItem = function(button) {
+                const item = button.closest('.project-objective-item');
+                const textElement = item.querySelector('.project-objective-item-text');
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+
+            // Input functionality - Add item on Enter to active tab
+            if (objectiveInput) {
+                objectiveInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        addObjectiveItem(this.value.trim());
+                        this.value = '';
+                    }
+                });
+            }
+
+            console.log('✅ Objective Section inicializado correctamente');
         }
 
         // ============================================
