@@ -565,6 +565,493 @@
             cursor: not-allowed;
         }
 
+        /* Project Solve Section */
+        .project-solve-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-solve-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-solve-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-solve-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-solve-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-solve-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-solve-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-solve-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-solve-content {
+            width: 100%;
+        }
+
+        .project-solve-section--disabled .dsu-rich-text-input {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-solve-section--disabled .project-solve-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .project-solve-section--disabled .dsu-rich-text-input__editor {
+            cursor: not-allowed;
+        }
+
+        /* Project Assets Section */
+        .project-assets-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-assets-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-assets-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-assets-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-assets-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-assets-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-assets-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-assets-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-assets-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-assets-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-assets-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-assets-input-wrapper .dsu-input {
+            padding-right: 80px;
+        }
+
+        .project-assets-input-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            position: absolute;
+            right: var(--spacing-12);
+            align-items: center;
+            z-index: 1;
+        }
+
+        .project-assets-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-assets-action-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .project-assets-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .project-assets-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .project-assets-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .project-assets-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .project-assets-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .project-assets-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .project-assets-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .project-assets-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-assets-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-assets-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-assets-section--disabled .dsu-input,
+        .project-assets-section--disabled .project-assets-items-container,
+        .project-assets-section--disabled .project-assets-action-btn {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-assets-section--disabled .project-assets-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* Project Deliverables Section */
+        .project-deliverables-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-deliverables-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-deliverables-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-deliverables-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-deliverables-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-deliverables-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-deliverables-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-deliverables-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-deliverables-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-deliverables-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-deliverables-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-deliverables-input-wrapper .dsu-input {
+            padding-right: 80px;
+        }
+
+        .project-deliverables-input-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            position: absolute;
+            right: var(--spacing-12);
+            align-items: center;
+            z-index: 1;
+        }
+
+        .project-deliverables-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-deliverables-action-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .project-deliverables-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .project-deliverables-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .project-deliverables-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .project-deliverables-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .project-deliverables-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .project-deliverables-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .project-deliverables-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .project-deliverables-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-deliverables-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-deliverables-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-deliverables-section--disabled .dsu-input,
+        .project-deliverables-section--disabled .project-deliverables-items-container,
+        .project-deliverables-section--disabled .project-deliverables-action-btn {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-deliverables-section--disabled .project-deliverables-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
         /* Project Objective Section */
         .project-objective-section {
             display: flex;
@@ -1577,6 +2064,144 @@
                 </div>
                 <!-- END: What do you want to accomplish? Section -->
 
+                <!-- What do you want to solve? Section -->
+                <div class="project-solve-section" id="projectSolveSection">
+                    <div class="project-solve-header">
+                        <div class="project-solve-headline">
+                            <h2 class="project-solve-title">What do you want to solve?</h2>
+                            <div class="project-solve-hide" id="hideSolveSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-solve-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-solve-description">Describe the problem or challenge.</p>
+                    </div>
+                    <div class="project-solve-content">
+                        <div class="dsu-rich-text-input" id="projectSolveRichTextInput">
+                            <div class="dsu-rich-text-input__toolbar">
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                    <img src="images/bold.svg" alt="Bold">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                    <img src="images/italic.svg" alt="Italic">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                    <img src="images/underline.svg" alt="Underline">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                    <img src="images/list-bullet.svg" alt="Bullet List">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                    <img src="images/number_list.svg" alt="Numbered List">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                    <img src="images/link.svg" alt="Link">
+                                </button>
+                            </div>
+                            <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."></div>
+                            <div class="dsu-rich-text-input__footer">
+                                <div class="dsu-rich-text-input__footer-left">
+                                    <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                        <img src="images/attachment.svg" alt="Attachment">
+                                    </button>
+                                    <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                        <img src="images/trash.svg" alt="Delete">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: What do you want to solve? Section -->
+
+                <!-- Assets or Links Section -->
+                <div class="project-assets-section" id="projectAssetsSection">
+                    <div class="project-assets-header">
+                        <div class="project-assets-headline">
+                            <h2 class="project-assets-title">Assets or links</h2>
+                            <div class="project-assets-hide" id="hideAssetsSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-assets-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-assets-description">Provide all the available information to star solid.</p>
+                    </div>
+                    <div class="project-assets-content">
+                        <div class="project-assets-items-container" id="assetsItemsContainer">
+                            <!-- Items se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container project-assets-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="assetsInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                                <div class="project-assets-input-actions">
+                                    <button class="project-assets-action-btn" id="uploadFileBtn" title="Upload file">
+                                        <img src="images/attachment.svg" alt="Upload">
+                                    </button>
+                                    <button class="project-assets-action-btn" id="uploadImageBtn" title="Upload image">
+                                        <img src="images/project.svg" alt="Image">
+                                    </button>
+                                    <input type="file" id="assetsFileInput" accept="*/*" style="display: none;">
+                                    <input type="file" id="assetsImageInput" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Assets or Links Section -->
+
+                <!-- Deliverables Section -->
+                <div class="project-deliverables-section" id="projectDeliverablesSection">
+                    <div class="project-deliverables-header">
+                        <div class="project-deliverables-headline">
+                            <h2 class="project-deliverables-title">Deliverables</h2>
+                            <div class="project-deliverables-hide" id="hideDeliverablesSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-deliverables-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-deliverables-description">Provide all the available information to star solid.</p>
+                    </div>
+                    <div class="project-deliverables-content">
+                        <div class="project-deliverables-items-container" id="deliverablesItemsContainer">
+                            <!-- Items se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container project-deliverables-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="deliverablesInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                                <div class="project-deliverables-input-actions">
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
+                                        <img src="images/attachment.svg" alt="Upload">
+                                    </button>
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
+                                        <img src="images/project.svg" alt="Image">
+                                    </button>
+                                    <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
+                                    <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Deliverables Section -->
+
                 <!-- ========================================== -->
                 <!-- NUEVOS COMPONENTES: Agregar aquí arriba -->
                 <!-- ========================================== -->
@@ -1714,6 +2339,15 @@
 
             // Inicializar objective section
             initObjectiveSection();
+
+            // Inicializar solve section
+            initSolveSection();
+
+            // Inicializar assets section
+            initAssetsSection();
+
+            // Inicializar deliverables section
+            initDeliverablesSection();
         }
 
         // ============================================
@@ -4135,6 +4769,446 @@
             }
 
             console.log('✅ Objective Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Project Solve Section
+        // ============================================
+        function initSolveSection() {
+            const solveSection = document.getElementById('projectSolveSection');
+            const hideSolveBtn = document.getElementById('hideSolveSectionBtn');
+            const richTextInput = document.getElementById('projectSolveRichTextInput');
+            
+            if (!solveSection || !hideSolveBtn) {
+                console.warn('⚠️ Elementos de Solve Section no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideSolveBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = solveSection.classList.contains('project-solve-section--disabled');
+                
+                if (isDisabled) {
+                    solveSection.classList.remove('project-solve-section--disabled');
+                    console.log('🔓 Solve Section habilitado');
+                } else {
+                    solveSection.classList.add('project-solve-section--disabled');
+                    console.log('🔒 Solve Section deshabilitado');
+                }
+            });
+
+            // Inicializar Rich Text Input
+            if (richTextInput) {
+                initRichTextInput(richTextInput);
+                console.log('✅ Rich Text Input inicializado en Solve Section');
+            }
+
+            console.log('✅ Solve Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Project Assets Section
+        // ============================================
+        function initAssetsSection() {
+            const assetsSection = document.getElementById('projectAssetsSection');
+            const hideAssetsBtn = document.getElementById('hideAssetsSectionBtn');
+            const assetsInput = document.getElementById('assetsInput');
+            const assetsItemsContainer = document.getElementById('assetsItemsContainer');
+            const uploadFileBtn = document.getElementById('uploadFileBtn');
+            const uploadImageBtn = document.getElementById('uploadImageBtn');
+            const assetsFileInput = document.getElementById('assetsFileInput');
+            const assetsImageInput = document.getElementById('assetsImageInput');
+            
+            if (!assetsSection || !hideAssetsBtn) {
+                console.warn('⚠️ Elementos de Assets Section no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideAssetsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = assetsSection.classList.contains('project-assets-section--disabled');
+                
+                if (isDisabled) {
+                    assetsSection.classList.remove('project-assets-section--disabled');
+                    console.log('🔓 Assets Section habilitado');
+                } else {
+                    assetsSection.classList.add('project-assets-section--disabled');
+                    console.log('🔒 Assets Section deshabilitado');
+                }
+            });
+
+            // Function to check if string is a URL
+            function isValidUrl(string) {
+                try {
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // Function to add asset item
+            function addAssetItem(data) {
+                if (!assetsItemsContainer) return;
+                
+                const item = document.createElement('div');
+                item.className = 'project-assets-item';
+                
+                let previewHtml = '';
+                let contentHtml = '';
+                
+                if (data.type === 'image' && data.preview) {
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-assets-item-preview">`;
+                    contentHtml = `
+                        <div class="project-assets-item-content">
+                            <p class="project-assets-item-text">${data.name}</p>
+                            <p class="project-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file') {
+                    previewHtml = `
+                        <div class="project-assets-item-icon">
+                            <img src="images/attachment.svg" alt="File">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="project-assets-item-content">
+                            <p class="project-assets-item-text">${data.name}</p>
+                            <p class="project-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'link') {
+                    previewHtml = `
+                        <div class="project-assets-item-icon">
+                            <img src="images/link.svg" alt="Link">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="project-assets-item-content">
+                            <p class="project-assets-item-text">${data.name || data.url}</p>
+                            <a href="${data.url}" target="_blank" class="project-assets-item-link">${data.url}</a>
+                        </div>
+                    `;
+                } else {
+                    // Text bullet
+                    previewHtml = '';
+                    contentHtml = `
+                        <div class="project-assets-item-content">
+                            <p class="project-assets-item-text">-${data.text}</p>
+                        </div>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    ${previewHtml}
+                    ${contentHtml}
+                    <div class="project-assets-item-actions">
+                        <button class="project-assets-item-action" onclick="this.closest('.project-assets-item').remove()">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="project-assets-item-action" onclick="editAssetItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                assetsItemsContainer.appendChild(item);
+            }
+
+            // Edit item functionality
+            window.editAssetItem = function(button) {
+                const item = button.closest('.project-assets-item');
+                const textElement = item.querySelector('.project-assets-item-text');
+                if (!textElement) return;
+                
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+
+            // File upload functionality
+            if (uploadFileBtn && assetsFileInput) {
+                uploadFileBtn.addEventListener('click', function() {
+                    assetsFileInput.click();
+                });
+                
+                assetsFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        addAssetItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
+                            file: file
+                        });
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Image upload functionality
+            if (uploadImageBtn && assetsImageInput) {
+                uploadImageBtn.addEventListener('click', function() {
+                    assetsImageInput.click();
+                });
+                
+                assetsImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                            addAssetItem({
+                                type: 'image',
+                                name: file.name,
+                                size: fileSize,
+                                preview: event.target.result,
+                                file: file
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Input functionality - Add item on Enter (text or link)
+            if (assetsInput) {
+                assetsInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        const value = this.value.trim();
+                        
+                        if (isValidUrl(value)) {
+                            // Es un link
+                            addAssetItem({
+                                type: 'link',
+                                url: value,
+                                name: value
+                            });
+                        } else {
+                            // Es texto normal (bullet)
+                            addAssetItem({
+                                type: 'text',
+                                text: value
+                            });
+                        }
+                        
+                        this.value = '';
+                    }
+                });
+            }
+
+            console.log('✅ Assets Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Project Deliverables Section
+        // ============================================
+        function initDeliverablesSection() {
+            const deliverablesSection = document.getElementById('projectDeliverablesSection');
+            const hideDeliverablesBtn = document.getElementById('hideDeliverablesSectionBtn');
+            const deliverablesInput = document.getElementById('deliverablesInput');
+            const deliverablesItemsContainer = document.getElementById('deliverablesItemsContainer');
+            const uploadDeliverableFileBtn = document.getElementById('uploadDeliverableFileBtn');
+            const uploadDeliverableImageBtn = document.getElementById('uploadDeliverableImageBtn');
+            const deliverablesFileInput = document.getElementById('deliverablesFileInput');
+            const deliverablesImageInput = document.getElementById('deliverablesImageInput');
+            
+            if (!deliverablesSection || !hideDeliverablesBtn) {
+                console.warn('⚠️ Elementos de Deliverables Section no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideDeliverablesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = deliverablesSection.classList.contains('project-deliverables-section--disabled');
+                
+                if (isDisabled) {
+                    deliverablesSection.classList.remove('project-deliverables-section--disabled');
+                    console.log('🔓 Deliverables Section habilitado');
+                } else {
+                    deliverablesSection.classList.add('project-deliverables-section--disabled');
+                    console.log('🔒 Deliverables Section deshabilitado');
+                }
+            });
+
+            // Function to check if string is a URL
+            function isValidUrl(string) {
+                try {
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // Function to add deliverable item
+            function addDeliverableItem(data) {
+                if (!deliverablesItemsContainer) return;
+                
+                const item = document.createElement('div');
+                item.className = 'project-deliverables-item';
+                
+                let previewHtml = '';
+                let contentHtml = '';
+                
+                if (data.type === 'image' && data.preview) {
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-deliverables-item-preview">`;
+                    contentHtml = `
+                        <div class="project-deliverables-item-content">
+                            <p class="project-deliverables-item-text">${data.name}</p>
+                            <p class="project-deliverables-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file') {
+                    previewHtml = `
+                        <div class="project-deliverables-item-icon">
+                            <img src="images/attachment.svg" alt="File">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="project-deliverables-item-content">
+                            <p class="project-deliverables-item-text">${data.name}</p>
+                            <p class="project-deliverables-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'link') {
+                    previewHtml = `
+                        <div class="project-deliverables-item-icon">
+                            <img src="images/link.svg" alt="Link">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="project-deliverables-item-content">
+                            <p class="project-deliverables-item-text">${data.name || data.url}</p>
+                            <a href="${data.url}" target="_blank" class="project-deliverables-item-link">${data.url}</a>
+                        </div>
+                    `;
+                } else {
+                    // Text bullet
+                    previewHtml = '';
+                    contentHtml = `
+                        <div class="project-deliverables-item-content">
+                            <p class="project-deliverables-item-text">-${data.text}</p>
+                        </div>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    ${previewHtml}
+                    ${contentHtml}
+                    <div class="project-deliverables-item-actions">
+                        <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item').remove()">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="project-deliverables-item-action" onclick="editDeliverableItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                deliverablesItemsContainer.appendChild(item);
+            }
+
+            // Edit item functionality
+            window.editDeliverableItem = function(button) {
+                const item = button.closest('.project-deliverables-item');
+                const textElement = item.querySelector('.project-deliverables-item-text');
+                if (!textElement) return;
+                
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+
+            // File upload functionality
+            if (uploadDeliverableFileBtn && deliverablesFileInput) {
+                uploadDeliverableFileBtn.addEventListener('click', function() {
+                    deliverablesFileInput.click();
+                });
+                
+                deliverablesFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        addDeliverableItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
+                            file: file
+                        });
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Image upload functionality
+            if (uploadDeliverableImageBtn && deliverablesImageInput) {
+                uploadDeliverableImageBtn.addEventListener('click', function() {
+                    deliverablesImageInput.click();
+                });
+                
+                deliverablesImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                            addDeliverableItem({
+                                type: 'image',
+                                name: file.name,
+                                size: fileSize,
+                                preview: event.target.result,
+                                file: file
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Input functionality - Add item on Enter (text or link)
+            if (deliverablesInput) {
+                deliverablesInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        const value = this.value.trim();
+                        
+                        if (isValidUrl(value)) {
+                            // Es un link
+                            addDeliverableItem({
+                                type: 'link',
+                                url: value,
+                                name: value
+                            });
+                        } else {
+                            // Es texto normal (bullet)
+                            addDeliverableItem({
+                                type: 'text',
+                                text: value
+                            });
+                        }
+                        
+                        this.value = '';
+                    }
+                });
+            }
+
+            console.log('✅ Deliverables Section inicializado correctamente');
         }
 
         // ============================================
