@@ -482,6 +482,46 @@
             cursor: not-allowed;
         }
 
+        /* Agreements Headline with Close Button */
+        .dsu-agreements__headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: var(--spacing-16);
+        }
+
+        .dsu-agreements__headline-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            flex: 1;
+        }
+
+        .dsu-agreements__close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .dsu-agreements__close-btn:hover {
+            background-color: var(--color-status-disabled);
+        }
+
+        .dsu-agreements__close-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
         /* Test Section (Componente de Prueba) */
         .project-test-section {
             display: flex;
@@ -1809,10 +1849,15 @@
                         <div class="dsu-agreements__wrapper" style="max-height: 700px; overflow: visible;">
                             <div class="dsu-agreements__content">
                                 <div class="dsu-agreements__headline">
-                                    <div class="dsu-agreements__headline-icon">
-                                        <img src="images/project.svg" alt="Project">
+                                    <div class="dsu-agreements__headline-left">
+                                        <div class="dsu-agreements__headline-icon">
+                                            <img src="images/project.svg" alt="Project">
+                                        </div>
+                                        <p class="dsu-agreements__headline-text">Project agreements</p>
                                     </div>
-                                    <p class="dsu-agreements__headline-text">Project agreements</p>
+                                    <button class="dsu-agreements__close-btn" id="projectAgreementsCloseBtn" aria-label="Close">
+                                        <img src="images/close.svg" alt="Close">
+                                    </button>
                                 </div>
                                 
                                 <div class="dsu-agreements__agreement" id="projectAgreementForm">
@@ -1889,7 +1934,7 @@
                                     </div>
                                 </div>
                                 
-                                <button class="dsu-button dsu-button--secondary dsu-button--medium" id="projectCreateAgreementBtn">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
                                     <span>New agreement</span>
                                     <span class="dsu-button__icon">
                                         <img src="images/plus.svg" alt="Plus">
@@ -1904,10 +1949,15 @@
                         <div class="dsu-agreements__wrapper">
                             <div class="dsu-agreements__content">
                                 <div class="dsu-agreements__headline">
-                                    <div class="dsu-agreements__headline-icon">
-                                        <img src="images/project.svg" alt="Project">
+                                    <div class="dsu-agreements__headline-left">
+                                        <div class="dsu-agreements__headline-icon">
+                                            <img src="images/project.svg" alt="Project">
+                                        </div>
+                                        <p class="dsu-agreements__headline-text">Project agreements</p>
                                     </div>
-                                    <p class="dsu-agreements__headline-text">Project agreements</p>
+                                    <button class="dsu-agreements__close-btn" id="projectAgreementsActiveCloseBtn" aria-label="Close">
+                                        <img src="images/close.svg" alt="Close">
+                                    </button>
                                 </div>
                                 
                                 <!-- Active Agreement (Expanded) -->
@@ -1953,7 +2003,7 @@
                                     <!-- Collapsed items will be added dynamically -->
                                 </div>
                                 
-                                <button class="dsu-button dsu-button--secondary dsu-button--medium" id="projectActiveNewBtn">
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectActiveNewBtn">
                                     <span>New agreement</span>
                                     <span class="dsu-button__icon">
                                         <img src="images/plus.svg" alt="Plus">
@@ -3479,6 +3529,8 @@
             const emptyToggleBtn = document.getElementById('projectEmptyToggleBtn');
             const emptyMeta = document.getElementById('projectEmptyMeta');
             const activeNewBtn = document.getElementById('projectActiveNewBtn');
+            const agreementsCloseBtn = document.getElementById('projectAgreementsCloseBtn');
+            const agreementsActiveCloseBtn = document.getElementById('projectAgreementsActiveCloseBtn');
 
             if (!agreementsSection) {
                 console.warn('⚠️ Sección de agreements no encontrada');
@@ -4580,6 +4632,26 @@
                     activeContainer.style.display = 'none';
                     emptyContainer.style.display = 'block';
                     emptyContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                });
+            }
+
+            // Close button functionality - Empty state
+            if (agreementsCloseBtn) {
+                agreementsCloseBtn.addEventListener('click', function() {
+                    // Volver al estado default
+                    if (emptyContainer) emptyContainer.style.display = 'none';
+                    if (activeContainer) activeContainer.style.display = 'none';
+                    if (defaultContainer) defaultContainer.style.display = 'block';
+                });
+            }
+
+            // Close button functionality - Active state
+            if (agreementsActiveCloseBtn) {
+                agreementsActiveCloseBtn.addEventListener('click', function() {
+                    // Volver al estado default
+                    if (emptyContainer) emptyContainer.style.display = 'none';
+                    if (activeContainer) activeContainer.style.display = 'none';
+                    if (defaultContainer) defaultContainer.style.display = 'block';
                 });
             }
             
