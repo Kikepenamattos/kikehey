@@ -1,3 +1,5 @@
+2e539e63aa1a051d5e08e76cf1d78e6f9b351697|Ubits|ubits@macbookpro.lan|2025-12-03 15:36:36 -0500|Feature: Agregar sección 'What do you want to accomplish?' con tabs Goals/KPIs y funcionalidad de bullets independientes por tab
+d4b671ba340df301c304666bac7ac9416c514f99|Ubits|ubits@macbookpro.lan|2025-12-03 14:30:45 -0500|Update: Actualizar changelog con últimos cambios
 a7e7bc26bb86fcf79f7f7507dbdc805a9ac5e991|Ubits|ubits@macbookpro.lan|2025-12-03 14:30:38 -0500|Feature: Agregar componente Rich Text Input en Project context con headline y descripción, y corregir funcionalidad Hide section
 442bb671bcaa274c755ba62914ff1aca5a12a1c4|Ubits|ubits@macbookpro.lan|2025-12-03 12:36:43 -0500|Update: Actualizar changelog con últimos cambios
 3c03587017deac2f6a2370cff4d332a01711cfe2|Ubits|ubits@macbookpro.lan|2025-12-03 12:36:36 -0500|Fix: Eliminar sección project-context-section y limpiar código relacionado
