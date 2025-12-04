@@ -1,3 +1,5 @@
+2972b58e73dbfac3bbe9761251a2ba1234bb2ba1|Ubits|ubits@macbookpro.lan|2025-12-04 12:37:29 -0500|Fix: Unificar estilos disabled de todos los inputs afectados por 'hide section' para que coincidan con dsu-input-group--hidden
+9a66a532244577c94478267e9d76b2625543e5e2|Ubits|ubits@macbookpro.lan|2025-12-04 12:15:07 -0500|Update: Actualizar changelog con últimos cambios
 b34d3fcc29ab1a5561952286f032b2c60683fe85|Ubits|ubits@macbookpro.lan|2025-12-04 12:14:59 -0500|Feature: Hacer campo 'Project name' mandatorio, cambiar botón 'Duplicate project' y agregar dropdown de currency (USD/COP) con chevron down
 1841a0d6b250f2a38e4dbfe1c1481cee39a0ecde|Ubits|ubits@macbookpro.lan|2025-12-03 16:47:41 -0500|Update: Actualizar changelog con últimos cambios
 537773f5964c9de03cc516d3bab2ce07f849165d|Ubits|ubits@macbookpro.lan|2025-12-03 15:51:49 -0500|Update: Actualizar changelog con últimos cambios
