@@ -1,3 +1,5 @@
+b34d3fcc29ab1a5561952286f032b2c60683fe85|Ubits|ubits@macbookpro.lan|2025-12-04 12:14:59 -0500|Feature: Hacer campo 'Project name' mandatorio, cambiar botón 'Duplicate project' y agregar dropdown de currency (USD/COP) con chevron down
+1841a0d6b250f2a38e4dbfe1c1481cee39a0ecde|Ubits|ubits@macbookpro.lan|2025-12-03 16:47:41 -0500|Update: Actualizar changelog con últimos cambios
 537773f5964c9de03cc516d3bab2ce07f849165d|Ubits|ubits@macbookpro.lan|2025-12-03 15:51:49 -0500|Update: Actualizar changelog con últimos cambios
 563eece9780996135b1c4b7b53c6355247048466|Ubits|ubits@macbookpro.lan|2025-12-03 16:47:34 -0500|Feature: Agregar botón de cerrar (X) en la parte superior derecha del componente Project agreements y cambiar botón 'New agreement' a estilo terciario
 484a8ad5e1c4a175f56a1ad70d67663d9a3524d0|Ubits|ubits@macbookpro.lan|2025-12-03 15:51:39 -0500|Feature: Agregar secciones 'What do you want to solve?', 'Assets or Links' y 'Deliverables' con funcionalidad de upload de archivos, imágenes y links
