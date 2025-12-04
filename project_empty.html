@@ -161,6 +161,66 @@
             flex: 1;
         }
 
+        /* Currency Dropdown */
+        .currency-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: absolute;
+            top: calc(100% + var(--spacing-08));
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-3);
+            overflow: hidden;
+            z-index: 100;
+            margin-top: var(--spacing-04);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-4px);
+            pointer-events: none;
+            transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+        }
+
+        .currency-dropdown--expanded {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            max-height: 200px;
+        }
+
+        .currency-dropdown__item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-12) var(--spacing-16);
+            border: none;
+            background-color: var(--color-surface-regular);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            text-align: left;
+            width: 100%;
+            border-bottom: 1px solid var(--color-basics-gray);
+        }
+
+        .currency-dropdown__item:last-child {
+            border-bottom: none;
+        }
+
+        .currency-dropdown__item:hover {
+            background-color: var(--color-surface-especial);
+        }
+
+        .currency-dropdown__item--active {
+            background-color: var(--color-surface-especial);
+        }
+
         /* Date & Status Section */
         .project-date-status-section {
             display: flex;
@@ -1660,6 +1720,9 @@
                         <div class="dsu-input-label">
                             <div class="dsu-input-label__text">
                                 <span>Project name</span>
+                                <span class="dsu-input-label__required">
+                                    <img src="images/asterisk.svg" alt="Required">
+                                </span>
                             </div>
                         </div>
                         <div class="dsu-input-container">
@@ -1668,6 +1731,7 @@
                                 class="dsu-input" 
                                 placeholder="Choose an unique name"
                                 id="projectNameInput"
+                                required
                             >
                         </div>
                     </div>
@@ -1704,18 +1768,27 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="dsu-input-container">
+                            <div class="dsu-input-container" style="position: relative;">
                                 <input 
                                     type="text" 
                                     class="dsu-input" 
-                                    placeholder="COP"
-                                    value="COP"
+                                    placeholder="USD"
+                                    value="USD"
                                     id="currencyInput"
                                     readonly
+                                    style="cursor: pointer;"
                                 >
-                                <span class="dsu-input-container__icon">
-                                    <img src="images/eye.svg" alt="Toggle visibility">
+                                <span class="dsu-input-container__icon" id="currencyChevron" style="cursor: pointer;">
+                                    <img src="images/down-chevron.svg" alt="Dropdown">
                                 </span>
+                                <div class="currency-dropdown" id="currencyDropdown">
+                                    <button class="currency-dropdown__item" data-currency="USD">
+                                        <span>USD</span>
+                                    </button>
+                                    <button class="currency-dropdown__item" data-currency="COP">
+                                        <span>COP</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2281,7 +2354,7 @@
             <div class="dsu-sticky-buttons">
                 <div class="dsu-sticky-buttons__wrapper">
                     <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">
-                        Save draft
+                        Duplicate project
                     </button>
                     <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>
                         Publish
@@ -2782,10 +2855,77 @@
             const currencyInput = document.getElementById('currencyInput');
             const budgetInputGroup = document.querySelector('.project-budget-input');
             const currencyInputGroup = document.querySelector('.project-currency-input');
+            const currencyDropdown = document.getElementById('currencyDropdown');
+            const currencyChevron = document.getElementById('currencyChevron');
 
             if (!hideBudgetSectionBtn || !budgetAllocationInput || !currencyInput) {
                 console.warn('⚠️ Elementos de hide budget section no encontrados');
                 return;
+            }
+
+            // Initialize Currency Dropdown
+            if (currencyInput && currencyDropdown && currencyChevron) {
+                let isCurrencyDropdownOpen = false;
+
+                // Toggle dropdown on input or chevron click
+                const toggleCurrencyDropdown = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (currencyInput.disabled) return;
+                    
+                    isCurrencyDropdownOpen = !isCurrencyDropdownOpen;
+                    
+                    if (isCurrencyDropdownOpen) {
+                        currencyDropdown.classList.add('currency-dropdown--expanded');
+                        currencyChevron.querySelector('img').src = currencyChevron.querySelector('img').src.replace('down-chevron.svg', 'up-chevron.svg');
+                    } else {
+                        currencyDropdown.classList.remove('currency-dropdown--expanded');
+                        currencyChevron.querySelector('img').src = currencyChevron.querySelector('img').src.replace('up-chevron.svg', 'down-chevron.svg');
+                    }
+                };
+
+                currencyInput.addEventListener('click', toggleCurrencyDropdown);
+                currencyChevron.addEventListener('click', toggleCurrencyDropdown);
+
+                // Handle currency selection
+                const currencyItems = currencyDropdown.querySelectorAll('.currency-dropdown__item');
+                currencyItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const selectedCurrency = this.getAttribute('data-currency');
+                        currencyInput.value = selectedCurrency;
+                        
+                        // Update active state
+                        currencyItems.forEach(i => i.classList.remove('currency-dropdown__item--active'));
+                        this.classList.add('currency-dropdown__item--active');
+                        
+                        // Close dropdown
+                        isCurrencyDropdownOpen = false;
+                        currencyDropdown.classList.remove('currency-dropdown--expanded');
+                        currencyChevron.querySelector('img').src = currencyChevron.querySelector('img').src.replace('up-chevron.svg', 'down-chevron.svg');
+                    });
+                });
+
+                // Set USD as default active
+                const usdItem = currencyDropdown.querySelector('[data-currency="USD"]');
+                if (usdItem) {
+                    usdItem.classList.add('currency-dropdown__item--active');
+                }
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (isCurrencyDropdownOpen && 
+                        !currencyInput.contains(e.target) && 
+                        !currencyDropdown.contains(e.target) &&
+                        !currencyChevron.contains(e.target)) {
+                        isCurrencyDropdownOpen = false;
+                        currencyDropdown.classList.remove('currency-dropdown--expanded');
+                        currencyChevron.querySelector('img').src = currencyChevron.querySelector('img').src.replace('up-chevron.svg', 'down-chevron.svg');
+                    }
+                });
             }
 
             let isHidden = false;
