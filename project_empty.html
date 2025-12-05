@@ -2455,6 +2455,68 @@
                 </div>
                 <!-- END: What do you want to solve? Section -->
 
+                <!-- Solution approach Section -->
+                <div class="project-solve-section" id="projectSolutionApproachSection">
+                    <div class="project-solve-header">
+                        <div class="project-solve-headline">
+                            <h2 class="project-solve-title">Solution approach</h2>
+                            <div class="project-solve-hide" id="hideSolutionApproachSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-solve-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-solve-description">Describe the problem or challenge.</p>
+                    </div>
+                    <div class="project-solve-content">
+                        <div class="dsu-rich-text-input" id="projectSolutionApproachRichTextInput">
+                            <div class="dsu-rich-text-input__toolbar">
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                    <img src="images/bold.svg" alt="Bold">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                    <img src="images/italic.svg" alt="Italic">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                    <img src="images/underline.svg" alt="Underline">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                    <img src="images/list-bullet.svg" alt="Bullet List">
+                                </button>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                    <img src="images/number_list.svg" alt="Numbered List">
+                                </button>
+                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                    <img src="images/link.svg" alt="Link">
+                                </button>
+                            </div>
+                            <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your project context..."></div>
+                            <div class="dsu-rich-text-input__footer">
+                                <div class="dsu-rich-text-input__footer-left">
+                                    <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                        <img src="images/attachment.svg" alt="Attachment">
+                                    </button>
+                                    <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                        <img src="images/trash.svg" alt="Delete">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: var(--spacing-16);">
+                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="generateSolutionBtn">
+                                <span class="dsu-button__icon">
+                                    <img src="images/spark.svg" alt="Spark">
+                                </span>
+                                <span>Generate a solution with AI</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Solution approach Section -->
+
                 <!-- Assets or Links Section -->
                 <div class="project-assets-section" id="projectAssetsSection">
                     <div class="project-assets-header">
@@ -2679,6 +2741,9 @@
 
             // Inicializar solve section
             initSolveSection();
+
+            // Inicializar solution approach section
+            initSolutionApproachSection();
 
             // Inicializar assets section
             initAssetsSection();
@@ -5434,6 +5499,55 @@
             }
 
             console.log('✅ Solve Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Project Solution Approach Section
+        // ============================================
+        function initSolutionApproachSection() {
+            const solutionApproachSection = document.getElementById('projectSolutionApproachSection');
+            const hideSolutionApproachBtn = document.getElementById('hideSolutionApproachSectionBtn');
+            const richTextInput = document.getElementById('projectSolutionApproachRichTextInput');
+            const generateSolutionBtn = document.getElementById('generateSolutionBtn');
+            
+            if (!solutionApproachSection || !hideSolutionApproachBtn) {
+                console.warn('⚠️ Elementos de Solution Approach Section no encontrados');
+                return;
+            }
+
+            // Hide section functionality
+            hideSolutionApproachBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isDisabled = solutionApproachSection.classList.contains('project-solve-section--disabled');
+                
+                if (isDisabled) {
+                    solutionApproachSection.classList.remove('project-solve-section--disabled');
+                    console.log('🔓 Solution Approach Section habilitado');
+                } else {
+                    solutionApproachSection.classList.add('project-solve-section--disabled');
+                    console.log('🔒 Solution Approach Section deshabilitado');
+                }
+            });
+
+            // Generate solution button functionality
+            if (generateSolutionBtn) {
+                generateSolutionBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('✨ Generate solution with AI clicked');
+                    // Aquí se puede agregar la funcionalidad de generación con AI
+                });
+            }
+
+            // Inicializar Rich Text Input
+            if (richTextInput) {
+                initRichTextInput(richTextInput);
+                console.log('✅ Rich Text Input inicializado en Solution Approach Section');
+            }
+
+            console.log('✅ Solution Approach Section inicializado correctamente');
         }
 
         // ============================================
