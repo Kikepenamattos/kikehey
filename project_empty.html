@@ -135,7 +135,7 @@
         .project-name-section {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-16);
+            gap: 32px;
             width: 100%;
             position: relative;
         }
@@ -309,10 +309,12 @@
             display: flex;
             gap: var(--spacing-08);
             width: 100%;
+            align-items: stretch;
         }
 
         .project-stage-item {
             flex: 1;
+            display: flex;
         }
 
         .project-stage-button {
@@ -331,6 +333,7 @@
             align-items: center;
             justify-content: center;
             min-height: 48px;
+            height: 100%;
         }
 
         .project-stage-button:hover {
@@ -339,6 +342,8 @@
 
         .project-stage-button--add {
             background-color: var(--color-status-disabled);
+            height: 52px;
+            min-height: 52px;
         }
 
         .project-stage-button--add img {
@@ -1533,12 +1538,26 @@
             background: var(--color-surface-regular);
             border-radius: var(--radius-lg);
             border: 1px solid var(--color-basics-mid-blue);
-            width: min(520px, 92vw);
+            width: 28%;
             padding: var(--spacing-24);
             box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
-            max-height: 90vh;
+            max-height: 45%;
             overflow-y: auto;
             animation: modalFadeIn 0.2s ease;
+        }
+        
+        /* Asegurar espacio para date picker en modal de stage */
+        #stageModalOverlay .modal {
+            padding-bottom: calc(var(--spacing-24) + 350px);
+        }
+        
+        #stageModalOverlay .modal__body {
+            padding-bottom: var(--spacing-16);
+        }
+        
+        /* Asegurar que el date picker se muestre correctamente dentro del modal */
+        #stageModalOverlay .dsu-date-picker {
+            z-index: 10001;
         }
 
         @keyframes modalFadeIn {
@@ -1623,6 +1642,113 @@
             background: var(--color-surface-especial);
             border-color: var(--color-basics-dark-blue);
             border-width: 2px;
+        }
+
+        /* Stage Modal Styles */
+        .stage-date-range-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: var(--spacing-16);
+            margin-top: 48px;
+        }
+        
+        .stage-date-range-wrapper .dsu-input-group {
+            flex: 1;
+        }
+
+        .modal-input-group {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-12);
+            margin-top: var(--spacing-24);
+        }
+        
+        .modal-actions .dsu-button {
+            width: 100%;
+        }
+
+        .modal-error-message {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-12);
+            margin-top: var(--spacing-16);
+            color: #c33;
+            font-size: var(--font-size-sm);
+            font-family: var(--font-family-secondary);
+        }
+
+        /* Stage Card Styles */
+        .project-stage-card {
+            width: 100%;
+            /* padding: var(--spacing-16); */
+            background-color: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            height: 100%;
+        }
+
+
+        .stage-status-badge {
+            background-color: #ffc048;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-16);
+            text-align: center;
+        }
+
+        .stage-status-badge__text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-normal);
+        }
+
+        .stage-date-range {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+        }
+
+        .stage-progress-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .stage-progress-percentage {
+            font-family: var(--font-family-secondary);
+            font-size: 10px;
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            text-align: center;
+            white-space: nowrap;
+            min-width: 30px;
+        }
+
+        .stage-progress-bar__container {
+            background-color: var(--color-status-disabled);
+            border-radius: 50px;
+            height: 5px;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage-progress-bar__fill {
+            background-color: var(--color-status-done);
+            height: 5px;
+            border-radius: 50px;
+            transition: width 0.3s ease;
         }
 
         /* Responsive */
@@ -1889,29 +2015,75 @@
                     <p class="project-stages-description">Provide all the available information to star solid.</p>
                     <div class="project-stages-list" id="projectStagesList">
                         <div class="project-stage-item">
-                            <button class="project-stage-button" data-stage-id="stage-1">
-                                <span class="project-stage-button__text">Stage 1</span>
-                            </button>
-                        </div>
-                        <div class="project-stage-item">
-                            <button class="project-stage-button" data-stage-id="stage-2">
-                                <span class="project-stage-button__text">Stage 1</span>
-                            </button>
-                        </div>
-                        <div class="project-stage-item">
-                            <button class="project-stage-button" data-stage-id="stage-3">
-                                <span class="project-stage-button__text">Stage 1</span>
-                            </button>
-                        </div>
-                        <div class="project-stage-item">
-                            <button class="project-stage-button" data-stage-id="stage-4">
-                                <span class="project-stage-button__text">Stage 1</span>
-                            </button>
-                        </div>
-                        <div class="project-stage-item">
                             <button class="project-stage-button project-stage-button--add" id="addStageBtn">
                                 <img src="images/plus.svg" alt="Add stage">
                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage Modal -->
+                <div class="modal-overlay" id="stageModalOverlay">
+                    <div class="modal">
+                        <div class="modal-headline">
+                            <h2 class="modal__title">Add Stage</h2>
+                            <button class="modal-close-btn" id="closeStageModalBtn" aria-label="Close modal">
+                                <img src="images/close.svg" alt="Close" width="20" height="20">
+                            </button>
+                        </div>
+                        <div class="modal__body">
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Stage name</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="dsu-input" id="stageNameInput" placeholder="Enter stage name">
+                            </div>
+                            
+                            <div class="stage-date-range-wrapper">
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>Start date</span>
+                                        </div>
+                                    </div>
+                                    <div class="dsu-date-button-wrapper">
+                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="stageStartDateButton">
+                                            <span class="dsu-agreements__date-button-icon">
+                                                <img src="images/calendar.svg" alt="Calendar">
+                                            </span>
+                                            <span id="stageStartDateButtonText">Select start date</span>
+                                        </button>
+                                        <div class="dsu-date-picker" id="stageStartDatePicker"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="dsu-input-group modal-input-group">
+                                    <div class="dsu-input-label">
+                                        <div class="dsu-input-label__text">
+                                            <span>End date</span>
+                                        </div>
+                                    </div>
+                                    <div class="dsu-date-button-wrapper">
+                                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="stageEndDateButton">
+                                            <span class="dsu-agreements__date-button-icon">
+                                                <img src="images/calendar.svg" alt="Calendar">
+                                            </span>
+                                            <span id="stageEndDateButtonText">Select end date</span>
+                                        </button>
+                                        <div class="dsu-date-picker" id="stageEndDatePicker"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-error-message" id="stageModalError" style="display: none;"></div>
+                            
+                            <div class="modal-actions">
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="confirmStageBtn">
+                                    <span>Confirm</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3258,7 +3430,7 @@
                 return;
             }
 
-            let stageCounter = 4; // Empezamos en 4 porque ya hay 4 stages iniciales
+            let stageCounter = 0; // Empezamos en 0 porque no hay stages iniciales
 
             // Funcionalidad de Hide Section - Deshabilitar cards en lugar de ocultar
             let isDisabled = false;
@@ -3322,47 +3494,248 @@
                 });
             }
 
-            // Agregar event listeners a los stages existentes
+            // Inicializar modal de stage
+            initStageModal();
+
+            // Agregar event listeners a los stages existentes - ahora abren el modal
             stagesList.querySelectorAll('.project-stage-button:not(.project-stage-button--add)').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    makeStageEditable(this);
+                    if (!isDisabled) {
+                        openStageModal(this);
+                    }
                 });
             });
 
-            // Funcionalidad de agregar nuevo stage
+            // Funcionalidad de agregar nuevo stage - ahora abre el modal
             addStageBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
-                stageCounter++;
-                const newStageId = `stage-${stageCounter}`;
-                
-                const newStageItem = document.createElement('div');
-                newStageItem.className = 'project-stage-item';
-                
-                const newStageButton = document.createElement('button');
-                newStageButton.className = 'project-stage-button';
-                newStageButton.setAttribute('data-stage-id', newStageId);
-                
-                const newStageText = document.createElement('span');
-                newStageText.className = 'project-stage-button__text';
-                newStageText.textContent = `Stage ${stageCounter}`;
-                
-                newStageButton.appendChild(newStageText);
-                newStageItem.appendChild(newStageButton);
-                
-                // Insertar antes del botón de agregar
-                stagesList.insertBefore(newStageItem, addStageBtn.parentElement);
-                
-                // Hacer editable inmediatamente
-                setTimeout(() => {
-                    makeStageEditable(newStageButton);
-                }, 10);
-                
-                console.log(`✅ Nuevo stage creado: ${newStageId}`);
+                if (!isDisabled) {
+                    openStageModal(null);
+                }
             });
+        }
+
+        // ============================================
+        // Stage Modal Functions
+        // ============================================
+        function initStageModal() {
+            const modalOverlay = document.getElementById('stageModalOverlay');
+            const closeBtn = document.getElementById('closeStageModalBtn');
+            const confirmBtn = document.getElementById('confirmStageBtn');
+            const stageNameInput = document.getElementById('stageNameInput');
+            const errorMessage = document.getElementById('stageModalError');
+
+            if (!modalOverlay || !closeBtn || !confirmBtn) {
+                console.warn('⚠️ Elementos del modal de stage no encontrados');
+                return;
+            }
+
+            // Inicializar date pickers
+            initDatePicker('stageStartDatePicker', 'stageStartDateButton', 'stageStartDateButtonText');
+            initDatePicker('stageEndDatePicker', 'stageEndDateButton', 'stageEndDateButtonText');
+
+            // Cerrar modal
+            closeBtn.addEventListener('click', closeStageModal);
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    closeStageModal();
+                }
+            });
+
+            // Confirmar stage
+            confirmBtn.addEventListener('click', function() {
+                const stageName = stageNameInput?.value.trim();
+                const startDateButtonText = document.getElementById('stageStartDateButtonText');
+                const endDateButtonText = document.getElementById('stageEndDateButtonText');
+                
+                // Obtener fechas seleccionadas
+                const startDateText = startDateButtonText?.textContent;
+                const endDateText = endDateButtonText?.textContent;
+                
+                // Validar
+                if (!stageName) {
+                    showStageError('Please enter a stage name');
+                    return;
+                }
+                
+                if (startDateText === 'Select start date' || endDateText === 'Select end date') {
+                    showStageError('Please select both start and end dates');
+                    return;
+                }
+                
+                // Validar fechas contra la fecha del proyecto
+                const projectDateButtonText = document.getElementById('projectDateButtonText');
+                if (projectDateButtonText && projectDateButtonText.textContent !== 'Select a date to deliver the project') {
+                    const projectDate = parseDateFromText(projectDateButtonText.textContent);
+                    const startDate = parseDateFromText(startDateText);
+                    const endDate = parseDateFromText(endDateText);
+                    
+                    if (startDate && endDate && projectDate) {
+                        if (startDate > projectDate || endDate > projectDate) {
+                            showStageError('Stage dates cannot be later than the project delivery date');
+                            return;
+                        }
+                        
+                        if (startDate > endDate) {
+                            showStageError('Start date must be before end date');
+                            return;
+                        }
+                    }
+                }
+                
+                // Crear card de stage
+                createStageCard(stageName, startDateText, endDateText);
+                closeStageModal();
+            });
+
+            // Cerrar con ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('modal-overlay--visible')) {
+                    closeStageModal();
+                }
+            });
+        }
+
+        function openStageModal(existingButton) {
+            const modalOverlay = document.getElementById('stageModalOverlay');
+            const stageNameInput = document.getElementById('stageNameInput');
+            const startDateButtonText = document.getElementById('stageStartDateButtonText');
+            const endDateButtonText = document.getElementById('stageEndDateButtonText');
+            const errorMessage = document.getElementById('stageModalError');
+
+            if (!modalOverlay) return;
+
+            // Reset form
+            if (stageNameInput) stageNameInput.value = '';
+            if (startDateButtonText) startDateButtonText.textContent = 'Select start date';
+            if (endDateButtonText) endDateButtonText.textContent = 'Select end date';
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+                errorMessage.textContent = '';
+            }
+
+            // Si es un stage existente, pre-llenar con datos actuales
+            if (existingButton) {
+                const stageCard = existingButton.closest('.project-stage-item')?.querySelector('.project-stage-card');
+                if (stageCard) {
+                    const stageName = stageCard.querySelector('.project-stage-button__text')?.textContent || '';
+                    if (stageNameInput) stageNameInput.value = stageName;
+                }
+            }
+
+            modalOverlay.classList.add('modal-overlay--visible');
+        }
+
+        function closeStageModal() {
+            const modalOverlay = document.getElementById('stageModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('modal-overlay--visible');
+            }
+        }
+
+        function showStageError(message) {
+            const errorMessage = document.getElementById('stageModalError');
+            if (errorMessage) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function parseDateFromText(dateText) {
+            // Parse dates like "May 5, 2025" or "Jun 31, 2025"
+            try {
+                return new Date(dateText);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function createStageCard(stageName, startDateText, endDateText) {
+            const stagesList = document.getElementById('projectStagesList');
+            const addStageBtn = document.getElementById('addStageBtn');
+            
+            if (!stagesList || !addStageBtn) return;
+
+            // Crear contenedor del stage
+            const stageItem = document.createElement('div');
+            stageItem.className = 'project-stage-item';
+
+            // Crear card
+            const stageCard = document.createElement('div');
+            stageCard.className = 'project-stage-card';
+
+            // Status badge con el nombre del stage
+            const statusBadge = document.createElement('div');
+            statusBadge.className = 'stage-status-badge';
+            const statusText = document.createElement('p');
+            statusText.className = 'stage-status-badge__text';
+            statusText.textContent = stageName;
+            statusBadge.appendChild(statusText);
+
+            // Date range
+            const dateRange = document.createElement('p');
+            dateRange.className = 'stage-date-range';
+            // Formatear fechas: "May 5 to Jun 31 2025"
+            const formattedDates = formatDateRangeForCard(startDateText, endDateText);
+            dateRange.textContent = formattedDates;
+
+            // Progress bar
+            const progressBar = document.createElement('div');
+            progressBar.className = 'stage-progress-bar';
+            
+            const progressPercentage = document.createElement('span');
+            progressPercentage.className = 'stage-progress-percentage';
+            progressPercentage.textContent = '10%';
+            
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'stage-progress-bar__container';
+            
+            const progressFill = document.createElement('div');
+            progressFill.className = 'stage-progress-bar__fill';
+            progressFill.style.width = '10%';
+            
+            progressContainer.appendChild(progressFill);
+            progressBar.appendChild(progressPercentage);
+            progressBar.appendChild(progressContainer);
+
+            // Ensamblar card
+            stageCard.appendChild(statusBadge);
+            stageCard.appendChild(dateRange);
+            stageCard.appendChild(progressBar);
+
+            // Agregar a stage item
+            stageItem.appendChild(stageCard);
+
+            // Insertar antes del botón de agregar
+            stagesList.insertBefore(stageItem, addStageBtn.parentElement);
+
+            console.log(`✅ Stage card creada: ${stageName}`);
+        }
+
+        function formatDateRangeForCard(startDateText, endDateText) {
+            // Convertir "May 5, 2025" y "Jun 31, 2025" a "May 5 to Jun 31 2025"
+            try {
+                const startDate = new Date(startDateText);
+                const endDate = new Date(endDateText);
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                
+                const startMonth = monthNames[startDate.getMonth()];
+                const startDay = startDate.getDate();
+                const endMonth = monthNames[endDate.getMonth()];
+                const endDay = endDate.getDate();
+                const year = endDate.getFullYear();
+                
+                return `${startMonth} ${startDay} to ${endMonth} ${endDay} ${year}`;
+            } catch (e) {
+                // Fallback: usar formato simple
+                const start = startDateText.split(',')[0];
+                const end = endDateText.split(',')[0];
+                const year = new Date(endDateText).getFullYear();
+                return `${start} to ${end} ${year}`;
+            }
         }
 
         // ============================================
