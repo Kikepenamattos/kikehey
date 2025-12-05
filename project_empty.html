@@ -2112,6 +2112,51 @@
                     </div>
                 </div>
 
+                <!-- What do you want to accomplish? Section -->
+                <div class="project-objective-section" id="projectObjectiveSection">
+                    <div class="project-objective-header">
+                        <div class="project-objective-headline">
+                            <h2 class="project-objective-title">What do you want to accomplish?</h2>
+                            <div class="project-objective-hide" id="hideObjectiveSectionBtn">
+                                <span>Hide section</span>
+                                <span class="project-objective-hide-icon">
+                                    <img src="images/eye.svg" alt="Hide">
+                                </span>
+                            </div>
+                        </div>
+                        <p class="project-objective-subtitle">Define how you want to succeed.</p>
+                        <div class="project-objective-tabs">
+                            <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
+                                <span class="dsu-chip__text">Goals</span>
+                            </button>
+                            <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
+                                <span class="dsu-chip__text">KPIs</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="project-objective-content">
+                        <!-- Goals Items Container -->
+                        <div class="project-objective-items-container" id="goalsItemsContainer" data-tab="goals">
+                            <!-- Items de Goals se agregarán aquí dinámicamente -->
+                        </div>
+                        <!-- KPIs Items Container -->
+                        <div class="project-objective-items-container" id="kpisItemsContainer" data-tab="kpis" style="display: none;">
+                            <!-- Items de KPIs se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="objectiveInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: What do you want to accomplish? Section -->
+
                 <!-- Project Agreements Section -->
                 <div class="project-agreements-section" id="projectAgreementsSection">
                     <!-- Default State (Interactive) -->
@@ -2355,51 +2400,6 @@
                     </div>
                 </div>
                 <!-- END: Test Section -->
-
-                <!-- What do you want to accomplish? Section -->
-                <div class="project-objective-section" id="projectObjectiveSection">
-                    <div class="project-objective-header">
-                        <div class="project-objective-headline">
-                            <h2 class="project-objective-title">What do you want to accomplish?</h2>
-                            <div class="project-objective-hide" id="hideObjectiveSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-objective-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
-                        </div>
-                        <p class="project-objective-subtitle">Define how you want to succeed.</p>
-                        <div class="project-objective-tabs">
-                            <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
-                                <span class="dsu-chip__text">Goals</span>
-                            </button>
-                            <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
-                                <span class="dsu-chip__text">KPIs</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="project-objective-content">
-                        <!-- Goals Items Container -->
-                        <div class="project-objective-items-container" id="goalsItemsContainer" data-tab="goals">
-                            <!-- Items de Goals se agregarán aquí dinámicamente -->
-                        </div>
-                        <!-- KPIs Items Container -->
-                        <div class="project-objective-items-container" id="kpisItemsContainer" data-tab="kpis" style="display: none;">
-                            <!-- Items de KPIs se agregarán aquí dinámicamente -->
-                        </div>
-                        <div class="dsu-input-group">
-                            <div class="dsu-input-container">
-                                <input 
-                                    type="text" 
-                                    class="dsu-input dsu-input--only" 
-                                    id="objectiveInput" 
-                                    placeholder="Choose an unique name"
-                                >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: What do you want to accomplish? Section -->
 
                 <!-- What do you want to solve? Section -->
                 <div class="project-solve-section" id="projectSolveSection">

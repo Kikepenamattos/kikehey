@@ -102,6 +102,7 @@
   color: var(--color-text-primary);
   border: 1px solid var(--color-basics-dark-blue);
   box-shadow: var(--button-secondary-elevation-default);
+  width: 100%;
 }
 
 .dsu-button--secondary:hover:not(:disabled) {
