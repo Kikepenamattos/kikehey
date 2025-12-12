@@ -1,3 +1,5 @@
+a037abf1b6438eab2c6f89bf830c7e34911ef43b|Ubits|ubits@macbookpro.lan|2025-12-12 11:27:41 -0500|Feature: Redirigir usuario al último team creado después de login y validación si no tiene teams
+e696a321dae6c1c1de751833a7b84f3b636ff16b|Ubits|ubits@macbookpro.lan|2025-12-05 14:32:04 -0500|Update: Actualizar changelog con últimos cambios
 76648a1d2e262fc7e6c79945f2bb6149cf95cc0d|Ubits|ubits@macbookpro.lan|2025-12-05 14:31:55 -0500|Feature: Duplicar project-solve-section como Solution approach con botón Generate a solution with AI
 954feabfea415c3d69c50b4d0e7badf882440ae2|Ubits|ubits@macbookpro.lan|2025-12-05 13:17:07 -0500|Update: Actualizar changelog con últimos cambios
 1df131b6dda25e7012fc56d77b0e48441bc3eab1|Ubits|ubits@macbookpro.lan|2025-12-05 13:16:58 -0500|Update: Cambiar gap de project-content de 48px a 32px
