@@ -461,12 +461,15 @@
 
         .team-add-member-wrapper {
             display: flex;
-            align-items: center;
+            flex-direction: row;
+            align-items: end;
+            gap: 32px;
+            flex-wrap: wrap;
         }
 
         /* Add Member Component (from add-members.html) */
         .team-add-cta {
-            display: inline-flex;
+            display: inline-flex !important;
             align-items: center;
             gap: 8px;
             background: transparent;
@@ -475,6 +478,9 @@
             cursor: pointer;
             position: relative;
             z-index: 2;
+            flex-shrink: 0;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .with-members-row .team-add-cta {
@@ -1582,9 +1588,10 @@
             display: flex;
             flex-direction: row;
             gap: 32px;
-            width: 100%;
             align-content: center;
             align-items: end;
+            flex-wrap: wrap;
+            flex-shrink: 0;
         }
 
         /* Individual Team Item */
@@ -2203,15 +2210,15 @@
                         <h2 class="team-members-title">Team members</h2>
                     </div>
                     <div class="team-add-member-wrapper" id="teamAddMemberWrapper">
-                        <!-- Empty state (default) -->
-                        <button type="button" class="team-add-cta" id="addMemberBtn" aria-label="Add a new team">
-                            <span class="team-add-dashed">+</span>
-                            <span class="team-add-label">Add a new team</span>
-                        </button>
                         <!-- Teams list container (hidden by default) -->
                         <div class="teams-list-container" id="teamsListContainer" style="display: none;">
                             <!-- Teams se agregarán aquí dinámicamente -->
                         </div>
+                        <!-- Empty state (default) - Button always visible -->
+                        <button type="button" class="team-add-cta" id="addMemberBtn" aria-label="Add a new team">
+                            <span class="team-add-dashed">+</span>
+                            <span class="team-add-label">Add a new team</span>
+                        </button>
                     </div>
                 </div>
 
@@ -3690,10 +3697,15 @@
                 const teamsListContainer = document.getElementById('teamsListContainer');
                 const addMemberBtnEmpty = document.getElementById('addMemberBtn');
                 
-                // Ocultar botón empty y mostrar contenedor de teams
-                if (addMemberBtnEmpty && teamsListContainer) {
-                    addMemberBtnEmpty.style.display = 'none';
+                // Mostrar contenedor de teams (el botón siempre permanece visible)
+                if (teamsListContainer) {
                     teamsListContainer.style.display = 'flex';
+                }
+                // Asegurar que el botón esté siempre visible
+                if (addMemberBtnEmpty) {
+                    addMemberBtnEmpty.style.display = 'inline-flex';
+                    addMemberBtnEmpty.style.visibility = 'visible';
+                    addMemberBtnEmpty.style.opacity = '1';
                 }
                 
                 // Cargar teams uno por uno con delays para evitar conflictos
@@ -3915,10 +3927,15 @@
             }
             window.selectedTeams.push(teamId);
             
-            // Ocultar botón empty y mostrar contenedor de teams
-            if (addMemberBtnEmpty && teamsListContainer) {
-                addMemberBtnEmpty.style.display = 'none';
+            // Mostrar contenedor de teams (el botón siempre permanece visible)
+            if (teamsListContainer) {
                 teamsListContainer.style.display = 'flex';
+            }
+            // Asegurar que el botón esté siempre visible
+            if (addMemberBtnEmpty) {
+                addMemberBtnEmpty.style.display = 'inline-flex';
+                addMemberBtnEmpty.style.visibility = 'visible';
+                addMemberBtnEmpty.style.opacity = '1';
             }
             
             // Crear elemento del team (misma lógica que en initTeamMembers)
@@ -3953,9 +3970,15 @@
                     teamItem.remove();
                     const remainingTeams = teamsListContainer.querySelectorAll('.team-item').length;
                     if (remainingTeams === 0) {
-                        if (addMemberBtnEmpty && teamsListContainer) {
-                            addMemberBtnEmpty.style.display = 'flex';
+                        // Ocultar contenedor de teams cuando no hay teams (el botón siempre permanece visible)
+                        if (teamsListContainer) {
                             teamsListContainer.style.display = 'none';
+                        }
+                        // Asegurar que el botón esté siempre visible
+                        if (addMemberBtnEmpty) {
+                            addMemberBtnEmpty.style.display = 'inline-flex';
+                            addMemberBtnEmpty.style.visibility = 'visible';
+                            addMemberBtnEmpty.style.opacity = '1';
                         }
                     }
                     if (typeof updatePublishButtonState === 'function') {
@@ -4895,10 +4918,15 @@
                 // Agregar team al array de teams seleccionados
                 selectedTeams.push(teamId);
 
-                // Ocultar botón empty y mostrar contenedor de teams
-                if (addMemberBtnEmpty && teamsListContainer) {
-                    addMemberBtnEmpty.style.display = 'none';
+                // Mostrar contenedor de teams (el botón siempre permanece visible)
+                if (teamsListContainer) {
                     teamsListContainer.style.display = 'flex';
+                }
+                // Asegurar que el botón esté siempre visible
+                if (addMemberBtnEmpty) {
+                    addMemberBtnEmpty.style.display = 'inline-flex';
+                    addMemberBtnEmpty.style.visibility = 'visible';
+                    addMemberBtnEmpty.style.opacity = '1';
                 }
 
                 // Crear elemento del team
@@ -4938,12 +4966,17 @@
                         // Remover el elemento del DOM
                         teamItem.remove();
                         
-                        // Si no hay más teams, mostrar el botón empty y ocultar el contenedor
+                        // Si no hay más teams, ocultar el contenedor (el botón siempre permanece visible)
                         const remainingTeams = teamsListContainer.querySelectorAll('.team-item').length;
                         if (remainingTeams === 0) {
-                            if (addMemberBtnEmpty && teamsListContainer) {
-                                addMemberBtnEmpty.style.display = 'flex';
+                            if (teamsListContainer) {
                                 teamsListContainer.style.display = 'none';
+                            }
+                            // Asegurar que el botón esté siempre visible
+                            if (addMemberBtnEmpty) {
+                                addMemberBtnEmpty.style.display = 'inline-flex';
+                                addMemberBtnEmpty.style.visibility = 'visible';
+                                addMemberBtnEmpty.style.opacity = '1';
                             }
                         }
                         
@@ -5012,45 +5045,8 @@
 
                 // Agregar el team al contenedor
                 if (teamsListContainer) {
-                    // Buscar el botón "Add a new team" si existe
-                    const existingAddBtn = teamsListContainer.querySelector('.team-add-cta');
-                    
-                    // Si existe, insertar el team antes del botón
-                    if (existingAddBtn) {
-                        teamsListContainer.insertBefore(teamItem, existingAddBtn);
-                    } else {
-                        // Si no existe, agregar el team y luego el botón
-                        teamsListContainer.appendChild(teamItem);
-                        
-                        // Agregar botón "Add a new team" al final
-                        const addNewTeamBtn = document.createElement('button');
-                        addNewTeamBtn.type = 'button';
-                        addNewTeamBtn.className = 'team-add-cta';
-                        addNewTeamBtn.setAttribute('aria-label', 'Add a new team');
-                        addNewTeamBtn.innerHTML = `
-                            <span class="team-add-dashed">+</span>
-                            <span class="team-add-label">Add a new team</span>
-                        `;
-                        
-                        addNewTeamBtn.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
-                            // Verificar que no esté deshabilitado
-                            if (teamMembersSection.classList.contains('team-members-section--disabled')) {
-                                return;
-                            }
-
-                            // Cargar teams en el modal
-                            loadTeamsInModal();
-                            
-                            // Mostrar modal
-                            selectTeamModal.classList.add('modal-overlay--visible');
-                            console.log('📋 Modal de selección de teams abierto');
-                        });
-
-                        teamsListContainer.appendChild(addNewTeamBtn);
-                    }
+                    // Simplemente agregar el team al contenedor (el botón siempre está fuera del contenedor)
+                    teamsListContainer.appendChild(teamItem);
                     
                     // Actualizar estado del botón Publish después de agregar team
                     if (typeof updatePublishButtonState === 'function') {
@@ -5076,10 +5072,6 @@
                 selectTeamModal.classList.add('modal-overlay--visible');
                 console.log('📋 Modal de selección de teams abierto');
             });
-
-            // Funcionalidad de abrir modal al hacer clic en add member (siempre visible al final)
-            // El botón "Add a new team" siempre estará visible al final de la lista
-            // Se agrega dinámicamente después de cada team agregado
 
             // Funcionalidad de cerrar modal
             if (closeTeamModalBtn) {
