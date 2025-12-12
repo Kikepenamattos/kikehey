@@ -1,3 +1,5 @@
+344522aca0768f4aee312f6203674f26dfa458f0|Ubits|ubits@macbookpro.lan|2025-12-12 11:42:00 -0500|Feature: Validar que haya teams asociados antes de enviar correo en projectAgreementsDefault
+428ec74a59ea0c2d5a064aef569436c9d92df9ba|Ubits|ubits@macbookpro.lan|2025-12-12 11:28:06 -0500|Update: Actualizar changelog con últimos cambios
 a037abf1b6438eab2c6f89bf830c7e34911ef43b|Ubits|ubits@macbookpro.lan|2025-12-12 11:27:41 -0500|Feature: Redirigir usuario al último team creado después de login y validación si no tiene teams
 e696a321dae6c1c1de751833a7b84f3b636ff16b|Ubits|ubits@macbookpro.lan|2025-12-05 14:32:04 -0500|Update: Actualizar changelog con últimos cambios
 76648a1d2e262fc7e6c79945f2bb6149cf95cc0d|Ubits|ubits@macbookpro.lan|2025-12-05 14:31:55 -0500|Feature: Duplicar project-solve-section como Solution approach con botón Generate a solution with AI
