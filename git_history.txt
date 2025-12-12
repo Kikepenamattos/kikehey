@@ -1,3 +1,6 @@
+2b4ccdf1e60592484d43bb5e1afe2638269b8e34|Ubits|ubits@macbookpro.lan|2025-12-12 16:08:52 -0500|Revert: Eliminar botón Delete team de sticky buttons y ajustar edit-close-button para redirigir a project_view.html
+05bb445ec9c87119e21ce7319f90956ad6be16cf|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:36 -0500|Update: Datos embebidos en changelog.html actualizados
+439acee7a78a06216be4c15d4ca822cfa699292d|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:32 -0500|Update: Changelog actualizado
 44e61e8e99c9872665ed9b638a27201554271405|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:07 -0500|Fix: Botón edit-close-button ahora redirige a project_view.html con el ID del proyecto
 1d5522642767ab38e3b1d9bb65f2d78557adb415|Ubits|ubits@macbookpro.lan|2025-12-12 15:44:35 -0500|Update: Datos embebidos en changelog.html actualizados
 9606aedcb5d67f0030d2245f9a7fca5cabbee47c|Ubits|ubits@macbookpro.lan|2025-12-12 15:44:32 -0500|Update: Changelog actualizado
