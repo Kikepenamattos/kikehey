@@ -106,6 +106,28 @@
   color: var(--color-text-secondary);
 }
 
+/* === INPUT PUBLISHED STATE (Read-only view) === */
+.dsu-input--published {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-basics-gray);
+  border-radius: 0;
+  padding: var(--spacing-08) 0;
+  cursor: default;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  min-height: auto;
+}
+
+.dsu-input--published:focus {
+  outline: none;
+  border-bottom-color: var(--color-basics-gray);
+}
+
+.dsu-input--published::placeholder {
+  color: var(--color-text-primary);
+}
+
 .dsu-input-group--hidden .dsu-input {
   background-color: var(--color-status-disabled);
   cursor: not-allowed;

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project View - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/chip.css">
+    <link rel="stylesheet" href="design-system/components/card.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .project-view-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenido Principal */
+        .project-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .project-content {
+            flex: 1;
+            padding: 64px 173px 0 135px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Project Name Display */
+        .project-name-display {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 800;
+            font-size: 32px;
+            line-height: normal;
+            color: var(--color-text-primary, #0a243f);
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid var(--color-basics-gray);
+            padding-bottom: var(--spacing-08);
+        }
+
+        /* Budget Display */
+        .budget-display {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            border-bottom: 1px solid var(--color-basics-gray);
+            padding-bottom: var(--spacing-08);
+        }
+
+        /* Section Styles */
+        .project-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            margin-top: var(--spacing-24);
+        }
+
+        .project-section-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        /* Stages Display */
+        .stages-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .stage-item {
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+        }
+
+        .stage-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-08);
+        }
+
+        .stage-date {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        /* Teams Display */
+        .teams-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .team-item-display {
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+        }
+
+        .team-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        /* Assets Display */
+        .assets-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .asset-item {
+            padding: var(--spacing-12);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+        }
+
+        .asset-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+        }
+
+        .asset-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-basics-dark-blue);
+            text-decoration: none;
+        }
+
+        .asset-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: var(--spacing-24);
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="project-view-container">
+        <!-- Sidebar Navigation -->
+        <nav class="dsu-sidebar">
+            <div class="dsu-sidebar__main">
+                <!-- Logo Container -->
+                <div class="dsu-sidebar__logo-container">
+                    <a href="#" class="dsu-sidebar__logo">
+                        <img src="images/logo.svg" alt="Docu Logo">
+                    </a>
+                </div>
+                
+                <!-- Navigation Wrapper -->
+                <div class="dsu-sidebar__navigation-wrapper">
+                    <!-- Navigation Main -->
+                    <div class="dsu-sidebar__navigation">
+                        <!-- Teams Level -->
+                        <div class="dsu-teams-level">
+                            <button class="dsu-teams-button dsu-teams-button--active">
+                                <span class="dsu-teams-button__icon">
+                                    <img src="images/team.svg" alt="Teams">
+                                </span>
+                                <span class="dsu-nav-button__text">Teams</span>
+                            </button>
+                            <div class="dsu-teams-chevron">
+                                <img src="images/up-chevron.svg" alt="Chevron">
+                            </div>
+                        </div>
+                        
+                        <!-- Teams Dropdown -->
+                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                            <button class="dsu-teams-create" id="createTeamBtn">
+                                <span>Create new team</span>
+                                <span class="dsu-teams-create__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
+                            <div class="dsu-teams-list" id="teamsList">
+                                <!-- Teams list se poblará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Projects Level -->
+                        <div class="dsu-projects-button">
+                            <div class="dsu-projects-level">
+                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                                    <span class="dsu-projects-button__icon">
+                                        <img src="images/project.svg" alt="Projects">
+                                    </span>
+                                    <span class="dsu-projects-button__text">Projects</span>
+                                </button>
+                                <div class="dsu-projects-chevron">
+                                    <img src="images/up-chevron.svg" alt="Chevron">
+                                </div>
+                            </div>
+                            
+                            <!-- Projects Dropdown -->
+                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                <button class="dsu-projects-create" id="createProjectBtn">
+                                    <span>Create new project</span>
+                                    <span class="dsu-projects-create__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
+                                <!-- Projects list -->
+                                <div class="dsu-projects-list" id="projectsList">
+                                    <!-- Projects list se poblará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/avatar.svg" alt="Profile">
+                            </span>
+                            <span class="dsu-nav-button__text">Profile</span>
+                        </button>
+                        
+                        <!-- Feedback Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/chat.svg" alt="Feedback">
+                            </span>
+                            <span class="dsu-nav-button__text">Give us feedback</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="dsu-sidebar__footer">
+                        <button class="dsu-nav-button" id="darkModeBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/moon.svg" alt="Dark Mode">
+                            </span>
+                            <span class="dsu-nav-button__text">Dark mode</span>
+                        </button>
+                        <button class="dsu-nav-button" id="logoutBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/exit.svg" alt="Logout">
+                            </span>
+                            <span class="dsu-nav-button__text">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="project-content-wrapper">
+            <div class="project-content">
+                <!-- Project Name -->
+                <div class="project-name-display" id="projectNameDisplay"></div>
+                
+                <!-- Budget Allocation -->
+                <div class="budget-display" id="budgetDisplay" style="display: none;"></div>
+                
+                <!-- Project Stages -->
+                <div class="project-section" id="stagesSection" style="display: none;">
+                    <h2 class="project-section-title">Define your project stages</h2>
+                    <div class="stages-list" id="stagesList"></div>
+                </div>
+                
+                <!-- Team Members -->
+                <div class="project-section" id="teamsSection" style="display: none;">
+                    <h2 class="project-section-title">Team members</h2>
+                    <div class="teams-list" id="teamsListDisplay"></div>
+                </div>
+                
+                <!-- Assets or links -->
+                <div class="project-section" id="assetsSection" style="display: none;">
+                    <h2 class="project-section-title">Assets or links</h2>
+                    <div class="assets-list" id="assetsListDisplay"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    <script>
+        // Verificación de Sesión
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            initProjectViewPage();
+        });
+
+        function initProjectViewPage() {
+            if (typeof window.DocuAuth === 'undefined' || typeof window.DocuProjectData === 'undefined') {
+                setTimeout(initProjectViewPage, 100);
+                return;
+            }
+
+            console.log('Inicializando project_view.html');
+
+            // Inicializar navegación del sidebar
+            initSidebarNavigation();
+
+            // Cargar teams y proyectos en el sidebar
+            loadTeamsInSidebar();
+            loadProjectsInSidebar();
+
+            // Cargar datos del proyecto
+            loadProjectData();
+        }
+
+        // Sidebar Navigation
+        function initSidebarNavigation() {
+            // Teams Dropdown - Asegurar que siempre esté expandido por defecto
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-teams-dropdown--expanded');
+                button.classList.add('dsu-teams-button--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                button.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                        button.classList.remove('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-teams-dropdown--expanded');
+                        button.classList.add('dsu-teams-button--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-teams-chevron')) {
+                    chevron.closest('.dsu-teams-chevron').addEventListener('click', function() {
+                        button.click();
+                    });
+                }
+            });
+
+            // Projects Dropdown - Asegurar que siempre esté expandido por defecto
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-projects-dropdown--expanded');
+                trigger.classList.add('dsu-projects-button__trigger--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // Permitir toggle normal
+                trigger.addEventListener('click', function() {
+                    const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                    
+                    if (isExpanded) {
+                        dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                        trigger.classList.remove('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/down-chevron.svg';
+                    } else {
+                        dropdown.classList.add('dsu-projects-dropdown--expanded');
+                        trigger.classList.add('dsu-projects-button__trigger--active');
+                        if (chevron) chevron.src = 'images/up-chevron.svg';
+                    }
+                });
+
+                if (chevron && chevron.closest('.dsu-projects-chevron')) {
+                    chevron.closest('.dsu-projects-chevron').addEventListener('click', function() {
+                        trigger.click();
+                    });
+                }
+            });
+
+            // Create New Team Button
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            if (createTeamBtn) {
+                createTeamBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'create_team.html';
+                });
+            }
+
+            // Create New Project Button
+            const createProjectBtn = document.getElementById('createProjectBtn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.setItem('docu_create_new_project', 'true');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'project_empty.html';
+                });
+            }
+
+            // Dark Mode Button
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function() {
+                    // Toggle dark mode functionality
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    try {
+                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
+                    }
+                });
+            }
+
+            // Logout Button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        DocuAuth.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // Load Teams in Sidebar (simplificada)
+        function loadTeamsInSidebar() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            const projectData = DocuProjectData.getProjectData();
+            const teams = (projectData && projectData.teams) ? projectData.teams.filter(t => t.status === 'published') : [];
+            
+            teamsList.innerHTML = '';
+            teams.forEach(team => {
+                const teamItem = document.createElement('button');
+                teamItem.className = 'dsu-team-item';
+                teamItem.setAttribute('data-team-id', team.id || '');
+                teamItem.innerHTML = `<span class="dsu-team-item__text">${team.name || 'Sin nombre'}</span>`;
+                teamItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Remover clase active de todos los items
+                    teamsList.querySelectorAll('.dsu-team-item').forEach(item => {
+                        item.classList.remove('dsu-team-item--active', 'active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    teamItem.classList.add('dsu-team-item--active', 'active');
+                    
+                    // Guardar en sessionStorage
+                    try {
+                        sessionStorage.setItem('docu_selected_team_id', team.id);
+                    } catch (error) {
+                        console.warn('⚠️ Error al guardar en sessionStorage:', error);
+                    }
+                    
+                    window.location.href = `team_filled.html?id=${team.id}`;
+                });
+                teamsList.appendChild(teamItem);
+            });
+            
+            // Marcar team activo si hay uno seleccionado
+            markActiveTeam();
+        }
+
+        // Función para marcar el team activo
+        function markActiveTeam() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            // Obtener ID del team desde URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const teamIdFromURL = urlParams.get('id');
+            let selectedTeamId = teamIdFromURL;
+
+            if (!selectedTeamId) {
+                try {
+                    selectedTeamId = sessionStorage.getItem('docu_selected_team_id');
+                } catch (error) {
+                    console.warn('⚠️ Error al leer sessionStorage:', error);
+                }
+            }
+
+            if (selectedTeamId) {
+                setTimeout(() => {
+                    const teamItems = teamsList.querySelectorAll('.dsu-team-item');
+                    teamItems.forEach(item => {
+                        item.classList.remove('dsu-team-item--active', 'active');
+                        const itemId = item.getAttribute('data-team-id');
+                        if (itemId === selectedTeamId) {
+                            item.classList.add('dsu-team-item--active', 'active');
+                            console.log('✅ Team marcado como activo en el sidebar:', selectedTeamId);
+                        }
+                    });
+                }, 100);
+            }
+        }
+
+        // Load Projects in Sidebar (simplificada)
+        function loadProjectsInSidebar() {
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) return;
+
+            const projectData = DocuProjectData.getProjectData();
+            const projects = (projectData && projectData.projects) ? projectData.projects : [];
+            
+            projectsList.innerHTML = '';
+            projects.forEach(project => {
+                const projectItem = document.createElement('button');
+                projectItem.className = 'dsu-project-item';
+                projectItem.setAttribute('data-project-id', project.id || '');
+                projectItem.innerHTML = `<span class="dsu-project-item__text">${project.name || 'Sin nombre'}</span>`;
+                projectItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Remover clase active de todos los items
+                    projectsList.querySelectorAll('.dsu-project-item').forEach(item => {
+                        item.classList.remove('dsu-project-item--active', 'active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    projectItem.classList.add('dsu-project-item--active', 'active');
+                    
+                    // Guardar en sessionStorage
+                    try {
+                        sessionStorage.setItem('docu_selected_project_id', project.id);
+                    } catch (error) {
+                        console.warn('⚠️ Error al guardar en sessionStorage:', error);
+                    }
+                    
+                    window.location.href = `project_view.html?id=${project.id}`;
+                });
+                projectsList.appendChild(projectItem);
+            });
+            
+            // Marcar proyecto activo si hay uno seleccionado
+            markActiveProject();
+        }
+
+        // Función para marcar el proyecto activo
+        function markActiveProject() {
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) return;
+
+            // Obtener ID del proyecto desde URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectIdFromURL = urlParams.get('id');
+            let selectedProjectId = projectIdFromURL;
+
+            if (!selectedProjectId) {
+                try {
+                    selectedProjectId = sessionStorage.getItem('docu_selected_project_id');
+                } catch (error) {
+                    console.warn('⚠️ Error al leer sessionStorage:', error);
+                }
+            }
+
+            if (selectedProjectId) {
+                setTimeout(() => {
+                    const projectItems = projectsList.querySelectorAll('.dsu-project-item');
+                    projectItems.forEach(item => {
+                        item.classList.remove('dsu-project-item--active', 'active');
+                        const itemId = item.getAttribute('data-project-id');
+                        if (itemId === selectedProjectId) {
+                            item.classList.add('dsu-project-item--active', 'active');
+                            console.log('✅ Proyecto marcado como activo en el sidebar:', selectedProjectId);
+                        }
+                    });
+                }, 100);
+            }
+        }
+
+        // Load Project Data
+        function loadProjectData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            
+            if (!projectId) {
+                console.warn('⚠️ No hay ID de proyecto en la URL');
+                return;
+            }
+
+            const project = DocuProjectData.getProjectById(projectId);
+            
+            if (!project) {
+                console.warn('⚠️ Proyecto no encontrado');
+                return;
+            }
+
+            console.log('✅ Proyecto encontrado:', project);
+
+            // Mostrar nombre del proyecto
+            const projectNameDisplay = document.getElementById('projectNameDisplay');
+            if (projectNameDisplay && project.name) {
+                projectNameDisplay.textContent = project.name;
+            }
+
+            // Mostrar budget allocation si existe
+            const budgetDisplay = document.getElementById('budgetDisplay');
+            if (budgetDisplay && project.budgetAllocation) {
+                budgetDisplay.textContent = `Budget allocation: ${project.budgetAllocation}`;
+                budgetDisplay.style.display = 'block';
+            }
+
+            // Mostrar stages
+            const stagesSection = document.getElementById('stagesSection');
+            const stagesList = document.getElementById('stagesList');
+            if (stagesSection && stagesList && project.stages && project.stages.length > 0) {
+                stagesList.innerHTML = '';
+                project.stages.forEach(stage => {
+                    const stageItem = document.createElement('div');
+                    stageItem.className = 'stage-item';
+                    stageItem.innerHTML = `
+                        <div class="stage-name">${stage.name || 'Sin nombre'}</div>
+                        <div class="stage-date">${stage.dateRange || ''}</div>
+                    `;
+                    stagesList.appendChild(stageItem);
+                });
+                stagesSection.style.display = 'block';
+            }
+
+            // Mostrar teams
+            const teamsSection = document.getElementById('teamsSection');
+            const teamsListDisplay = document.getElementById('teamsListDisplay');
+            if (teamsSection && teamsListDisplay && project.teams && project.teams.length > 0) {
+                teamsListDisplay.innerHTML = '';
+                project.teams.forEach(team => {
+                    const teamItem = document.createElement('div');
+                    teamItem.className = 'team-item-display';
+                    teamItem.innerHTML = `<div class="team-name">${team.name || 'Sin nombre'}</div>`;
+                    teamsListDisplay.appendChild(teamItem);
+                });
+                teamsSection.style.display = 'block';
+            }
+
+            // Mostrar assets
+            const assetsSection = document.getElementById('assetsSection');
+            const assetsListDisplay = document.getElementById('assetsListDisplay');
+            if (assetsSection && assetsListDisplay && project.assets && project.assets.length > 0) {
+                assetsListDisplay.innerHTML = '';
+                project.assets.forEach(asset => {
+                    const assetItem = document.createElement('div');
+                    assetItem.className = 'asset-item';
+                    let content = '';
+                    if (asset.text) {
+                        content += `<div class="asset-text">${asset.text}</div>`;
+                    }
+                    if (asset.link) {
+                        content += `<a href="${asset.link}" target="_blank" class="asset-link">${asset.link}</a>`;
+                    }
+                    assetItem.innerHTML = content;
+                    assetsListDisplay.appendChild(assetItem);
+                });
+                assetsSection.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
+

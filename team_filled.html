@@ -870,7 +870,7 @@
                                 <span class="dsu-nav-button__text">Teams</span>
                             </button>
                             <div class="dsu-teams-chevron">
-                                <img src="images/down-chevron.svg" alt="Chevron">
+                                <img src="images/up-chevron.svg" alt="Chevron">
                             </div>
                         </div>
                         
@@ -910,6 +910,9 @@
                                     </span>
                                 </button>
                                 <!-- Projects list -->
+                                <div class="dsu-projects-list" id="projectsList">
+                                    <!-- Projects list se poblará dinámicamente -->
+                                </div>
                             </div>
                         </div>
                         
@@ -1235,6 +1238,10 @@
             // Luego cargar equipos en el sidebar
             console.log('📋 Cargando teams en sidebar...');
             loadTeamsInSidebar();
+            
+            // Cargar proyectos en el sidebar
+            console.log('📋 Cargando proyectos en sidebar...');
+            loadProjectsInSidebar();
         }
 
         /**
@@ -1605,7 +1612,7 @@
         // Sidebar Navigation
         // ============================================
         function initSidebarNavigation() {
-            // Teams Dropdown
+            // Teams Dropdown - Asegurar que siempre esté expandido por defecto
             const teamsButtons = document.querySelectorAll('.dsu-teams-button');
             teamsButtons.forEach((button) => {
                 const teamsLevel = button.closest('.dsu-teams-level');
@@ -1615,6 +1622,11 @@
                 const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
                 
                 if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-teams-dropdown--expanded');
+                button.classList.add('dsu-teams-button--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
                 
                 button.addEventListener('click', function() {
                     const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
@@ -1637,7 +1649,7 @@
                 }
             });
 
-            // Projects Dropdown
+            // Projects Dropdown - Asegurar que siempre esté expandido por defecto
             const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
             projectsTriggers.forEach((trigger) => {
                 const projectsLevel = trigger.closest('.dsu-projects-level');
@@ -1649,7 +1661,7 @@
                 
                 if (!dropdown) return;
                 
-                // Inicializar expandido para que el botón "Create new project" sea visible
+                // Asegurar que siempre esté expandido por defecto
                 dropdown.classList.add('dsu-projects-dropdown--expanded');
                 trigger.classList.add('dsu-projects-button__trigger--active');
                 if (chevron) chevron.src = 'images/up-chevron.svg';
@@ -1713,6 +1725,21 @@
                 });
             } else {
                 console.error('❌ Botón "Create new project" no encontrado');
+            }
+
+            // Dark Mode Button
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function() {
+                    // Toggle dark mode functionality
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    try {
+                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
+                    }
+                });
             }
 
             // Logout
@@ -2937,7 +2964,43 @@
                 });
             }
 
+            // Marcar team activo si hay uno seleccionado
+            markActiveTeam();
+
             console.log(`=== loadTeamsInSidebar completado: ${publishedTeams.length} teams mostrados ===`);
+        }
+
+        // Función para marcar el team activo
+        function markActiveTeam() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            // Obtener ID del team desde URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const teamIdFromURL = urlParams.get('id');
+            let selectedTeamId = teamIdFromURL;
+
+            if (!selectedTeamId) {
+                try {
+                    selectedTeamId = sessionStorage.getItem('docu_selected_team_id');
+                } catch (error) {
+                    console.warn('⚠️ Error al leer sessionStorage:', error);
+                }
+            }
+
+            if (selectedTeamId) {
+                setTimeout(() => {
+                    const teamItems = teamsList.querySelectorAll('.dsu-team-item');
+                    teamItems.forEach(item => {
+                        item.classList.remove('dsu-team-item--active', 'active');
+                        const itemId = item.getAttribute('data-team-id');
+                        if (itemId === selectedTeamId) {
+                            item.classList.add('dsu-team-item--active', 'active');
+                            console.log('✅ Team marcado como activo en el sidebar:', selectedTeamId);
+                        }
+                    });
+                }, 100);
+            }
         }
 
         function addTeamToSidebar(teamData) {
@@ -2960,6 +3023,189 @@
                 console.log('🔄 Recarga 3 del sidebar (verificación final)...');
                 loadTeamsInSidebar();
             }, 1500);
+        }
+
+        // ============================================
+        // Load Projects in Sidebar
+        // ============================================
+        function loadProjectsInSidebar() {
+            console.log('=== loadProjectsInSidebar llamado ===');
+            
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) {
+                console.error('❌ Elemento projectsList no encontrado en el DOM');
+                return;
+            }
+
+            console.log('✅ Elemento projectsList encontrado');
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadProjectsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar que DocuAuth esté disponible
+            if (typeof DocuAuth === 'undefined') {
+                console.error('❌ DocuAuth no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadProjectsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar sesión activa
+            const session = DocuAuth.getCurrentSession();
+            if (!session) {
+                console.warn('⚠️ No hay sesión activa');
+                return;
+            }
+
+            // Obtener datos del proyecto
+            let projectData = null;
+            try {
+                projectData = DocuProjectData.getProjectData();
+            } catch (error) {
+                console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                return;
+            }
+
+            // Obtener proyectos del usuario
+            const projects = (projectData && projectData.projects && Array.isArray(projectData.projects)) ? projectData.projects : [];
+            console.log('📊 Total de proyectos encontrados:', projects.length);
+
+            // Filtrar solo proyectos con nombre válido
+            const validProjects = projects.filter(project => {
+                if (!project) return false;
+                const hasValidName = project.name && 
+                                   typeof project.name === 'string' &&
+                                   project.name.trim().length > 0;
+                return hasValidName;
+            });
+
+            console.log('✅ Proyectos válidos:', validProjects.length);
+
+            // Ordenar por fecha de creación (más reciente primero)
+            validProjects.sort((a, b) => {
+                const dateA = a.createdAt || a.updatedAt || 0;
+                const dateB = b.createdAt || b.updatedAt || 0;
+                return dateB - dateA; // Orden descendente (más reciente primero)
+            });
+
+            console.log('📋 Proyectos ordenados (más reciente primero)');
+
+            // Limpiar lista
+            projectsList.innerHTML = '';
+
+            // Si no hay proyectos, mostrar mensaje vacío (opcional) o simplemente lista vacía
+            if (validProjects.length === 0) {
+                console.log('ℹ️ No hay proyectos para mostrar');
+                return;
+            }
+
+            // Asegurar que el dropdown esté expandido
+            const projectsDropdown = projectsList.closest('.dsu-projects-dropdown');
+            if (projectsDropdown) {
+                projectsDropdown.classList.add('dsu-projects-dropdown--expanded');
+                console.log('✅ Dropdown de proyectos expandido');
+            } else {
+                console.warn('⚠️ Dropdown de proyectos no encontrado');
+            }
+
+            // Agregar proyectos a la lista
+            validProjects.forEach((project, index) => {
+                const projectItem = document.createElement('button');
+                projectItem.className = 'dsu-project-item';
+                projectItem.setAttribute('data-project-id', project.id || '');
+                projectItem.setAttribute('data-project-name', escapeHtml(project.name || 'Sin nombre'));
+                
+                // Crear el texto del proyecto
+                const projectText = document.createElement('span');
+                projectText.className = 'dsu-project-item__text';
+                projectText.textContent = project.name || 'Sin nombre';
+                projectItem.appendChild(projectText);
+                
+                // Event listener para cargar el proyecto al hacer clic
+                projectItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Proyecto clicked:', project.name, '(ID:', project.id, ')');
+                    
+                    // Remover clase active de todos los items
+                    projectsList.querySelectorAll('.dsu-project-item').forEach(item => {
+                        item.classList.remove('dsu-project-item--active', 'active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    projectItem.classList.add('dsu-project-item--active', 'active');
+                    
+                    // Redirigir a project_view.html con el ID del proyecto
+                    if (project.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_project_id', project.id);
+                            console.log('✅ Proyecto seleccionado, redirigiendo a project_view.html');
+                            window.location.href = `project_view.html?id=${project.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    } else {
+                        console.error('❌ Proyecto sin ID, no se puede cargar');
+                    }
+                });
+                
+                projectsList.appendChild(projectItem);
+                console.log(`✅ Proyecto agregado a la lista: "${project.name}" (${index + 1}/${validProjects.length})`);
+            });
+
+            // Marcar proyecto activo si hay uno seleccionado
+            markActiveProject();
+
+            console.log(`=== loadProjectsInSidebar completado: ${validProjects.length} proyectos mostrados ===`);
+        }
+
+        // Función para marcar el proyecto activo
+        function markActiveProject() {
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) return;
+
+            // Obtener ID del proyecto desde URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectIdFromURL = urlParams.get('id');
+            let selectedProjectId = projectIdFromURL;
+
+            if (!selectedProjectId) {
+                try {
+                    selectedProjectId = sessionStorage.getItem('docu_selected_project_id');
+                } catch (error) {
+                    console.warn('⚠️ Error al leer sessionStorage:', error);
+                }
+            }
+
+            if (selectedProjectId) {
+                setTimeout(() => {
+                    const projectItems = projectsList.querySelectorAll('.dsu-project-item');
+                    projectItems.forEach(item => {
+                        item.classList.remove('dsu-project-item--active', 'active');
+                        const itemId = item.getAttribute('data-project-id');
+                        if (itemId === selectedProjectId) {
+                            item.classList.add('dsu-project-item--active', 'active');
+                            console.log('✅ Proyecto marcado como activo en el sidebar:', selectedProjectId);
+                        }
+                    });
+                }, 100);
+            }
+        }
+
+        // Función helper para escapar HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function loadCurrentProjectData() {
