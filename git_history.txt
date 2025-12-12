@@ -1,3 +1,5 @@
+56175ee4d31c59bcb63a3498520981f628bd1227|Ubits|ubits@macbookpro.lan|2025-12-12 18:13:29 -0500|Add: Función getCommitHashByName() para localizar commits por nombre desde las cards del changelog
+08607efaa68877810259d9aeee1fcf891823bd46|Ubits|ubits@macbookpro.lan|2025-12-12 18:11:20 -0500|Update: Actualizar changelog con últimos cambios
 8d3607bac36c923c41ca4e2d1b38548404640b99|Ubits|ubits@macbookpro.lan|2025-12-12 18:11:15 -0500|Add: Protocolo Step 11 - Documentación para revertir commits usando hash desde cards del changelog
 97945711b50e6ecf5416fae7f7e903dd846c35ee|Ubits|ubits@macbookpro.lan|2025-12-12 18:10:41 -0500|Update: Actualizar changelog con últimos cambios
 3a97f69c88b52a342c23a21454a28bf2292d5b2e|Ubits|ubits@macbookpro.lan|2025-12-12 16:22:16 -0500|Update: Datos embebidos en changelog.html actualizados
