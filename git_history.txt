@@ -1,3 +1,5 @@
+d1147861edc51cd893a58f65217364ea182dd6e3|Ubits|ubits@macbookpro.lan|2025-12-12 12:21:33 -0500|Feature: Agregar icono de trash para eliminar teams en team-item
+eea3c3c7609bc69c549c577a26fe6d541ba6f349|Ubits|ubits@macbookpro.lan|2025-12-12 12:10:21 -0500|Update: Actualizar changelog con últimos cambios
 5d51f79d3e0bee44e94188cbba8d8dd02ba6e799|Ubits|ubits@macbookpro.lan|2025-12-12 12:10:09 -0500|Feature: Validar campos mandatorios para habilitar botón Publish y corregir detección de stages creados
 fbf35c8003339e35478042e4cd58f3ed7f4f87d9|Ubits|ubits@macbookpro.lan|2025-12-12 11:42:11 -0500|Update: Actualizar changelog con últimos cambios
 344522aca0768f4aee312f6203674f26dfa458f0|Ubits|ubits@macbookpro.lan|2025-12-12 11:42:00 -0500|Feature: Validar que haya teams asociados antes de enviar correo en projectAgreementsDefault
