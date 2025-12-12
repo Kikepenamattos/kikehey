@@ -1499,6 +1499,35 @@
             line-height: 1.5;
             margin: 0;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-08);
+        }
+        
+        .team-name-title__text {
+            flex: 1;
+        }
+        
+        .team-name-title__delete {
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+            border: none;
+            background: transparent;
+        }
+        
+        .team-name-title__delete:hover {
+            opacity: 1;
+        }
+        
+        .team-name-title__delete img {
+            width: 16px;
+            height: 16px;
         }
 
         /* Teams List Container */
@@ -3999,10 +4028,59 @@
                 teamItem.className = 'team-item';
                 teamItem.setAttribute('data-team-id', teamId);
 
-                // Crear título del team
-                const teamTitle = document.createElement('p');
+                // Crear título del team con icono de eliminar
+                const teamTitle = document.createElement('div');
                 teamTitle.className = 'team-name-title';
-                teamTitle.textContent = teamName;
+                
+                // Texto del nombre del team
+                const teamTitleText = document.createElement('span');
+                teamTitleText.className = 'team-name-title__text';
+                teamTitleText.textContent = teamName;
+                
+                // Botón de eliminar
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'team-name-title__delete';
+                deleteButton.setAttribute('aria-label', `Eliminar team ${teamName}`);
+                deleteButton.type = 'button';
+                deleteButton.innerHTML = '<img src="images/trash.svg" alt="Delete team">';
+                
+                // Event listener para eliminar el team
+                deleteButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Confirmar eliminación
+                    if (confirm(`¿Estás seguro de que deseas eliminar el team "${teamName}"?`)) {
+                        // Remover del array de teams seleccionados
+                        const index = selectedTeams.indexOf(teamId);
+                        if (index > -1) {
+                            selectedTeams.splice(index, 1);
+                        }
+                        
+                        // Remover el elemento del DOM
+                        teamItem.remove();
+                        
+                        // Si no hay más teams, mostrar el botón empty y ocultar el contenedor
+                        const remainingTeams = teamsListContainer.querySelectorAll('.team-item').length;
+                        if (remainingTeams === 0) {
+                            if (addMemberBtnEmpty && teamsListContainer) {
+                                addMemberBtnEmpty.style.display = 'flex';
+                                teamsListContainer.style.display = 'none';
+                            }
+                        }
+                        
+                        // Actualizar estado del botón Publish
+                        if (typeof updatePublishButtonState === 'function') {
+                            setTimeout(updatePublishButtonState, 100);
+                        }
+                        
+                        console.log(`✅ Team "${teamName}" eliminado`);
+                    }
+                });
+                
+                // Agregar elementos al título
+                teamTitle.appendChild(teamTitleText);
+                teamTitle.appendChild(deleteButton);
 
                 // Crear fila de miembros
                 const withMembersRow = document.createElement('div');
