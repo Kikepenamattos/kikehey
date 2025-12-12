@@ -688,7 +688,13 @@
                     </div>
                     <div class="protocol-step-details">
                         <strong>Proceso para revertir a un commit:</strong><br>
-                        1. Localizar la card del commit deseado usando el buscador o navegando manualmente<br>
+                        <strong>Opción 1: Usando el nombre del commit (más fácil)</strong><br>
+                        1. Abrir la consola del navegador (F12 → Console)<br>
+                        2. Ejecutar: <code>getCommitHashByName("nombre del commit")</code><br>
+                        3. La función mostrará el hash completo y el comando para checkout<br>
+                        4. Copiar el hash y ejecutar: <code>git checkout &lt;hash&gt;</code><br><br>
+                        <strong>Opción 2: Buscando manualmente</strong><br>
+                        1. Localizar la card del commit deseado usando el buscador en la parte superior<br>
                         2. Copiar el hash completo del commit (hacer clic derecho en la card → Inspeccionar → buscar <code>data-commit-hash</code>)<br>
                         3. Alternativamente, copiar el hash corto mostrado en el enlace (7 caracteres)<br>
                         4. Ejecutar en la terminal: <code>git checkout &lt;hash-completo-o-corto&gt;</code><br>
@@ -696,11 +702,13 @@
                     </div>
                     <div class="protocol-step-details">
                         <strong>Comandos útiles:</strong><br>
+                        • <strong>Buscar commit por nombre:</strong> En consola del navegador: <code>getCommitHashByName("nombre")</code><br>
                         • Ver cambios de un commit: <code>git show &lt;hash&gt;</code><br>
                         • Ver archivos modificados: <code>git show --name-only &lt;hash&gt;</code><br>
                         • Crear rama desde un commit: <code>git checkout -b nueva-rama &lt;hash&gt;</code><br>
                         • Revertir cambios (sin perder historial): <code>git revert &lt;hash&gt;</code><br>
-                        • Resetear a un commit (peligroso, perder cambios posteriores): <code>git reset --hard &lt;hash&gt;</code>
+                        • Resetear a un commit (peligroso, perder cambios posteriores): <code>git reset --hard &lt;hash&gt;</code><br>
+                        • Buscar commit por mensaje en git: <code>git log --all --grep="nombre"</code>
                     </div>
                     <div class="protocol-step-details">
                         <strong>Validación:</strong><br>
@@ -708,7 +716,16 @@
                         • El hash debe ser válido y existir en el repositorio<br>
                         • El hash debe corresponder al commit mostrado en la card<br>
                         • El enlace a GitHub debe funcionar y mostrar el commit correcto<br>
+                        • La función <code>getCommitHashByName()</code> está disponible globalmente para buscar por nombre<br>
                         <strong style="color: #d32f2f;">⚠️ Siempre verificar el hash antes de hacer checkout en producción</strong>
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Ejemplo de uso de getCommitHashByName():</strong><br>
+                        <code>getCommitHashByName("Fix: Botón team-add-cta")</code><br>
+                        Esto buscará cualquier commit cuyo mensaje contenga "Fix: Botón team-add-cta" y mostrará:<br>
+                        • El hash completo del commit<br>
+                        • El hash corto<br>
+                        • El comando completo para hacer checkout
                     </div>
                 </div>
                 </div>
@@ -1024,6 +1041,59 @@
             });
         }
 
+        // Función para localizar un commit por nombre/mensaje y obtener su hash
+        function findCommitByName(commitName) {
+            const items = document.querySelectorAll('.changelog-item');
+            const searchTerm = commitName.toLowerCase();
+            
+            // Buscar en todas las cards
+            for (let item of items) {
+                const titleElement = item.querySelector('.changelog-title');
+                if (titleElement) {
+                    const titleText = titleElement.textContent.toLowerCase();
+                    if (titleText.includes(searchTerm)) {
+                        const commitHash = item.getAttribute('data-commit-hash');
+                        const shortHash = item.querySelector('.changelog-hash')?.textContent?.trim();
+                        const message = titleElement.textContent.trim();
+                        
+                        return {
+                            found: true,
+                            hash: commitHash,
+                            shortHash: shortHash,
+                            message: message,
+                            element: item
+                        };
+                    }
+                }
+            }
+            
+            return {
+                found: false,
+                hash: null,
+                shortHash: null,
+                message: null,
+                element: null
+            };
+        }
+
+        // Función helper para obtener hash de commit desde el nombre (para uso en terminal)
+        // Esta función imprime el hash en consola para que el usuario pueda copiarlo
+        window.getCommitHashByName = function(commitName) {
+            const result = findCommitByName(commitName);
+            if (result.found) {
+                console.log('✅ Commit encontrado:');
+                console.log(`   Mensaje: ${result.message}`);
+                console.log(`   Hash completo: ${result.hash}`);
+                console.log(`   Hash corto: ${result.shortHash}`);
+                console.log(`   Comando para checkout: git checkout ${result.hash}`);
+                return result.hash;
+            } else {
+                console.warn(`⚠️ No se encontró ningún commit con el nombre: "${commitName}"`);
+                console.log('💡 Intenta buscar con una parte del nombre del commit');
+                return null;
+            }
+        };
+
         // Función para refrescar el changelog (fuerza recarga)
         function refreshChangelog() {
             console.log('🔄 Refrescando changelog...');
@@ -1266,6 +1336,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '08607ef',
+                fullHash: '08607efaa68877810259d9aeee1fcf891823bd46',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 18:11:20 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: '8d3607b',
                 fullHash: '8d3607bac36c923c41ca4e2d1b38548404640b99',
