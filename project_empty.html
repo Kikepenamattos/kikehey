@@ -90,11 +90,35 @@
             justify-content: center;
             max-width: 80%;
             margin: 0 auto;
+            flex-wrap: wrap; /* Permitir wrap si hay muchos botones */
         }
 
         .dsu-sticky-buttons__button {
             flex: 1;
             min-width: 0;
+        }
+
+        /* Botones que no deben estirarse (ej: botones terciarios con iconos) */
+        .dsu-sticky-buttons__button--fixed {
+            flex: 0 0 auto;
+            min-width: auto;
+        }
+
+        /* Botones que deben ocupar espacio mínimo pero pueden crecer */
+        .dsu-sticky-buttons__button--flexible {
+            flex: 1 1 auto;
+            min-width: 120px; /* Ancho mínimo para mantener legibilidad */
+        }
+
+        /* Cuando hay muchos botones, ajustar el gap */
+        /* Nota: :has() puede no ser compatible en todos los navegadores, usar clase alternativa si es necesario */
+        .dsu-sticky-buttons__wrapper:has(.dsu-sticky-buttons__button:nth-child(4)) {
+            gap: var(--spacing-16); /* Reducir gap si hay 4+ botones */
+        }
+
+        /* Clase alternativa para navegadores sin soporte :has() - aplicar manualmente si es necesario */
+        .dsu-sticky-buttons__wrapper--many-buttons {
+            gap: var(--spacing-16);
         }
 
         /* Close Button */
@@ -1530,6 +1554,29 @@
             height: 16px;
         }
 
+        /* Botón de eliminar en sidebar de proyectos */
+        .dsu-project-item__delete {
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+            border: none;
+            background: transparent;
+            flex-shrink: 0;
+        }
+        
+        .dsu-project-item__delete:hover {
+            opacity: 1;
+        }
+        
+        .dsu-project-item__delete img {
+            width: 16px;
+            height: 16px;
+        }
+
         /* Teams List Container */
         .teams-list-container {
             display: flex;
@@ -1791,8 +1838,44 @@
                 padding: var(--spacing-24) 16px;
             }
 
+            .dsu-sticky-buttons__wrapper {
+                max-width: 100%; /* En mobile, usar todo el ancho disponible */
+                flex-direction: column; /* Apilar botones verticalmente en mobile si hay muchos */
+            }
+
+            /* Si hay 3 o más botones, mantener horizontal pero con gap reducido */
+            .dsu-sticky-buttons__wrapper:has(.dsu-sticky-buttons__button:nth-child(3)) {
+                flex-direction: row;
+                gap: var(--spacing-12);
+            }
+
+            /* Clase alternativa para navegadores sin soporte :has() */
+            .dsu-sticky-buttons__wrapper--mobile-horizontal {
+                flex-direction: row;
+                gap: var(--spacing-12);
+            }
+
+            .dsu-sticky-buttons__button {
+                width: 100%; /* En mobile, botones ocupan todo el ancho cuando están en columna */
+            }
+
+            .dsu-sticky-buttons__button--fixed {
+                width: auto; /* Botones fijos mantienen su ancho */
+            }
+
             .project-budget-section {
                 flex-direction: column;
+            }
+        }
+
+        /* Tablet: Ajustar padding para mejor distribución */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .dsu-sticky-buttons {
+                padding: var(--spacing-24) 80px; /* Padding simétrico en tablet */
+            }
+
+            .dsu-sticky-buttons__wrapper {
+                max-width: 90%; /* Más espacio en tablet */
             }
         }
     </style>
@@ -2641,8 +2724,25 @@
             </div>
 
             <!-- Sticky Buttons -->
+            <!-- 
+                NOTAS PARA AGREGAR NUEVOS BOTONES:
+                1. Botones normales (se estiran equitativamente):
+                   - Usar clase: dsu-sticky-buttons__button
+                2. Botones con tamaño fijo (ej: terciarios con iconos):
+                   - Usar clases: dsu-sticky-buttons__button dsu-sticky-buttons__button--fixed
+                3. Botones flexibles con ancho mínimo:
+                   - Usar clases: dsu-sticky-buttons__button dsu-sticky-buttons__button--flexible
+                4. Si agregas 4+ botones, el gap se reduce automáticamente
+                5. En mobile, los botones se apilan verticalmente si hay muchos
+            -->
             <div class="dsu-sticky-buttons">
                 <div class="dsu-sticky-buttons__wrapper">
+                    <button class="dsu-button dsu-button--tertiary dsu-button--medium dsu-sticky-buttons__button dsu-sticky-buttons__button--fixed" id="deleteProjectBtn">
+                        <span class="dsu-button__icon">
+                            <img src="images/trash.svg" alt="Delete">
+                        </span>
+                        Delete project
+                    </button>
                     <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn">
                         Duplicate project
                     </button>
@@ -7096,6 +7196,14 @@
         function initStickyButtons() {
             const saveDraftBtn = document.getElementById('saveDraftBtn');
             const publishBtn = document.getElementById('publishBtn');
+            const deleteProjectBtn = document.getElementById('deleteProjectBtn');
+            
+            // Delete project button
+            if (deleteProjectBtn) {
+                deleteProjectBtn.addEventListener('click', function() {
+                    deleteProject();
+                });
+            }
             
             if (saveDraftBtn) {
                 saveDraftBtn.addEventListener('click', function() {
@@ -7279,6 +7387,95 @@
                     }
                 });
             }
+        }
+
+        /**
+         * Elimina el proyecto actual
+         * @param {string} [projectIdParam] - ID del proyecto a eliminar (opcional, si no se proporciona, se obtiene de URL o sessionStorage)
+         */
+        function deleteProject(projectIdParam) {
+            console.log('🗑️ === INICIO deleteProject ===');
+            
+            // Obtener el ID del proyecto desde el parámetro, URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = projectIdParam || urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+            
+            if (!projectId) {
+                console.warn('⚠️ No se encontró ID del proyecto para eliminar');
+                alert('No se pudo identificar el proyecto a eliminar.');
+                return;
+            }
+
+            // Obtener información del proyecto para mostrar en la confirmación
+            let projectName = 'este proyecto';
+            try {
+                if (typeof DocuProjectData !== 'undefined') {
+                    const project = DocuProjectData.getProjectById(projectId);
+                    if (project && project.name) {
+                        projectName = `"${project.name}"`;
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ Error al obtener información del proyecto:', error);
+            }
+            
+            // Confirmar eliminación
+            if (!confirm(`¿Estás seguro de que deseas eliminar ${projectName}?\n\nEsta acción no se puede deshacer.`)) {
+                console.log('❌ Usuario canceló la eliminación');
+                return;
+            }
+
+            console.log('🗑️ Eliminando proyecto:', {
+                id: projectId,
+                name: projectName
+            });
+
+            try {
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    alert('Error: No se pudo acceder a los datos del proyecto.');
+                    return;
+                }
+
+                // Eliminar el proyecto
+                const deleted = DocuProjectData.deleteProject(projectId);
+                
+                if (deleted) {
+                    console.log('✅ Proyecto eliminado exitosamente');
+                    
+                    // Limpiar sessionStorage
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.removeItem('docu_editing_project');
+                    } catch (error) {
+                        console.warn('⚠️ Error al limpiar sessionStorage:', error);
+                    }
+                    
+                    // Si el proyecto eliminado es el actual, redirigir a index.html
+                    // Si no, recargar la lista del sidebar
+                    const currentProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+                    if (currentProjectId === projectId) {
+                        // Redirigir a la página principal si estamos viendo el proyecto eliminado
+                        alert(`Proyecto ${projectName} eliminado exitosamente.`);
+                        window.location.href = 'index.html';
+                    } else {
+                        // Solo recargar la lista del sidebar si eliminamos otro proyecto
+                        alert(`Proyecto ${projectName} eliminado exitosamente.`);
+                        if (typeof loadProjectsInSidebar === 'function') {
+                            loadProjectsInSidebar(); // Recargar lista del sidebar
+                        }
+                    }
+                } else {
+                    console.error('❌ No se pudo eliminar el proyecto');
+                    alert('Error: No se pudo eliminar el proyecto. Puede que no exista o haya ocurrido un error.');
+                }
+            } catch (error) {
+                console.error('❌ Error al eliminar proyecto:', error);
+                alert('Error inesperado al eliminar el proyecto. Por favor, inténtalo de nuevo.');
+            }
+            
+            console.log('🗑️ === FIN deleteProject ===');
         }
 
         // ============================================
