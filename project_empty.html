@@ -4366,6 +4366,17 @@
                             // Re-initialize send button
                             if (newSendButton) {
                                 newSendButton.addEventListener('click', function() {
+                                    // Validación: Verificar si hay teams asociados al proyecto
+                                    const teamsListContainer = document.getElementById('teamsListContainer');
+                                    const hasTeams = teamsListContainer && 
+                                                    teamsListContainer.style.display !== 'none' && 
+                                                    teamsListContainer.querySelectorAll('.team-item').length > 0;
+                                    
+                                    if (!hasTeams) {
+                                        alert('To send an email, please create or add a team to your project');
+                                        return;
+                                    }
+                                    
                                     if (newItem1Input && newItem1Input.value.trim()) {
                                         addEmptyAgreementItem(newItem1Input.value.trim(), newEmptyItemsContainer);
                                         newItem1Input.value = '';
@@ -4658,6 +4669,17 @@
             // Send button in Empty state
             if (sendButton) {
                 sendButton.addEventListener('click', function() {
+                    // Validación: Verificar si hay teams asociados al proyecto
+                    const teamsListContainer = document.getElementById('teamsListContainer');
+                    const hasTeams = teamsListContainer && 
+                                    teamsListContainer.style.display !== 'none' && 
+                                    teamsListContainer.querySelectorAll('.team-item').length > 0;
+                    
+                    if (!hasTeams) {
+                        alert('To send an email, please create or add a team to your project');
+                        return;
+                    }
+                    
                     if (item1Input && item1Input.value.trim()) {
                         addEmptyAgreementItem(item1Input.value.trim(), emptyItemsContainer);
                         item1Input.value = '';
@@ -5003,6 +5025,17 @@
                 // Send button functionality
                 if (sendButton) {
                     sendButton.addEventListener('click', function() {
+                        // Validación: Verificar si hay teams asociados al proyecto
+                        const teamsListContainer = document.getElementById('teamsListContainer');
+                        const hasTeams = teamsListContainer && 
+                                        teamsListContainer.style.display !== 'none' && 
+                                        teamsListContainer.querySelectorAll('.team-item').length > 0;
+                        
+                        if (!hasTeams) {
+                            alert('To send an email, please create or add a team to your project');
+                            return;
+                        }
+                        
                         if (item1Input && item1Input.value.trim()) {
                             addEmptyAgreementItemForGroup(item1Input.value.trim(), emptyItemsContainer, uniqueId);
                             item1Input.value = '';
@@ -5231,6 +5264,17 @@
             // Send email functionality
             if (activeSendBtn) {
                 activeSendBtn.addEventListener('click', function() {
+                    // Validación: Verificar si hay teams asociados al proyecto
+                    const teamsListContainer = document.getElementById('teamsListContainer');
+                    const hasTeams = teamsListContainer && 
+                                    teamsListContainer.style.display !== 'none' && 
+                                    teamsListContainer.querySelectorAll('.team-item').length > 0;
+                    
+                    if (!hasTeams) {
+                        alert('To send an email, please create or add a team to your project');
+                        return;
+                    }
+                    
                     if (activeInput && activeInput.value.trim()) {
                         addAgreementItem(activeInput.value.trim());
                         activeInput.value = '';
