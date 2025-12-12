@@ -4066,8 +4066,19 @@
             
             if (closeBtn) {
                 closeBtn.addEventListener('click', function() {
-                    // Redirigir a team_filled.html
-                    window.location.href = 'team_filled.html';
+                    // Obtener el ID del proyecto desde la URL o sessionStorage
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const projectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+                    
+                    if (projectId) {
+                        // Redirigir a project_view.html con el ID del proyecto
+                        console.log('✅ Cerrando vista de edición, redirigiendo a project_view.html con ID:', projectId);
+                        window.location.href = `project_view.html?id=${projectId}`;
+                    } else {
+                        // Si no hay ID del proyecto, redirigir a la vista principal
+                        console.log('⚠️ No se encontró ID del proyecto, redirigiendo a index.html');
+                        window.location.href = 'index.html';
+                    }
                 });
             }
         }
