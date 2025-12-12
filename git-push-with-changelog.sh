@@ -23,7 +23,9 @@ if [ $PUSH_EXIT_CODE -eq 0 ]; then
     # Obtener todos los commits del remoto
     git fetch origin 2>/dev/null
     
-    git log --format="%H|%an|%ae|%ai|%s" "$REMOTE_BRANCH" --reverse 2>/dev/null | while IFS= read -r line; do
+    # Obtener commits en orden normal (más reciente primero) y almacenarlos temporalmente
+    TEMP_COMMITS=$(mktemp)
+    git log --format="%H|%an|%ae|%ai|%s" "$REMOTE_BRANCH" 2>/dev/null | while IFS= read -r line; do
         if [ -z "$line" ]; then
             continue
         fi
@@ -37,19 +39,25 @@ if [ $PUSH_EXIT_CODE -eq 0 ]; then
             fi
         fi
         
-        # Agregar el commit al inicio del archivo
-        if [ -f "$HISTORY_FILE" ]; then
-            echo "$line" > "${HISTORY_FILE}.tmp"
-            cat "$HISTORY_FILE" >> "${HISTORY_FILE}.tmp"
-            mv "${HISTORY_FILE}.tmp" "$HISTORY_FILE"
-        else
-            echo "$line" > "$HISTORY_FILE"
-        fi
-        
+        # Agregar el commit al archivo temporal (orden: más reciente primero)
+        echo "$line" >> "$TEMP_COMMITS"
         COMMIT_MSG=$(echo "$line" | cut -d'|' -f5)
         echo "  ✓ Agregado: ${COMMIT_HASH:0:7} - ${COMMIT_MSG}"
         UPDATED=true
     done
+    
+    # Si hay commits nuevos, agregarlos al inicio del historial manteniendo el orden (más reciente primero)
+    if [ -f "$TEMP_COMMITS" ] && [ -s "$TEMP_COMMITS" ]; then
+        if [ -f "$HISTORY_FILE" ]; then
+            cat "$TEMP_COMMITS" "$HISTORY_FILE" > "${HISTORY_FILE}.tmp"
+            mv "${HISTORY_FILE}.tmp" "$HISTORY_FILE"
+        else
+            mv "$TEMP_COMMITS" "$HISTORY_FILE"
+        fi
+    fi
+    
+    # Limpiar archivo temporal si existe
+    [ -f "$TEMP_COMMITS" ] && rm -f "$TEMP_COMMITS"
     
     # Si se actualizó el historial, actualizar también los datos embebidos en changelog.html
     if [ -f "$HISTORY_FILE" ] && [ -n "$(git diff --name-only HEAD "$HISTORY_FILE" 2>/dev/null)" ]; then
