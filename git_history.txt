@@ -1,3 +1,4 @@
+09a0777730ee34e81cbd43a41edca8e7c569acc5|Ubits|ubits@macbookpro.lan|2025-12-12 13:28:36 -0500|feat: Unificar estructura del sidebar y mantener secciones desplegadas por defecto
 3a862c98bb9a68036ef206ced4bfbacaf600daf4|Ubits|ubits@macbookpro.lan|2025-12-12 12:21:49 -0500|Update: Actualizar changelog con últimos cambios
 d1147861edc51cd893a58f65217364ea182dd6e3|Ubits|ubits@macbookpro.lan|2025-12-12 12:21:33 -0500|Feature: Agregar icono de trash para eliminar teams en team-item
 eea3c3c7609bc69c549c577a26fe6d541ba6f349|Ubits|ubits@macbookpro.lan|2025-12-12 12:10:21 -0500|Update: Actualizar changelog con últimos cambios
