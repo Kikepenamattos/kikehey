@@ -31,12 +31,14 @@ const DocuProjectData = {
             };
         }
         
-        // Asegurar que teams sea un array
+        // Asegurar que teams sea un array (solo si no existe, no sobrescribir si hay datos)
         if (!data.teams || !Array.isArray(data.teams)) {
+            // Si hay otros datos, preservar y solo inicializar teams vacío
+            // Si no hay datos en absoluto, ya se retornó estructura vacía arriba
             data.teams = [];
         }
         
-        // Asegurar que los otros campos existan
+        // Asegurar que los otros campos existan (solo si no existen)
         if (!data.projects) data.projects = [];
         if (!data.settings) data.settings = {};
         if (!data.preferences) data.preferences = {};
@@ -252,8 +254,29 @@ const DocuProjectData = {
         }
         
         // Asegurar que teams exista incluso si hay datos
+        // IMPORTANTE: Solo inicializar si realmente no existe, no sobrescribir si ya hay datos
         if (!data.teams || !Array.isArray(data.teams)) {
-            data.teams = [];
+            // Si no existe teams pero hay otros datos, preservar esos datos
+            if (data.projects || data.settings || data.preferences) {
+                data.teams = [];
+                this.saveProjectData(data);
+                return true;
+            } else {
+                // Si no hay datos en absoluto, inicializar estructura vacía
+                const emptyData = {
+                    projects: [],
+                    teams: [],
+                    settings: {},
+                    preferences: {}
+                };
+                this.saveProjectData(emptyData);
+                return true;
+            }
+        }
+        
+        // Asegurar que projects exista
+        if (!data.projects || !Array.isArray(data.projects)) {
+            data.projects = [];
             this.saveProjectData(data);
             return true;
         }
@@ -268,13 +291,15 @@ if (typeof window !== 'undefined') {
 }
 
 // Inicializar datos si es necesario
-if (typeof window !== 'undefined' && typeof window.DocuAuth !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', function() {
-        if (DocuAuth.isAuthenticated()) {
-            DocuProjectData.initializeIfNeeded();
-        }
-    });
-}
+// IMPORTANTE: No inicializar automáticamente porque podría borrar datos existentes
+// La inicialización debe hacerse explícitamente cuando sea necesario
+// if (typeof window !== 'undefined' && typeof window.DocuAuth !== 'undefined') {
+//     document.addEventListener('DOMContentLoaded', function() {
+//         if (DocuAuth.isAuthenticated()) {
+//             DocuProjectData.initializeIfNeeded();
+//         }
+//     });
+// }
 
 // Exportar para módulos (si se usa)
 if (typeof module !== 'undefined' && module.exports) {

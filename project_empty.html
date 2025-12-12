@@ -3013,9 +3013,15 @@
                     console.log('✅ Teams encontrados directamente en localStorage, usando esos datos');
                     projectData = directData;
                 } else {
-                    console.log('ℹ️ No hay teams en localStorage, inicializando estructura vacía');
-                    DocuProjectData.initializeIfNeeded();
-                    projectData = DocuProjectData.getProjectData();
+                    console.log('ℹ️ No hay teams en localStorage, usando estructura vacía sin guardar');
+                    // NO llamar initializeIfNeeded() aquí porque podría borrar datos existentes
+                    // Solo usar estructura vacía para esta sesión
+                    projectData = {
+                        projects: [],
+                        teams: [],
+                        settings: {},
+                        preferences: {}
+                    };
                 }
             }
 
@@ -3268,9 +3274,33 @@
             let projectData = null;
             try {
                 projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos obtenidos de DocuProjectData para proyectos:', projectData);
+                
+                // Verificación adicional: leer directamente de localStorage
+                const directData = DocuAuth.loadProjectData(session.email);
+                console.log('📦 Datos leídos directamente de localStorage para proyectos:', directData);
+                
+                if (directData && directData.projects) {
+                    console.log('✅ Proyectos encontrados directamente en localStorage:', directData.projects.length);
+                }
             } catch (error) {
                 console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                console.error('Stack:', error.stack);
                 return;
+            }
+
+            // Asegurar que projectData tenga la estructura correcta
+            if (!projectData) {
+                console.warn('⚠️ No hay datos del proyecto para proyectos');
+                // Intentar leer directamente de localStorage antes de inicializar
+                const directData = DocuAuth.loadProjectData(session.email);
+                if (directData && directData.projects && Array.isArray(directData.projects) && directData.projects.length > 0) {
+                    console.log('✅ Proyectos encontrados directamente en localStorage, usando esos datos');
+                    projectData = directData;
+                } else {
+                    console.log('ℹ️ No hay proyectos en localStorage, usando estructura vacía');
+                    projectData = { projects: [] };
+                }
             }
 
             // Obtener proyectos del usuario
@@ -3473,7 +3503,7 @@
             // NO cargar datos aquí, se cargarán después de que todas las secciones estén inicializadas
             // en initProjectEmptyPage para asegurar que todas las funciones estén disponibles
         }
-        
+
         // ============================================
         // Load Project Data into Form
         // ============================================
@@ -4072,11 +4102,11 @@
                     
                     if (projectId) {
                         // Redirigir a project_view.html con el ID del proyecto
-                        console.log('✅ Cerrando vista de edición, redirigiendo a project_view.html con ID:', projectId);
+                        console.log('✅ Redirigiendo a project_view.html con ID:', projectId);
                         window.location.href = `project_view.html?id=${projectId}`;
                     } else {
-                        // Si no hay ID del proyecto, redirigir a la vista principal
-                        console.log('⚠️ No se encontró ID del proyecto, redirigiendo a index.html');
+                        // Si no hay ID del proyecto, redirigir a la página principal
+                        console.warn('⚠️ No se encontró ID de proyecto para redirigir, volviendo a index.html');
                         window.location.href = 'index.html';
                     }
                 });
