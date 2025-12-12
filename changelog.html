@@ -671,6 +671,46 @@
                         <strong style="color: #d32f2f;">⚠️ Si la primera card no es el último commit, hay un problema de ordenamiento que debe corregirse</strong>
                     </div>
                 </div>
+
+                <!-- Step 11 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">11</div>
+                    <div class="protocol-step-title">Revertir a un Commit Específico desde las Cards</div>
+                    <div class="protocol-step-description">
+                        <strong>FUNCIONALIDAD CRÍTICA:</strong> Cada card del changelog contiene el hash completo del commit en el atributo <code>data-commit-hash</code>, permitiendo revertir el proyecto a cualquier estado anterior usando el nombre del commit o su hash.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Información disponible en cada card:</strong><br>
+                        • Hash corto (7 caracteres): Visible en el enlace al final de cada card<br>
+                        • Hash completo: Disponible en el atributo <code>data-commit-hash</code> de la card<br>
+                        • Mensaje del commit: Título de la card (hacer clic para ver en GitHub)<br>
+                        • Fecha y autor: Información completa del commit
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Proceso para revertir a un commit:</strong><br>
+                        1. Localizar la card del commit deseado usando el buscador o navegando manualmente<br>
+                        2. Copiar el hash completo del commit (hacer clic derecho en la card → Inspeccionar → buscar <code>data-commit-hash</code>)<br>
+                        3. Alternativamente, copiar el hash corto mostrado en el enlace (7 caracteres)<br>
+                        4. Ejecutar en la terminal: <code>git checkout &lt;hash-completo-o-corto&gt;</code><br>
+                        5. Para volver a la última versión: <code>git checkout main</code> (o el nombre de tu rama)
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Comandos útiles:</strong><br>
+                        • Ver cambios de un commit: <code>git show &lt;hash&gt;</code><br>
+                        • Ver archivos modificados: <code>git show --name-only &lt;hash&gt;</code><br>
+                        • Crear rama desde un commit: <code>git checkout -b nueva-rama &lt;hash&gt;</code><br>
+                        • Revertir cambios (sin perder historial): <code>git revert &lt;hash&gt;</code><br>
+                        • Resetear a un commit (peligroso, perder cambios posteriores): <code>git reset --hard &lt;hash&gt;</code>
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Validación:</strong><br>
+                        • Cada card debe tener el atributo <code>data-commit-hash</code> con el hash completo<br>
+                        • El hash debe ser válido y existir en el repositorio<br>
+                        • El hash debe corresponder al commit mostrado en la card<br>
+                        • El enlace a GitHub debe funcionar y mostrar el commit correcto<br>
+                        <strong style="color: #d32f2f;">⚠️ Siempre verificar el hash antes de hacer checkout en producción</strong>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -1226,6 +1266,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '9794571',
+                fullHash: '97945711b50e6ecf5416fae7f7e903dd846c35ee',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 18:10:41 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: '3a97f69',
                 fullHash: '3a97f69c88b52a342c23a21454a28bf2292d5b2e',
