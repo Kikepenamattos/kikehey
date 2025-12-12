@@ -1,3 +1,5 @@
+8d3607bac36c923c41ca4e2d1b38548404640b99|Ubits|ubits@macbookpro.lan|2025-12-12 18:11:15 -0500|Add: Protocolo Step 11 - Documentación para revertir commits usando hash desde cards del changelog
+97945711b50e6ecf5416fae7f7e903dd846c35ee|Ubits|ubits@macbookpro.lan|2025-12-12 18:10:41 -0500|Update: Actualizar changelog con últimos cambios
 3a97f69c88b52a342c23a21454a28bf2292d5b2e|Ubits|ubits@macbookpro.lan|2025-12-12 16:22:16 -0500|Update: Datos embebidos en changelog.html actualizados
 6b437d6a0743a257d6ede4ad8a07879690ff06cf|Ubits|ubits@macbookpro.lan|2025-12-12 18:10:30 -0500|Fix: Botón team-add-cta siempre visible y posicionado a la derecha de teams con gap de 32px
 5c1ea3bf9fa4fadc242a7b8f7a38ff08ccf0f17c|Ubits|ubits@macbookpro.lan|2025-12-12 16:22:10 -0500|Add: Botón Delete project en sticky buttons y mejoras en sistema de botones sticky para soportar múltiples elementos
