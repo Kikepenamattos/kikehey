@@ -823,9 +823,33 @@
 
         /* Sticky Buttons - Usando design system, ajuste de centrado */
         .dsu-sticky-buttons {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            padding: var(--spacing-24);
+            border-top: 1px solid var(--color-status-disabled);
+            background-color: var(--color-surface-regular);
+            width: 100%;
+            box-sizing: border-box;
+            position: sticky;
+            bottom: 0;
+            z-index: 100;
             justify-content: center;
-            /* width: 80%; */
+        }
+
+        .dsu-sticky-buttons__wrapper {
+            display: flex;
+            gap: var(--spacing-24);
+            align-items: flex-start;
+            flex: 1;
+            justify-content: center;
+            max-width: 80%;
             margin: 0 auto;
+        }
+
+        .dsu-sticky-buttons__button {
+            flex: 1;
+            min-width: 0;
         }
 
         /* Responsive */
@@ -1152,6 +1176,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sticky Buttons -->
+        <div class="dsu-sticky-buttons">
+            <div class="dsu-sticky-buttons__wrapper">
+                <button class="dsu-button dsu-button--tertiary dsu-button--medium dsu-sticky-buttons__button" id="deleteProjectBtn">
+                    <span class="dsu-button__icon">
+                        <img src="images/trash.svg" alt="Delete">
+                    </span>
+                    Delete project
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -1308,6 +1344,86 @@
                 });
             }
 
+            // Delete project
+            const deleteProjectBtn = document.getElementById('deleteProjectBtn');
+            if (deleteProjectBtn) {
+                deleteProjectBtn.addEventListener('click', function() {
+                    deleteProject();
+                });
+            }
+
+        }
+
+        /**
+         * Elimina el proyecto actual
+         */
+        function deleteProject() {
+            console.log('🗑️ === INICIO deleteProject ===');
+            
+            // Obtener el ID del proyecto desde la URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('projectId') || sessionStorage.getItem('docu_selected_project_id');
+            
+            if (!projectId) {
+                console.warn('⚠️ No se encontró ID del proyecto para eliminar');
+                alert('No se pudo identificar el proyecto a eliminar.');
+                return;
+            }
+
+            // Obtener información del proyecto para mostrar en la confirmación
+            let projectName = 'este proyecto';
+            try {
+                const project = DocuProjectData.getProjectById(projectId);
+                if (project && project.name) {
+                    projectName = `"${project.name}"`;
+                }
+            } catch (error) {
+                console.warn('⚠️ Error al obtener información del proyecto:', error);
+            }
+            
+            // Confirmar eliminación
+            if (!confirm(`¿Estás seguro de que deseas eliminar ${projectName}?\n\nEsta acción no se puede deshacer.`)) {
+                console.log('❌ Usuario canceló la eliminación');
+                return;
+            }
+
+            console.log('🗑️ Eliminando proyecto:', {
+                id: projectId,
+                name: projectName
+            });
+
+            try {
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    alert('Error: No se pudo acceder a los datos del proyecto.');
+                    return;
+                }
+
+                // Eliminar el proyecto
+                const deleted = DocuProjectData.deleteProject(projectId);
+                
+                if (deleted) {
+                    console.log('✅ Proyecto eliminado exitosamente');
+                    
+                    // Limpiar sessionStorage
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                    } catch (error) {
+                        console.warn('⚠️ Error al limpiar sessionStorage:', error);
+                    }
+                    
+                    // Redirigir a la página principal o a la lista de proyectos
+                    alert(`Proyecto ${projectName} eliminado exitosamente.`);
+                    window.location.href = 'index.html'; // O la página que corresponda
+                } else {
+                    console.error('❌ No se pudo eliminar el proyecto');
+                    alert('Error: No se pudo eliminar el proyecto. Puede que no exista o haya ocurrido un error.');
+                }
+            } catch (error) {
+                console.error('❌ Error al eliminar proyecto:', error);
+                alert('Error inesperado al eliminar el proyecto. Por favor, inténtalo de nuevo.');
+            }
         }
 
         /**

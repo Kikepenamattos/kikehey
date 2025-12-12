@@ -56,27 +56,36 @@
             margin: 0 auto;
         }
 
-        /* Project Name Display */
-        .project-name-display {
-            font-family: 'Crimson Pro', serif;
-            font-weight: 800;
-            font-size: 32px;
-            line-height: normal;
-            color: var(--color-text-primary, #0a243f);
-            margin: 0;
-            padding: 0;
-            border-bottom: 1px solid var(--color-basics-gray);
-            padding-bottom: var(--spacing-08);
+        /* Project Name Container */
+        .project-name-container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-24);
         }
 
-        /* Budget Display */
-        .budget-display {
-            font-family: var(--font-family-secondary);
-            font-size: var(--font-size-base);
-            font-weight: var(--font-weight-semibold);
-            color: var(--color-text-primary);
-            border-bottom: 1px solid var(--color-basics-gray);
-            padding-bottom: var(--spacing-08);
+        .project-name-container .dsu-input-group {
+            flex: 1;
+        }
+
+        /* Project Actions */
+        .project-actions {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-12);
+            padding-top: var(--spacing-32);
+        }
+
+        /* Budget Section */
+        .project-budget-section {
+            display: flex;
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-24);
+        }
+
+        .project-budget-section .dsu-input-group {
+            flex: 1;
         }
 
         /* Section Styles */
@@ -123,25 +132,102 @@
             color: var(--color-text-secondary);
         }
 
-        /* Teams Display */
-        .teams-list {
+
+        /* With Members Component Styles */
+        .with-members-row {
             display: flex;
-            flex-direction: column;
-            gap: var(--spacing-16);
+            align-items: center;
+            gap: 8px;
         }
 
-        .team-item-display {
-            padding: var(--spacing-16);
-            background-color: var(--color-surface-especial);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-basics-gray);
+        .with-members-row__left {
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
         }
 
-        .team-name {
+        .avatars-row {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .avatar {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
+            cursor: pointer;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .avatar + .avatar {
+            margin-left: -12px;
+        }
+
+        .avatar__img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .avatar--overflow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-surface-especial);
+            border: 1px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0A243F;
             font-family: var(--font-family-secondary);
-            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            font-size: 14px;
+            margin-left: -12px;
+            flex-shrink: 0;
+        }
+
+        /* Team Title (from Figma) */
+        .team-name-title {
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
             font-weight: var(--font-weight-bold);
             color: var(--color-text-primary);
+            line-height: 1.5;
+            margin: 0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-08);
+        }
+        
+        .team-name-title__text {
+            flex: 1;
+        }
+
+        /* Teams List Container */
+        .teams-list-container {
+            display: flex;
+            flex-direction: row;
+            gap: 32px;
+            width: 100%;
+            align-content: center;
+            align-items: end;
+        }
+
+        /* Individual Team Item */
+        .team-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         /* Assets Display */
@@ -294,11 +380,54 @@
         <!-- Main Content -->
         <div class="project-content-wrapper">
             <div class="project-content">
-                <!-- Project Name -->
-                <div class="project-name-display" id="projectNameDisplay"></div>
+                <!-- Project Name Container -->
+                <div class="project-name-container">
+                    <div class="dsu-input-group">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Project name</span>
+                                <span class="dsu-input-label__required">
+                                    <img src="images/asterisk.svg" alt="Required">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="dsu-input-container">
+                            <input 
+                                type="text" 
+                                class="dsu-input dsu-input--published" 
+                                id="projectNameDisplay"
+                                readonly
+                            >
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="editProjectBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/Edit.svg" alt="Edit">
+                            </span>
+                            <span class="dsu-button__text">Edit project</span>
+                        </button>
+                    </div>
+                </div>
                 
-                <!-- Budget Allocation -->
-                <div class="budget-display" id="budgetDisplay" style="display: none;"></div>
+                <!-- Budget Allocation Section -->
+                <div class="project-budget-section" id="budgetSection" style="display: none;">
+                    <div class="dsu-input-group project-budget-input">
+                        <div class="dsu-input-label">
+                            <div class="dsu-input-label__text">
+                                <span>Budget allocation</span>
+                            </div>
+                        </div>
+                        <div class="dsu-input-container">
+                            <input 
+                                type="text" 
+                                class="dsu-input dsu-input--published" 
+                                id="budgetDisplay"
+                                readonly
+                            >
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Project Stages -->
                 <div class="project-section" id="stagesSection" style="display: none;">
@@ -309,7 +438,7 @@
                 <!-- Team Members -->
                 <div class="project-section" id="teamsSection" style="display: none;">
                     <h2 class="project-section-title">Team members</h2>
-                    <div class="teams-list" id="teamsListDisplay"></div>
+                    <div class="teams-list-container" id="teamsListDisplay"></div>
                 </div>
                 
                 <!-- Assets or links -->
@@ -323,7 +452,43 @@
 
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
     <script>
+        // ============================================
+        // Helper function para obtener imagen (IndexedDB o base64)
+        // ============================================
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        return imageData || 'images/avatar_icon.svg';
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+        
+        // ============================================
         // Verificación de Sesión
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
@@ -351,6 +516,42 @@
 
             // Cargar datos del proyecto
             loadProjectData();
+
+            // Inicializar botones de acción
+            initActionButtons();
+        }
+
+        // Initialize Action Buttons
+        function initActionButtons() {
+            // Edit Project Button
+            const editProjectBtn = document.getElementById('editProjectBtn');
+            if (editProjectBtn) {
+                editProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Obtener el ID del proyecto actual desde la URL o sessionStorage
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const projectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+                    
+                    if (projectId) {
+                        // Guardar el ID del proyecto en sessionStorage para que project_empty.html lo cargue
+                        try {
+                            sessionStorage.setItem('docu_selected_project_id', projectId);
+                            sessionStorage.setItem('docu_editing_project', 'true');
+                        } catch (error) {
+                            console.warn('⚠️ No se pudo guardar en sessionStorage:', error);
+                        }
+                        
+                        // Redirigir a project_empty.html con el ID del proyecto
+                        window.location.href = `project_empty.html?id=${projectId}`;
+                    } else {
+                        // Si no hay ID, ir a project_empty.html sin parámetros
+                        console.warn('⚠️ No se encontró ID del proyecto, redirigiendo a project_empty.html');
+                        window.location.href = 'project_empty.html';
+                    }
+                });
+            }
         }
 
         // Sidebar Navigation
@@ -656,14 +857,17 @@
             // Mostrar nombre del proyecto
             const projectNameDisplay = document.getElementById('projectNameDisplay');
             if (projectNameDisplay && project.name) {
-                projectNameDisplay.textContent = project.name;
+                projectNameDisplay.value = project.name;
             }
 
             // Mostrar budget allocation si existe
+            const budgetSection = document.getElementById('budgetSection');
             const budgetDisplay = document.getElementById('budgetDisplay');
             if (budgetDisplay && project.budgetAllocation) {
-                budgetDisplay.textContent = `Budget allocation: ${project.budgetAllocation}`;
-                budgetDisplay.style.display = 'block';
+                budgetDisplay.value = project.budgetAllocation;
+                if (budgetSection) {
+                    budgetSection.style.display = 'flex';
+                }
             }
 
             // Mostrar stages
@@ -683,17 +887,112 @@
                 stagesSection.style.display = 'block';
             }
 
-            // Mostrar teams
+            // Mostrar teams (usando el mismo componente que project_empty.html)
             const teamsSection = document.getElementById('teamsSection');
             const teamsListDisplay = document.getElementById('teamsListDisplay');
             if (teamsSection && teamsListDisplay && project.teams && project.teams.length > 0) {
                 teamsListDisplay.innerHTML = '';
-                project.teams.forEach(team => {
+                
+                // Cargar datos completos de los teams desde DocuProjectData
+                const projectData = DocuProjectData.getProjectData();
+                
+                project.teams.forEach(async (projectTeam) => {
+                    // Buscar el team completo en projectData
+                    const fullTeam = projectData.teams?.find(t => t.id === projectTeam.id);
+                    
+                    if (!fullTeam) {
+                        console.warn('⚠️ Team no encontrado:', projectTeam.id);
+                        return;
+                    }
+                    
+                    const teamName = fullTeam.name || projectTeam.name || 'Sin nombre';
+                    const members = fullTeam.members || [];
+                    
+                    // Crear estructura del team-item (igual que en project_empty.html)
                     const teamItem = document.createElement('div');
-                    teamItem.className = 'team-item-display';
-                    teamItem.innerHTML = `<div class="team-name">${team.name || 'Sin nombre'}</div>`;
-                    teamsListDisplay.appendChild(teamItem);
+                    teamItem.className = 'team-item';
+                    teamItem.setAttribute('data-team-id', projectTeam.id);
+                    
+                    // Crear título del team
+                    const teamTitle = document.createElement('div');
+                    teamTitle.className = 'team-name-title';
+                    
+                    const teamTitleText = document.createElement('span');
+                    teamTitleText.className = 'team-name-title__text';
+                    teamTitleText.textContent = teamName;
+                    
+                    teamTitle.appendChild(teamTitleText);
+                    
+                    // Crear with-members-row
+                    const withMembersRow = document.createElement('div');
+                    withMembersRow.className = 'with-members-row';
+                    
+                    const withMembersRowLeft = document.createElement('div');
+                    withMembersRowLeft.className = 'with-members-row__left';
+                    
+                    const avatarsRow = document.createElement('div');
+                    avatarsRow.className = 'avatars-row';
+                    
+                    // Mostrar máximo 5 avatares
+                    const maxVisible = 5;
+                    const visibleMembers = members.slice(0, maxVisible);
+                    const remainingCount = members.length - maxVisible;
+                    
+                    // Cargar imágenes de los miembros de forma asíncrona
+                    const avatarPromises = visibleMembers.map(async (member) => {
+                        const avatarElement = document.createElement('span');
+                        avatarElement.className = 'avatar';
+                        avatarElement.setAttribute('role', 'button');
+                        avatarElement.setAttribute('tabindex', '0');
+                        avatarElement.setAttribute('aria-label', `${member.name || ''} ${member.lastName || ''}`.trim() || 'member');
+                        
+                        const avatarImg = document.createElement('img');
+                        avatarImg.className = 'avatar__img';
+                        avatarImg.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
+                        
+                        // Usar getMemberImage para cargar correctamente desde IndexedDB o base64
+                        if (typeof getMemberImage === 'function') {
+                            try {
+                                const imageSrc = await getMemberImage(member.image);
+                                avatarImg.src = imageSrc;
+                            } catch (error) {
+                                console.error('❌ Error al cargar imagen del miembro:', error);
+                                avatarImg.src = 'images/avatar_icon.svg';
+                            }
+                        } else {
+                            // Fallback si getMemberImage no está disponible
+                            avatarImg.src = member.image || 'images/avatar_icon.svg';
+                        }
+                        
+                        avatarElement.appendChild(avatarImg);
+                        return avatarElement;
+                    });
+                    
+                    // Esperar a que todas las imágenes se carguen y agregar al DOM
+                    Promise.all(avatarPromises).then(avatarElements => {
+                        avatarElements.forEach(avatarElement => {
+                            avatarsRow.appendChild(avatarElement);
+                        });
+                        
+                        // Agregar overflow badge si hay más miembros
+                        if (remainingCount > 0) {
+                            const overflowAvatar = document.createElement('span');
+                            overflowAvatar.className = 'avatar avatar--overflow';
+                            overflowAvatar.textContent = `+${remainingCount}`;
+                            avatarsRow.appendChild(overflowAvatar);
+                        }
+                        
+                        withMembersRowLeft.appendChild(avatarsRow);
+                        withMembersRow.appendChild(withMembersRowLeft);
+                        
+                        teamItem.appendChild(teamTitle);
+                        teamItem.appendChild(withMembersRow);
+                        teamsListDisplay.appendChild(teamItem);
+                    }).catch(error => {
+                        console.error('❌ Error al cargar avatares:', error);
+                    });
                 });
+                
                 teamsSection.style.display = 'block';
             }
 

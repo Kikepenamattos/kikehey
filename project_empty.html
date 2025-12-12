@@ -2778,6 +2778,20 @@
 
             // Inicializar deliverables section
             initDeliverablesSection();
+            
+            // Si hay un proyecto para cargar, esperar a que todas las secciones estén inicializadas
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            if (projectId) {
+                // Esperar un poco más para que todas las funciones estén disponibles
+                setTimeout(() => {
+                    const project = DocuProjectData.getProjectById(projectId);
+                    if (project) {
+                        console.log('📋 Cargando proyecto después de inicialización:', projectId);
+                        loadProjectData(project);
+                    }
+                }, 600);
+            }
         }
 
         // ============================================
@@ -3456,31 +3470,442 @@
             
             console.log('✅ Proyecto encontrado:', project);
             
-            // Cargar datos del proyecto en el formulario
-            loadProjectData(project);
+            // NO cargar datos aquí, se cargarán después de que todas las secciones estén inicializadas
+            // en initProjectEmptyPage para asegurar que todas las funciones estén disponibles
         }
         
         // ============================================
         // Load Project Data into Form
         // ============================================
         function loadProjectData(project) {
+            console.log('📋 Cargando datos del proyecto:', project);
+            
             // Cargar nombre del proyecto
             const projectNameInput = document.getElementById('projectNameInput');
             if (projectNameInput && project.name) {
                 projectNameInput.value = project.name;
+                console.log('✅ Project name cargado:', project.name);
+                
+                // Disparar evento input para que los listeners se activen
+                projectNameInput.dispatchEvent(new Event('input', { bubbles: true }));
+            } else {
+                console.warn('⚠️ Project name no encontrado o vacío');
             }
             
             // Cargar budget allocation si existe
             const budgetAllocationInput = document.getElementById('budgetAllocationInput');
             if (budgetAllocationInput && project.budgetAllocation) {
                 budgetAllocationInput.value = project.budgetAllocation;
+                console.log('✅ Budget allocation cargado:', project.budgetAllocation);
+            } else {
+                console.log('ℹ️ No hay budget allocation para cargar');
             }
             
+            // Cargar stages
+            if (project.stages && Array.isArray(project.stages) && project.stages.length > 0) {
+                console.log('📋 Cargando stages:', project.stages.length);
+                project.stages.forEach(stage => {
+                    // Parsear dateRange si existe (formato: "May 5 to Jun 31 2025")
+                    let startDateText = '';
+                    let endDateText = '';
+                    
+                    if (stage.dateRange) {
+                        // Intentar parsear el formato "May 5 to Jun 31 2025"
+                        const dateMatch = stage.dateRange.match(/(\w{3} \d{1,2}) to (\w{3} \d{1,2} \d{4})/);
+                        if (dateMatch) {
+                            const year = dateMatch[2].split(' ')[2];
+                            startDateText = `${dateMatch[1]}, ${year}`;
+                            endDateText = dateMatch[2];
+                        } else if (stage.startDate && stage.endDate) {
+                            // Si vienen como startDate y endDate separados
+                            startDateText = stage.startDate;
+                            endDateText = stage.endDate;
+                        } else {
+                            // Fallback: usar dateRange como está
+                            startDateText = stage.dateRange;
+                            endDateText = stage.dateRange;
+                        }
+                    }
+                    
+                    if (stage.name) {
+                        // createStageCard debería estar disponible ya que initProjectStages se ejecuta antes
+                        if (typeof createStageCard === 'function') {
+                            createStageCard(stage.name, startDateText, endDateText);
+                        } else {
+                            console.warn('⚠️ createStageCard no está disponible, intentando de nuevo...');
+                            // Reintentar después de un delay
+                            setTimeout(() => {
+                                if (typeof createStageCard === 'function') {
+                                    createStageCard(stage.name, startDateText, endDateText);
+                                }
+                            }, 200);
+                        }
+                    }
+                });
+                
+                // Actualizar estado del botón Publish después de cargar stages
+                setTimeout(() => {
+                    if (typeof updatePublishButtonState === 'function') {
+                        updatePublishButtonState();
+                        console.log('✅ Stages cargados, estado del botón Publish actualizado');
+                    }
+                }, 400);
+            } else {
+                console.log('ℹ️ No hay stages para cargar');
+            }
+            
+            // Cargar teams
+            if (project.teams && Array.isArray(project.teams) && project.teams.length > 0) {
+                console.log('📋 Cargando teams:', project.teams.length);
+                const teamsListContainer = document.getElementById('teamsListContainer');
+                const addMemberBtnEmpty = document.getElementById('addMemberBtn');
+                
+                // Ocultar botón empty y mostrar contenedor de teams
+                if (addMemberBtnEmpty && teamsListContainer) {
+                    addMemberBtnEmpty.style.display = 'none';
+                    teamsListContainer.style.display = 'flex';
+                }
+                
+                // Cargar teams uno por uno con delays para evitar conflictos
+                project.teams.forEach((teamData, index) => {
+                    if (teamData.id) {
+                        // Buscar el team completo en DocuProjectData
+                        const projectData = DocuProjectData.getProjectData();
+                        const fullTeam = projectData.teams?.find(t => t.id === teamData.id);
+                        
+                        if (fullTeam) {
+                            // Usar la misma lógica que en initTeamMembers para agregar el team
+                            setTimeout(() => {
+                                if (typeof window.addTeamToProject === 'function') {
+                                    window.addTeamToProject(fullTeam.id);
+                                    console.log(`✅ Team agregado: ${fullTeam.name} (${index + 1}/${project.teams.length})`);
+                                } else {
+                                    console.warn('⚠️ addTeamToProject no está disponible aún, reintentando...');
+                                    // Reintentar después de un delay más largo
+                                    setTimeout(() => {
+                                        if (typeof window.addTeamToProject === 'function') {
+                                            window.addTeamToProject(fullTeam.id);
+                                        }
+                                    }, 300);
+                                }
+                            }, 200 * (index + 1));
+                        } else {
+                            console.warn(`⚠️ Team no encontrado con ID: ${teamData.id}`);
+                        }
+                    }
+                });
+                
+                // Actualizar estado del botón Publish después de cargar todos los teams
+                setTimeout(() => {
+                    if (typeof updatePublishButtonState === 'function') {
+                        updatePublishButtonState();
+                        console.log('✅ Teams cargados, estado del botón Publish actualizado');
+                    }
+                }, 200 * (project.teams.length + 1));
+            } else {
+                console.log('ℹ️ No hay teams para cargar');
+            }
+            
+            // Cargar assets (esperar a que initAssetsSection haya inicializado addAssetItem)
+            if (project.assets && Array.isArray(project.assets) && project.assets.length > 0) {
+                console.log('📋 Cargando assets:', project.assets.length);
+                // Esperar un poco para que initAssetsSection haya terminado
+                setTimeout(() => {
+                    if (typeof window.addAssetItem === 'function') {
+                        project.assets.forEach(asset => {
+                            if (asset.type === 'link' && asset.url) {
+                                window.addAssetItem({
+                                    type: 'link',
+                                    name: asset.name || asset.url,
+                                    url: asset.url
+                                });
+                            } else if (asset.type === 'file' && asset.name) {
+                                window.addAssetItem({
+                                    type: 'file',
+                                    name: asset.name,
+                                    size: asset.size || ''
+                                });
+                            } else if (asset.type === 'image' && asset.name) {
+                                window.addAssetItem({
+                                    type: 'image',
+                                    name: asset.name,
+                                    size: asset.size || '',
+                                    preview: asset.preview || ''
+                                });
+                            } else if (asset.text) {
+                                window.addAssetItem({
+                                    type: 'text',
+                                    text: asset.text.replace(/^-\s*/, '')
+                                });
+                            } else if (asset.link) {
+                                window.addAssetItem({
+                                    type: 'link',
+                                    name: asset.text || asset.link,
+                                    url: asset.link
+                                });
+                            }
+                        });
+                        
+                        // Actualizar estado del botón Publish después de cargar assets
+                        setTimeout(() => {
+                            if (typeof updatePublishButtonState === 'function') {
+                                updatePublishButtonState();
+                                console.log('✅ Assets cargados, estado del botón Publish actualizado');
+                            }
+                        }, 200);
+                    } else {
+                        console.warn('⚠️ addAssetItem no está disponible aún, reintentando...');
+                        // Reintentar después de un delay más largo
+                        setTimeout(() => {
+                            if (typeof window.addAssetItem === 'function') {
+                                project.assets.forEach(asset => {
+                                    if (asset.type === 'link' && asset.url) {
+                                        window.addAssetItem({
+                                            type: 'link',
+                                            name: asset.name || asset.url,
+                                            url: asset.url
+                                        });
+                                    } else if (asset.type === 'file' && asset.name) {
+                                        window.addAssetItem({
+                                            type: 'file',
+                                            name: asset.name,
+                                            size: asset.size || ''
+                                        });
+                                    } else if (asset.type === 'image' && asset.name) {
+                                        window.addAssetItem({
+                                            type: 'image',
+                                            name: asset.name,
+                                            size: asset.size || '',
+                                            preview: asset.preview || ''
+                                        });
+                                    } else if (asset.text) {
+                                        window.addAssetItem({
+                                            type: 'text',
+                                            text: asset.text.replace(/^-\s*/, '')
+                                        });
+                                    } else if (asset.link) {
+                                        window.addAssetItem({
+                                            type: 'link',
+                                            name: asset.text || asset.link,
+                                            url: asset.link
+                                        });
+                                    }
+                                });
+                                if (typeof updatePublishButtonState === 'function') {
+                                    updatePublishButtonState();
+                                }
+                            }
+                        }, 800);
+                    }
+                }, 500);
+            } else {
+                console.log('ℹ️ No hay assets para cargar');
+            }
+            
+            // Actualizar estado final del botón Publish después de cargar todos los datos
+            // Esperar suficiente tiempo para que todos los elementos se hayan cargado
+            setTimeout(() => {
+                if (typeof updatePublishButtonState === 'function') {
+                    updatePublishButtonState();
+                    console.log('✅ Estado final del botón Publish actualizado después de cargar todos los datos');
+                    
+                    // Verificar que todos los campos obligatorios estén cargados
+                    const projectNameInput = document.getElementById('projectNameInput');
+                    const stagesList = document.getElementById('projectStagesList');
+                    const teamsListContainer = document.getElementById('teamsListContainer');
+                    const assetsItemsContainer = document.getElementById('assetsItemsContainer');
+                    
+                    const hasName = projectNameInput && projectNameInput.value.trim().length > 0;
+                    const hasStages = stagesList && stagesList.querySelectorAll('.project-stage-card').length > 0;
+                    const hasTeams = teamsListContainer && teamsListContainer.querySelectorAll('.team-item').length > 0;
+                    const hasAssets = assetsItemsContainer && assetsItemsContainer.querySelectorAll('.project-assets-item').length > 0;
+                    
+                    console.log('📊 Estado de campos obligatorios:', {
+                        'Project name': hasName ? '✅' : '❌',
+                        'Project stages': hasStages ? '✅' : '❌',
+                        'Team members': hasTeams ? '✅' : '❌',
+                        'Assets or links': hasAssets ? '✅' : '❌'
+                    });
+                }
+            }, 1200);
+            
             // Aplicar estilos de vista publicado si el proyecto está publicado
-            if (project.status === 'published') {
+            // NO aplicar estilos si estamos editando (viene desde project_view.html)
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEditing = urlParams.get('id') && sessionStorage.getItem('docu_editing_project') === 'true';
+            
+            if (project.status === 'published' && !isEditing) {
                 applyPublishedProjectStyles();
+            } else if (isEditing) {
+                // Si estamos editando, remover estilos de published para permitir edición
+                if (projectNameInput) {
+                    projectNameInput.classList.remove('dsu-input--published');
+                    projectNameInput.readOnly = false;
+                }
+                if (budgetAllocationInput) {
+                    budgetAllocationInput.classList.remove('dsu-input--published');
+                    budgetAllocationInput.readOnly = false;
+                }
             }
         }
+        
+        // Función helper para agregar team al proyecto (accesible desde loadProjectData)
+        window.addTeamToProject = function(teamId) {
+            const teamsListContainer = document.getElementById('teamsListContainer');
+            const addMemberBtnEmpty = document.getElementById('addMemberBtn');
+            
+            if (!teamsListContainer) {
+                console.warn('⚠️ teamsListContainer no encontrado');
+                return;
+            }
+            
+            // Verificar si el team ya está agregado
+            const existingTeam = teamsListContainer.querySelector(`[data-team-id="${teamId}"]`);
+            if (existingTeam) {
+                console.log('⚠️ Team ya está agregado:', teamId);
+                return;
+            }
+            
+            // Obtener datos del team
+            const projectData = DocuProjectData.getProjectData();
+            const selectedTeam = projectData.teams?.find(t => t.id === teamId);
+            
+            if (!selectedTeam) {
+                console.warn('⚠️ Team no encontrado:', teamId);
+                return;
+            }
+            
+            const members = selectedTeam.members || [];
+            const teamName = selectedTeam.name || 'Team';
+            console.log('👥 Agregando team:', teamName, 'con', members.length, 'miembros');
+            
+            // Agregar team al array de teams seleccionados
+            if (!window.selectedTeams) {
+                window.selectedTeams = [];
+            }
+            window.selectedTeams.push(teamId);
+            
+            // Ocultar botón empty y mostrar contenedor de teams
+            if (addMemberBtnEmpty && teamsListContainer) {
+                addMemberBtnEmpty.style.display = 'none';
+                teamsListContainer.style.display = 'flex';
+            }
+            
+            // Crear elemento del team (misma lógica que en initTeamMembers)
+            const teamItem = document.createElement('div');
+            teamItem.className = 'team-item';
+            teamItem.setAttribute('data-team-id', teamId);
+            
+            // Crear título del team con icono de eliminar
+            const teamTitle = document.createElement('div');
+            teamTitle.className = 'team-name-title';
+            
+            const teamTitleText = document.createElement('span');
+            teamTitleText.className = 'team-name-title__text';
+            teamTitleText.textContent = teamName;
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'team-name-title__delete';
+            deleteButton.setAttribute('aria-label', `Eliminar team ${teamName}`);
+            deleteButton.type = 'button';
+            deleteButton.innerHTML = '<img src="images/trash.svg" alt="Delete team">';
+            
+            deleteButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (confirm(`¿Estás seguro de que deseas eliminar el team "${teamName}"?`)) {
+                    // Remover del array de teams seleccionados
+                    const index = window.selectedTeams.indexOf(teamId);
+                    if (index > -1) {
+                        window.selectedTeams.splice(index, 1);
+                    }
+                    
+                    teamItem.remove();
+                    const remainingTeams = teamsListContainer.querySelectorAll('.team-item').length;
+                    if (remainingTeams === 0) {
+                        if (addMemberBtnEmpty && teamsListContainer) {
+                            addMemberBtnEmpty.style.display = 'flex';
+                            teamsListContainer.style.display = 'none';
+                        }
+                    }
+                    if (typeof updatePublishButtonState === 'function') {
+                        setTimeout(updatePublishButtonState, 100);
+                    }
+                }
+            });
+            
+            teamTitle.appendChild(teamTitleText);
+            teamTitle.appendChild(deleteButton);
+            
+            const withMembersRow = document.createElement('div');
+            withMembersRow.className = 'with-members-row';
+            
+            const withMembersRowLeft = document.createElement('div');
+            withMembersRowLeft.className = 'with-members-row__left';
+            
+            const avatarsRow = document.createElement('div');
+            avatarsRow.className = 'avatars-row';
+            
+            const maxVisible = 5;
+            const visibleMembers = members.slice(0, maxVisible);
+            const remainingCount = members.length - maxVisible;
+            
+            // Cargar imágenes de los miembros de forma asíncrona usando Promise.all
+            const avatarPromises = visibleMembers.map(async (member) => {
+                const avatarElement = document.createElement('span');
+                avatarElement.className = 'avatar';
+                avatarElement.setAttribute('role', 'button');
+                avatarElement.setAttribute('tabindex', '0');
+                avatarElement.setAttribute('aria-label', `${member.name || ''} ${member.lastName || ''}`.trim() || 'member');
+                
+                const avatarImg = document.createElement('img');
+                avatarImg.className = 'avatar__img';
+                // Usar getMemberImage para cargar correctamente desde IndexedDB o base64
+                if (typeof getMemberImage === 'function') {
+                    try {
+                        const imageSrc = await getMemberImage(member.image);
+                        avatarImg.src = imageSrc;
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen del miembro:', error);
+                        avatarImg.src = 'images/avatar_icon.svg';
+                    }
+                } else {
+                    // Fallback si getMemberImage no está disponible
+                    avatarImg.src = member.image || 'images/avatar_icon.svg';
+                }
+                avatarImg.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
+                avatarElement.appendChild(avatarImg);
+                return avatarElement;
+            });
+            
+            // Esperar a que todas las imágenes se carguen y agregar al DOM
+            Promise.all(avatarPromises).then(avatarElements => {
+                avatarElements.forEach(avatarElement => {
+                    avatarsRow.appendChild(avatarElement);
+                });
+            }).catch(error => {
+                console.error('❌ Error al cargar avatares:', error);
+            });
+            
+            if (remainingCount > 0) {
+                const overflowAvatar = document.createElement('span');
+                overflowAvatar.className = 'avatars-overflow';
+                overflowAvatar.textContent = `+ ${remainingCount}`;
+                avatarsRow.appendChild(overflowAvatar);
+            }
+            
+            withMembersRowLeft.appendChild(avatarsRow);
+            withMembersRow.appendChild(withMembersRowLeft);
+            
+            teamItem.appendChild(teamTitle);
+            teamItem.appendChild(withMembersRow);
+            teamsListContainer.appendChild(teamItem);
+            
+            // Actualizar estado del botón Publish
+            if (typeof updatePublishButtonState === 'function') {
+                setTimeout(updatePublishButtonState, 100);
+            }
+        };
         
         // ============================================
         // Apply Published Project Styles
@@ -4186,8 +4611,9 @@
             const addMemberBtnEmpty = document.getElementById('addMemberBtn');
             const teamsListContainer = document.getElementById('teamsListContainer');
 
-            // Array para almacenar los teams seleccionados
-            let selectedTeams = [];
+            // Array para almacenar los teams seleccionados (accesible globalmente)
+            window.selectedTeams = window.selectedTeams || [];
+            let selectedTeams = window.selectedTeams;
 
             if (!teamMembersSection || !addMemberBtn || !selectTeamModal) {
                 console.warn('⚠️ Elementos de team members no encontrados');
@@ -6028,7 +6454,8 @@
             }
 
             // Function to add asset item
-            function addAssetItem(data) {
+            // Hacer addAssetItem accesible globalmente para loadProjectData
+            window.addAssetItem = function(data) {
                 if (!assetsItemsContainer) return;
                 
                 const item = document.createElement('div');
