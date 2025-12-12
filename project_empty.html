@@ -2747,6 +2747,13 @@
 
             // Inicializar assets section
             initAssetsSection();
+            
+            // Actualizar estado del botón Publish después de inicializar todas las secciones
+            setTimeout(function() {
+                if (typeof updatePublishButtonState === 'function') {
+                    updatePublishButtonState();
+                }
+            }, 100);
 
             // Inicializar deliverables section
             initDeliverablesSection();
@@ -3778,6 +3785,11 @@
             stagesList.insertBefore(stageItem, addStageBtn.parentElement);
 
             console.log(`✅ Stage card creada: ${stageName}`);
+            
+            // Actualizar estado del botón Publish después de agregar stage
+            if (typeof updatePublishButtonState === 'function') {
+                setTimeout(updatePublishButtonState, 100);
+            }
         }
 
         function formatDateRangeForCard(startDateText, endDateText) {
@@ -4082,6 +4094,11 @@
                         });
 
                         teamsListContainer.appendChild(addNewTeamBtn);
+                    }
+                    
+                    // Actualizar estado del botón Publish después de agregar team
+                    if (typeof updatePublishButtonState === 'function') {
+                        setTimeout(updatePublishButtonState, 100);
                     }
                 }
             }
@@ -5694,7 +5711,7 @@
                     ${previewHtml}
                     ${contentHtml}
                     <div class="project-assets-item-actions">
-                        <button class="project-assets-item-action" onclick="this.closest('.project-assets-item').remove()">
+                        <button class="project-assets-item-action" onclick="this.closest('.project-assets-item').remove(); if(typeof updatePublishButtonState === 'function') setTimeout(updatePublishButtonState, 100);">
                             <img src="images/trash.svg" alt="Delete">
                         </button>
                         <button class="project-assets-item-action" onclick="editAssetItem(this)">
@@ -5703,6 +5720,11 @@
                     </div>
                 `;
                 assetsItemsContainer.appendChild(item);
+                
+                // Actualizar estado del botón Publish después de agregar asset
+                if (typeof updatePublishButtonState === 'function') {
+                    setTimeout(updatePublishButtonState, 100);
+                }
             }
 
             // Edit item functionality
@@ -6112,6 +6134,125 @@
         // ============================================
         // Sticky Buttons
         // ============================================
+        // Función para validar campos mandatorios
+        function validateMandatoryFields() {
+            // 1. Project name
+            const projectNameInput = document.getElementById('projectNameInput');
+            const hasProjectName = projectNameInput && projectNameInput.value.trim().length > 0;
+            
+            // 2. Define your project stages (verificar que haya al menos un stage creado con card)
+            const stagesList = document.getElementById('projectStagesList');
+            // Buscar stages que tengan una card (no solo el botón de agregar)
+            const stageItems = stagesList ? stagesList.querySelectorAll('.project-stage-item') : [];
+            const hasStages = Array.from(stageItems).some(item => {
+                // Verificar que el item tenga un project-stage-card (stage creado)
+                // y no solo el botón de agregar
+                const hasCard = item.querySelector('.project-stage-card') !== null;
+                const onlyAddButton = item.querySelector('.project-stage-button--add') !== null && 
+                                     item.querySelector('.project-stage-card') === null;
+                return hasCard && !onlyAddButton;
+            });
+            
+            // 3. Team members (verificar que haya teams asociados)
+            const teamsListContainer = document.getElementById('teamsListContainer');
+            const hasTeamMembers = teamsListContainer && 
+                                  teamsListContainer.style.display !== 'none' && 
+                                  teamsListContainer.querySelectorAll('.team-item').length > 0;
+            
+            // 4. Assets or links
+            const assetsItemsContainer = document.getElementById('assetsItemsContainer');
+            const hasAssets = assetsItemsContainer && 
+                            assetsItemsContainer.querySelectorAll('.project-assets-item').length > 0;
+            
+            // Contar stages creados para logging
+            const stagesCount = stageItems ? Array.from(stageItems).filter(item => {
+                const hasCard = item.querySelector('.project-stage-card') !== null;
+                const onlyAddButton = item.querySelector('.project-stage-button--add') !== null && 
+                                     item.querySelector('.project-stage-card') === null;
+                return hasCard && !onlyAddButton;
+            }).length : 0;
+            
+            // Debug logging
+            console.log('🔍 Validación de campos mandatorios:', {
+                hasProjectName,
+                hasStages: hasStages + ' (' + stagesCount + ' stage(s) creado(s))',
+                hasTeamMembers: hasTeamMembers + ' (' + (teamsListContainer ? teamsListContainer.querySelectorAll('.team-item').length : 0) + ' teams)',
+                hasAssets: hasAssets + ' (' + (assetsItemsContainer ? assetsItemsContainer.querySelectorAll('.project-assets-item').length : 0) + ' assets)'
+            });
+            
+            // Todos los campos deben estar completos para habilitar el botón
+            return hasProjectName && hasStages && hasTeamMembers && hasAssets;
+        }
+        
+        // Función para obtener mensaje de campos faltantes
+        function getMissingFieldsMessage() {
+            const missingFields = [];
+            
+            const projectNameInput = document.getElementById('projectNameInput');
+            if (!projectNameInput || !projectNameInput.value.trim()) {
+                missingFields.push('Project name');
+            }
+            
+            const stagesList = document.getElementById('projectStagesList');
+            const stageItems = stagesList ? stagesList.querySelectorAll('.project-stage-item') : [];
+            const hasStages = Array.from(stageItems).some(item => {
+                const hasCard = item.querySelector('.project-stage-card') !== null;
+                const onlyAddButton = item.querySelector('.project-stage-button--add') !== null && 
+                                     item.querySelector('.project-stage-card') === null;
+                return hasCard && !onlyAddButton;
+            });
+            if (!hasStages) {
+                missingFields.push('Define your project stages');
+            }
+            
+            const teamsListContainer = document.getElementById('teamsListContainer');
+            const hasTeamMembers = teamsListContainer && 
+                                  teamsListContainer.style.display !== 'none' && 
+                                  teamsListContainer.querySelectorAll('.team-item').length > 0;
+            if (!hasTeamMembers) {
+                missingFields.push('Team members');
+            }
+            
+            const assetsItemsContainer = document.getElementById('assetsItemsContainer');
+            const hasAssets = assetsItemsContainer && 
+                            assetsItemsContainer.querySelectorAll('.project-assets-item').length > 0;
+            if (!hasAssets) {
+                missingFields.push('Assets or links');
+            }
+            
+            return missingFields;
+        }
+        
+        // Función para actualizar el estado del botón Publish
+        function updatePublishButtonState() {
+            const publishBtn = document.getElementById('publishBtn');
+            if (!publishBtn) {
+                console.warn('⚠️ Botón publishBtn no encontrado');
+                return;
+            }
+            
+            const isValid = validateMandatoryFields();
+            
+            // NO deshabilitar el botón para que siempre pueda capturar eventos
+            // En su lugar, usar atributo data y estilos visuales
+            publishBtn.setAttribute('data-valid', isValid ? 'true' : 'false');
+            
+            // Agregar/quitar clase para estado visual
+            if (isValid) {
+                publishBtn.classList.add('dsu-button--active');
+                publishBtn.style.opacity = '1';
+                publishBtn.style.cursor = 'pointer';
+                publishBtn.removeAttribute('disabled');
+                console.log('✅ Todos los campos mandatorios están completos, botón Publish habilitado');
+            } else {
+                publishBtn.classList.remove('dsu-button--active');
+                publishBtn.style.opacity = '0.6';
+                publishBtn.style.cursor = 'not-allowed';
+                // NO usar disabled, solo apariencia visual
+                console.log('⚠️ Faltan campos mandatorios, botón Publish visualmente deshabilitado');
+            }
+        }
+
         function initStickyButtons() {
             const saveDraftBtn = document.getElementById('saveDraftBtn');
             const publishBtn = document.getElementById('publishBtn');
@@ -6123,8 +6264,67 @@
                 });
             }
             
+            // Asegurar que el botón Publish no esté realmente deshabilitado (solo visualmente)
             if (publishBtn) {
-                publishBtn.addEventListener('click', function() {
+                publishBtn.removeAttribute('disabled');
+            }
+            
+            // Validación inicial del botón Publish
+            updatePublishButtonState();
+            
+            // Event listeners para actualizar el estado del botón cuando cambien los campos
+            const projectNameInput = document.getElementById('projectNameInput');
+            if (projectNameInput) {
+                projectNameInput.addEventListener('input', updatePublishButtonState);
+                projectNameInput.addEventListener('blur', updatePublishButtonState);
+            }
+            
+            // Observar cambios en stages (usar MutationObserver para detectar cuando se agregan/eliminan stages)
+            const stagesList = document.getElementById('projectStagesList');
+            if (stagesList) {
+                const stagesObserver = new MutationObserver(function() {
+                    updatePublishButtonState();
+                });
+                stagesObserver.observe(stagesList, { childList: true, subtree: true });
+            }
+            
+            // Observar cambios en team members
+            const teamsListContainer = document.getElementById('teamsListContainer');
+            if (teamsListContainer) {
+                const teamsObserver = new MutationObserver(function() {
+                    updatePublishButtonState();
+                });
+                teamsObserver.observe(teamsListContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+            }
+            
+            // Observar cambios en assets
+            const assetsItemsContainer = document.getElementById('assetsItemsContainer');
+            if (assetsItemsContainer) {
+                const assetsObserver = new MutationObserver(function() {
+                    updatePublishButtonState();
+                });
+                assetsObserver.observe(assetsItemsContainer, { childList: true, subtree: true });
+            }
+            
+            if (publishBtn) {
+                // Event listener único que siempre funciona (botón nunca está realmente disabled)
+                publishBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Validar campos mandatorios
+                    const isValid = validateMandatoryFields();
+                    
+                    if (!isValid) {
+                        // Mostrar alerta con campos faltantes
+                        const missingFields = getMissingFieldsMessage();
+                        const message = 'Please complete all mandatory fields:\n\n' + missingFields.map(field => '• ' + field).join('\n');
+                        alert(message);
+                        console.log('⚠️ Intento de publicar con campos incompletos. Campos faltantes:', missingFields);
+                        return;
+                    }
+                    
+                    // Si todos los campos están completos, proceder con la publicación
                     console.log('🚀 Publicando proyecto...');
                     // Implementar lógica de publicación
                 });
