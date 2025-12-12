@@ -1,3 +1,6 @@
+44e61e8e99c9872665ed9b638a27201554271405|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:07 -0500|Fix: Botón edit-close-button ahora redirige a project_view.html con el ID del proyecto
+1d5522642767ab38e3b1d9bb65f2d78557adb415|Ubits|ubits@macbookpro.lan|2025-12-12 15:44:35 -0500|Update: Datos embebidos en changelog.html actualizados
+9606aedcb5d67f0030d2245f9a7fca5cabbee47c|Ubits|ubits@macbookpro.lan|2025-12-12 15:44:32 -0500|Update: Changelog actualizado
 1b9b05cfde1cd1d8555f6578744c158a7e15b8fb|Ubits|ubits@macbookpro.lan|2025-12-12 15:44:12 -0500|Add: Botón Delete project en sticky buttons de team_filled y mejoras en componente team-item
 c156c3536e608741a490f75e36ffc1b577d27160|Ubits|ubits@macbookpro.lan|2025-12-12 13:28:42 -0500|Update: Actualizar changelog con últimos cambios
 09a0777730ee34e81cbd43a41edca8e7c569acc5|Ubits|ubits@macbookpro.lan|2025-12-12 13:28:36 -0500|feat: Unificar estructura del sidebar y mantener secciones desplegadas por defecto
