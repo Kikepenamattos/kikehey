@@ -1,3 +1,5 @@
+5c1ea3bf9fa4fadc242a7b8f7a38ff08ccf0f17c|Ubits|ubits@macbookpro.lan|2025-12-12 16:22:10 -0500|Add: Botón Delete project en sticky buttons y mejoras en sistema de botones sticky para soportar múltiples elementos
+28929568f8d6e4577c0ade853ee975288bfa0217|Ubits|ubits@macbookpro.lan|2025-12-12 16:09:10 -0500|Update: Datos embebidos en changelog.html actualizados
 2b4ccdf1e60592484d43bb5e1afe2638269b8e34|Ubits|ubits@macbookpro.lan|2025-12-12 16:08:52 -0500|Revert: Eliminar botón Delete team de sticky buttons y ajustar edit-close-button para redirigir a project_view.html
 05bb445ec9c87119e21ce7319f90956ad6be16cf|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:36 -0500|Update: Datos embebidos en changelog.html actualizados
 439acee7a78a06216be4c15d4ca822cfa699292d|Ubits|ubits@macbookpro.lan|2025-12-12 15:47:32 -0500|Update: Changelog actualizado
