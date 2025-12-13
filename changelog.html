@@ -950,6 +950,18 @@
                         const text = await localResponse.text();
                         const commits = parseGitHistory(text);
                         console.log(`📝 Cargados ${commits.length} commits del historial local`);
+                        
+                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos
+                        if (realCommits && realCommits.length > 0 && commits.length < realCommits.length) {
+                            console.warn(`⚠️ Los datos embebidos (${realCommits.length} commits) tienen más commits que el archivo local (${commits.length} commits)`);
+                            console.warn('   Usando datos embebidos para asegurar que todos los commits se muestren');
+                            const sortedRealCommits = [...realCommits].sort((a, b) => {
+                                return new Date(b.date) - new Date(a.date);
+                            });
+                            renderCommits(sortedRealCommits);
+                            return;
+                        }
+                        
                         renderCommits(commits);
                         return;
                     }
@@ -965,6 +977,18 @@
                         const text = await githubResponse.text();
                         const commits = parseGitHistory(text);
                         console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
+                        
+                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos
+                        if (realCommits && realCommits.length > 0 && commits.length < realCommits.length) {
+                            console.warn(`⚠️ Los datos embebidos (${realCommits.length} commits) tienen más commits que GitHub (${commits.length} commits)`);
+                            console.warn('   Usando datos embebidos para asegurar que todos los commits se muestren');
+                            const sortedRealCommits = [...realCommits].sort((a, b) => {
+                                return new Date(b.date) - new Date(a.date);
+                            });
+                            renderCommits(sortedRealCommits);
+                            return;
+                        }
+                        
                         renderCommits(commits);
                         return;
                     }
@@ -974,7 +998,9 @@
             }
             
             // Si ambas fallan, usar datos embebidos
-            console.warn('⚠️ Usando datos embebidos como fallback (pueden estar desactualizados)');
+            // IMPORTANTE: También usar datos embebidos si los datos de GitHub/local tienen menos commits que los embebidos
+            // Esto asegura que siempre se muestren los commits más recientes
+            console.warn('⚠️ Usando datos embebidos (pueden ser más actualizados que los de GitHub)');
             
             // Asegurar que los datos embebidos estén ordenados (más reciente primero)
             const sortedRealCommits = [...realCommits].sort((a, b) => {
@@ -1389,6 +1415,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '6929994',
+                fullHash: '6929994d9b26309543d231a8bf5021b094ad6fb6',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 19:53:10 -0500',
+                message: 'Update: Changelog actualizado con sincronización completa de commits'
+            },
             {
                 hash: '322d194',
                 fullHash: '322d19434d9cd5f5a17ec0daf7d371512d3bbb70',
