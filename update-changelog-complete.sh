@@ -17,38 +17,87 @@ echo "📝 Paso 1: Sincronizando git_history.txt con commits del repositorio..."
 # Obtener todos los commits del remoto (más confiable)
 git fetch origin 2>/dev/null || echo "⚠️  No se pudo hacer fetch, usando commits locales"
 
-# Obtener todos los commits en orden (más reciente primero)
-REMOTE_BRANCH="origin/$(git branch --show-current 2>/dev/null || echo 'main')"
-
-# Si no hay remoto, usar HEAD local
-if git rev-parse --verify "$REMOTE_BRANCH" >/dev/null 2>&1; then
-    COMMITS_SOURCE="$REMOTE_BRANCH"
-else
-    COMMITS_SOURCE="HEAD"
-    echo "ℹ️  Usando commits locales (no hay remoto configurado)"
-fi
-
-# Crear archivo temporal para commits nuevos
+# Crear archivo temporal para commits nuevos (orden: más reciente primero)
 TEMP_COMMITS=$(mktemp)
 
-# Obtener todos los commits del repositorio (más reciente primero)
-git log --format="%H|%an|%ae|%ai|%s" "$COMMITS_SOURCE" 2>/dev/null | while IFS= read -r line; do
-    if [ -z "$line" ]; then
-        continue
-    fi
-    
-    COMMIT_HASH=$(echo "$line" | cut -d'|' -f1)
-    
-    # Verificar si el commit ya está en el historial
-    if [ -f "$HISTORY_FILE" ]; then
-        if grep -q "^${COMMIT_HASH}|" "$HISTORY_FILE" 2>/dev/null; then
+# Obtener la rama actual
+CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo 'main')
+REMOTE_BRANCH="origin/$CURRENT_BRANCH"
+
+# Estrategia mejorada: Obtener TODOS los commits posibles (remoto + local)
+echo "🔍 Obteniendo commits del repositorio..."
+
+# Primero intentar obtener del remoto si existe
+if git rev-parse --verify "$REMOTE_BRANCH" >/dev/null 2>&1; then
+    echo "📡 Obteniendo commits del remoto ($REMOTE_BRANCH)..."
+    git log --format="%H|%an|%ae|%ai|%s" "$REMOTE_BRANCH" 2>/dev/null | while IFS= read -r line; do
+        if [ -z "$line" ]; then
             continue
         fi
+        
+        COMMIT_HASH=$(echo "$line" | cut -d'|' -f1)
+        
+        # Verificar si el commit ya está en el historial
+        if [ -f "$HISTORY_FILE" ]; then
+            if grep -q "^${COMMIT_HASH}|" "$HISTORY_FILE" 2>/dev/null; then
+                continue
+            fi
+        fi
+        
+        # Agregar el commit al archivo temporal
+        echo "$line" >> "$TEMP_COMMITS"
+    done
+fi
+
+# Luego obtener commits locales que no estén en el remoto
+echo "💻 Obteniendo commits locales adicionales..."
+if git rev-parse --verify "HEAD" >/dev/null 2>&1; then
+    # Si hay remoto, obtener solo commits que no están en el remoto
+    if git rev-parse --verify "$REMOTE_BRANCH" >/dev/null 2>&1; then
+        # Obtener commits en HEAD que no están en origin/main
+        git log --format="%H|%an|%ae|%ai|%s" "$REMOTE_BRANCH..HEAD" 2>/dev/null | while IFS= read -r line; do
+            if [ -z "$line" ]; then
+                continue
+            fi
+            
+            COMMIT_HASH=$(echo "$line" | cut -d'|' -f1)
+            
+            # Verificar si el commit ya está en el historial o en el temp file
+            if [ -f "$HISTORY_FILE" ]; then
+                if grep -q "^${COMMIT_HASH}|" "$HISTORY_FILE" 2>/dev/null; then
+                    continue
+                fi
+            fi
+            if [ -f "$TEMP_COMMITS" ]; then
+                if grep -q "^${COMMIT_HASH}|" "$TEMP_COMMITS" 2>/dev/null; then
+                    continue
+                fi
+            fi
+            
+            # Agregar el commit al archivo temporal
+            echo "$line" >> "$TEMP_COMMITS"
+        done
+    else
+        # Si no hay remoto, obtener todos los commits de HEAD
+        git log --format="%H|%an|%ae|%ai|%s" "HEAD" 2>/dev/null | while IFS= read -r line; do
+            if [ -z "$line" ]; then
+                continue
+            fi
+            
+            COMMIT_HASH=$(echo "$line" | cut -d'|' -f1)
+            
+            # Verificar si el commit ya está en el historial
+            if [ -f "$HISTORY_FILE" ]; then
+                if grep -q "^${COMMIT_HASH}|" "$HISTORY_FILE" 2>/dev/null; then
+                    continue
+                fi
+            fi
+            
+            # Agregar el commit al archivo temporal
+            echo "$line" >> "$TEMP_COMMITS"
+        done
     fi
-    
-    # Agregar el commit al archivo temporal
-    echo "$line" >> "$TEMP_COMMITS"
-done
+fi
 
 # Si hay commits nuevos, agregarlos al inicio del historial
 COMMITS_ADDED=0
