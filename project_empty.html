@@ -624,6 +624,14 @@
             height: 20px;
         }
 
+        /* Agreement Header Styles */
+        .dsu-agreements__agreement-header {
+            display: flex;
+            align-items: anchor-center;
+            justify-content: unset;
+            width: 100%;
+        }
+
         /* Test Section (Componente de Prueba) */
         .project-test-section {
             display: flex;
@@ -2313,6 +2321,9 @@
                                                 <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                                             </button>
                                         </div>
+                                        <button class="dsu-agreements__agreement-edit-name-btn" id="projectAgreementEditNameBtn" style="background: transparent; border: none; cursor: pointer; padding: 4px; display: none; align-items: center; justify-content: center; margin-left: 8px;" title="Edit agreement name">
+                                            <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
+                                        </button>
                                         <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn" style="display: none;">
                                             <img src="images/minus.svg" alt="Collapse">
                                         </button>
@@ -5358,6 +5369,9 @@
                                             <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                                         </button>
                                     </div>
+                                    <button class="dsu-agreements__agreement-edit-name-btn" id="projectAgreementEditNameBtn" style="background: transparent; border: none; cursor: pointer; padding: 4px; display: none; align-items: center; justify-content: center; margin-left: 8px;" title="Edit agreement name">
+                                        <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
+                                    </button>
                                     <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn" style="display: none;">
                                         <img src="images/minus.svg" alt="Collapse">
                                     </button>
@@ -5433,10 +5447,31 @@
                             const newItem1Input = document.getElementById('projectAgreementItem1');
                             const newSendButton = document.getElementById('projectSendButton');
                             const newDeleteAgreementBtn = document.getElementById('projectDeleteAgreementBtn');
+                            const newHeaderEditAgreementBtn = document.getElementById('projectAgreementEditNameBtn');
                             const newAgreementNameEditBtn = document.getElementById('projectAgreementNameEditBtn');
                             const newEmptyItemsContainer = document.getElementById('projectEmptyItems');
                             const newEmptyToggleBtn = document.getElementById('projectEmptyToggleBtn');
                             const newEmptyMeta = document.getElementById('projectEmptyMeta');
+                            
+                            // Re-initialize header edit name button
+                            if (newHeaderEditAgreementBtn) {
+                                newHeaderEditAgreementBtn.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    
+                                    // Find the title element and convert it to input
+                                    const agreementForm = document.getElementById('projectAgreementForm');
+                                    if (!agreementForm) return;
+                                    
+                                    const headerContainer = agreementForm.querySelector('.dsu-agreements__agreement-header');
+                                    if (!headerContainer) return;
+                                    
+                                    const headerTitle = headerContainer.querySelector('.dsu-agreements__agreement-title');
+                                    if (headerTitle) {
+                                        editAgreementTitle(headerTitle);
+                                    }
+                                });
+                            }
                             
                             // Re-initialize event listeners
                             if (newAgreementNameInput) {
@@ -5658,7 +5693,7 @@
                 }
             }
             
-            // Delete agreement button functionality
+            // Delete agreement button functionality (from form)
             if (deleteAgreementBtn) {
                 deleteAgreementBtn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -5683,6 +5718,27 @@
                     if (remainingAgreements === 0) {
                         emptyContainer.style.display = 'none';
                         defaultContainer.style.display = 'block';
+                    }
+                });
+            }
+            
+            // Edit agreement name button functionality (from header edit icon)
+            const headerEditAgreementBtn = document.getElementById('projectAgreementEditNameBtn');
+            if (headerEditAgreementBtn) {
+                headerEditAgreementBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Find the title element and convert it to input
+                    const agreementForm = document.getElementById('projectAgreementForm');
+                    if (!agreementForm) return;
+                    
+                    const headerContainer = agreementForm.querySelector('.dsu-agreements__agreement-header');
+                    if (!headerContainer) return;
+                    
+                    const headerTitle = headerContainer.querySelector('.dsu-agreements__agreement-title');
+                    if (headerTitle) {
+                        editAgreementTitle(headerTitle);
                     }
                 });
             }
@@ -5714,6 +5770,11 @@
                     if (emptyToggleBtn) {
                         emptyToggleBtn.style.display = 'block';
                     }
+                    
+                    // Show edit name button when title is displayed
+                    if (headerEditAgreementBtn) {
+                        headerEditAgreementBtn.style.display = 'flex';
+                    }
                 } else if (headerTitle) {
                     headerTitle.textContent = title;
                 }
@@ -5726,8 +5787,8 @@
                 if (!headerContainer) return;
                 
                 const inputGroup = document.createElement('div');
-                inputGroup.className = 'dsu-input-group';
-                inputGroup.style.cssText = 'flex: 1;';
+                inputGroup.className = 'dsu-input-group agreement-name-input-wrapper';
+                inputGroup.style.cssText = 'flex: 1; position: relative;';
                 inputGroup.innerHTML = `
                     <div class="dsu-input-label">
                         <span>Agreement name</span>
@@ -5737,23 +5798,22 @@
                 
                 titleElement.replaceWith(inputGroup);
                 
+                // Hide edit name button when showing input
+                if (headerEditAgreementBtn) {
+                    headerEditAgreementBtn.style.display = 'none';
+                }
+                
                 const input = inputGroup.querySelector('#projectAgreementNameEdit');
                 if (input) {
                     input.focus();
                     input.select();
                     
-                    input.addEventListener('blur', function() {
-                        const newTitle = this.value.trim() || currentTitle;
-                        updateAgreementTitle(newTitle);
-                        if (sendButton && this.value.trim()) {
-                            sendButton.disabled = false;
-                        }
-                    });
-                    
+                    // Only update on Enter key press, not on blur
                     input.addEventListener('keypress', function(e) {
                         if (e.key === 'Enter' && this.value.trim()) {
                             e.preventDefault();
-                            updateAgreementTitle(this.value.trim());
+                            const newTitle = this.value.trim();
+                            updateAgreementTitle(newTitle);
                             if (sendButton) {
                                 sendButton.disabled = false;
                             }
@@ -5947,6 +6007,9 @@
                                 <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                             </button>
                         </div>
+                        <button class="dsu-agreements__agreement-edit-name-btn" id="projectAgreementEditNameBtn_${uniqueId}" style="background: transparent; border: none; cursor: pointer; padding: 4px; display: none; align-items: center; justify-content: center; margin-left: 8px;" title="Edit agreement name">
+                            <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
+                        </button>
                         <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn_${uniqueId}" style="display: none;">
                             <img src="images/minus.svg" alt="Collapse">
                         </button>
@@ -6054,6 +6117,27 @@
                 // Agreement name input functionality
                 const agreementNameEditBtnGroup = document.getElementById(`projectAgreementNameEditBtn_${uniqueId}`);
                 const deleteAgreementBtnGroup = document.getElementById(`projectDeleteAgreementBtn_${uniqueId}`);
+                const headerEditAgreementBtnGroup = document.getElementById(`projectAgreementEditNameBtn_${uniqueId}`);
+                
+                // Edit agreement name button functionality (from header edit icon) for group
+                if (headerEditAgreementBtnGroup) {
+                    headerEditAgreementBtnGroup.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        // Find the title element and convert it to input
+                        const agreementFormGroup = document.getElementById(`projectAgreementForm_${uniqueId}`);
+                        if (!agreementFormGroup) return;
+                        
+                        const headerContainer = agreementFormGroup.querySelector('.dsu-agreements__agreement-header');
+                        if (!headerContainer) return;
+                        
+                        const headerTitle = headerContainer.querySelector('.dsu-agreements__agreement-title');
+                        if (headerTitle) {
+                            editAgreementTitleForGroup(headerTitle, uniqueId);
+                        }
+                    });
+                }
                 
                 if (agreementNameInput) {
                     agreementNameInput.addEventListener('input', function() {
@@ -6311,6 +6395,12 @@
                     if (emptyToggleBtnGroup) {
                         emptyToggleBtnGroup.style.display = 'block';
                     }
+                    
+                    // Show edit name button when title is displayed
+                    const headerEditAgreementBtnGroup = document.getElementById(`projectAgreementEditNameBtn_${uniqueId}`);
+                    if (headerEditAgreementBtnGroup) {
+                        headerEditAgreementBtnGroup.style.display = 'flex';
+                    }
                 } else if (headerTitle) {
                     headerTitle.textContent = title;
                 }
@@ -6323,8 +6413,8 @@
                 if (!headerContainer) return;
                 
                 const inputGroup = document.createElement('div');
-                inputGroup.className = 'dsu-input-group';
-                inputGroup.style.cssText = 'flex: 1;';
+                inputGroup.className = 'dsu-input-group agreement-name-input-wrapper';
+                inputGroup.style.cssText = 'flex: 1; position: relative;';
                 inputGroup.innerHTML = `
                     <div class="dsu-input-label">
                         <span>Agreement name</span>
@@ -6334,6 +6424,12 @@
                 
                 titleElement.replaceWith(inputGroup);
                 
+                // Hide edit name button when showing input
+                const headerEditAgreementBtnGroup = document.getElementById(`projectAgreementEditNameBtn_${uniqueId}`);
+                if (headerEditAgreementBtnGroup) {
+                    headerEditAgreementBtnGroup.style.display = 'none';
+                }
+                
                 const input = inputGroup.querySelector(`#projectAgreementNameEdit_${uniqueId}`);
                 if (input) {
                     input.focus();
@@ -6341,18 +6437,12 @@
                     
                     const sendButtonForGroup = document.getElementById(`projectSendButton_${uniqueId}`);
                     
-                    input.addEventListener('blur', function() {
-                        const newTitle = this.value.trim() || currentTitle;
-                        updateAgreementTitleForGroup(newTitle, uniqueId);
-                        if (sendButtonForGroup && this.value.trim()) {
-                            sendButtonForGroup.disabled = false;
-                        }
-                    });
-                    
+                    // Only update on Enter key press, not on blur
                     input.addEventListener('keypress', function(e) {
                         if (e.key === 'Enter' && this.value.trim()) {
                             e.preventDefault();
-                            updateAgreementTitleForGroup(this.value.trim(), uniqueId);
+                            const newTitle = this.value.trim();
+                            updateAgreementTitleForGroup(newTitle, uniqueId);
                             if (sendButtonForGroup) {
                                 sendButtonForGroup.disabled = false;
                             }
