@@ -6052,9 +6052,36 @@
                 const newAgreementBtn = document.getElementById('projectCreateAgreementBtn');
                 
                 if (contentContainer && newAgreementBtn) {
-                    // Insert before the button
-                    contentContainer.insertBefore(agreementDiv, newAgreementBtn);
-                    contentContainer.insertBefore(formDiv, newAgreementBtn);
+                    // Find the first agreement form (base or created) to insert before it
+                    // This ensures the new agreement ALWAYS appears at the top of ALL forms
+                    const allChildren = Array.from(contentContainer.children);
+                    let firstFormElement = null;
+                    
+                    // Look for the first agreement form element (skip headline and button)
+                    for (let i = 0; i < allChildren.length; i++) {
+                        const child = allChildren[i];
+                        
+                        // Skip headline, button, and the new elements we're inserting
+                        if (child.classList.contains('dsu-agreements__headline') || 
+                            child === newAgreementBtn || 
+                            child === agreementDiv || 
+                            child === formDiv) {
+                            continue;
+                        }
+                        
+                        // Check if it's an agreement form element (base projectAgreementForm or created projectAgreementForm_*)
+                        if (child.classList.contains('dsu-agreements__agreement') && 
+                            (child.id === 'projectAgreementForm' || 
+                             (child.id && child.id.startsWith('projectAgreementForm_')))) {
+                            firstFormElement = child;
+                            break;
+                        }
+                    }
+                    
+                    // Insert before the first form element found, or before the button if no forms exist
+                    const insertBeforeElement = firstFormElement || newAgreementBtn;
+                    contentContainer.insertBefore(agreementDiv, insertBeforeElement);
+                    contentContainer.insertBefore(formDiv, insertBeforeElement);
                     
                     // Initialize functionality for the new group
                     initNewAgreementGroup(uniqueId);
