@@ -1,3 +1,8 @@
+852b901d07ca14dc1dc802ec9465c542c6e5909e|Ubits|ubits@macbookpro.lan|2025-12-12 18:13:33 -0500|Update: Actualizar changelog con últimos cambios
+55ac9d71e21cffaa1b0efb7f66afce01c09f28a3|Ubits|ubits@macbookpro.lan|2025-12-12 19:45:14 -0500|Update: Changelog actualizado con último commit
+f6f1e7a35cdfaee33ecdae857b74021d6e10378e|Ubits|ubits@macbookpro.lan|2025-12-12 19:45:05 -0500|Fix: Sección del protocolo siempre colapsada por defecto, incluso después de recargar la página
+a034d3bbb4de27f085de8e30249aa2f3fe206790|Ubits|ubits@macbookpro.lan|2025-12-12 19:41:13 -0500|Update: Changelog actualizado con último commit
+b5841492f1fc4976076a3632b67acb0a12ee7694|Ubits|ubits@macbookpro.lan|2025-12-12 19:39:01 -0500|Fix: Validación para actualizar proyecto existente en lugar de crear uno nuevo al hacer publish
 56175ee4d31c59bcb63a3498520981f628bd1227|Ubits|ubits@macbookpro.lan|2025-12-12 18:13:29 -0500|Add: Función getCommitHashByName() para localizar commits por nombre desde las cards del changelog
 08607efaa68877810259d9aeee1fcf891823bd46|Ubits|ubits@macbookpro.lan|2025-12-12 18:11:20 -0500|Update: Actualizar changelog con últimos cambios
 8d3607bac36c923c41ca4e2d1b38548404640b99|Ubits|ubits@macbookpro.lan|2025-12-12 18:11:15 -0500|Add: Protocolo Step 11 - Documentación para revertir commits usando hash desde cards del changelog

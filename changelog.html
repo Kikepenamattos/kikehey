@@ -521,16 +521,18 @@
                 <!-- Step 4 -->
                 <div class="protocol-step">
                     <div class="protocol-step-number">4</div>
-                    <div class="protocol-step-title">Actualización de Datos Embebidos</div>
+                    <div class="protocol-step-title">Actualización Completa del Changelog (OBLIGATORIO)</div>
                     <div class="protocol-step-description">
-                        Se ejecuta el script <code>update-changelog-html.js</code> que lee <code>git_history.txt</code> y actualiza el array <code>realCommits</code> en <code>changelog.html</code>.
+                        <strong>⚠️ IMPORTANTE:</strong> Siempre ejecutar <code>./update-changelog-complete.sh</code> antes de hacer push. Este script asegura que <code>git_history.txt</code> esté sincronizado con todos los commits del repositorio antes de actualizar <code>changelog.html</code>.
                     </div>
                     <div class="protocol-step-details">
-                        <strong>Proceso:</strong><br>
-                        1. Lee todas las líneas de git_history.txt<br>
-                        2. Parsea cada línea en un objeto commit<br>
-                        3. Genera el array JavaScript con todos los commits<br>
-                        4. Reemplaza el bloque <code>realCommits</code> en changelog.html
+                        <code>./update-changelog-complete.sh</code><br>
+                        <strong>Proceso automático:</strong><br>
+                        1. <strong>Sincroniza git_history.txt:</strong> Obtiene todos los commits del repositorio (remoto o local) y los agrega a <code>git_history.txt</code> si faltan<br>
+                        2. <strong>Actualiza changelog.html:</strong> Ejecuta <code>update-changelog-html.js</code> que lee <code>git_history.txt</code> y actualiza el array <code>realCommits</code><br>
+                        3. <strong>Verifica cambios:</strong> Muestra qué archivos fueron modificados<br>
+                        <br>
+                        <strong>Este paso es CRÍTICO para evitar que las cards no se actualicen.</strong>
                     </div>
                 </div>
 
@@ -539,15 +541,22 @@
                     <div class="protocol-step-number">5</div>
                     <div class="protocol-step-title">Push al Repositorio</div>
                     <div class="protocol-step-description">
-                        Se ejecuta el script <code>git-push-with-changelog.sh</code> que hace push de los commits al repositorio remoto en GitHub.
+                        Opción A: Usar <code>git-push-with-changelog.sh</code> (automático) o Opción B: Push manual seguido de <code>update-changelog-complete.sh</code>.
                     </div>
                     <div class="protocol-step-details">
+                        <strong>Opción A (Recomendado):</strong><br>
                         <code>./git-push-with-changelog.sh</code><br>
-                        <strong>Acciones:</strong><br>
-                        • Hace push de los commits al repositorio<br>
+                        • Hace push de los commits<br>
                         • Sincroniza commits remotos con git_history.txt<br>
-                        • Actualiza datos embebidos si hay cambios<br>
-                        • Hace commit y push de los archivos actualizados
+                        • Actualiza datos embebidos automáticamente<br>
+                        • Hace commit y push de los archivos actualizados<br>
+                        <br>
+                        <strong>Opción B (Manual):</strong><br>
+                        <code>git push</code><br>
+                        <code>./update-changelog-complete.sh</code> (EJECUTAR DESPUÉS)<br>
+                        <code>git add git_history.txt changelog.html</code><br>
+                        <code>git commit -m "Update: Changelog actualizado"</code><br>
+                        <code>git push</code>
                     </div>
                 </div>
 
@@ -587,6 +596,46 @@
                 <!-- Step 8 -->
                 <div class="protocol-step">
                     <div class="protocol-step-number">8</div>
+                    <div class="protocol-step-title">Prevención de Errores y Solución de Problemas</div>
+                    <div class="protocol-step-description">
+                        <strong>⚠️ Si las cards no se actualizan:</strong> Ejecutar <code>./update-changelog-complete.sh</code> para sincronizar <code>git_history.txt</code> y actualizar <code>changelog.html</code>. Este script siempre verifica y corrige desincronizaciones.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Problema común:</strong> git_history.txt desincronizado con commits reales<br>
+                        <strong>Solución:</strong> Ejecutar <code>./update-changelog-complete.sh</code> que:<br>
+                        • Detecta commits faltantes automáticamente<br>
+                        • Sincroniza git_history.txt con todos los commits<br>
+                        • Actualiza changelog.html con los datos correctos<br>
+                        <br>
+                        <strong>Verificación:</strong><br>
+                        <code>wc -l git_history.txt</code> (debe coincidir con total de commits)<br>
+                        <code>git log --format="%H" --all | wc -l</code> (comparar números)
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">8</div>
+                    <div class="protocol-step-title">Prevención de Errores y Solución de Problemas</div>
+                    <div class="protocol-step-description">
+                        <strong>⚠️ Si las cards no se actualizan:</strong> Ejecutar <code>./update-changelog-complete.sh</code> para sincronizar <code>git_history.txt</code> y actualizar <code>changelog.html</code>. Este script siempre verifica y corrige desincronizaciones.
+                    </div>
+                    <div class="protocol-step-details">
+                        <strong>Problema común:</strong> git_history.txt desincronizado con commits reales<br>
+                        <strong>Solución:</strong> Ejecutar <code>./update-changelog-complete.sh</code> que:<br>
+                        • Detecta commits faltantes automáticamente<br>
+                        • Sincroniza git_history.txt con todos los commits<br>
+                        • Actualiza changelog.html con los datos correctos<br>
+                        <br>
+                        <strong>Verificación:</strong><br>
+                        <code>wc -l git_history.txt</code> (debe coincidir con total de commits)<br>
+                        <code>git log --format="%H" --all | wc -l</code> (comparar números)
+                    </div>
+                </div>
+
+                <!-- Step 9 -->
+                <div class="protocol-step">
+                    <div class="protocol-step-number">9</div>
                     <div class="protocol-step-title">Renderizado de Cards</div>
                     <div class="protocol-step-description">
                         La función <code>renderCommits()</code> crea una card <code>.changelog-item</code> única para cada commit, validando que no haya duplicados y que toda la información esté presente.
@@ -624,9 +673,9 @@
                     </div>
                 </div>
 
-                <!-- Step 9 -->
+                <!-- Step 10 -->
                 <div class="protocol-step">
-                    <div class="protocol-step-number">9</div>
+                    <div class="protocol-step-number">10</div>
                     <div class="protocol-step-title">Inserción en el DOM</div>
                     <div class="protocol-step-description">
                         Todas las cards se insertan en el contenedor <code>#changelogContainer</code> y se actualiza el contador de commits totales y la fecha de última actualización.
@@ -1340,6 +1389,22 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '852b901',
+                fullHash: '852b901d07ca14dc1dc802ec9465c542c6e5909e',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 18:13:33 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
+            {
+                hash: '55ac9d7',
+                fullHash: '55ac9d71e21cffaa1b0efb7f66afce01c09f28a3',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 19:45:14 -0500',
+                message: 'Update: Changelog actualizado con último commit'
+            },
             {
                 hash: 'f6f1e7a',
                 fullHash: 'f6f1e7a35cdfaee33ecdae857b74021d6e10378e',
