@@ -7341,7 +7341,16 @@
                         });
                     }
                     
-                    // Crear el proyecto
+                    // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+                    
+                    // Verificar si el proyecto existe
+                    let existingProject = null;
+                    if (existingProjectId) {
+                        existingProject = DocuProjectData.getProjectById(existingProjectId);
+                    }
+                    
                     try {
                         const projectData = {
                             name: projectName,
@@ -7356,26 +7365,50 @@
                             projectData.budgetAllocation = budgetAllocation;
                         }
                         
-                        const newProject = DocuProjectData.addProject(projectData);
+                        let savedProject;
                         
-                        console.log('✅ Proyecto creado exitosamente:', newProject);
-                        
-                        // Generar HTML del proyecto publicado (los datos ya están en projectData)
-                        generateProjectHTML(newProject);
-                        
-                        // Recargar proyectos en el sidebar
-                        setTimeout(() => {
-                            loadProjectsInSidebar();
-                        }, 200);
-                        
-                        // Mostrar mensaje de éxito
-                        alert(`Project "${projectName}" has been created successfully!`);
-                        
-                        // Redirigir a la vista del proyecto publicado
-                        window.location.href = `project_view.html?id=${newProject.id}`;
+                        if (existingProject && existingProjectId) {
+                            // Actualizar proyecto existente
+                            console.log('🔄 Actualizando proyecto existente:', existingProjectId);
+                            savedProject = DocuProjectData.updateProject(existingProjectId, projectData);
+                            console.log('✅ Proyecto actualizado exitosamente:', savedProject);
+                            
+                            // Generar HTML del proyecto publicado (los datos ya están en projectData)
+                            generateProjectHTML(savedProject);
+                            
+                            // Recargar proyectos en el sidebar
+                            setTimeout(() => {
+                                loadProjectsInSidebar();
+                            }, 200);
+                            
+                            // Mostrar mensaje de éxito
+                            alert(`Project "${projectName}" has been updated successfully!`);
+                            
+                            // Redirigir a la vista del proyecto publicado
+                            window.location.href = `project_view.html?id=${savedProject.id}`;
+                        } else {
+                            // Crear nuevo proyecto
+                            console.log('🆕 Creando nuevo proyecto...');
+                            savedProject = DocuProjectData.addProject(projectData);
+                            console.log('✅ Proyecto creado exitosamente:', savedProject);
+                            
+                            // Generar HTML del proyecto publicado (los datos ya están en projectData)
+                            generateProjectHTML(savedProject);
+                            
+                            // Recargar proyectos en el sidebar
+                            setTimeout(() => {
+                                loadProjectsInSidebar();
+                            }, 200);
+                            
+                            // Mostrar mensaje de éxito
+                            alert(`Project "${projectName}" has been created successfully!`);
+                            
+                            // Redirigir a la vista del proyecto publicado
+                            window.location.href = `project_view.html?id=${savedProject.id}`;
+                        }
                     } catch (error) {
-                        console.error('❌ Error al crear proyecto:', error);
-                        alert('Error creating project. Please try again.');
+                        console.error('❌ Error al guardar proyecto:', error);
+                        alert('Error saving project. Please try again.');
                     }
                 });
             }
