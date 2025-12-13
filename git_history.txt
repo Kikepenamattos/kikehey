@@ -1,7 +1,5 @@
-8c90727547a034e85b0d39d84722e4f5186fcdfb|Ubits|ubits@macbookpro.lan|2025-12-12 21:15:12 -0500|Update: Changelog actualizado
-e0cbd38835d7cd798ad856995db2c3ee49ec00b9|Ubits|ubits@macbookpro.lan|2025-12-12 21:14:57 -0500|Update: Estilos de chips corregidos en project_view.html, orden de secciones ajustado y funcionalidad de edición de stage-status-badge
 79b4ea1bc5dbec950243fd664c94f02bd62f6caf|Ubits|ubits@macbookpro.lan|2025-12-12 21:13:48 -0500|Update: Changelog actualizado
-34b3d8d3604e495cf9c85d462676444d570b395b|Ubits|ubits@macbookpro.lan|2025-12-13 09:56:00 -0500|Update: Botón de editar nombre de agreement en header, visibilidad condicional y ajustes en input de edición
+e0cbd38835d7cd798ad856995db2c3ee49ec00b9|Ubits|ubits@macbookpro.lan|2025-12-12 21:14:57 -0500|Update: Estilos de chips corregidos en project_view.html, orden de secciones ajustado y funcionalidad de edición de stage-status-badge
 <<<<<<< HEAD
 f366634cda71d280b0dc7d66471eccd82447e0b2|Ubits|ubits@macbookpro.lan|2025-12-12 19:55:08 -0500|Update: Changelog actualizado según protocolo - Sincronización completa
 d8ddcaa4f5f81dd7e731c23ae4235f3fee508ca0|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:55 -0500|Update: Changelog actualizado con commits 5dde631 y 132addf
