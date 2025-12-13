@@ -1,3 +1,5 @@
+988c43e5cd9331ac055d6e879674afcacbb54bed|Ubits|ubits@macbookpro.lan|2025-12-13 15:07:12 -0500|Fix: Botón 'New agreement' ahora es flotante sticky al bottom sin verse afectado por scroll vertical
+2e98d2f417cd21a7533b2da74ae6c00ad07198e5|Ubits|ubits@macbookpro.lan|2025-12-13 12:57:18 -0500|Update: Changelog actualizado
 abb8ff9e87f9e21fb0091a1a913e17522d2b44fa|Ubits|ubits@macbookpro.lan|2025-12-13 12:57:03 -0500|feat: Implementar persistencia de datos para agreements y ordenar por más reciente primero
 026680297aedf745d259bb768b26c720d748feb0|Ubits|ubits@macbookpro.lan|2025-12-13 12:26:59 -0500|Actualizar changelog: botón flotante sticky con Dark Blue
 15af9bd460f7599a5f95c8b1f1100c39f6f4f3b7|Ubits|ubits@macbookpro.lan|2025-12-13 12:26:50 -0500|Implementar botón flotante sticky con color Dark Blue para New agreement
