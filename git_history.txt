@@ -1,3 +1,5 @@
+2a08524ce852c0fce8941247cd91d4a3af40e002|Ubits|ubits@macbookpro.lan|2025-12-13 12:04:32 -0500|Ajustar scroll vertical para mostrar todo el componente incluyendo headline y padding
+aa2d0ffbfcfc2909f141e1e1de3e434f33e1b312|Ubits|ubits@macbookpro.lan|2025-12-13 11:46:09 -0500|Actualizar changelog: nuevo acuerdo siempre arriba de todos los formularios
 c6af39deeffe78997af6b66add910082adca6748|Ubits|ubits@macbookpro.lan|2025-12-13 11:45:53 -0500|Ajustar que nuevo acuerdo siempre aparezca arriba de todos los formularios creados
 0f60337c4f865a0dab8c826ba7bdf7ad75c2dc5a|Ubits|ubits@macbookpro.lan|2025-12-13 10:55:12 -0500|Update: Changelog actualizado
 fa72ac15fa4f8011d057efef8b8c6b4b8ae88e77|Ubits|ubits@macbookpro.lan|2025-12-13 09:58:21 -0500|Update: Changelog actualizado después de merge
