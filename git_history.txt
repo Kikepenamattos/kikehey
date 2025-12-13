@@ -1,3 +1,4 @@
+322d19434d9cd5f5a17ec0daf7d371512d3bbb70|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:02 -0500|Fix: update-changelog-complete.sh ahora sincroniza commits locales y remotos - Previene pérdida de commits no pusheados
 04f6e621fdcc5601617adf9e016514eaaf8d9f4e|Ubits|ubits@macbookpro.lan|2025-12-12 19:50:14 -0500|Update: Changelog actualizado según protocolo
 cc3bd76537454b3a178807d708ba959cd4cd9992|Ubits|ubits@macbookpro.lan|2025-12-12 19:50:02 -0500|Update: Changelog actualizado con commits be924bc y 66989a2
 be924bc8796a75e08963dd7d283335fc580ffc94|Ubits|ubits@macbookpro.lan|2025-12-12 19:48:59 -0500|Update: Changelog actualizado con último commit
