@@ -1,3 +1,5 @@
+fa72ac15fa4f8011d057efef8b8c6b4b8ae88e77|Ubits|ubits@macbookpro.lan|2025-12-13 09:58:21 -0500|Update: Changelog actualizado después de merge
+5edec6dd778843708ff00f0c31b8b902a4f24830|Ubits|ubits@macbookpro.lan|2025-12-13 10:54:07 -0500|Remove: Botón de editar nombre de agreement eliminado, título ahora editable directamente al hacer clic
 8c90727547a034e85b0d39d84722e4f5186fcdfb|Ubits|ubits@macbookpro.lan|2025-12-12 21:15:12 -0500|Update: Changelog actualizado
 0112c690f577f3c406f20bdc4d4cb36723a93774|Ubits|ubits@macbookpro.lan|2025-12-13 09:56:11 -0500|Update: Changelog actualizado
 34b3d8d3604e495cf9c85d462676444d570b395b|Ubits|ubits@macbookpro.lan|2025-12-13 09:56:00 -0500|Update: Botón de editar nombre de agreement en header, visibilidad condicional y ajustes en input de edición
