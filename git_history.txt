@@ -1,3 +1,6 @@
+3fa61a637fae166b09c8c1a48f22c78e62f2607c|Ubits|ubits@macbookpro.lan|2025-12-13 15:07:26 -0500|Update: Changelog actualizado
+96dbf000bb5498f94187b1d2efe44b91488952b2|Ubits|ubits@macbookpro.lan|2025-12-13 18:35:19 -0500|Fix: Ajustar componente agreements para prevenir scroll horizontal y mejorar carga de items publicados
+d2ae62eaf4a9dbed152bec72bc2c17066e103187|Ubits|ubits@macbookpro.lan|2025-12-13 18:19:26 -0500|Revert "Fix: Botón 'New agreement' ahora es flotante sticky al bottom sin verse afectado por scroll vertical"
 988c43e5cd9331ac055d6e879674afcacbb54bed|Ubits|ubits@macbookpro.lan|2025-12-13 15:07:12 -0500|Fix: Botón 'New agreement' ahora es flotante sticky al bottom sin verse afectado por scroll vertical
 2e98d2f417cd21a7533b2da74ae6c00ad07198e5|Ubits|ubits@macbookpro.lan|2025-12-13 12:57:18 -0500|Update: Changelog actualizado
 abb8ff9e87f9e21fb0091a1a913e17522d2b44fa|Ubits|ubits@macbookpro.lan|2025-12-13 12:57:03 -0500|feat: Implementar persistencia de datos para agreements y ordenar por más reciente primero
