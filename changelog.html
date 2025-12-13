@@ -466,10 +466,10 @@
         <p class="subtitle">Registro completo de todos los commits y modificaciones del proyecto Docu</p>
 
         <!-- Protocol Section -->
-        <div class="protocol-section" id="protocolSection">
+        <div class="protocol-section protocol-section--collapsed" id="protocolSection">
             <div class="protocol-header" onclick="toggleProtocol()">
                 <h2 class="protocol-title">📋 Protocolo de Push y Actualización de Changelog</h2>
-                <div class="protocol-toggle" id="protocolToggle">▼</div>
+                <div class="protocol-toggle" id="protocolToggle">▶</div>
             </div>
             <div class="protocol-content" id="protocolContent">
                 <p class="protocol-description">Documentación completa del proceso que se ejecuta cada vez que se solicita hacer push al repositorio y actualizar el changelog. Este protocolo garantiza que cada commit genere una card única con toda su información.</p>
@@ -1122,10 +1122,14 @@
             console.log('📋 Inicializando changelog...');
             loadChangelog();
             
-            // Inicializar la sección del protocolo como expandida por defecto
+            // Inicializar la sección del protocolo como colapsada por defecto
             const protocolSection = document.getElementById('protocolSection');
+            const protocolToggle = document.getElementById('protocolToggle');
             if (protocolSection) {
-                protocolSection.classList.remove('protocol-section--collapsed');
+                protocolSection.classList.add('protocol-section--collapsed');
+                if (protocolToggle) {
+                    protocolToggle.textContent = '▶';
+                }
             }
         });
     </script>
@@ -1336,6 +1340,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: 'a034d3b',
+                fullHash: 'a034d3bbb4de27f085de8e30249aa2f3fe206790',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-12 19:41:13 -0500',
+                message: 'Update: Changelog actualizado con último commit'
+            },
             {
                 hash: 'b584149',
                 fullHash: 'b5841492f1fc4976076a3632b67acb0a12ee7694',
