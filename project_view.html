@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="design-system/components/navigation.css">
     <link rel="stylesheet" href="design-system/components/input.css">
     <link rel="stylesheet" href="design-system/components/button.css">
-    <link rel="stylesheet" href="design-system/components/chip.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
     <link rel="stylesheet" href="design-system/components/card.css">
     
     <style>
@@ -132,6 +132,69 @@
             color: var(--color-text-secondary);
         }
 
+        /* Project Objective Section Styles */
+        .project-objective-tabs {
+            display: flex;
+            gap: var(--spacing-08);
+            align-items: center;
+        }
+
+        .project-objective-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-objective-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+        }
+
+        .project-objective-items-container[style*="display: none"] {
+            display: none !important;
+        }
+
+        .project-objective-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .project-objective-item-text {
+            flex: 1;
+            margin: 0;
+        }
+
+        .project-objective-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-objective-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-objective-item-action img {
+            width: 16px;
+            height: 16px;
+        }
 
         /* With Members Component Styles */
         .with-members-row {
@@ -439,6 +502,29 @@
                 <div class="project-section" id="teamsSection" style="display: none;">
                     <h2 class="project-section-title">Team members</h2>
                     <div class="teams-list-container" id="teamsListDisplay"></div>
+                </div>
+                
+                <!-- Goals and KPIs Section -->
+                <div class="project-section" id="objectivesSection" style="display: none;">
+                    <h2 class="project-section-title">What do you want to accomplish?</h2>
+                    <div class="project-objective-tabs">
+                        <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
+                            <span class="dsu-chip__text">Goals</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
+                            <span class="dsu-chip__text">KPIs</span>
+                        </button>
+                    </div>
+                    <div class="project-objective-content">
+                        <!-- Goals Items Container -->
+                        <div class="project-objective-items-container" id="goalsItemsDisplay" data-tab="goals">
+                            <!-- Goals items will be added dynamically here -->
+                        </div>
+                        <!-- KPIs Items Container -->
+                        <div class="project-objective-items-container" id="kpisItemsDisplay" data-tab="kpis" style="display: none;">
+                            <!-- KPIs items will be added dynamically here -->
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Assets or links -->
@@ -867,6 +953,136 @@
                 budgetDisplay.value = project.budgetAllocation;
                 if (budgetSection) {
                     budgetSection.style.display = 'flex';
+                }
+            }
+
+            // Mostrar Goals y KPIs
+            const objectivesSection = document.getElementById('objectivesSection');
+            const goalsItemsDisplay = document.getElementById('goalsItemsDisplay');
+            const kpisItemsDisplay = document.getElementById('kpisItemsDisplay');
+            const goalsTabBtn = document.getElementById('goalsTabBtn');
+            const kpisTabBtn = document.getElementById('kpisTabBtn');
+            
+            if (objectivesSection && (project.goals || project.kpis)) {
+                const hasGoals = project.goals && Array.isArray(project.goals) && project.goals.length > 0;
+                const hasKpis = project.kpis && Array.isArray(project.kpis) && project.kpis.length > 0;
+                
+                if (hasGoals || hasKpis) {
+                    objectivesSection.style.display = 'block';
+                    
+                    // Mostrar Goals
+                    if (hasGoals && goalsItemsDisplay) {
+                        goalsItemsDisplay.innerHTML = '';
+                        goalsItemsDisplay.style.display = 'flex';
+                        project.goals.forEach(goalText => {
+                            if (goalText && goalText.trim()) {
+                                const goalItem = document.createElement('div');
+                                goalItem.className = 'project-objective-item';
+                                goalItem.innerHTML = `
+                                    <p class="project-objective-item-text">-${goalText.trim()}</p>
+                                `;
+                                goalsItemsDisplay.appendChild(goalItem);
+                            }
+                        });
+                        console.log('✅ Goals mostrados:', project.goals.length);
+                    } else if (goalsItemsDisplay) {
+                        goalsItemsDisplay.style.display = 'none';
+                    }
+                    
+                    // Mostrar KPIs
+                    if (hasKpis && kpisItemsDisplay) {
+                        kpisItemsDisplay.innerHTML = '';
+                        // Inicialmente oculto (se mostrará cuando se haga clic en el tab KPIs)
+                        kpisItemsDisplay.style.display = 'none';
+                        project.kpis.forEach(kpiText => {
+                            if (kpiText && kpiText.trim()) {
+                                const kpiItem = document.createElement('div');
+                                kpiItem.className = 'project-objective-item';
+                                kpiItem.innerHTML = `
+                                    <p class="project-objective-item-text">-${kpiText.trim()}</p>
+                                `;
+                                kpisItemsDisplay.appendChild(kpiItem);
+                            }
+                        });
+                        console.log('✅ KPIs mostrados:', project.kpis.length);
+                    } else if (kpisItemsDisplay) {
+                        kpisItemsDisplay.style.display = 'none';
+                    }
+                    
+                    // Tabs functionality - Evitar duplicación de listeners
+                    if (goalsTabBtn && kpisTabBtn) {
+                        // Remover listeners previos si existen (clonar nodos para limpiar)
+                        const newGoalsBtn = goalsTabBtn.cloneNode(true);
+                        goalsTabBtn.parentNode.replaceChild(newGoalsBtn, goalsTabBtn);
+                        const newKpisBtn = kpisTabBtn.cloneNode(true);
+                        kpisTabBtn.parentNode.replaceChild(newKpisBtn, kpisTabBtn);
+                        
+                        // Obtener referencias actualizadas
+                        const updatedGoalsBtn = document.getElementById('goalsTabBtn');
+                        const updatedKpisBtn = document.getElementById('kpisTabBtn');
+                        const updatedGoalsDisplay = document.getElementById('goalsItemsDisplay');
+                        const updatedKpisDisplay = document.getElementById('kpisItemsDisplay');
+                        
+                        // Asegurar estado inicial correcto
+                        if (updatedGoalsBtn && updatedKpisBtn) {
+                            updatedGoalsBtn.classList.remove('dsu-chip--inactive');
+                            updatedGoalsBtn.classList.add('dsu-chip--active');
+                            updatedKpisBtn.classList.remove('dsu-chip--active');
+                            updatedKpisBtn.classList.add('dsu-chip--inactive');
+                        }
+                        
+                        if (updatedGoalsDisplay && hasGoals) {
+                            updatedGoalsDisplay.style.display = 'flex';
+                        }
+                        if (updatedKpisDisplay && hasKpis) {
+                            updatedKpisDisplay.style.display = 'none';
+                        }
+                        
+                        // Event listener para Goals tab
+                        updatedGoalsBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            updatedGoalsBtn.classList.remove('dsu-chip--inactive');
+                            updatedGoalsBtn.classList.add('dsu-chip--active');
+                            updatedKpisBtn.classList.remove('dsu-chip--active');
+                            updatedKpisBtn.classList.add('dsu-chip--inactive');
+                            
+                            if (updatedGoalsDisplay) {
+                                updatedGoalsDisplay.style.display = 'flex';
+                            }
+                            if (updatedKpisDisplay) {
+                                updatedKpisDisplay.style.display = 'none';
+                            }
+                            
+                            console.log('📋 Tab Goals seleccionado');
+                        });
+                        
+                        // Event listener para KPIs tab
+                        updatedKpisBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            updatedKpisBtn.classList.remove('dsu-chip--inactive');
+                            updatedKpisBtn.classList.add('dsu-chip--active');
+                            updatedGoalsBtn.classList.remove('dsu-chip--active');
+                            updatedGoalsBtn.classList.add('dsu-chip--inactive');
+                            
+                            if (updatedKpisDisplay) {
+                                updatedKpisDisplay.style.display = 'flex';
+                            }
+                            if (updatedGoalsDisplay) {
+                                updatedGoalsDisplay.style.display = 'none';
+                            }
+                            
+                            console.log('📊 Tab KPIs seleccionado');
+                        });
+                    }
+                    
+                    console.log('✅ Objectives section mostrada:', {
+                        goals: hasGoals ? project.goals.length : 0,
+                        kpis: hasKpis ? project.kpis.length : 0
+                    });
                 }
             }
 

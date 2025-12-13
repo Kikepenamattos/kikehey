@@ -3844,6 +3844,103 @@
                 console.log('ℹ️ No hay assets para cargar');
             }
             
+            // Cargar Goals y KPIs
+            const objectiveSection = document.getElementById('projectObjectiveSection');
+            const goalsItemsContainer = document.getElementById('goalsItemsContainer');
+            const kpisItemsContainer = document.getElementById('kpisItemsContainer');
+            const goalsTabBtn = document.getElementById('goalsTabBtn');
+            const kpisTabBtn = document.getElementById('kpisTabBtn');
+            
+            if (objectiveSection && (project.goals || project.kpis)) {
+                // Asegurar que la sección esté visible y habilitada
+                objectiveSection.classList.remove('project-objective-section--disabled');
+                
+                const hasGoals = project.goals && Array.isArray(project.goals) && project.goals.length > 0;
+                const hasKpis = project.kpis && Array.isArray(project.kpis) && project.kpis.length > 0;
+                
+                if (hasGoals || hasKpis) {
+                    // Esperar a que initObjectiveSection haya terminado y addObjectiveItem esté disponible
+                    setTimeout(() => {
+                        // Cargar Goals
+                        if (hasGoals && goalsItemsContainer && typeof window.addObjectiveItem === 'function') {
+                            console.log('📋 Cargando Goals:', project.goals.length);
+                            project.goals.forEach(goalText => {
+                                if (goalText && goalText.trim()) {
+                                    window.addObjectiveItem(goalText.trim(), 'goals');
+                                }
+                            });
+                            console.log('✅ Goals cargados');
+                            
+                            // Asegurar que el contenedor de Goals esté visible
+                            if (goalsItemsContainer) {
+                                goalsItemsContainer.style.display = 'flex';
+                            }
+                            // Asegurar que el tab de Goals esté activo
+                            if (goalsTabBtn && kpisTabBtn) {
+                                goalsTabBtn.classList.remove('dsu-chip--inactive');
+                                goalsTabBtn.classList.add('dsu-chip--active');
+                                kpisTabBtn.classList.remove('dsu-chip--active');
+                                kpisTabBtn.classList.add('dsu-chip--inactive');
+                            }
+                        } else if (hasGoals) {
+                            console.warn('⚠️ addObjectiveItem no está disponible aún, reintentando...');
+                            setTimeout(() => {
+                                if (typeof window.addObjectiveItem === 'function' && goalsItemsContainer) {
+                                    project.goals.forEach(goalText => {
+                                        if (goalText && goalText.trim()) {
+                                            window.addObjectiveItem(goalText.trim(), 'goals');
+                                        }
+                                    });
+                                    if (goalsItemsContainer) {
+                                        goalsItemsContainer.style.display = 'flex';
+                                    }
+                                    if (goalsTabBtn && kpisTabBtn) {
+                                        goalsTabBtn.classList.remove('dsu-chip--inactive');
+                                        goalsTabBtn.classList.add('dsu-chip--active');
+                                        kpisTabBtn.classList.remove('dsu-chip--active');
+                                        kpisTabBtn.classList.add('dsu-chip--inactive');
+                                    }
+                                }
+                            }, 500);
+                        }
+                        
+                        // Cargar KPIs
+                        if (hasKpis && kpisItemsContainer && typeof window.addObjectiveItem === 'function') {
+                            console.log('📊 Cargando KPIs:', project.kpis.length);
+                            project.kpis.forEach(kpiText => {
+                                if (kpiText && kpiText.trim()) {
+                                    window.addObjectiveItem(kpiText.trim(), 'kpis');
+                                }
+                            });
+                            console.log('✅ KPIs cargados');
+                            
+                            // El contenedor de KPIs debe estar oculto inicialmente (se mostrará al hacer clic en el tab)
+                            if (kpisItemsContainer) {
+                                kpisItemsContainer.style.display = 'none';
+                            }
+                        } else if (hasKpis) {
+                            console.warn('⚠️ addObjectiveItem no está disponible aún para KPIs, reintentando...');
+                            setTimeout(() => {
+                                if (typeof window.addObjectiveItem === 'function' && kpisItemsContainer) {
+                                    project.kpis.forEach(kpiText => {
+                                        if (kpiText && kpiText.trim()) {
+                                            window.addObjectiveItem(kpiText.trim(), 'kpis');
+                                        }
+                                    });
+                                    if (kpisItemsContainer) {
+                                        kpisItemsContainer.style.display = 'none';
+                                    }
+                                }
+                            }, 500);
+                        }
+                    }, 800); // Esperar a que initObjectiveSection haya terminado completamente
+                } else {
+                    console.log('ℹ️ No hay Goals o KPIs para cargar');
+                }
+            } else {
+                console.log('ℹ️ No hay sección de objetivos o no hay datos de Goals/KPIs');
+            }
+            
             // Actualizar estado final del botón Publish después de cargar todos los datos
             // Esperar suficiente tiempo para que todos los elementos se hayan cargado
             setTimeout(() => {
@@ -4691,7 +4788,14 @@
             const statusText = document.createElement('p');
             statusText.className = 'stage-status-badge__text';
             statusText.textContent = stageName;
+            statusText.style.cursor = 'text';
             statusBadge.appendChild(statusText);
+            
+            // Hacer el texto editable al hacer clic
+            statusText.addEventListener('click', function(e) {
+                e.stopPropagation();
+                editStageStatusBadgeText(statusText, statusBadge);
+            });
 
             // Date range
             const dateRange = document.createElement('p');
@@ -4736,6 +4840,84 @@
             if (typeof updatePublishButtonState === 'function') {
                 setTimeout(updatePublishButtonState, 100);
             }
+        }
+
+        // Función para editar el texto del stage-status-badge
+        function editStageStatusBadgeText(textElement, badgeElement) {
+            const currentText = textElement.textContent.trim();
+            
+            // Crear input temporal
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.className = 'stage-status-badge__text';
+            input.style.cssText = `
+                font-family: var(--font-family-secondary);
+                font-size: var(--font-size-sm);
+                font-weight: var(--font-weight-regular);
+                color: var(--color-text-primary);
+                line-height: var(--line-height-normal);
+                background: transparent;
+                border: 1px solid var(--color-border-light);
+                border-radius: var(--radius-sm);
+                padding: var(--spacing-04);
+                width: 100%;
+                text-align: center;
+                outline: none;
+            `;
+            
+            // Reemplazar el texto con el input
+            textElement.replaceWith(input);
+            input.focus();
+            input.select();
+            
+            // Función para guardar el cambio
+            const saveChange = () => {
+                const newText = input.value.trim() || currentText;
+                const newTextElement = document.createElement('p');
+                newTextElement.className = 'stage-status-badge__text';
+                newTextElement.textContent = newText;
+                newTextElement.style.cursor = 'text';
+                
+                // Restaurar el event listener
+                newTextElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    editStageStatusBadgeText(newTextElement, badgeElement);
+                });
+                
+                input.replaceWith(newTextElement);
+                
+                // Actualizar estado del botón Publish si es necesario
+                if (typeof updatePublishButtonState === 'function') {
+                    setTimeout(updatePublishButtonState, 100);
+                }
+            };
+            
+            // Guardar al presionar Enter
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveChange();
+                }
+            });
+            
+            // Guardar al perder el foco
+            input.addEventListener('blur', saveChange);
+            
+            // Cancelar con Escape
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const newTextElement = document.createElement('p');
+                    newTextElement.className = 'stage-status-badge__text';
+                    newTextElement.textContent = currentText;
+                    newTextElement.style.cursor = 'text';
+                    newTextElement.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        editStageStatusBadgeText(newTextElement, badgeElement);
+                    });
+                    input.replaceWith(newTextElement);
+                }
+            });
         }
 
         function formatDateRangeForCard(startDateText, endDateText) {
@@ -6427,8 +6609,11 @@
             }
 
             // Function to add objective item (bullet) to active container
-            function addObjectiveItem(text) {
-                const activeContainer = getActiveContainer();
+            function addObjectiveItem(text, type = null) {
+                // Si se proporciona type, usar ese contenedor específico, sino usar el activo
+                const activeContainer = type === 'goals' ? goalsItemsContainer : 
+                                       type === 'kpis' ? kpisItemsContainer : 
+                                       getActiveContainer();
                 if (!activeContainer || !text.trim()) return;
                 
                 const item = document.createElement('div');
@@ -6446,6 +6631,9 @@
                 `;
                 activeContainer.appendChild(item);
             }
+            
+            // Hacer addObjectiveItem global para que sea accesible desde loadProjectData
+            window.addObjectiveItem = addObjectiveItem;
 
             // Edit item functionality
             window.editObjectiveItem = function(button) {
@@ -7341,6 +7529,37 @@
                         });
                     }
                     
+                    // Recopilar Goals y KPIs
+                    const goalsItemsContainer = document.getElementById('goalsItemsContainer');
+                    const kpisItemsContainer = document.getElementById('kpisItemsContainer');
+                    const goals = [];
+                    const kpis = [];
+                    
+                    if (goalsItemsContainer) {
+                        const goalItems = goalsItemsContainer.querySelectorAll('.project-objective-item');
+                        goalItems.forEach(item => {
+                            const goalText = item.querySelector('.project-objective-item-text')?.textContent || '';
+                            if (goalText) {
+                                // Remover el prefijo "-" si existe
+                                goals.push(goalText.replace(/^-\s*/, '').trim());
+                            }
+                        });
+                    }
+                    
+                    if (kpisItemsContainer) {
+                        const kpiItems = kpisItemsContainer.querySelectorAll('.project-objective-item');
+                        kpiItems.forEach(item => {
+                            const kpiText = item.querySelector('.project-objective-item-text')?.textContent || '';
+                            if (kpiText) {
+                                // Remover el prefijo "-" si existe
+                                kpis.push(kpiText.replace(/^-\s*/, '').trim());
+                            }
+                        });
+                    }
+                    
+                    console.log('📋 Goals recopilados:', goals.length, goals);
+                    console.log('📊 KPIs recopilados:', kpis.length, kpis);
+                    
                     // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
                     const urlParams = new URLSearchParams(window.location.search);
                     const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
@@ -7357,7 +7576,9 @@
                             status: 'published',
                             stages: stages,
                             teams: teams,
-                            assets: assets
+                            assets: assets,
+                            goals: goals,
+                            kpis: kpis
                         };
                         
                         // Agregar budget allocation solo si tiene valor
