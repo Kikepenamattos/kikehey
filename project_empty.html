@@ -6087,17 +6087,33 @@
                     initNewAgreementGroup(uniqueId);
                 }
                 
-                // Add scroll if needed
+                // Add scroll if needed and adjust to keep headline and new agreement visible
                 if (contentContainer) {
                     const wrapper = emptyContainer.querySelector('.dsu-agreements__wrapper');
                     if (wrapper) {
                         wrapper.style.maxHeight = '700px';
                         wrapper.style.overflowY = 'auto';
+                        // Ensure content aligns from the top when scrolling
+                        wrapper.style.alignItems = 'flex-start';
+                        
+                        // Ensure the wrapper's scroll includes the contentContainer's padding
+                        // The contentContainer has padding: 21px 16px, which should be visible
+                        // Make sure contentContainer is positioned correctly within wrapper for scroll
+                        const contentPadding = parseInt(window.getComputedStyle(contentContainer).paddingTop) || 21;
+                        
+                        // Use setTimeout to ensure DOM has updated after insertion
+                        setTimeout(() => {
+                            // Scroll to the very top (0) to ensure the entire component is visible:
+                            // 1. The padding top of contentContainer (21px) is visible
+                            // 2. The headline (dsu-agreements__headline) is completely visible
+                            // 3. All agreements from the start are visible
+                            wrapper.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                        }, 150); // Delay to ensure DOM and styles are fully rendered
                     }
                 }
-                
-                // Scroll to the new agreement
-                agreementDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
             
             // Initialize functionality for a new agreement group
