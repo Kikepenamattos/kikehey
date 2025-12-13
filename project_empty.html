@@ -574,6 +574,53 @@
 
         .project-agreements-section--disabled .dsu-agreements .dsu-input {
             background-color: var(--color-status-disabled);
+        }
+        
+        /* Prevenir scroll horizontal en el componente de agreements y permitir botón flotante */
+        #projectAgreementsEmpty .dsu-agreements__wrapper {
+            position: relative !important; /* Necesario para el botón absoluto */
+            overflow-x: hidden !important;
+            overflow-y: visible !important; /* Permitir que el botón absoluto sea visible */
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        #projectAgreementsEmpty .dsu-agreements__content {
+            overflow-x: hidden !important;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        #projectAgreementsEmpty .dsu-agreements__agreement {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        #projectAgreementsEmpty .dsu-agreements__agreement-header {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        #projectAgreementsEmpty .dsu-input-group {
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        #projectAgreementsEmpty .dsu-agreements__agreement-title {
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
             cursor: not-allowed;
             opacity: 0.6;
             color: var(--color-text-secondary);
@@ -1440,6 +1487,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-16);
+            width: 100%;
         }
 
         .dsu-agreements__agreement-form-buttons {
@@ -1460,22 +1508,18 @@
         }
 
         /* Floating "New Agreement" Button */
-        .dsu-agreements__wrapper {
-            position: relative;
-        }
-
-        #projectCreateAgreementBtn {
-            position: sticky;
+        #projectAgreementsEmpty #projectCreateAgreementBtn {
+            /* Botón flotante ABSOLUTO que NO se ve afectado por el scroll */
+            position: absolute;
             bottom: 24px;
-            align-self: flex-end;
-            margin-top: auto;
-            margin-left: auto;
-            margin-bottom: 24px;
-            z-index: 10;
+            right: 16px; /* Alineado a la derecha con padding */
+            z-index: 50; /* Por encima de contenido normal, por debajo de modales (100) y dropdowns (10000) */
             background-color: var(--color-basics-dark-blue) !important;
             color: var(--color-basics-white) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: fit-content;
+            /* El botón está FUERA del área de scroll, por lo que siempre es visible */
         }
 
         #projectCreateAgreementBtn:hover {
@@ -2330,7 +2374,7 @@
                     
                     <!-- Empty State (Interactive - Hidden by default) -->
                     <div id="projectAgreementsEmpty" class="dsu-agreements" style="display: none;">
-                        <div class="dsu-agreements__wrapper" style="max-height: 700px; overflow: visible;">
+                        <div class="dsu-agreements__wrapper" style="position: relative; overflow: visible;">
                             <div class="dsu-agreements__content">
                                 <div class="dsu-agreements__headline">
                                     <div class="dsu-agreements__headline-left">
@@ -2417,14 +2461,15 @@
                                         </button>
                                     </div>
                                 </div>
-                                
-                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
-                                    <span>New agreement</span>
-                                    <span class="dsu-button__icon">
-                                        <img src="images/plus.svg" alt="Plus">
-                                    </span>
-                                </button>
                             </div>
+                            
+                            <!-- Botón flotante fuera del content para que no se vea afectado por el scroll -->
+                            <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
+                                <span>New agreement</span>
+                                <span class="dsu-button__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
                         </div>
                     </div>
                     
@@ -4050,7 +4095,9 @@
                             // Cargar nombre
                             if (agreementData.name) {
                                 const nameInput = document.getElementById(nameInputId);
-                                if (nameInput) {
+                                if (!nameInput) {
+                                    console.warn(`⚠️ No se encontró el input de nombre con ID: ${nameInputId}`);
+                                } else {
                                     nameInput.value = agreementData.name;
                                     
                                     // Actualizar título si la función existe
@@ -4098,21 +4145,56 @@
                             if (agreementData.items && Array.isArray(agreementData.items) && agreementData.items.length > 0) {
                                 const itemsContainer = document.getElementById(itemsContainerId);
                                 if (itemsContainer) {
-                                    const addItemFunc = uniqueId === 'base' 
-                                        ? typeof addEmptyAgreementItem === 'function' ? addEmptyAgreementItem : null
-                                        : typeof addEmptyAgreementItemForGroup === 'function' ? (text, container) => addEmptyAgreementItemForGroup(text, container, uniqueId) : null;
+                                    // Limpiar contenedor antes de cargar
+                                    itemsContainer.innerHTML = '';
                                     
-                                    if (addItemFunc) {
-                                        agreementData.items.forEach(itemText => {
-                                            if (itemText && itemText.trim()) {
-                                                addItemFunc(itemText.trim(), itemsContainer);
-                                            }
-                                        });
-                                        // Asegurar que el contenedor esté visible
+                                    // Cargar items directamente construyendo el HTML
+                                    agreementData.items.forEach(itemText => {
+                                        if (itemText && itemText.trim()) {
+                                            const item = document.createElement('div');
+                                            item.className = 'dsu-agreements__agreement-item';
+                                            
+                                            // Escapar HTML para seguridad
+                                            const escapeHtmlLocal = (text) => {
+                                                const div = document.createElement('div');
+                                                div.textContent = text;
+                                                return div.innerHTML;
+                                            };
+                                            
+                                            const escapedText = escapeHtmlLocal(itemText.trim());
+                                            
+                                            // Determinar la función de callback correcta según si es base o dinámico
+                                            const deleteCallback = uniqueId === 'base' 
+                                                ? "this.closest('.dsu-agreements__agreement-item').remove(); checkEmptyItemsVisibility();"
+                                                : `this.closest('.dsu-agreements__agreement-item').remove(); checkEmptyItemsVisibilityForGroup('${uniqueId}');`;
+                                            
+                                            const editCallback = uniqueId === 'base'
+                                                ? "editEmptyItem(this);"
+                                                : `editEmptyItemForGroup(this, '${uniqueId}');`;
+                                            
+                                            item.innerHTML = `
+                                                <p class="dsu-agreements__agreement-item-text">-${escapedText}</p>
+                                                <div class="dsu-agreements__agreement-item-actions">
+                                                    <button class="dsu-agreements__agreement-item-action" onclick="${deleteCallback}">
+                                                        <img src="images/trash.svg" alt="Delete">
+                                                    </button>
+                                                    <button class="dsu-agreements__agreement-item-action" onclick="${editCallback}">
+                                                        <img src="images/Edit.svg" alt="Edit">
+                                                    </button>
+                                                </div>
+                                            `;
+                                            itemsContainer.appendChild(item);
+                                        }
+                                    });
+                                    
+                                    // Asegurar que el contenedor esté visible después de agregar items
+                                    setTimeout(() => {
                                         itemsContainer.style.display = 'flex';
+                                        
                                         // Mostrar meta
                                         const meta = document.getElementById(metaId);
                                         if (meta) meta.style.display = 'flex';
+                                        
                                         // Mostrar toggle button
                                         const toggleBtn = document.getElementById(toggleBtnId);
                                         if (toggleBtn) {
@@ -4120,7 +4202,41 @@
                                             const toggleImg = toggleBtn.querySelector('img');
                                             if (toggleImg) toggleImg.src = 'images/minus.svg';
                                         }
-                                    }
+                                        
+                                        // También mostrar el formulario de items si existe
+                                        const formId = uniqueId === 'base' 
+                                            ? 'projectAgreementFormForm' 
+                                            : `projectAgreementFormForm_${uniqueId}`;
+                                        const agreementFormForm = uniqueId === 'base'
+                                            ? document.querySelector('#projectAgreementForm').nextElementSibling
+                                            : document.getElementById(formId);
+                                        
+                                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                                            agreementFormForm.style.display = 'flex';
+                                        }
+                                        
+                                        // Verificar que los items estén visibles
+                                        const itemsCount = itemsContainer.querySelectorAll('.dsu-agreements__agreement-item').length;
+                                        console.log(`✅ Items cargados y visibles para agreement ${uniqueId}: ${itemsCount} items`);
+                                    }, 50);
+                                    
+                                    // También forzar visibilidad inmediatamente
+                                    itemsContainer.style.display = 'flex';
+                                    const meta = document.getElementById(metaId);
+                                    if (meta) meta.style.display = 'flex';
+                                    
+                                    // Verificar nuevamente después de un delay adicional para asegurar persistencia
+                                    setTimeout(() => {
+                                        if (itemsContainer.style.display === 'none') {
+                                            itemsContainer.style.display = 'flex';
+                                        }
+                                        const metaCheck = document.getElementById(metaId);
+                                        if (metaCheck && metaCheck.style.display === 'none') {
+                                            metaCheck.style.display = 'flex';
+                                        }
+                                    }, 200);
+                                } else {
+                                    console.warn(`⚠️ No se encontró el contenedor de items con ID: ${itemsContainerId}`);
                                 }
                             }
                             
@@ -6134,21 +6250,41 @@
             
             // Toggle Empty state agreement
             if (emptyToggleBtn) {
-                let emptyExpanded = true;
+                // El toggle debe estar visible cuando hay contenido (nombre o items)
+                // Mostrar el toggle inicialmente si hay contenido
+                setTimeout(() => {
+                    const hasTitle = document.querySelector('#projectAgreementForm .dsu-agreements__agreement-title');
+                    const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
+                    
+                    if (hasTitle || hasItems) {
+                        emptyToggleBtn.style.display = 'block';
+                        const img = emptyToggleBtn.querySelector('img');
+                        if (img && hasTitle) {
+                            img.src = 'images/minus.svg'; // Expandido si hay título
+                        } else if (img) {
+                            img.src = 'images/plus.svg'; // Colapsado si solo hay items
+                        }
+                    }
+                }, 100);
+                
                 emptyToggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const agreementFormForm = document.querySelector('#projectAgreementForm').nextElementSibling;
                     
-                    if (emptyExpanded) {
+                    // Obtener el estado actual basado en la visibilidad del meta
+                    const isCurrentlyExpanded = emptyMeta && emptyMeta.style.display !== 'none';
+                    
+                    if (isCurrentlyExpanded) {
+                        // Colapsar
                         if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
                         if (emptyMeta) emptyMeta.style.display = 'none';
                         if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
                             agreementFormForm.style.display = 'none';
                         }
                         const img = this.querySelector('img');
-                        if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
-                        emptyExpanded = false;
+                        if (img) img.src = 'images/plus.svg';
                     } else {
+                        // Expandir
                         if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
                             emptyItemsContainer.style.display = 'flex';
                         }
@@ -6157,8 +6293,7 @@
                             agreementFormForm.style.display = 'flex';
                         }
                         const img = this.querySelector('img');
-                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                        emptyExpanded = true;
+                        if (img) img.src = 'images/minus.svg';
                     }
                 });
             }
@@ -6361,10 +6496,16 @@
                 if (contentContainer) {
                     const wrapper = emptyContainer.querySelector('.dsu-agreements__wrapper');
                     if (wrapper) {
-                        wrapper.style.maxHeight = '700px';
-                        wrapper.style.overflowY = 'auto';
+                        // Solo el content tiene scroll, el wrapper no
+                        // El wrapper debe tener position relative para el botón absoluto
+                        wrapper.style.position = 'relative';
+                        wrapper.style.overflow = 'visible'; // Para que el botón absoluto no se corte
+                        
+                        // El scroll está en el content, no en el wrapper
+                        contentContainer.style.maxHeight = '700px';
+                        contentContainer.style.overflowY = 'auto';
                         // Ensure content aligns from the top when scrolling
-                        wrapper.style.alignItems = 'flex-start';
+                        contentContainer.style.alignItems = 'flex-start';
                         
                         // Ensure the wrapper's scroll includes the contentContainer's padding
                         // The contentContainer has padding: 21px 16px, which should be visible
@@ -6377,7 +6518,7 @@
                             // 1. The padding top of contentContainer (21px) is visible
                             // 2. The headline (dsu-agreements__headline) is completely visible
                             // 3. All agreements from the start are visible
-                            wrapper.scrollTo({
+                            contentContainer.scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
                             });
@@ -6540,27 +6681,47 @@
                 
                 // Toggle functionality
                 if (emptyToggleBtn) {
-                    let emptyExpanded = true;
+                    // El toggle debe estar visible cuando hay contenido (nombre o items)
+                    // Mostrar el toggle si hay título o items después de un delay
+                    setTimeout(() => {
+                        const headerContainer = document.getElementById(`projectAgreementForm_${uniqueId}`);
+                        const hasTitle = headerContainer && headerContainer.querySelector('.dsu-agreements__agreement-title');
+                        const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
+                        
+                        if (hasTitle || hasItems) {
+                            emptyToggleBtn.style.display = 'block';
+                            const img = emptyToggleBtn.querySelector('img');
+                            if (img && hasTitle) {
+                                img.src = 'images/minus.svg'; // Expandido si hay título
+                            } else if (img) {
+                                img.src = 'images/plus.svg'; // Colapsado si solo hay items
+                            }
+                        }
+                    }, 100);
+                    
                     emptyToggleBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const agreementFormForm = document.getElementById(`projectAgreementFormForm_${uniqueId}`);
                         
-                        if (emptyExpanded) {
+                        // Obtener el estado actual basado en la visibilidad del meta
+                        const isCurrentlyExpanded = emptyMeta && emptyMeta.style.display !== 'none';
+                        
+                        if (isCurrentlyExpanded) {
+                            // Colapsar
                             if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
                             if (emptyMeta) emptyMeta.style.display = 'none';
                             if (agreementFormForm) agreementFormForm.style.display = 'none';
                             const img = this.querySelector('img');
-                            if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
-                            emptyExpanded = false;
+                            if (img) img.src = 'images/plus.svg';
                         } else {
+                            // Expandir
                             if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
                                 emptyItemsContainer.style.display = 'flex';
                             }
                             if (emptyMeta) emptyMeta.style.display = 'flex';
                             if (agreementFormForm) agreementFormForm.style.display = 'flex';
                             const img = this.querySelector('img');
-                            if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                            emptyExpanded = true;
+                            if (img) img.src = 'images/minus.svg';
                         }
                     });
                 }
