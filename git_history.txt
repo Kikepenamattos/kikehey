@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 f366634cda71d280b0dc7d66471eccd82447e0b2|Ubits|ubits@macbookpro.lan|2025-12-12 19:55:08 -0500|Update: Changelog actualizado según protocolo - Sincronización completa
 d8ddcaa4f5f81dd7e731c23ae4235f3fee508ca0|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:55 -0500|Update: Changelog actualizado con commits 5dde631 y 132addf
 5dde63169295b160eaccc42ebf91c59fa1d9cf07|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:03 -0500|Update: Changelog actualizado - Cards ahora muestran todos los commits
 17428d7da516789a5893c97c8173617bcbba324a|Ubits|ubits@macbookpro.lan|2025-12-12 21:13:11 -0500|Update: Estilos de chips corregidos en project_view.html, orden de secciones ajustado y funcionalidad de edición de stage-status-badge
+=======
+d8ddcaa4f5f81dd7e731c23ae4235f3fee508ca0|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:55 -0500|Update: Changelog actualizado con commits 5dde631 y 132addf
+5dde63169295b160eaccc42ebf91c59fa1d9cf07|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:03 -0500|Update: Changelog actualizado - Cards ahora muestran todos los commits
+>>>>>>> f366634cda71d280b0dc7d66471eccd82447e0b2
 132addf55a4efcc63c0d7ad0e92b2984667700f0|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:48 -0500|Fix: Changelog ahora usa datos embebidos si tienen más commits que GitHub/local - Previene cards faltantes
 6929994d9b26309543d231a8bf5021b094ad6fb6|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:10 -0500|Update: Changelog actualizado con sincronización completa de commits
 322d19434d9cd5f5a17ec0daf7d371512d3bbb70|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:02 -0500|Fix: update-changelog-complete.sh ahora sincroniza commits locales y remotos - Previene pérdida de commits no pusheados
