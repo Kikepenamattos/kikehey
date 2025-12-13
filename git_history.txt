@@ -1,3 +1,4 @@
+66989a2bbba0017d2170aced067a9a4755e2c77b|Ubits|ubits@macbookpro.lan|2025-12-12 19:48:49 -0500|Fix: Script update-changelog-complete.sh para sincronizar git_history.txt y actualizar changelog automáticamente - Actualizado protocolo con prevención de errores
 852b901d07ca14dc1dc802ec9465c542c6e5909e|Ubits|ubits@macbookpro.lan|2025-12-12 18:13:33 -0500|Update: Actualizar changelog con últimos cambios
 55ac9d71e21cffaa1b0efb7f66afce01c09f28a3|Ubits|ubits@macbookpro.lan|2025-12-12 19:45:14 -0500|Update: Changelog actualizado con último commit
 f6f1e7a35cdfaee33ecdae857b74021d6e10378e|Ubits|ubits@macbookpro.lan|2025-12-12 19:45:05 -0500|Fix: Sección del protocolo siempre colapsada por defecto, incluso después de recargar la página
