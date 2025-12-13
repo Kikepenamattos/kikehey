@@ -3983,6 +3983,236 @@
                 console.log('ℹ️ No hay sección de objetivos o no hay datos de Goals/KPIs');
             }
             
+            // Cargar Agreements
+            if (project.agreements && Array.isArray(project.agreements) && project.agreements.length > 0) {
+                console.log('📋 Cargando Agreements:', project.agreements.length);
+                
+                // Invertir el orden para mostrar el más reciente arriba (último creado primero)
+                // El array original tiene: [más antiguo, ..., más reciente]
+                // Lo invertimos para: [más reciente, ..., más antiguo]
+                const reversedAgreements = [...project.agreements].reverse();
+                console.log('📋 Agreements ordenados (más reciente primero):', reversedAgreements.length);
+                
+                // Función helper para verificar que initAgreements haya terminado
+                function waitForAgreementsInit(callback, maxAttempts = 50) {
+                    let attempts = 0;
+                    const checkInterval = setInterval(() => {
+                        attempts++;
+                        const emptyContainer = document.getElementById('projectAgreementsEmpty');
+                        const defaultContainer = document.getElementById('projectAgreementsDefault');
+                        const contentContainer = emptyContainer ? emptyContainer.querySelector('.dsu-agreements__content') : null;
+                        
+                        // Verificar que los elementos existan y que createNewAgreementGroup esté disponible
+                        if (emptyContainer && defaultContainer && contentContainer && (typeof window.createNewAgreementGroup === 'function' || typeof createNewAgreementGroup === 'function')) {
+                            clearInterval(checkInterval);
+                            callback();
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(checkInterval);
+                            console.warn('⚠️ Timeout esperando inicialización de Agreements');
+                            if (callback) callback(); // Intentar de todas formas
+                        }
+                    }, 100);
+                }
+                
+                // Esperar a que initAgreements haya terminado y los elementos estén disponibles
+                waitForAgreementsInit(() => {
+                    const emptyContainer = document.getElementById('projectAgreementsEmpty');
+                    const defaultContainer = document.getElementById('projectAgreementsDefault');
+                    const contentContainer = emptyContainer ? emptyContainer.querySelector('.dsu-agreements__content') : null;
+                    
+                    if (emptyContainer && defaultContainer && contentContainer) {
+                        // Ocultar default, mostrar empty
+                        defaultContainer.style.display = 'none';
+                        emptyContainer.style.display = 'block';
+                        
+                        // Limpiar agreements existentes (excepto el formulario base)
+                        // Eliminar todos los agreements creados dinámicamente (con ID que contiene _)
+                        const existingAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
+                        existingAgreements.forEach(agreement => agreement.remove());
+                        
+                        // Eliminar todos los forms creados dinámicamente
+                        const existingForms = contentContainer.querySelectorAll('.dsu-agreements__agreement-form[id^="projectAgreementFormForm_"]');
+                        existingForms.forEach(form => form.remove());
+                        
+                        // Función helper para cargar datos en un agreement
+                        function loadAgreementData(agreementData, uniqueId) {
+                            console.log(`📝 Cargando datos del agreement en elemento con ID: ${uniqueId}`, agreementData);
+                            
+                            // Determinar los IDs correctos según si es base o dinámico
+                            const nameInputId = uniqueId === 'base' ? 'projectAgreementName' : `projectAgreementName_${uniqueId}`;
+                            const dateButtonTextId = uniqueId === 'base' ? 'projectAgreementDateButtonText' : `projectAgreementDateButtonText_${uniqueId}`;
+                            const statusButtonTextId = uniqueId === 'base' ? 'projectAgreementStatusButtonText' : `projectAgreementStatusButtonText_${uniqueId}`;
+                            const statusButtonId = uniqueId === 'base' ? 'projectAgreementStatusButton' : `projectAgreementStatusButton_${uniqueId}`;
+                            const itemsContainerId = uniqueId === 'base' ? 'projectEmptyItems' : `projectEmptyItems_${uniqueId}`;
+                            const metaId = uniqueId === 'base' ? 'projectEmptyMeta' : `projectEmptyMeta_${uniqueId}`;
+                            const toggleBtnId = uniqueId === 'base' ? 'projectEmptyToggleBtn' : `projectEmptyToggleBtn_${uniqueId}`;
+                            
+                            // Cargar nombre
+                            if (agreementData.name) {
+                                const nameInput = document.getElementById(nameInputId);
+                                if (nameInput) {
+                                    nameInput.value = agreementData.name;
+                                    
+                                    // Actualizar título si la función existe
+                                    if (uniqueId === 'base') {
+                                        // Para el formulario base, usar updateAgreementTitle
+                                        if (typeof updateAgreementTitle === 'function') {
+                                            setTimeout(() => {
+                                                updateAgreementTitle(agreementData.name);
+                                            }, 50);
+                                        }
+                                    } else {
+                                        // Para formularios dinámicos, usar updateAgreementTitleForGroup
+                                        if (typeof updateAgreementTitleForGroup === 'function') {
+                                            setTimeout(() => {
+                                                updateAgreementTitleForGroup(agreementData.name, uniqueId);
+                                            }, 50);
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Cargar fecha
+                            if (agreementData.date) {
+                                const dateButtonText = document.getElementById(dateButtonTextId);
+                                if (dateButtonText) {
+                                    dateButtonText.textContent = agreementData.date;
+                                }
+                            }
+                            
+                            // Cargar status
+                            if (agreementData.status) {
+                                const statusButtonText = document.getElementById(statusButtonTextId);
+                                const statusButton = document.getElementById(statusButtonId);
+                                if (statusButtonText && statusButton) {
+                                    // Convertir status a texto formateado
+                                    const statusText = agreementData.status.split('-').map(word => 
+                                        word.charAt(0).toUpperCase() + word.slice(1)
+                                    ).join(' ');
+                                    statusButtonText.textContent = statusText;
+                                    statusButton.className = `dsu-status-button dsu-status-button--${agreementData.status}`;
+                                }
+                            }
+                            
+                            // Cargar items
+                            if (agreementData.items && Array.isArray(agreementData.items) && agreementData.items.length > 0) {
+                                const itemsContainer = document.getElementById(itemsContainerId);
+                                if (itemsContainer) {
+                                    const addItemFunc = uniqueId === 'base' 
+                                        ? typeof addEmptyAgreementItem === 'function' ? addEmptyAgreementItem : null
+                                        : typeof addEmptyAgreementItemForGroup === 'function' ? (text, container) => addEmptyAgreementItemForGroup(text, container, uniqueId) : null;
+                                    
+                                    if (addItemFunc) {
+                                        agreementData.items.forEach(itemText => {
+                                            if (itemText && itemText.trim()) {
+                                                addItemFunc(itemText.trim(), itemsContainer);
+                                            }
+                                        });
+                                        // Asegurar que el contenedor esté visible
+                                        itemsContainer.style.display = 'flex';
+                                        // Mostrar meta
+                                        const meta = document.getElementById(metaId);
+                                        if (meta) meta.style.display = 'flex';
+                                        // Mostrar toggle button
+                                        const toggleBtn = document.getElementById(toggleBtnId);
+                                        if (toggleBtn) {
+                                            toggleBtn.style.display = 'block';
+                                            const toggleImg = toggleBtn.querySelector('img');
+                                            if (toggleImg) toggleImg.src = 'images/minus.svg';
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            console.log(`✅ Datos del agreement cargados correctamente para ID: ${uniqueId}`);
+                        }
+                        
+                        // Verificar si existe el formulario base
+                        const baseAgreementForm = document.getElementById('projectAgreementForm');
+                        
+                        // Cargar el primer agreement (más reciente) en el formulario base (si existe)
+                        if (reversedAgreements.length > 0 && baseAgreementForm) {
+                            const firstAgreement = reversedAgreements[0]; // El más reciente (ahora es el primero después de reverse)
+                            
+                            // Limpiar formulario base primero
+                            const baseNameInput = document.getElementById('projectAgreementName');
+                            const baseDateButtonText = document.getElementById('projectAgreementDateButtonText');
+                            const baseStatusButtonText = document.getElementById('projectAgreementStatusButtonText');
+                            const baseStatusButton = document.getElementById('projectAgreementStatusButton');
+                            const baseItemsContainer = document.getElementById('projectEmptyItems');
+                            
+                            if (baseNameInput) baseNameInput.value = '';
+                            if (baseDateButtonText) baseDateButtonText.textContent = 'Select a date';
+                            if (baseStatusButtonText) {
+                                baseStatusButtonText.textContent = 'To start';
+                                if (baseStatusButton) {
+                                    baseStatusButton.className = 'dsu-status-button dsu-status-button--to-start';
+                                }
+                            }
+                            if (baseItemsContainer) baseItemsContainer.innerHTML = '';
+                            
+                            // Cargar datos del primer agreement en el formulario base después de un pequeño delay
+                            setTimeout(() => {
+                                console.log('📋 Cargando primer agreement en formulario base');
+                                loadAgreementData(firstAgreement, 'base');
+                                console.log('✅ Primer agreement cargado en formulario base');
+                            }, 200);
+                        }
+                        
+                        // Si no hay formulario base o hay más agreements, crear todos como dinámicos
+                        // Usar el array invertido para mantener el orden (más reciente arriba)
+                        const agreementsToLoad = baseAgreementForm ? reversedAgreements.slice(1) : reversedAgreements;
+                        
+                        // Cargar los demás agreements como dinámicos
+                        if (agreementsToLoad && agreementsToLoad.length > 0) {
+                            // Función async para cargar agreements secuencialmente
+                            (async function loadAgreementsSequentially() {
+                                for (let index = 0; index < agreementsToLoad.length; index++) {
+                                    const agreementData = agreementsToLoad[index];
+                                    
+                                    // Crear nuevo agreement usando createNewAgreementGroup
+                                    const createFunc = window.createNewAgreementGroup || createNewAgreementGroup;
+                                    if (typeof createFunc === 'function') {
+                                        // Obtener el número de agreements dinámicos antes de crear
+                                        const agreementsBefore = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length;
+                                        
+                                        // Crear el nuevo agreement
+                                        createFunc();
+                                        
+                                        // Esperar a que el DOM se actualice
+                                        await new Promise(resolve => setTimeout(resolve, 200));
+                                        
+                                        // Buscar el agreement recién creado
+                                        // Como se inserta al inicio, será el primero en la lista de dinámicos
+                                        const allDynamicAgreements = Array.from(contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]'));
+                                        
+                                        if (allDynamicAgreements.length > agreementsBefore) {
+                                            // El primer agreement dinámico es el que acabamos de crear (está al inicio)
+                                            const targetAgreement = allDynamicAgreements[0];
+                                            const agreementId = targetAgreement.id.replace('projectAgreementForm_', '');
+                                            const uniqueId = agreementId;
+                                            
+                                            console.log(`✅ Agreement ${index + 1}/${agreementsToLoad.length} encontrado con ID: ${uniqueId}`);
+                                            loadAgreementData(agreementData, uniqueId);
+                                            
+                                            // Esperar un poco más para que se carguen los datos
+                                            await new Promise(resolve => setTimeout(resolve, 100));
+                                        } else {
+                                            console.warn(`⚠️ No se pudo encontrar el agreement creado para el índice ${index}`);
+                                        }
+                                    }
+                                }
+                                console.log('✅ Todos los agreements han sido cargados');
+                            })();
+                        }
+                    } else {
+                        console.warn('⚠️ No se encontraron los contenedores de Agreements necesarios');
+                    }
+                });
+            } else {
+                console.log('ℹ️ No hay Agreements para cargar');
+            }
+            
             // Actualizar estado final del botón Publish después de cargar todos los datos
             // Esperar suficiente tiempo para que todos los elementos se hayan cargado
             setTimeout(() => {
@@ -5990,13 +6220,13 @@
                 }
             };
             
-            // Counter for unique IDs
-            let agreementCounter = 0;
+            // Counter for unique IDs (make it globally available)
+            window.agreementCounter = window.agreementCounter || 0;
             
-            // Function to create a new agreement group
-            function createNewAgreementGroup() {
-                agreementCounter++;
-                const uniqueId = agreementCounter;
+            // Function to create a new agreement group (make it globally available)
+            window.createNewAgreementGroup = function() {
+                window.agreementCounter = (window.agreementCounter || 0) + 1;
+                const uniqueId = window.agreementCounter;
                 
                 // Create the agreement element
                 const agreementDiv = document.createElement('div');
@@ -6497,7 +6727,12 @@
             // Create Agreement: Add new agreement group
             if (createAgreementBtn) {
                 createAgreementBtn.addEventListener('click', function() {
-                    createNewAgreementGroup();
+                    const createFunc = window.createNewAgreementGroup || createNewAgreementGroup;
+                    if (typeof createFunc === 'function') {
+                        createFunc();
+                    } else {
+                        console.error('❌ createNewAgreementGroup no está disponible');
+                    }
                 });
             }
             
@@ -7685,6 +7920,88 @@
                     console.log('📋 Goals recopilados:', goals.length, goals);
                     console.log('📊 KPIs recopilados:', kpis.length, kpis);
                     
+                    // Recopilar Agreements
+                    const agreements = [];
+                    const emptyContainer = document.getElementById('projectAgreementsEmpty');
+                    if (emptyContainer && emptyContainer.style.display !== 'none') {
+                        const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
+                        if (contentContainer) {
+                            // Buscar todos los formularios de agreements (base y creados dinámicamente)
+                            const agreementForms = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm"]');
+                            
+                            agreementForms.forEach(agreementForm => {
+                                const agreementId = agreementForm.id;
+                                let uniqueId = '';
+                                
+                                // Extraer uniqueId del ID
+                                if (agreementId === 'projectAgreementForm') {
+                                    uniqueId = 'base'; // Formulario base
+                                } else if (agreementId.startsWith('projectAgreementForm_')) {
+                                    uniqueId = agreementId.replace('projectAgreementForm_', '');
+                                }
+                                
+                                // Obtener nombre del acuerdo
+                                let agreementName = '';
+                                const nameInput = uniqueId === 'base' 
+                                    ? document.getElementById('projectAgreementName')
+                                    : document.getElementById(`projectAgreementName_${uniqueId}`);
+                                
+                                // Buscar si el nombre se muestra como título
+                                const nameTitle = agreementForm.querySelector('.dsu-agreements__agreement-title');
+                                
+                                if (nameTitle && nameTitle.textContent.trim()) {
+                                    agreementName = nameTitle.textContent.trim();
+                                } else if (nameInput && nameInput.value.trim()) {
+                                    agreementName = nameInput.value.trim();
+                                }
+                                
+                                // Obtener fecha
+                                const dateButtonText = uniqueId === 'base'
+                                    ? document.getElementById('projectAgreementDateButtonText')
+                                    : document.getElementById(`projectAgreementDateButtonText_${uniqueId}`);
+                                const date = (dateButtonText && dateButtonText.textContent !== 'Select a date') 
+                                    ? dateButtonText.textContent 
+                                    : '';
+                                
+                                // Obtener status
+                                const statusButtonText = uniqueId === 'base'
+                                    ? document.getElementById('projectAgreementStatusButtonText')
+                                    : document.getElementById(`projectAgreementStatusButtonText_${uniqueId}`);
+                                let status = 'to-start';
+                                if (statusButtonText) {
+                                    status = statusButtonText.textContent.toLowerCase().replace(' ', '-');
+                                }
+                                
+                                // Obtener items
+                                const items = [];
+                                const itemsContainer = uniqueId === 'base'
+                                    ? document.getElementById('projectEmptyItems')
+                                    : document.getElementById(`projectEmptyItems_${uniqueId}`);
+                                
+                                if (itemsContainer) {
+                                    itemsContainer.querySelectorAll('.dsu-agreements__agreement-item-text').forEach(itemText => {
+                                        const itemContent = itemText.textContent.replace(/^-\s*/, '').trim();
+                                        if (itemContent) {
+                                            items.push(itemContent);
+                                        }
+                                    });
+                                }
+                                
+                                // Solo agregar si tiene al menos nombre o items
+                                if (agreementName || items.length > 0) {
+                                    agreements.push({
+                                        name: agreementName || '',
+                                        date: date,
+                                        status: status,
+                                        items: items
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    
+                    console.log('📋 Agreements recopilados:', agreements.length, agreements);
+                    
                     // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
                     const urlParams = new URLSearchParams(window.location.search);
                     const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
@@ -7703,7 +8020,8 @@
                             teams: teams,
                             assets: assets,
                             goals: goals,
-                            kpis: kpis
+                            kpis: kpis,
+                            agreements: agreements
                         };
                         
                         // Agregar budget allocation solo si tiene valor

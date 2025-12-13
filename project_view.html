@@ -324,6 +324,85 @@
             text-decoration: underline;
         }
 
+        /* Agreements Section Styles */
+        .agreements-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .agreement-item {
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .agreement-item-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-12);
+        }
+
+        .agreement-item-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-12);
+        }
+
+        .agreement-item-date {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .agreement-item-status {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            padding: var(--spacing-04) var(--spacing-08);
+            border-radius: var(--radius-sm);
+        }
+
+        .agreement-item-status--to-start {
+            background-color: var(--color-status-to-start-bg, #f0f0f0);
+            color: var(--color-status-to-start-text, #666);
+        }
+
+        .agreement-item-status--in-progress {
+            background-color: var(--color-status-in-progress-bg, #e3f2fd);
+            color: var(--color-status-in-progress-text, #1976d2);
+        }
+
+        .agreement-item-status--paused {
+            background-color: var(--color-status-paused-bg, #fff3e0);
+            color: var(--color-status-paused-text, #f57c00);
+        }
+
+        .agreement-item-status--done {
+            background-color: var(--color-status-done-bg, #e8f5e9);
+            color: var(--color-status-done-text, #388e3c);
+        }
+
+        .agreement-item-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .agreement-item-item {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            padding-left: var(--spacing-08);
+        }
+
+        .asset-link:hover {
+            text-decoration: underline;
+        }
+
         /* Empty State */
         .empty-state {
             padding: var(--spacing-24);
@@ -531,6 +610,12 @@
                 <div class="project-section" id="assetsSection" style="display: none;">
                     <h2 class="project-section-title">Assets or links</h2>
                     <div class="assets-list" id="assetsListDisplay"></div>
+                </div>
+                
+                <!-- Agreements Section -->
+                <div class="project-section" id="agreementsSection" style="display: none;">
+                    <h2 class="project-section-title">Agreements</h2>
+                    <div class="agreements-list" id="agreementsListDisplay"></div>
                 </div>
             </div>
         </div>
@@ -1232,6 +1317,65 @@
                 });
                 assetsSection.style.display = 'block';
             }
+            
+            // Mostrar Agreements
+            const agreementsSection = document.getElementById('agreementsSection');
+            const agreementsListDisplay = document.getElementById('agreementsListDisplay');
+            if (agreementsSection && agreementsListDisplay && project.agreements && project.agreements.length > 0) {
+                agreementsListDisplay.innerHTML = '';
+                
+                project.agreements.forEach((agreement, index) => {
+                    const agreementItem = document.createElement('div');
+                    agreementItem.className = 'agreement-item';
+                    
+                    let agreementHTML = '';
+                    
+                    // Título del agreement
+                    if (agreement.name) {
+                        agreementHTML += `<div class="agreement-item-title">${escapeHtml(agreement.name)}</div>`;
+                    }
+                    
+                    // Meta información (fecha y status)
+                    let metaHTML = '<div class="agreement-item-meta">';
+                    if (agreement.date) {
+                        metaHTML += `<span class="agreement-item-date">${escapeHtml(agreement.date)}</span>`;
+                    }
+                    if (agreement.status) {
+                        const statusText = agreement.status.split('-').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ');
+                        metaHTML += `<span class="agreement-item-status agreement-item-status--${agreement.status}">${escapeHtml(statusText)}</span>`;
+                    }
+                    metaHTML += '</div>';
+                    agreementHTML += metaHTML;
+                    
+                    // Items del agreement
+                    if (agreement.items && Array.isArray(agreement.items) && agreement.items.length > 0) {
+                        agreementHTML += '<div class="agreement-item-items">';
+                        agreement.items.forEach(itemText => {
+                            if (itemText && itemText.trim()) {
+                                agreementHTML += `<div class="agreement-item-item">-${escapeHtml(itemText.trim())}</div>`;
+                            }
+                        });
+                        agreementHTML += '</div>';
+                    }
+                    
+                    agreementItem.innerHTML = agreementHTML;
+                    agreementsListDisplay.appendChild(agreementItem);
+                });
+                
+                agreementsSection.style.display = 'block';
+                console.log('✅ Agreements mostrados:', project.agreements.length);
+            } else {
+                console.log('ℹ️ No hay Agreements para mostrar');
+            }
+        }
+        
+        // Helper function para escapar HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
     </script>
 </body>
