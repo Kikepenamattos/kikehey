@@ -1459,6 +1459,40 @@
             order: 2;
         }
 
+        /* Floating "New Agreement" Button */
+        .dsu-agreements__wrapper {
+            position: relative;
+        }
+
+        #projectCreateAgreementBtn {
+            position: sticky;
+            bottom: 24px;
+            align-self: flex-end;
+            margin-top: auto;
+            margin-left: auto;
+            margin-bottom: 24px;
+            z-index: 10;
+            background-color: var(--color-basics-dark-blue) !important;
+            color: var(--color-basics-white) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #projectCreateAgreementBtn:hover {
+            background-color: var(--color-button-secondary-bg-hover) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        #projectCreateAgreementBtn:active {
+            background-color: var(--color-button-secondary-bg-pressed) !important;
+        }
+
+        /* Icon color for floating button */
+        #projectCreateAgreementBtn .dsu-button__icon img {
+            filter: brightness(0) invert(1);
+        }
+
         /* With Members Component Styles */
         .with-members-row {
             display: flex;
@@ -6078,10 +6112,16 @@
                         }
                     }
                     
-                    // Insert before the first form element found, or before the button if no forms exist
-                    const insertBeforeElement = firstFormElement || newAgreementBtn;
-                    contentContainer.insertBefore(agreementDiv, insertBeforeElement);
-                    contentContainer.insertBefore(formDiv, insertBeforeElement);
+                    // Insert before the first form element found, or append to end if no forms exist
+                    // (Button is now floating, so we don't use it as reference)
+                    if (firstFormElement) {
+                        contentContainer.insertBefore(agreementDiv, firstFormElement);
+                        contentContainer.insertBefore(formDiv, firstFormElement);
+                    } else {
+                        // If no forms exist, append to the end of content (before floating button in DOM)
+                        contentContainer.appendChild(agreementDiv);
+                        contentContainer.appendChild(formDiv);
+                    }
                     
                     // Initialize functionality for the new group
                     initNewAgreementGroup(uniqueId);
