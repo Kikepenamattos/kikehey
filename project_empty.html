@@ -1460,105 +1460,22 @@
         }
 
         /* Floating "New Agreement" Button */
-        .dsu-agreements {
-            position: relative; /* Necesario para que el botón absolute funcione */
-        }
-        
         .dsu-agreements__wrapper {
-            overflow-x: hidden; /* Prevenir scroll horizontal */
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        /* Prevenir scroll horizontal en el contenido */
-        .dsu-agreements__content {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            overflow-x: hidden;
-            padding-bottom: 0 !important;
-        }
-        
-        /* Asegurar que los agreements no causen overflow */
-        .dsu-agreements__agreement {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            overflow-x: hidden;
-        }
-        
-        /* Asegurar que los items no causen overflow */
-        .dsu-agreements__agreement-items {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-08);
-        }
-        
-        .dsu-agreements__agreement-item {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: var(--spacing-08);
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-        
-        .dsu-agreements__agreement-item-text {
-            flex: 1;
-            min-width: 0; /* Permite que el texto se ajuste */
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            margin: 0;
-        }
-        
-        .dsu-agreements__agreement-item-actions {
-            display: flex;
-            gap: var(--spacing-08);
-            flex-shrink: 0; /* Los iconos no se comprimen */
-        }
-        
-        /* Asegurar que el meta no cause overflow */
-        .dsu-agreements__agreement-meta {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            gap: var(--spacing-16);
-            flex-wrap: wrap; /* Permitir wrap en pantallas pequeñas */
-        }
-        
-        /* Asegurar que el form no cause overflow */
-        .dsu-agreements__agreement-form {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .dsu-agreements__agreement-form-input {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
+            position: relative;
         }
 
         #projectCreateAgreementBtn {
-            /* Botón flotante ABSOLUTO FUERA del wrapper, sticky al bottom SIN ser afectado por scroll */
-            position: absolute;
+            position: sticky;
             bottom: 24px;
-            right: 16px;
-            z-index: 50; /* Por encima de contenido normal, por debajo de modales (100) y dropdowns (10000) */
+            align-self: flex-end;
+            margin-top: auto;
+            margin-left: auto;
+            margin-bottom: 24px;
+            z-index: 10;
             background-color: var(--color-basics-dark-blue) !important;
             color: var(--color-basics-white) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            width: fit-content;
-            /* El botón está FUERA del wrapper (que tiene scroll), por lo que NO se ve afectado por el scroll */
         }
 
         #projectCreateAgreementBtn:hover {
@@ -2412,8 +2329,8 @@
                     </div>
                     
                     <!-- Empty State (Interactive - Hidden by default) -->
-                    <div id="projectAgreementsEmpty" class="dsu-agreements" style="display: none; position: relative;">
-                        <div class="dsu-agreements__wrapper" style="max-height: 700px; overflow-y: auto; overflow-x: hidden;">
+                    <div id="projectAgreementsEmpty" class="dsu-agreements" style="display: none;">
+                        <div class="dsu-agreements__wrapper" style="max-height: 700px; overflow: visible;">
                             <div class="dsu-agreements__content">
                                 <div class="dsu-agreements__headline">
                                     <div class="dsu-agreements__headline-left">
@@ -2500,16 +2417,15 @@
                                         </button>
                                     </div>
                                 </div>
+                                
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
+                                    <span>New agreement</span>
+                                    <span class="dsu-button__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
                             </div>
                         </div>
-                        
-                        <!-- Botón flotante FUERA del wrapper para que NO se vea afectado por el scroll -->
-                        <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
-                            <span>New agreement</span>
-                            <span class="dsu-button__icon">
-                                <img src="images/plus.svg" alt="Plus">
-                            </span>
-                        </button>
                     </div>
                     
                     <!-- Active State (Interactive - Hidden by default) -->
@@ -4118,13 +4034,6 @@
                         const existingForms = contentContainer.querySelectorAll('.dsu-agreements__agreement-form[id^="projectAgreementFormForm_"]');
                         existingForms.forEach(form => form.remove());
                         
-                        // Función helper para escapar HTML (si no existe globalmente)
-                        const escapeHtmlLocal = typeof escapeHtml === 'function' ? escapeHtml : function(text) {
-                            const div = document.createElement('div');
-                            div.textContent = text;
-                            return div.innerHTML;
-                        };
-                        
                         // Función helper para cargar datos en un agreement
                         function loadAgreementData(agreementData, uniqueId) {
                             console.log(`📝 Cargando datos del agreement en elemento con ID: ${uniqueId}`, agreementData);
@@ -4185,135 +4094,33 @@
                                 }
                             }
                             
-                            // Cargar items directamente en el contenedor
+                            // Cargar items
                             if (agreementData.items && Array.isArray(agreementData.items) && agreementData.items.length > 0) {
                                 const itemsContainer = document.getElementById(itemsContainerId);
                                 if (itemsContainer) {
-                                    // Limpiar contenedor primero
-                                    itemsContainer.innerHTML = '';
+                                    const addItemFunc = uniqueId === 'base' 
+                                        ? typeof addEmptyAgreementItem === 'function' ? addEmptyAgreementItem : null
+                                        : typeof addEmptyAgreementItemForGroup === 'function' ? (text, container) => addEmptyAgreementItemForGroup(text, container, uniqueId) : null;
                                     
-                                    // Crear items directamente sin depender de funciones externas
-                                    let itemsAdded = 0;
-                                    agreementData.items.forEach((itemText) => {
-                                        if (itemText && itemText.trim()) {
-                                            const item = document.createElement('div');
-                                            item.className = 'dsu-agreements__agreement-item';
-                                            
-                                            // Crear el HTML del item según si es base o dinámico
-                                            if (uniqueId === 'base') {
-                                                item.innerHTML = `
-                                                    <p class="dsu-agreements__agreement-item-text">-${escapeHtmlLocal(itemText.trim())}</p>
-                                                    <div class="dsu-agreements__agreement-item-actions">
-                                                        <button class="dsu-agreements__agreement-item-action" onclick="this.closest('.dsu-agreements__agreement-item').remove(); if(typeof checkEmptyItemsVisibility === 'function') checkEmptyItemsVisibility();">
-                                                            <img src="images/trash.svg" alt="Delete">
-                                                        </button>
-                                                        <button class="dsu-agreements__agreement-item-action" onclick="if(typeof editEmptyItem === 'function') editEmptyItem(this);">
-                                                            <img src="images/Edit.svg" alt="Edit">
-                                                        </button>
-                                                    </div>
-                                                `;
-                                            } else {
-                                                item.innerHTML = `
-                                                    <p class="dsu-agreements__agreement-item-text">-${escapeHtmlLocal(itemText.trim())}</p>
-                                                    <div class="dsu-agreements__agreement-item-actions">
-                                                        <button class="dsu-agreements__agreement-item-action" onclick="this.closest('.dsu-agreements__agreement-item').remove(); if(typeof checkEmptyItemsVisibilityForGroup === 'function') checkEmptyItemsVisibilityForGroup('${uniqueId}');">
-                                                            <img src="images/trash.svg" alt="Delete">
-                                                        </button>
-                                                        <button class="dsu-agreements__agreement-item-action" onclick="if(typeof editEmptyItemForGroup === 'function') editEmptyItemForGroup(this, '${uniqueId}');">
-                                                            <img src="images/Edit.svg" alt="Edit">
-                                                        </button>
-                                                    </div>
-                                                `;
+                                    if (addItemFunc) {
+                                        agreementData.items.forEach(itemText => {
+                                            if (itemText && itemText.trim()) {
+                                                addItemFunc(itemText.trim(), itemsContainer);
                                             }
-                                            
-                                            itemsContainer.appendChild(item);
-                                            itemsAdded++;
-                                        }
-                                    });
-                                    
-                                    // Asegurar que el contenedor esté visible inmediatamente después de agregar items
-                                    // No usar setTimeout aquí para evitar problemas de timing
-                                    if (itemsAdded > 0) {
-                                        // Forzar visibilidad del contenedor inmediatamente
+                                        });
+                                        // Asegurar que el contenedor esté visible
                                         itemsContainer.style.display = 'flex';
-                                        
                                         // Mostrar meta
                                         const meta = document.getElementById(metaId);
-                                        if (meta) {
-                                            meta.style.display = 'flex';
-                                        }
-                                        
+                                        if (meta) meta.style.display = 'flex';
                                         // Mostrar toggle button
                                         const toggleBtn = document.getElementById(toggleBtnId);
                                         if (toggleBtn) {
                                             toggleBtn.style.display = 'block';
-                                            // Asegurar que el icono sea "minus" (expandido)
                                             const toggleImg = toggleBtn.querySelector('img');
-                                            if (toggleImg) {
-                                                toggleImg.src = 'images/minus.svg';
-                                            }
+                                            if (toggleImg) toggleImg.src = 'images/minus.svg';
                                         }
-                                        
-                                        console.log(`✅ ${itemsAdded} items cargados y visibles para agreement ID: ${uniqueId}`);
-                                        console.log(`📋 Items cargados:`, agreementData.items);
-                                    } else {
-                                        console.warn(`⚠️ No se agregaron items para agreement ID: ${uniqueId}`);
                                     }
-                                    
-                                    // Verificación adicional después de un pequeño delay para asegurar visibilidad
-                                    // Y prevenir que otros códigos oculten los items
-                                    setTimeout(() => {
-                                        if (itemsContainer && itemsContainer.children.length > 0) {
-                                            // Forzar visibilidad nuevamente por si acaso
-                                            itemsContainer.style.display = 'flex';
-                                            
-                                            // Asegurar que meta y toggle también estén visibles
-                                            const meta = document.getElementById(metaId);
-                                            if (meta) {
-                                                meta.style.display = 'flex';
-                                            }
-                                            
-                                            const toggleBtn = document.getElementById(toggleBtnId);
-                                            if (toggleBtn) {
-                                                toggleBtn.style.display = 'block';
-                                                const toggleImg = toggleBtn.querySelector('img');
-                                                if (toggleImg) {
-                                                    toggleImg.src = 'images/minus.svg';
-                                                }
-                                            }
-                                            
-                                            console.log(`✅ Verificación final: ${itemsContainer.children.length} items visibles para agreement ID: ${uniqueId}`);
-                                        }
-                                    }, 100);
-                                    
-                                    // Verificación periódica para asegurar que los items no se oculten
-                                    // Esto previene que otros códigos oculten los items después de cargarlos
-                                    let verificationCount = 0;
-                                    const maxVerifications = 10; // Verificar 10 veces durante 1 segundo
-                                    const verificationInterval = setInterval(() => {
-                                        verificationCount++;
-                                        if (itemsContainer && itemsContainer.children.length > 0) {
-                                            // Si los items están ocultos pero deberían estar visibles, restaurarlos
-                                            if (itemsContainer.style.display === 'none') {
-                                                console.warn(`⚠️ Items fueron ocultados para agreement ID: ${uniqueId}, restaurando visibilidad (intento ${verificationCount})`);
-                                                itemsContainer.style.display = 'flex';
-                                                const meta = document.getElementById(metaId);
-                                                if (meta) meta.style.display = 'flex';
-                                                const toggleBtn = document.getElementById(toggleBtnId);
-                                                if (toggleBtn) {
-                                                    toggleBtn.style.display = 'block';
-                                                    const toggleImg = toggleBtn.querySelector('img');
-                                                    if (toggleImg) toggleImg.src = 'images/minus.svg';
-                                                }
-                                            }
-                                        }
-                                        
-                                        if (verificationCount >= maxVerifications) {
-                                            clearInterval(verificationInterval);
-                                        }
-                                    }, 100); // Verificar cada 100ms
-                                } else {
-                                    console.warn(`⚠️ No se encontró el contenedor de items con ID: ${itemsContainerId}`);
                                 }
                             }
                             
@@ -4345,40 +4152,10 @@
                             if (baseItemsContainer) baseItemsContainer.innerHTML = '';
                             
                             // Cargar datos del primer agreement en el formulario base después de un pequeño delay
-                            // Este es el más reciente y debe estar expandido
                             setTimeout(() => {
-                                console.log('📋 Cargando primer agreement en formulario base (más reciente, expandido)');
+                                console.log('📋 Cargando primer agreement en formulario base');
                                 loadAgreementData(firstAgreement, 'base');
                                 console.log('✅ Primer agreement cargado en formulario base');
-                                
-                                // Asegurar que el primer agreement esté expandido después de cargar los items
-                                setTimeout(() => {
-                                    const baseItemsContainer = document.getElementById('projectEmptyItems');
-                                    const baseMeta = document.getElementById('projectEmptyMeta');
-                                    const baseToggleBtn = document.getElementById('projectEmptyToggleBtn');
-                                    
-                                    if (baseItemsContainer) {
-                                        // Forzar visibilidad si tiene items
-                                        if (baseItemsContainer.children.length > 0) {
-                                            baseItemsContainer.style.display = 'flex';
-                                            console.log(`✅ Base items container visible con ${baseItemsContainer.children.length} items`);
-                                        } else {
-                                            console.warn('⚠️ Base items container está vacío');
-                                        }
-                                    }
-                                    
-                                    if (baseMeta) {
-                                        baseMeta.style.display = 'flex';
-                                    }
-                                    
-                                    if (baseToggleBtn) {
-                                        baseToggleBtn.style.display = 'block';
-                                        const toggleImg = baseToggleBtn.querySelector('img');
-                                        if (toggleImg) {
-                                            toggleImg.src = 'images/minus.svg';
-                                        }
-                                    }
-                                }, 150); // Delay adicional para asegurar que los items se hayan cargado
                             }, 200);
                         }
                         
@@ -4418,52 +4195,8 @@
                                             console.log(`✅ Agreement ${index + 1}/${agreementsToLoad.length} encontrado con ID: ${uniqueId}`);
                                             loadAgreementData(agreementData, uniqueId);
                                             
-                                            // Esperar a que los items se carguen antes de colapsar
-                                            await new Promise(resolve => setTimeout(resolve, 200));
-                                            
-                                            // Colapsar este agreement (todos excepto el primero deben estar colapsados)
-                                            // El primer agreement (index 0) es el más reciente y debe estar expandido
-                                            if (index > 0) {
-                                                // Colapsar este agreement
-                                                const itemsContainer = document.getElementById(`projectEmptyItems_${uniqueId}`);
-                                                const meta = document.getElementById(`projectEmptyMeta_${uniqueId}`);
-                                                const toggleBtn = document.getElementById(`projectEmptyToggleBtn_${uniqueId}`);
-                                                
-                                                if (itemsContainer) {
-                                                    itemsContainer.style.display = 'none';
-                                                }
-                                                if (meta) {
-                                                    meta.style.display = 'none';
-                                                }
-                                                if (toggleBtn) {
-                                                    const toggleImg = toggleBtn.querySelector('img');
-                                                    if (toggleImg) {
-                                                        toggleImg.src = 'images/plus.svg';
-                                                    }
-                                                }
-                                            } else {
-                                                // El primer agreement (más reciente) debe estar expandido
-                                                const itemsContainer = document.getElementById(`projectEmptyItems_${uniqueId}`);
-                                                const meta = document.getElementById(`projectEmptyMeta_${uniqueId}`);
-                                                const toggleBtn = document.getElementById(`projectEmptyToggleBtn_${uniqueId}`);
-                                                
-                                                if (itemsContainer && itemsContainer.children.length > 0) {
-                                                    itemsContainer.style.display = 'flex';
-                                                }
-                                                if (meta) {
-                                                    meta.style.display = 'flex';
-                                                }
-                                                if (toggleBtn) {
-                                                    toggleBtn.style.display = 'block';
-                                                    const toggleImg = toggleBtn.querySelector('img');
-                                                    if (toggleImg) {
-                                                        toggleImg.src = 'images/minus.svg';
-                                                    }
-                                                }
-                                            }
-                                            
                                             // Esperar un poco más para que se carguen los datos
-                                            await new Promise(resolve => setTimeout(resolve, 50));
+                                            await new Promise(resolve => setTimeout(resolve, 100));
                                         } else {
                                             console.warn(`⚠️ No se pudo encontrar el agreement creado para el índice ${index}`);
                                         }
@@ -6401,51 +6134,33 @@
             
             // Toggle Empty state agreement
             if (emptyToggleBtn) {
-                // Determinar el estado inicial basado en si hay items
-                // Usar un delay para verificar después de que los items se hayan cargado
-                setTimeout(() => {
-                    const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
-                    let emptyExpanded = hasItems;
+                let emptyExpanded = true;
+                emptyToggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const agreementFormForm = document.querySelector('#projectAgreementForm').nextElementSibling;
                     
-                    // Sincronizar el estado inicial del toggle button basado en items existentes
-                    if (hasItems) {
-                        emptyItemsContainer.style.display = 'flex';
-                        emptyExpanded = true;
-                        const img = emptyToggleBtn.querySelector('img');
-                        if (img) img.src = 'images/minus.svg';
-                    } else {
-                        emptyExpanded = false;
-                        const img = emptyToggleBtn.querySelector('img');
-                        if (img) img.src = 'images/plus.svg';
-                    }
-                    
-                    emptyToggleBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const agreementFormForm = document.querySelector('#projectAgreementForm').nextElementSibling;
-                        
-                        if (emptyExpanded) {
-                            if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
-                            if (emptyMeta) emptyMeta.style.display = 'none';
-                            if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                agreementFormForm.style.display = 'none';
-                            }
-                            const img = this.querySelector('img');
-                            if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
-                            emptyExpanded = false;
-                        } else {
-                            if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
-                                emptyItemsContainer.style.display = 'flex';
-                            }
-                            if (emptyMeta) emptyMeta.style.display = 'flex';
-                            if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                agreementFormForm.style.display = 'flex';
-                            }
-                            const img = this.querySelector('img');
-                            if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                            emptyExpanded = true;
+                    if (emptyExpanded) {
+                        if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
+                        if (emptyMeta) emptyMeta.style.display = 'none';
+                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                            agreementFormForm.style.display = 'none';
                         }
-                    });
-                }, 200); // Delay para permitir que los items se carguen primero
+                        const img = this.querySelector('img');
+                        if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
+                        emptyExpanded = false;
+                    } else {
+                        if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
+                            emptyItemsContainer.style.display = 'flex';
+                        }
+                        if (emptyMeta) emptyMeta.style.display = 'flex';
+                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                            agreementFormForm.style.display = 'flex';
+                        }
+                        const img = this.querySelector('img');
+                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
+                        emptyExpanded = true;
+                    }
+                });
             }
             
             // Helper function to add agreement item in Empty state
@@ -6825,47 +6540,29 @@
                 
                 // Toggle functionality
                 if (emptyToggleBtn) {
-                    // Determinar el estado inicial basado en si hay items
-                    // Usar un pequeño delay para verificar después de que los items se hayan cargado
-                    setTimeout(() => {
-                        const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
-                        let emptyExpanded = hasItems;
+                    let emptyExpanded = true;
+                    emptyToggleBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const agreementFormForm = document.getElementById(`projectAgreementFormForm_${uniqueId}`);
                         
-                        // Sincronizar el estado inicial del toggle button basado en items existentes
-                        if (hasItems) {
-                            emptyItemsContainer.style.display = 'flex';
-                            emptyExpanded = true;
-                            const img = emptyToggleBtn.querySelector('img');
-                            if (img) img.src = 'images/minus.svg';
-                        } else {
+                        if (emptyExpanded) {
+                            if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
+                            if (emptyMeta) emptyMeta.style.display = 'none';
+                            if (agreementFormForm) agreementFormForm.style.display = 'none';
+                            const img = this.querySelector('img');
+                            if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
                             emptyExpanded = false;
-                            const img = emptyToggleBtn.querySelector('img');
-                            if (img) img.src = 'images/plus.svg';
-                        }
-                        
-                        emptyToggleBtn.addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            const agreementFormForm = document.getElementById(`projectAgreementFormForm_${uniqueId}`);
-                            
-                            if (emptyExpanded) {
-                                if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
-                                if (emptyMeta) emptyMeta.style.display = 'none';
-                                if (agreementFormForm) agreementFormForm.style.display = 'none';
-                                const img = this.querySelector('img');
-                                if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
-                                emptyExpanded = false;
-                            } else {
-                                if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
-                                    emptyItemsContainer.style.display = 'flex';
-                                }
-                                if (emptyMeta) emptyMeta.style.display = 'flex';
-                                if (agreementFormForm) agreementFormForm.style.display = 'flex';
-                                const img = this.querySelector('img');
-                                if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                                emptyExpanded = true;
+                        } else {
+                            if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
+                                emptyItemsContainer.style.display = 'flex';
                             }
-                        });
-                    }, 100); // Delay para permitir que los items se carguen primero
+                            if (emptyMeta) emptyMeta.style.display = 'flex';
+                            if (agreementFormForm) agreementFormForm.style.display = 'flex';
+                            const img = this.querySelector('img');
+                            if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
+                            emptyExpanded = true;
+                        }
+                    });
                 }
             }
             
