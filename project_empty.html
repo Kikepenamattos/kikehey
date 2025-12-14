@@ -1150,10 +1150,22 @@
             position: relative;
             display: flex;
             align-items: center;
+            flex: 1;
         }
 
         .project-deliverables-input-wrapper .dsu-input {
             padding-right: 80px;
+        }
+
+        /* Layout para deliverables input row con status button al lado */
+        .project-deliverables-input-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .project-deliverables-input-row .dsu-input-group {
+            flex: 1;
         }
 
         .project-deliverables-input-actions {
@@ -1180,6 +1192,13 @@
             height: 20px;
         }
 
+        /* Row wrapper para item y status button (similar a input row) */
+        .project-deliverables-item-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
         .project-deliverables-item {
             display: flex;
             align-items: center;
@@ -1188,6 +1207,21 @@
             background-color: var(--color-surface-regular);
             border: 1px solid var(--color-status-disabled);
             border-radius: var(--radius-md);
+            flex: 1;
+        }
+
+        /* Contenedor del contenido principal del item (preview/icon + content) */
+        .project-deliverables-item-main {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Status button wrapper en el row (fuera del item) */
+        .project-deliverables-item-row .dsu-status-button-wrapper {
+            flex-shrink: 0;
         }
 
         .project-deliverables-item-preview {
@@ -1219,6 +1253,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-04);
+            min-width: 0; /* Permite que el contenido se ajuste */
         }
 
         .project-deliverables-item-text {
@@ -1255,6 +1290,10 @@
         .project-deliverables-item-action img {
             width: 16px;
             height: 16px;
+        }
+
+        .project-deliverables-item-actions {
+            flex-shrink: 0;
         }
 
         .project-deliverables-section--disabled .dsu-input {
@@ -2768,23 +2807,47 @@
                         <div class="project-deliverables-items-container" id="deliverablesItemsContainer">
                             <!-- Items se agregarán aquí dinámicamente -->
                         </div>
-                        <div class="dsu-input-group">
-                            <div class="dsu-input-container project-deliverables-input-wrapper">
-                                <input 
-                                    type="text" 
-                                    class="dsu-input dsu-input--only" 
-                                    id="deliverablesInput" 
-                                    placeholder="Choose an unique name"
-                                >
-                                <div class="project-deliverables-input-actions">
-                                    <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
-                                        <img src="images/attachment.svg" alt="Upload">
+                        <div class="project-deliverables-input-row">
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container project-deliverables-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="deliverablesInput" 
+                                        placeholder="Choose an unique name"
+                                    >
+                                    <div class="project-deliverables-input-actions">
+                                        <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
+                                            <img src="images/attachment.svg" alt="Upload">
+                                        </button>
+                                        <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
+                                            <img src="images/project.svg" alt="Image">
+                                        </button>
+                                        <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
+                                        <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dsu-status-button-wrapper">
+                                <button class="dsu-status-button dsu-status-button--to-start" id="deliverableStatusButton">
+                                    <span id="deliverableStatusButtonText">To start</span>
+                                    <span class="dsu-status-button__chevron">
+                                        <img src="images/down-chevron.svg" alt="Chevron" id="deliverableStatusChevron">
+                                    </span>
+                                </button>
+                                <div class="dsu-status-dropdown" id="deliverableStatusDropdown">
+                                    <button class="dsu-status-dropdown__item" data-status="to-start">
+                                        <span class="dsu-status-dropdown__text">To start</span>
                                     </button>
-                                    <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
-                                        <img src="images/project.svg" alt="Image">
+                                    <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                        <span class="dsu-status-dropdown__text">In progress</span>
                                     </button>
-                                    <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
-                                    <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
+                                    <button class="dsu-status-dropdown__item" data-status="done">
+                                        <span class="dsu-status-dropdown__text">Done</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="paused">
+                                        <span class="dsu-status-dropdown__text">Paused</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -4404,70 +4467,9 @@
                     const deliverablesContainer = document.getElementById('deliverablesItemsContainer');
                     if (deliverablesContainer) {
                         project.deliverables.forEach(deliverable => {
-                            // Buscar función addDeliverableItem (puede estar en window o en el scope local)
+                            // Usar la función addDeliverableItem que ya incluye el status button
                             if (typeof window.addDeliverableItem === 'function') {
                                 window.addDeliverableItem(deliverable);
-                            } else {
-                                // Si no está disponible, intentar usar la lógica directamente
-                                const item = document.createElement('div');
-                                item.className = 'project-deliverables-item';
-                                
-                                let previewHtml = '';
-                                let contentHtml = '';
-                                
-                                if (deliverable.type === 'image' && deliverable.preview) {
-                                    previewHtml = `<img src="${deliverable.preview}" alt="${deliverable.name || ''}" class="project-deliverables-item-preview">`;
-                                    contentHtml = `
-                                        <div class="project-deliverables-item-content">
-                                            <p class="project-deliverables-item-text">${deliverable.name || ''}</p>
-                                            <p class="project-deliverables-item-link">${deliverable.size || ''}</p>
-                                        </div>
-                                    `;
-                                } else if (deliverable.type === 'file') {
-                                    previewHtml = `
-                                        <div class="project-deliverables-item-icon">
-                                            <img src="images/attachment.svg" alt="File">
-                                        </div>
-                                    `;
-                                    contentHtml = `
-                                        <div class="project-deliverables-item-content">
-                                            <p class="project-deliverables-item-text">${deliverable.name || ''}</p>
-                                            <p class="project-deliverables-item-link">${deliverable.size || ''}</p>
-                                        </div>
-                                    `;
-                                } else if (deliverable.type === 'link' && deliverable.url) {
-                                    previewHtml = `
-                                        <div class="project-deliverables-item-icon">
-                                            <img src="images/link.svg" alt="Link">
-                                        </div>
-                                    `;
-                                    contentHtml = `
-                                        <div class="project-deliverables-item-content">
-                                            <p class="project-deliverables-item-text">${deliverable.name || deliverable.url}</p>
-                                            <a href="${deliverable.url}" target="_blank" class="project-deliverables-item-link">${deliverable.url}</a>
-                                        </div>
-                                    `;
-                                } else if (deliverable.type === 'text' && deliverable.text) {
-                                    contentHtml = `
-                                        <div class="project-deliverables-item-content">
-                                            <p class="project-deliverables-item-text">-${deliverable.text}</p>
-                                        </div>
-                                    `;
-                                }
-                                
-                                item.innerHTML = `
-                                    ${previewHtml}
-                                    ${contentHtml}
-                                    <div class="project-deliverables-item-actions">
-                                        <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item').remove()">
-                                            <img src="images/trash.svg" alt="Delete">
-                                        </button>
-                                        <button class="project-deliverables-item-action" onclick="editDeliverableItem(this)">
-                                            <img src="images/Edit.svg" alt="Edit">
-                                        </button>
-                                    </div>
-                                `;
-                                deliverablesContainer.appendChild(item);
                             }
                         });
                         console.log('✅ Deliverables cargados');
@@ -7654,6 +7656,28 @@
             function addDeliverableItem(data) {
                 if (!deliverablesItemsContainer) return;
                 
+                // Generate unique ID for this item's status button
+                const uniqueId = 'deliverable_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                const statusButtonId = `deliverableStatusButton_${uniqueId}`;
+                const statusDropdownId = `deliverableStatusDropdown_${uniqueId}`;
+                const statusChevronId = `deliverableStatusChevron_${uniqueId}`;
+                const statusTextId = `deliverableStatusButtonText_${uniqueId}`;
+                
+                // Get status from data or default to 'to-start'
+                const initialStatus = data.status || 'to-start';
+                const statusTextMap = {
+                    'to-start': 'To start',
+                    'in-progress': 'In progress',
+                    'done': 'Done',
+                    'paused': 'Paused'
+                };
+                const initialStatusText = statusTextMap[initialStatus] || 'To start';
+                
+                // Create wrapper row (similar to input row)
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'project-deliverables-item-row';
+                
+                // Create item container
                 const item = document.createElement('div');
                 item.className = 'project-deliverables-item';
                 
@@ -7702,11 +7726,14 @@
                     `;
                 }
                 
+                // Item content (without status button inside)
                 item.innerHTML = `
-                    ${previewHtml}
-                    ${contentHtml}
+                    <div class="project-deliverables-item-main">
+                        ${previewHtml}
+                        ${contentHtml}
+                    </div>
                     <div class="project-deliverables-item-actions">
-                        <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item').remove()">
+                        <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item-row').remove()">
                             <img src="images/trash.svg" alt="Delete">
                         </button>
                         <button class="project-deliverables-item-action" onclick="editDeliverableItem(this)">
@@ -7714,12 +7741,53 @@
                         </button>
                     </div>
                 `;
-                deliverablesItemsContainer.appendChild(item);
+                
+                // Status button wrapper (outside the item)
+                const statusWrapper = document.createElement('div');
+                statusWrapper.className = 'dsu-status-button-wrapper';
+                statusWrapper.innerHTML = `
+                    <button class="dsu-status-button dsu-status-button--${initialStatus}" id="${statusButtonId}">
+                        <span id="${statusTextId}">${initialStatusText}</span>
+                        <span class="dsu-status-button__chevron">
+                            <img src="images/down-chevron.svg" alt="Chevron" id="${statusChevronId}">
+                        </span>
+                    </button>
+                    <div class="dsu-status-dropdown" id="${statusDropdownId}">
+                        <button class="dsu-status-dropdown__item" data-status="to-start">
+                            <span class="dsu-status-dropdown__text">To start</span>
+                        </button>
+                        <button class="dsu-status-dropdown__item" data-status="in-progress">
+                            <span class="dsu-status-dropdown__text">In progress</span>
+                        </button>
+                        <button class="dsu-status-dropdown__item" data-status="done">
+                            <span class="dsu-status-dropdown__text">Done</span>
+                        </button>
+                        <button class="dsu-status-dropdown__item" data-status="paused">
+                            <span class="dsu-status-dropdown__text">Paused</span>
+                        </button>
+                    </div>
+                `;
+                
+                // Assemble row wrapper
+                rowWrapper.appendChild(item);
+                rowWrapper.appendChild(statusWrapper);
+                deliverablesItemsContainer.appendChild(rowWrapper);
+                
+                // Initialize status button for this item
+                initStatusDropdown(
+                    statusButtonId,
+                    statusDropdownId,
+                    statusChevronId,
+                    statusTextId
+                );
             }
 
             // Edit item functionality
             window.editDeliverableItem = function(button) {
-                const item = button.closest('.project-deliverables-item');
+                const row = button.closest('.project-deliverables-item-row');
+                if (!row) return;
+                const item = row.querySelector('.project-deliverables-item');
+                if (!item) return;
                 const textElement = item.querySelector('.project-deliverables-item-text');
                 if (!textElement) return;
                 
@@ -7803,6 +7871,17 @@
                     }
                 });
             }
+
+            // Initialize deliverable status button
+            initStatusDropdown(
+                'deliverableStatusButton',
+                'deliverableStatusDropdown',
+                'deliverableStatusChevron',
+                'deliverableStatusButtonText'
+            );
+
+            // Make addDeliverableItem available globally
+            window.addDeliverableItem = addDeliverableItem;
 
             console.log('✅ Deliverables Section inicializado correctamente');
         }
@@ -8360,35 +8439,51 @@
                     const deliverables = [];
                     const deliverablesContainer = document.getElementById('deliverablesItemsContainer');
                     if (deliverablesContainer) {
-                        const deliverableItems = deliverablesContainer.querySelectorAll('.project-deliverables-item');
-                        deliverableItems.forEach(item => {
+                        const deliverableRows = deliverablesContainer.querySelectorAll('.project-deliverables-item-row');
+                        deliverableRows.forEach(row => {
+                            const item = row.querySelector('.project-deliverables-item');
+                            if (!item) return;
+                            
                             const itemContent = item.querySelector('.project-deliverables-item-content');
                             if (itemContent) {
                                 const itemText = itemContent.querySelector('.project-deliverables-item-text');
                                 const itemLink = itemContent.querySelector('.project-deliverables-item-link, a');
                                 const preview = item.querySelector('.project-deliverables-item-preview');
                                 
+                                // Obtener el status del deliverable desde el status button (ahora está en el row, no en el item)
+                                let deliverableStatus = 'to-start';
+                                const statusButton = row.querySelector('.dsu-status-button');
+                                if (statusButton) {
+                                    const statusClass = Array.from(statusButton.classList).find(cls => cls.startsWith('dsu-status-button--'));
+                                    if (statusClass) {
+                                        deliverableStatus = statusClass.replace('dsu-status-button--', '');
+                                    }
+                                }
+
                                 if (preview && preview.tagName === 'IMG') {
                                     // Es una imagen
                                     deliverables.push({
                                         type: 'image',
                                         name: itemText ? itemText.textContent.trim() : '',
                                         preview: preview.src || '',
-                                        size: itemLink ? itemLink.textContent.trim() : ''
+                                        size: itemLink ? itemLink.textContent.trim() : '',
+                                        status: deliverableStatus
                                     });
                                 } else if (item.querySelector('.project-deliverables-item-icon img[src*="attachment"]')) {
                                     // Es un archivo
                                     deliverables.push({
                                         type: 'file',
                                         name: itemText ? itemText.textContent.trim() : '',
-                                        size: itemLink ? itemLink.textContent.trim() : ''
+                                        size: itemLink ? itemLink.textContent.trim() : '',
+                                        status: deliverableStatus
                                     });
                                 } else if (itemLink && itemLink.tagName === 'A' && itemLink.href) {
                                     // Es un link
                                     deliverables.push({
                                         type: 'link',
                                         name: itemText ? itemText.textContent.trim() : '',
-                                        url: itemLink.href
+                                        url: itemLink.href,
+                                        status: deliverableStatus
                                     });
                                 } else if (itemText) {
                                     // Es texto (bullet)
@@ -8396,7 +8491,8 @@
                                     if (text) {
                                         deliverables.push({
                                             type: 'text',
-                                            text: text
+                                            text: text,
+                                            status: deliverableStatus
                                         });
                                     }
                                 }
