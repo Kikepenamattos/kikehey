@@ -54,6 +54,7 @@
             gap: 32px;
             width: 80%;
             margin: 0 auto;
+            padding-bottom: 64px;
         }
 
         /* Project Name Container */
@@ -321,6 +322,114 @@
         }
 
         .asset-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Rich Text Content Styles */
+        .rich-text-content {
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+        }
+
+        .rich-text-content p {
+            margin: 0 0 var(--spacing-12) 0;
+        }
+
+        .rich-text-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .rich-text-content ul,
+        .rich-text-content ol {
+            margin: 0 0 var(--spacing-12) 0;
+            padding-left: var(--spacing-24);
+        }
+
+        .rich-text-content a {
+            color: var(--color-basics-dark-blue);
+            text-decoration: none;
+        }
+
+        .rich-text-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Deliverables Section Styles */
+        .deliverables-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .deliverable-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+        }
+
+        .deliverable-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .deliverable-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .deliverable-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .deliverable-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .deliverable-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .deliverable-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .deliverable-item-link a {
+            color: var(--color-basics-dark-blue);
+            text-decoration: none;
+        }
+
+        .deliverable-item-link a:hover {
             text-decoration: underline;
         }
 
@@ -612,10 +721,34 @@
                     <div class="agreements-list" id="agreementsListDisplay"></div>
                 </div>
                 
+                <!-- Project context Section -->
+                <div class="project-section" id="projectContextSection" style="display: none;">
+                    <h2 class="project-section-title">Project context</h2>
+                    <div class="rich-text-content" id="projectContextDisplay"></div>
+                </div>
+                
+                <!-- What do you want to solve? Section -->
+                <div class="project-section" id="solveSection" style="display: none;">
+                    <h2 class="project-section-title">What do you want to solve?</h2>
+                    <div class="rich-text-content" id="solveDisplay"></div>
+                </div>
+                
+                <!-- Solution approach Section -->
+                <div class="project-section" id="solutionApproachSection" style="display: none;">
+                    <h2 class="project-section-title">Solution approach</h2>
+                    <div class="rich-text-content" id="solutionApproachDisplay"></div>
+                </div>
+                
                 <!-- Assets or links -->
                 <div class="project-section" id="assetsSection" style="display: none;">
                     <h2 class="project-section-title">Assets or links</h2>
                     <div class="assets-list" id="assetsListDisplay"></div>
+                </div>
+                
+                <!-- Deliverables Section -->
+                <div class="project-section" id="deliverablesSection" style="display: none;">
+                    <h2 class="project-section-title">Deliverables</h2>
+                    <div class="deliverables-list" id="deliverablesListDisplay"></div>
                 </div>
             </div>
         </div>
@@ -1368,6 +1501,112 @@
                 console.log('✅ Agreements mostrados:', project.agreements.length);
             } else {
                 console.log('ℹ️ No hay Agreements para mostrar');
+            }
+            
+            // Mostrar Project context
+            const projectContextSection = document.getElementById('projectContextSection');
+            const projectContextDisplay = document.getElementById('projectContextDisplay');
+            if (projectContextDisplay && project.projectContext && project.projectContext.trim()) {
+                projectContextDisplay.innerHTML = project.projectContext;
+                if (projectContextSection) {
+                    projectContextSection.style.display = 'block';
+                }
+                console.log('✅ Project context mostrado');
+            } else {
+                console.log('ℹ️ No hay Project context para mostrar');
+            }
+            
+            // Mostrar What do you want to solve?
+            const solveSection = document.getElementById('solveSection');
+            const solveDisplay = document.getElementById('solveDisplay');
+            if (solveDisplay && project.solveDescription && project.solveDescription.trim()) {
+                solveDisplay.innerHTML = project.solveDescription;
+                if (solveSection) {
+                    solveSection.style.display = 'block';
+                }
+                console.log('✅ What do you want to solve mostrado');
+            } else {
+                console.log('ℹ️ No hay What do you want to solve para mostrar');
+            }
+            
+            // Mostrar Solution approach
+            const solutionApproachSection = document.getElementById('solutionApproachSection');
+            const solutionApproachDisplay = document.getElementById('solutionApproachDisplay');
+            if (solutionApproachDisplay && project.solutionApproach && project.solutionApproach.trim()) {
+                solutionApproachDisplay.innerHTML = project.solutionApproach;
+                if (solutionApproachSection) {
+                    solutionApproachSection.style.display = 'block';
+                }
+                console.log('✅ Solution approach mostrado');
+            } else {
+                console.log('ℹ️ No hay Solution approach para mostrar');
+            }
+            
+            // Mostrar Deliverables
+            const deliverablesSection = document.getElementById('deliverablesSection');
+            const deliverablesListDisplay = document.getElementById('deliverablesListDisplay');
+            if (deliverablesListDisplay && project.deliverables && Array.isArray(project.deliverables) && project.deliverables.length > 0) {
+                deliverablesListDisplay.innerHTML = '';
+                
+                project.deliverables.forEach((deliverable) => {
+                    const deliverableItem = document.createElement('div');
+                    deliverableItem.className = 'deliverable-item';
+                    
+                    let previewHtml = '';
+                    let contentHtml = '';
+                    
+                    if (deliverable.type === 'image' && deliverable.preview) {
+                        previewHtml = `<img src="${deliverable.preview}" alt="${escapeHtml(deliverable.name || '')}" class="deliverable-item-preview">`;
+                        contentHtml = `
+                            <div class="deliverable-item-content">
+                                <p class="deliverable-item-text">${escapeHtml(deliverable.name || '')}</p>
+                                ${deliverable.size ? `<p class="deliverable-item-link">${escapeHtml(deliverable.size)}</p>` : ''}
+                            </div>
+                        `;
+                    } else if (deliverable.type === 'file') {
+                        previewHtml = `
+                            <div class="deliverable-item-icon">
+                                <img src="images/attachment.svg" alt="File">
+                            </div>
+                        `;
+                        contentHtml = `
+                            <div class="deliverable-item-content">
+                                <p class="deliverable-item-text">${escapeHtml(deliverable.name || '')}</p>
+                                ${deliverable.size ? `<p class="deliverable-item-link">${escapeHtml(deliverable.size)}</p>` : ''}
+                            </div>
+                        `;
+                    } else if (deliverable.type === 'link' && deliverable.url) {
+                        previewHtml = `
+                            <div class="deliverable-item-icon">
+                                <img src="images/link.svg" alt="Link">
+                            </div>
+                        `;
+                        contentHtml = `
+                            <div class="deliverable-item-content">
+                                <p class="deliverable-item-text">${escapeHtml(deliverable.name || deliverable.url)}</p>
+                                <div class="deliverable-item-link">
+                                    <a href="${escapeHtml(deliverable.url)}" target="_blank">${escapeHtml(deliverable.url)}</a>
+                                </div>
+                            </div>
+                        `;
+                    } else if (deliverable.type === 'text' && deliverable.text) {
+                        contentHtml = `
+                            <div class="deliverable-item-content">
+                                <p class="deliverable-item-text">-${escapeHtml(deliverable.text)}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    deliverableItem.innerHTML = previewHtml + contentHtml;
+                    deliverablesListDisplay.appendChild(deliverableItem);
+                });
+                
+                if (deliverablesSection) {
+                    deliverablesSection.style.display = 'block';
+                }
+                console.log('✅ Deliverables mostrados:', project.deliverables.length);
+            } else {
+                console.log('ℹ️ No hay Deliverables para mostrar');
             }
         }
         

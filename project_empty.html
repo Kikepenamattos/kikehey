@@ -4329,6 +4329,114 @@
                 console.log('ℹ️ No hay Agreements para cargar');
             }
             
+            // Cargar Project context
+            if (project.projectContext) {
+                const projectContextEditor = document.querySelector('#projectTestRichTextInput .dsu-rich-text-input__editor');
+                if (projectContextEditor) {
+                    projectContextEditor.innerHTML = project.projectContext;
+                    console.log('✅ Project context cargado');
+                }
+            }
+            
+            // Cargar What do you want to solve?
+            if (project.solveDescription) {
+                const solveEditor = document.querySelector('#projectSolveRichTextInput .dsu-rich-text-input__editor');
+                if (solveEditor) {
+                    solveEditor.innerHTML = project.solveDescription;
+                    console.log('✅ What do you want to solve cargado');
+                }
+            }
+            
+            // Cargar Solution approach
+            if (project.solutionApproach) {
+                const solutionApproachEditor = document.querySelector('#projectSolutionApproachRichTextInput .dsu-rich-text-input__editor');
+                if (solutionApproachEditor) {
+                    solutionApproachEditor.innerHTML = project.solutionApproach;
+                    console.log('✅ Solution approach cargado');
+                }
+            }
+            
+            // Cargar Deliverables
+            if (project.deliverables && Array.isArray(project.deliverables) && project.deliverables.length > 0) {
+                console.log('📦 Cargando Deliverables:', project.deliverables.length);
+                // Esperar a que initDeliverablesSection haya terminado
+                setTimeout(() => {
+                    const deliverablesContainer = document.getElementById('deliverablesItemsContainer');
+                    if (deliverablesContainer) {
+                        project.deliverables.forEach(deliverable => {
+                            // Buscar función addDeliverableItem (puede estar en window o en el scope local)
+                            if (typeof window.addDeliverableItem === 'function') {
+                                window.addDeliverableItem(deliverable);
+                            } else {
+                                // Si no está disponible, intentar usar la lógica directamente
+                                const item = document.createElement('div');
+                                item.className = 'project-deliverables-item';
+                                
+                                let previewHtml = '';
+                                let contentHtml = '';
+                                
+                                if (deliverable.type === 'image' && deliverable.preview) {
+                                    previewHtml = `<img src="${deliverable.preview}" alt="${deliverable.name || ''}" class="project-deliverables-item-preview">`;
+                                    contentHtml = `
+                                        <div class="project-deliverables-item-content">
+                                            <p class="project-deliverables-item-text">${deliverable.name || ''}</p>
+                                            <p class="project-deliverables-item-link">${deliverable.size || ''}</p>
+                                        </div>
+                                    `;
+                                } else if (deliverable.type === 'file') {
+                                    previewHtml = `
+                                        <div class="project-deliverables-item-icon">
+                                            <img src="images/attachment.svg" alt="File">
+                                        </div>
+                                    `;
+                                    contentHtml = `
+                                        <div class="project-deliverables-item-content">
+                                            <p class="project-deliverables-item-text">${deliverable.name || ''}</p>
+                                            <p class="project-deliverables-item-link">${deliverable.size || ''}</p>
+                                        </div>
+                                    `;
+                                } else if (deliverable.type === 'link' && deliverable.url) {
+                                    previewHtml = `
+                                        <div class="project-deliverables-item-icon">
+                                            <img src="images/link.svg" alt="Link">
+                                        </div>
+                                    `;
+                                    contentHtml = `
+                                        <div class="project-deliverables-item-content">
+                                            <p class="project-deliverables-item-text">${deliverable.name || deliverable.url}</p>
+                                            <a href="${deliverable.url}" target="_blank" class="project-deliverables-item-link">${deliverable.url}</a>
+                                        </div>
+                                    `;
+                                } else if (deliverable.type === 'text' && deliverable.text) {
+                                    contentHtml = `
+                                        <div class="project-deliverables-item-content">
+                                            <p class="project-deliverables-item-text">-${deliverable.text}</p>
+                                        </div>
+                                    `;
+                                }
+                                
+                                item.innerHTML = `
+                                    ${previewHtml}
+                                    ${contentHtml}
+                                    <div class="project-deliverables-item-actions">
+                                        <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item').remove()">
+                                            <img src="images/trash.svg" alt="Delete">
+                                        </button>
+                                        <button class="project-deliverables-item-action" onclick="editDeliverableItem(this)">
+                                            <img src="images/Edit.svg" alt="Edit">
+                                        </button>
+                                    </div>
+                                `;
+                                deliverablesContainer.appendChild(item);
+                            }
+                        });
+                        console.log('✅ Deliverables cargados');
+                    }
+                }, 1000);
+            } else {
+                console.log('ℹ️ No hay Deliverables para cargar');
+            }
+            
             // Actualizar estado final del botón Publish después de cargar todos los datos
             // Esperar suficiente tiempo para que todos los elementos se hayan cargado
             setTimeout(() => {
@@ -8163,6 +8271,79 @@
                     
                     console.log('📋 Agreements recopilados:', agreements.length, agreements);
                     
+                    // Recopilar Project context
+                    let projectContext = '';
+                    const projectContextEditor = document.querySelector('#projectTestRichTextInput .dsu-rich-text-input__editor');
+                    if (projectContextEditor) {
+                        projectContext = projectContextEditor.innerHTML.trim();
+                        console.log('📝 Project context recopilado:', projectContext ? 'contenido presente' : 'vacío');
+                    }
+                    
+                    // Recopilar What do you want to solve?
+                    let solveDescription = '';
+                    const solveEditor = document.querySelector('#projectSolveRichTextInput .dsu-rich-text-input__editor');
+                    if (solveEditor) {
+                        solveDescription = solveEditor.innerHTML.trim();
+                        console.log('🔍 What do you want to solve recopilado:', solveDescription ? 'contenido presente' : 'vacío');
+                    }
+                    
+                    // Recopilar Solution approach
+                    let solutionApproach = '';
+                    const solutionApproachEditor = document.querySelector('#projectSolutionApproachRichTextInput .dsu-rich-text-input__editor');
+                    if (solutionApproachEditor) {
+                        solutionApproach = solutionApproachEditor.innerHTML.trim();
+                        console.log('💡 Solution approach recopilado:', solutionApproach ? 'contenido presente' : 'vacío');
+                    }
+                    
+                    // Recopilar Deliverables
+                    const deliverables = [];
+                    const deliverablesContainer = document.getElementById('deliverablesItemsContainer');
+                    if (deliverablesContainer) {
+                        const deliverableItems = deliverablesContainer.querySelectorAll('.project-deliverables-item');
+                        deliverableItems.forEach(item => {
+                            const itemContent = item.querySelector('.project-deliverables-item-content');
+                            if (itemContent) {
+                                const itemText = itemContent.querySelector('.project-deliverables-item-text');
+                                const itemLink = itemContent.querySelector('.project-deliverables-item-link, a');
+                                const preview = item.querySelector('.project-deliverables-item-preview');
+                                
+                                if (preview && preview.tagName === 'IMG') {
+                                    // Es una imagen
+                                    deliverables.push({
+                                        type: 'image',
+                                        name: itemText ? itemText.textContent.trim() : '',
+                                        preview: preview.src || '',
+                                        size: itemLink ? itemLink.textContent.trim() : ''
+                                    });
+                                } else if (item.querySelector('.project-deliverables-item-icon img[src*="attachment"]')) {
+                                    // Es un archivo
+                                    deliverables.push({
+                                        type: 'file',
+                                        name: itemText ? itemText.textContent.trim() : '',
+                                        size: itemLink ? itemLink.textContent.trim() : ''
+                                    });
+                                } else if (itemLink && itemLink.tagName === 'A' && itemLink.href) {
+                                    // Es un link
+                                    deliverables.push({
+                                        type: 'link',
+                                        name: itemText ? itemText.textContent.trim() : '',
+                                        url: itemLink.href
+                                    });
+                                } else if (itemText) {
+                                    // Es texto (bullet)
+                                    const text = itemText.textContent.replace(/^-\s*/, '').trim();
+                                    if (text) {
+                                        deliverables.push({
+                                            type: 'text',
+                                            text: text
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    console.log('📦 Deliverables recopilados:', deliverables.length, deliverables);
+                    
                     // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
                     const urlParams = new URLSearchParams(window.location.search);
                     const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
@@ -8182,7 +8363,11 @@
                             assets: assets,
                             goals: goals,
                             kpis: kpis,
-                            agreements: agreements
+                            agreements: agreements,
+                            projectContext: projectContext,
+                            solveDescription: solveDescription,
+                            solutionApproach: solutionApproach,
+                            deliverables: deliverables
                         };
                         
                         // Agregar budget allocation solo si tiene valor
