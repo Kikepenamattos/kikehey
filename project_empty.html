@@ -254,6 +254,36 @@
             margin-top: var(--spacing-48);
         }
 
+        .project-date-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-24);
+        }
+
+        .project-date-reset-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .project-date-reset-btn:hover {
+            opacity: 1;
+        }
+
+        .project-date-reset-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
         .project-status-wrapper {
             display: flex;
             align-items: center;
@@ -265,6 +295,14 @@
             font-size: var(--font-size-sm);
             font-weight: var(--font-weight-regular);
             color: var(--color-text-primary);
+        }
+
+        /* Override for tertiary button styles */
+        .dsu-button--tertiary {
+            background-color: #f4f7fb;
+            color: var(--color-text-primary);
+            border: none;
+            box-shadow: var(--button-tertiary-elevation-default);
         }
 
         /* Project Stages Section */
@@ -2310,14 +2348,20 @@
 
                 <!-- Date & Status Section -->
                 <div class="project-date-status-section">
-                    <div class="dsu-date-button-wrapper">
-                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="projectDateButton">
-                            <span class="dsu-agreements__date-button-icon">
-                                <img src="images/calendar.svg" alt="Calendar">
-                            </span>
-                            <span id="projectDateButtonText">Select a date to deliver the project</span>
+                    <div class="project-date-wrapper">
+                        <span class="project-status-label" id="estimatedDeliveryDateLabel" style="display: none;">Estimated delivery date:</span>
+                        <div class="dsu-date-button-wrapper">
+                            <button class="dsu-button dsu-button--tertiary dsu-button--small" id="projectDateButton">
+                                <span class="dsu-agreements__date-button-icon">
+                                    <img src="images/calendar.svg" alt="Calendar">
+                                </span>
+                                <span id="projectDateButtonText">Select a date to deliver the project</span>
+                            </button>
+                            <div class="dsu-date-picker" id="projectDatePicker"></div>
+                        </div>
+                        <button class="project-date-reset-btn" id="projectDateResetBtn" style="display: none;" title="Clear date">
+                            <img src="images/trash.svg" alt="Clear">
                         </button>
-                        <div class="dsu-date-picker" id="projectDatePicker"></div>
                     </div>
                     
                     <div class="project-status-wrapper">
@@ -3889,6 +3933,10 @@
             if (projectDateButtonText && project.projectDate) {
                 projectDateButtonText.textContent = project.projectDate;
                 console.log('✅ Project date cargado:', project.projectDate);
+                // Update label visibility after loading date
+                if (typeof updateProjectDateLabelVisibility === 'function') {
+                    updateProjectDateLabelVisibility();
+                }
             } else {
                 console.log('ℹ️ No hay project date para cargar');
             }
@@ -4926,8 +4974,71 @@
             // Initialize Date Picker
             initDatePicker('projectDatePicker', 'projectDateButton', 'projectDateButtonText');
             
+            // Initialize reset button for project date
+            initProjectDateReset();
+            
+            // Check if date is already set (when loading a project)
+            updateProjectDateLabelVisibility();
+            
             // Initialize Status Dropdown
             initStatusDropdown('projectStatusButton', 'projectStatusDropdown', 'projectStatusChevron', 'projectStatusButtonText');
+        }
+
+        // Store date picker state for project date picker
+        window.projectDatePickerState = {
+            selectedDate: null
+        };
+
+        // Function to reset project date picker
+        function initProjectDateReset() {
+            const resetBtn = document.getElementById('projectDateResetBtn');
+            const dateButtonText = document.getElementById('projectDateButtonText');
+            
+            if (!resetBtn || !dateButtonText) return;
+            
+            resetBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Reset button text
+                dateButtonText.textContent = 'Select a date to deliver the project';
+                
+                // Reset stored date
+                if (window.projectDatePickerState) {
+                    window.projectDatePickerState.selectedDate = null;
+                }
+                
+                // Hide label and reset button
+                const label = document.getElementById('estimatedDeliveryDateLabel');
+                if (label) label.style.display = 'none';
+                resetBtn.style.display = 'none';
+                
+                // Close picker if open and clear it
+                const picker = document.getElementById('projectDatePicker');
+                if (picker) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                    picker.innerHTML = '';
+                }
+            });
+        }
+
+        // Function to update label visibility based on date selection
+        function updateProjectDateLabelVisibility() {
+            const dateButtonText = document.getElementById('projectDateButtonText');
+            const label = document.getElementById('estimatedDeliveryDateLabel');
+            const resetBtn = document.getElementById('projectDateResetBtn');
+            
+            if (!dateButtonText || !label) return;
+            
+            const hasDate = dateButtonText.textContent !== 'Select a date to deliver the project';
+            
+            if (hasDate) {
+                label.style.display = '';
+                if (resetBtn) resetBtn.style.display = 'flex';
+            } else {
+                label.style.display = 'none';
+                if (resetBtn) resetBtn.style.display = 'none';
+            }
         }
 
         // Function to initialize date picker
@@ -5022,12 +5133,26 @@
                         e.stopPropagation();
                         const day = parseInt(dayEl.dataset.day);
                         selectedDate = new Date(year, month, day);
+                        
+                        // Store date for project date picker
+                        if (pickerId === 'projectDatePicker' && window.projectDatePickerState) {
+                            window.projectDatePickerState.selectedDate = selectedDate;
+                        }
+                        
                         renderDatePicker(currentDate);
                         
                         // Update button text
                         if (buttonText) {
                             const dateStr = selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                             buttonText.textContent = dateStr;
+                        }
+                        
+                        // Show label and reset button if this is the project date picker
+                        if (pickerId === 'projectDatePicker') {
+                            const label = document.getElementById('estimatedDeliveryDateLabel');
+                            const resetBtn = document.getElementById('projectDateResetBtn');
+                            if (label) label.style.display = '';
+                            if (resetBtn) resetBtn.style.display = 'flex';
                         }
                         
                         picker.classList.remove('dsu-date-picker--visible');
@@ -5047,6 +5172,14 @@
                 if (isVisible) {
                     picker.classList.remove('dsu-date-picker--visible');
                 } else {
+                    // For project date picker, check stored state if button text is default
+                    if (pickerId === 'projectDatePicker' && window.projectDatePickerState) {
+                        if (buttonText && buttonText.textContent === 'Select a date to deliver the project') {
+                            selectedDate = null;
+                        } else if (window.projectDatePickerState.selectedDate) {
+                            selectedDate = window.projectDatePickerState.selectedDate;
+                        }
+                    }
                     currentDate = selectedDate || new Date();
                     renderDatePicker(currentDate);
                     picker.classList.add('dsu-date-picker--visible');
