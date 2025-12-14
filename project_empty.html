@@ -3725,6 +3725,15 @@
                 console.log('ℹ️ No hay budget allocation para cargar');
             }
             
+            // Cargar currency si existe
+            const currencyInput = document.getElementById('currencyInput');
+            if (currencyInput && project.currency) {
+                currencyInput.value = project.currency;
+                console.log('✅ Currency cargado:', project.currency);
+            } else {
+                console.log('ℹ️ No hay currency para cargar');
+            }
+            
             // Cargar stages
             if (project.stages && Array.isArray(project.stages) && project.stages.length > 0) {
                 console.log('📋 Cargando stages:', project.stages.length);
@@ -8097,6 +8106,10 @@
                     const budgetAllocationInput = document.getElementById('budgetAllocationInput');
                     const budgetAllocation = budgetAllocationInput ? budgetAllocationInput.value.trim() : '';
                     
+                    // Obtener currency si existe
+                    const currencyInput = document.getElementById('currencyInput');
+                    const currency = currencyInput ? currencyInput.value.trim() : '';
+                    
                     // Verificar que DocuProjectData esté disponible
                     if (typeof DocuProjectData === 'undefined') {
                         console.error('❌ DocuProjectData no está disponible');
@@ -8373,6 +8386,11 @@
                         // Agregar budget allocation solo si tiene valor
                         if (budgetAllocation) {
                             projectData.budgetAllocation = budgetAllocation;
+                        }
+                        
+                        // Agregar currency solo si tiene valor
+                        if (currency) {
+                            projectData.currency = currency;
                         }
                         
                         let savedProject;

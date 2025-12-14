@@ -60,34 +60,92 @@
         /* Project Name Container */
         .project-name-container {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             gap: var(--spacing-16);
-            margin-bottom: var(--spacing-24);
         }
 
-        .project-name-container .dsu-input-group {
+        /* Project Name Title - Según Figma */
+        .project-name-title {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+            margin: 0;
+            padding: 0;
             flex: 1;
         }
 
         /* Project Actions */
         .project-actions {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: var(--spacing-12);
-            padding-top: var(--spacing-32);
         }
 
-        /* Budget Section */
+        /* Edit Project Link - Según Figma */
+        .edit-project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-text-primary, #0a243f);
+            text-decoration: none;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .edit-project-link:hover {
+            opacity: 0.7;
+        }
+
+        .edit-project-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+        }
+
+        .edit-project-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Budget Section - Según Figma */
         .project-budget-section {
-            display: flex;
-            gap: var(--spacing-16);
             margin-bottom: var(--spacing-24);
         }
 
-        .project-budget-section .dsu-input-group {
-            flex: 1;
+        .budget-allocation-display {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 14px;
+            line-height: normal;
         }
+
+        .budget-label {
+            font-weight: 400;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .budget-value {
+            font-weight: 700;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .budget-currency {
+            font-weight: 700;
+            color: var(--color-text-primary, #0a243f);
+            display: inline-block;
+        }
+
 
         /* Section Styles */
         .project-section {
@@ -519,6 +577,7 @@
             color: var(--color-text-secondary);
             font-style: italic;
         }
+
     </style>
 </head>
 <body>
@@ -633,50 +692,23 @@
             <div class="project-content">
                 <!-- Project Name Container -->
                 <div class="project-name-container">
-                    <div class="dsu-input-group">
-                        <div class="dsu-input-label">
-                            <div class="dsu-input-label__text">
-                                <span>Project name</span>
-                                <span class="dsu-input-label__required">
-                                    <img src="images/asterisk.svg" alt="Required">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="dsu-input-container">
-                            <input 
-                                type="text" 
-                                class="dsu-input dsu-input--published" 
-                                id="projectNameDisplay"
-                                readonly
-                            >
-                        </div>
-                    </div>
+                    <h1 class="project-name-title" id="projectNameDisplay">Project name</h1>
                     <div class="project-actions">
-                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="editProjectBtn">
-                            <span class="dsu-button__icon">
+                        <a href="#" class="edit-project-link" id="editProjectBtn">
+                            <span>Edit project</span>
+                            <span class="edit-project-icon">
                                 <img src="images/Edit.svg" alt="Edit">
                             </span>
-                            <span class="dsu-button__text">Edit project</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
                 
                 <!-- Budget Allocation Section -->
                 <div class="project-budget-section" id="budgetSection" style="display: none;">
-                    <div class="dsu-input-group project-budget-input">
-                        <div class="dsu-input-label">
-                            <div class="dsu-input-label__text">
-                                <span>Budget allocation</span>
-                            </div>
-                        </div>
-                        <div class="dsu-input-container">
-                            <input 
-                                type="text" 
-                                class="dsu-input dsu-input--published" 
-                                id="budgetDisplay"
-                                readonly
-                            >
-                        </div>
+                    <div class="budget-allocation-display">
+                        <span class="budget-label">Budget allocation:</span>
+                        <span class="budget-value" id="budgetDisplay"></span>
+                        <span class="budget-currency" id="currencyDisplay"></span>
                     </div>
                 </div>
                 
@@ -827,7 +859,7 @@
 
         // Initialize Action Buttons
         function initActionButtons() {
-            // Edit Project Button
+            // Edit Project Link
             const editProjectBtn = document.getElementById('editProjectBtn');
             if (editProjectBtn) {
                 editProjectBtn.addEventListener('click', function(e) {
@@ -1161,17 +1193,56 @@
             // Mostrar nombre del proyecto
             const projectNameDisplay = document.getElementById('projectNameDisplay');
             if (projectNameDisplay && project.name) {
-                projectNameDisplay.value = project.name;
+                projectNameDisplay.textContent = project.name;
             }
 
             // Mostrar budget allocation si existe
             const budgetSection = document.getElementById('budgetSection');
             const budgetDisplay = document.getElementById('budgetDisplay');
-            if (budgetDisplay && project.budgetAllocation) {
-                budgetDisplay.value = project.budgetAllocation;
-                if (budgetSection) {
-                    budgetSection.style.display = 'flex';
+            const currencyDisplay = document.getElementById('currencyDisplay');
+            
+            console.log('🔍 Debug budget/currency:', {
+                budgetSection: !!budgetSection,
+                budgetDisplay: !!budgetDisplay,
+                currencyDisplay: !!currencyDisplay,
+                budgetAllocation: project.budgetAllocation,
+                currency: project.currency
+            });
+            
+            const hasBudget = project.budgetAllocation && project.budgetAllocation.trim() !== '';
+            const hasCurrency = project.currency && project.currency.trim() !== '';
+            
+            console.log('🔍 hasBudget:', hasBudget, 'hasCurrency:', hasCurrency);
+            
+            if (hasBudget || hasCurrency) {
+                if (budgetDisplay) {
+                    if (hasBudget) {
+                        budgetDisplay.textContent = project.budgetAllocation;
+                        console.log('✅ Budget allocation mostrado:', project.budgetAllocation);
+                    } else {
+                        budgetDisplay.textContent = '';
+                    }
                 }
+                
+                if (currencyDisplay) {
+                    if (hasCurrency) {
+                        // Agregar un espacio antes del currency para separarlo del budget
+                        currencyDisplay.textContent = ' ' + project.currency;
+                        console.log('✅ Currency mostrado:', project.currency);
+                    } else {
+                        currencyDisplay.textContent = '';
+                        console.log('⚠️ Currency vacío o no encontrado en project.currency');
+                    }
+                } else {
+                    console.error('❌ currencyDisplay element no encontrado en el DOM');
+                }
+                
+                if (budgetSection) {
+                    budgetSection.style.display = 'block';
+                    console.log('✅ Budget section mostrada');
+                }
+            } else {
+                console.log('ℹ️ No hay budget ni currency para mostrar');
             }
 
             // Mostrar Goals y KPIs
