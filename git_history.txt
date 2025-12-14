@@ -1,3 +1,5 @@
+2c66a468bd361803736db97474df4f18c4e84c14|Ubits|ubits@macbookpro.lan|2025-12-14 11:59:49 -0500|Feat: Actualizar visualización de project name y budget allocation según Figma - Agregar soporte para currency en budget allocation - Cambiar project name a título h1 - Cambiar budget allocation a texto simple con label y valor separados - Agregar visualización y persistencia de currency
+29852b2697793c7b7fec9ce1b01e354a2e06ad17|Ubits|ubits@macbookpro.lan|2025-12-13 19:24:09 -0500|Update: Actualizar changelog con últimos cambios
 14395415e8b23b3251a931490b89eb377cdb98b1|Ubits|ubits@macbookpro.lan|2025-12-13 19:23:56 -0500|Feat: Agregar persistencia y visualización de Project context, What do you want to solve, Solution approach y Deliverables - Reorganizar orden de secciones en project_view
 df55b70eda7f459c18bb884c5d585ce3f609bcef|Ubits|ubits@macbookpro.lan|2025-12-13 19:11:11 -0500|Update: Actualizar changelog con últimos cambios
 ff84bbc199db4257e5060313fb6e64cbfdd17e6e|Ubits|ubits@macbookpro.lan|2025-12-13 19:11:01 -0500|Fix: Reordenar secciones en project_view - Agreements antes de Assets
