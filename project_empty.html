@@ -1224,6 +1224,41 @@
             flex-shrink: 0;
         }
 
+        /* Asegurar que el dropdown de status tenga prioridad sobre sticky buttons */
+        .dsu-status-button-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dsu-status-dropdown {
+            z-index: 150 !important; /* Mayor que dsu-sticky-buttons (z-index: 100) */
+        }
+
+        /* Asegurar que el dropdown expandido esté por encima de todo */
+        .dsu-status-dropdown--expanded {
+            z-index: 150 !important;
+        }
+
+        /* Dropdown mostrado hacia arriba cuando está cerca del bottom */
+        .dsu-status-dropdown--upward {
+            top: auto !important;
+            bottom: calc(100% + var(--spacing-08)) !important;
+            margin-top: 0 !important;
+            margin-bottom: var(--spacing-04) !important;
+        }
+
+        .dsu-status-dropdown--upward.dsu-status-dropdown--expanded {
+            transform: translateY(0) !important;
+        }
+
+        /* Mantener posición durante el cierre - evitar que aparezca abajo */
+        .dsu-status-dropdown--upward:not(.dsu-status-dropdown--expanded) {
+            top: auto !important;
+            bottom: calc(100% + var(--spacing-08)) !important;
+            margin-top: 0 !important;
+            margin-bottom: var(--spacing-04) !important;
+        }
+
         .project-deliverables-item-preview {
             width: 48px;
             height: 48px;
@@ -5026,11 +5061,15 @@
                 e.stopPropagation();
                 const isExpanded = dropdown.classList.contains('dsu-status-dropdown--expanded');
                 
-                // Close all other dropdowns
+                // Close all other dropdowns - mantener posición durante animación
                 document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(d => {
                     if (d !== dropdown) {
                         d.style.maxHeight = '0px';
                         d.classList.remove('dsu-status-dropdown--expanded');
+                        // Remover clase --upward solo después de que termine la animación (250ms)
+                        setTimeout(() => {
+                            d.classList.remove('dsu-status-dropdown--upward');
+                        }, 250);
                         const btn = d.parentElement.querySelector('.dsu-status-button');
                         const chv = btn?.querySelector('.dsu-status-button__chevron img');
                         if (chv) {
@@ -5040,12 +5079,31 @@
                 });
                 
                 if (isExpanded) {
+                    // Cerrar dropdown - mantener posición durante animación
                     dropdown.style.maxHeight = '0px';
                     dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    // Remover clase --upward solo después de que termine la animación (250ms)
+                    setTimeout(() => {
+                        dropdown.classList.remove('dsu-status-dropdown--upward');
+                    }, 250);
                     if (chevron) {
                         chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
                     }
                 } else {
+                    // Detectar si el dropdown está cerca del bottom y mostrarlo hacia arriba
+                    const buttonRect = button.getBoundingClientRect();
+                    const dropdownHeight = dropdown.scrollHeight;
+                    const spaceBelow = window.innerHeight - buttonRect.bottom;
+                    const spaceAbove = buttonRect.top;
+                    const stickyButtonsHeight = 80; // Altura aproximada de sticky buttons
+                    
+                    // Si no hay suficiente espacio abajo pero sí arriba, mostrar hacia arriba
+                    if (spaceBelow < dropdownHeight + stickyButtonsHeight && spaceAbove > dropdownHeight) {
+                        dropdown.classList.add('dsu-status-dropdown--upward');
+                    } else {
+                        dropdown.classList.remove('dsu-status-dropdown--upward');
+                    }
+                    
                     dropdown.classList.add('dsu-status-dropdown--expanded');
                     dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
                     if (chevron) {
@@ -5070,20 +5128,28 @@
                     dropdownItems.forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
                     this.classList.add('dsu-status-dropdown__item--active');
                     
-                    // Close dropdown
+                    // Close dropdown - mantener posición durante animación
                     dropdown.style.maxHeight = '0px';
                     dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    // Remover clase --upward solo después de que termine la animación (250ms)
+                    setTimeout(() => {
+                        dropdown.classList.remove('dsu-status-dropdown--upward');
+                    }, 250);
                     if (chevron) {
                         chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
                     }
                 });
             });
             
-            // Close dropdown when clicking outside
+            // Close dropdown when clicking outside - mantener posición durante animación
             document.addEventListener('click', function(e) {
                 if (!dropdown.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-status-button-wrapper')) {
                     dropdown.style.maxHeight = '0px';
                     dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    // Remover clase --upward solo después de que termine la animación (250ms)
+                    setTimeout(() => {
+                        dropdown.classList.remove('dsu-status-dropdown--upward');
+                    }, 250);
                     if (chevron) {
                         chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
                     }
