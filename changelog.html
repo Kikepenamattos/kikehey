@@ -951,15 +951,21 @@
                         const commits = parseGitHistory(text);
                         console.log(`📝 Cargados ${commits.length} commits del historial local`);
                         
-                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos
-                        if (realCommits && realCommits.length > 0 && commits.length < realCommits.length) {
-                            console.warn(`⚠️ Los datos embebidos (${realCommits.length} commits) tienen más commits que el archivo local (${commits.length} commits)`);
-                            console.warn('   Usando datos embebidos para asegurar que todos los commits se muestren');
-                            const sortedRealCommits = [...realCommits].sort((a, b) => {
-                                return new Date(b.date) - new Date(a.date);
-                            });
-                            renderCommits(sortedRealCommits);
-                            return;
+                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos - usar el conjunto más actualizado
+                        if (realCommits && realCommits.length > 0) {
+                            // Comparar fecha del commit más reciente de cada fuente
+                            const sortedLocalCommits = [...commits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            const sortedRealCommits = [...realCommits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            
+                            const latestLocalDate = sortedLocalCommits.length > 0 ? new Date(sortedLocalCommits[0].date) : new Date(0);
+                            const latestRealDate = sortedRealCommits.length > 0 ? new Date(sortedRealCommits[0].date) : new Date(0);
+                            
+                            // Usar datos embebidos si tienen más commits O si tienen un commit más reciente
+                            if (realCommits.length > commits.length || latestRealDate > latestLocalDate) {
+                                console.warn(`⚠️ Usando datos embebidos: ${realCommits.length} commits (más reciente: ${sortedRealCommits[0]?.hash}) vs ${commits.length} commits locales (más reciente: ${sortedLocalCommits[0]?.hash})`);
+                                renderCommits(sortedRealCommits);
+                                return;
+                            }
                         }
                         
                         renderCommits(commits);
@@ -978,15 +984,21 @@
                         const commits = parseGitHistory(text);
                         console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
                         
-                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos
-                        if (realCommits && realCommits.length > 0 && commits.length < realCommits.length) {
-                            console.warn(`⚠️ Los datos embebidos (${realCommits.length} commits) tienen más commits que GitHub (${commits.length} commits)`);
-                            console.warn('   Usando datos embebidos para asegurar que todos los commits se muestren');
-                            const sortedRealCommits = [...realCommits].sort((a, b) => {
-                                return new Date(b.date) - new Date(a.date);
-                            });
-                            renderCommits(sortedRealCommits);
-                            return;
+                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos - usar el conjunto más actualizado
+                        if (realCommits && realCommits.length > 0) {
+                            // Comparar fecha del commit más reciente de cada fuente
+                            const sortedGithubCommits = [...commits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            const sortedRealCommits = [...realCommits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            
+                            const latestGithubDate = sortedGithubCommits.length > 0 ? new Date(sortedGithubCommits[0].date) : new Date(0);
+                            const latestRealDate = sortedRealCommits.length > 0 ? new Date(sortedRealCommits[0].date) : new Date(0);
+                            
+                            // Usar datos embebidos si tienen más commits O si tienen un commit más reciente
+                            if (realCommits.length > commits.length || latestRealDate > latestGithubDate) {
+                                console.warn(`⚠️ Usando datos embebidos: ${realCommits.length} commits (más reciente: ${sortedRealCommits[0]?.hash}) vs ${commits.length} commits de GitHub (más reciente: ${sortedGithubCommits[0]?.hash})`);
+                                renderCommits(sortedRealCommits);
+                                return;
+                            }
                         }
                         
                         renderCommits(commits);
@@ -1415,6 +1427,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '6445167',
+                fullHash: '64451670ae531f0c1997e14a592dde20c1217721',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-14 18:13:19 -0500',
+                message: 'Update: Actualizar changelog y git_history.txt con último commit'
+            },
             {
                 hash: 'c24deb1',
                 fullHash: 'c24deb11f38c4ca4f9ec1c2d87c9c3c36a272c27',
@@ -3365,7 +3385,7 @@
                 author: 'Ubits',
                 email: 'ubits@MacBook-Pro-de-Ubits.local',
                 date: '2025-08-25 10:02:03 -0500',
-                message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Login'
+                message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Loginc24deb11f38c4ca4f9ec1c2d87c9c3c36a272c27|Ubits|ubits@macbookpro.lan|2025-12-14 18:10:56 -0500|Feat: Agregar label \'Estimated delivery date\' y botón trash para resetear fecha - Agregar label \'Estimated delivery date\' con estilo project-status-label al lado del botón de fecha - Label solo visible cuando hay fecha seleccionada - Agregar botón trash para resetear la fecha seleccionada - Alinear horizontalmente label, botón de fecha y botón trash con gap de 24px - Implementar funcionalidad de reset que limpia fecha y oculta label y botón trash - Agregar override de estilos para dsu-button--tertiary con background-color #f4f7fb'
             }
         ];
     </script>
