@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="design-system/components/button.css">
     <link rel="stylesheet" href="design-system/components/tabs-chip.css">
     <link rel="stylesheet" href="design-system/components/card.css">
+    <link rel="stylesheet" href="design-system/components/date-picker.css">
+    <link rel="stylesheet" href="design-system/components/status-button.css">
+    <link rel="stylesheet" href="design-system/components/progress-bar.css">
     
     <style>
         * {
@@ -118,7 +121,7 @@
 
         /* Budget Section - Según Figma */
         .project-budget-section {
-            margin-bottom: var(--spacing-24);
+            /* margin-bottom: var(--spacing-24); */
         }
 
         .budget-allocation-display {
@@ -146,6 +149,85 @@
             display: inline-block;
         }
 
+        /* Project Date and Status Section - Según Figma */
+        .project-date-status-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            /* margin-top: var(--spacing-48); */
+            margin-bottom: var(--spacing-24);
+        }
+
+        .project-date-status-section .dsu-date-button-wrapper {
+            position: relative;
+        }
+
+        /* Date Button en modo publicado - mantiene estilos pero disabled */
+        .project-date-status-section .dsu-button--tertiary:disabled {
+            cursor: default;
+            opacity: 1;
+        }
+
+        .project-date-status-section .dsu-agreements__date-button-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .project-date-status-section .dsu-agreements__date-button-icon img {
+            width: 13.333px;
+            height: 13.333px;
+            object-fit: contain;
+        }
+
+        /* Project Status Wrapper */
+        .project-status-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-16);
+        }
+
+        /* Share Project Button */
+        .project-status-wrapper .dsu-button--secondary {
+            margin-left: 0;
+        }
+
+        .project-status-label {
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-text-primary, #0a243f);
+            width: 206px;
+        }
+
+        /* Status Button en modo publicado - sin cursor pointer ni hover */
+        .project-date-status-section .dsu-status-button-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .project-date-status-section .dsu-status-button {
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .project-date-status-section .dsu-status-button:hover {
+            /* Sin cambios en hover para modo publicado */
+        }
+
+        /* Estilos para botones small en project-date-status-section */
+        .project-date-status-section .dsu-button--small {
+            padding: 8px 0;
+            height: 37px;
+            font-size: 14px;
+            border-radius: 40px;
+            gap: 8px;
+        }
+
 
         /* Section Styles */
         .project-section {
@@ -163,32 +245,55 @@
             margin: 0;
         }
 
-        /* Stages Display */
+        /* Project Stages Header */
+        .project-stages-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: var(--spacing-24);
+        }
+
+        .overall-progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+        }
+
+        .overall-progress-label {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            white-space: nowrap;
+        }
+
+        .overall-progress-wrapper .dsu-progress {
+            min-width: 200px;
+        }
+
+        /* Stages Display - Cards horizontales según Figma */
         .stages-list {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: var(--spacing-16);
+            flex-wrap: wrap;
         }
 
         .stage-item {
-            padding: var(--spacing-16);
-            background-color: var(--color-surface-especial);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-basics-gray);
+            flex: 1;
+            min-width: 200px;
+            max-width: 100%;
         }
 
-        .stage-name {
-            font-family: var(--font-family-secondary);
-            font-size: var(--font-size-base);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-text-primary);
-            margin-bottom: var(--spacing-08);
+        /* Estilos para stages inactivos (texto gris claro) */
+        .stage-item--inactive .dsu-stage-status__badge-text,
+        .stage-item--inactive .dsu-stage-status__date {
+            color: var(--color-text-secondary, #6b7b8a);
         }
 
-        .stage-date {
-            font-family: var(--font-family-secondary);
-            font-size: var(--font-size-sm);
-            color: var(--color-text-secondary);
+        .stage-item--inactive .dsu-stage-status__badge {
+            background-color: var(--color-surface-especial, #f4f7fb);
         }
 
         /* Project Objective Section Styles */
@@ -712,9 +817,44 @@
                     </div>
                 </div>
                 
+                <!-- Project Date and Status Section -->
+                <div class="project-date-status-section" id="dateStatusSection" style="display: none;">
+                    <div class="dsu-date-button-wrapper">
+                        <button class="dsu-button dsu-button--tertiary dsu-button--small" disabled>
+                            <span class="dsu-agreements__date-button-icon">
+                                <img src="images/calendar.svg" alt="Calendar">
+                            </span>
+                            <span id="projectDateDisplay">Select a date to deliver the project</span>
+                        </button>
+                    </div>
+                    
+                    <div class="project-status-wrapper">
+                        <span class="project-status-label">Project status:</span>
+                        <div class="dsu-status-button-wrapper">
+                            <div class="dsu-status-button dsu-status-button--to-start" id="projectStatusDisplay">
+                                <span>To start</span>
+                            </div>
+                        </div>
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProjectBtn">
+                            <span class="dsu-button__text">Share project</span>
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Project Stages -->
                 <div class="project-section" id="stagesSection" style="display: none;">
-                    <h2 class="project-section-title">Define your project stages</h2>
+                    <div class="project-stages-header">
+                        <h2 class="project-section-title">Project stages</h2>
+                        <div class="overall-progress-wrapper">
+                            <span class="overall-progress-label">Overall progress:</span>
+                            <div class="dsu-progress dsu-progress--default dsu-progress--full-width" id="overallProgress">
+                                <span class="dsu-progress__percentage" id="overallProgressPercentage">0%</span>
+                                <div class="dsu-progress__bar">
+                                    <div class="dsu-progress__fill" id="overallProgressFill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="stages-list" id="stagesList"></div>
                 </div>
                 
@@ -1245,6 +1385,39 @@
                 console.log('ℹ️ No hay budget ni currency para mostrar');
             }
 
+            // Mostrar project date y status si existen
+            const dateStatusSection = document.getElementById('dateStatusSection');
+            const projectDateDisplay = document.getElementById('projectDateDisplay');
+            const projectStatusDisplay = document.getElementById('projectStatusDisplay');
+            
+            const hasProjectDate = project.projectDate && project.projectDate.trim() !== '';
+            const hasProjectStatus = project.projectStatus && project.projectStatus.trim() !== '';
+            
+            if (hasProjectDate || hasProjectStatus) {
+                if (projectDateDisplay && hasProjectDate) {
+                    projectDateDisplay.textContent = project.projectDate;
+                    console.log('✅ Project date mostrado:', project.projectDate);
+                }
+                
+                if (projectStatusDisplay && hasProjectStatus) {
+                    const statusText = project.projectStatus.split('-').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
+                    projectStatusDisplay.textContent = statusText;
+                    
+                    // Actualizar la clase del botón según el status (usando las clases del design system)
+                    projectStatusDisplay.className = 'dsu-status-button dsu-status-button--' + project.projectStatus;
+                    console.log('✅ Project status mostrado:', project.projectStatus);
+                }
+                
+                if (dateStatusSection) {
+                    dateStatusSection.style.display = 'flex';
+                    console.log('✅ Date/Status section mostrada');
+                }
+            } else {
+                console.log('ℹ️ No hay project date ni status para mostrar');
+            }
+
             // Mostrar Goals y KPIs
             const objectivesSection = document.getElementById('objectivesSection');
             const goalsItemsDisplay = document.getElementById('goalsItemsDisplay');
@@ -1375,21 +1548,147 @@
                 }
             }
 
-            // Mostrar stages
+            // Mostrar stages según Figma
             const stagesSection = document.getElementById('stagesSection');
             const stagesList = document.getElementById('stagesList');
+            const overallProgressPercentage = document.getElementById('overallProgressPercentage');
+            const overallProgressFill = document.getElementById('overallProgressFill');
+            
             if (stagesSection && stagesList && project.stages && project.stages.length > 0) {
                 stagesList.innerHTML = '';
-                project.stages.forEach(stage => {
+                
+                let totalProgress = 0;
+                let activeStageIndex = -1;
+                let stagesWithProgress = 0;
+                
+                // Determinar cuál es el stage activo (in-progress) y calcular progreso
+                project.stages.forEach((stage, index) => {
+                    const stageName = (stage.name || '').toLowerCase();
+                    if (stageName.includes('progress') || stageName === 'in progress') {
+                        activeStageIndex = index;
+                    }
+                    
+                    // Sumar progreso de todos los stages (si tienen progreso guardado)
+                    if (stage.progress !== undefined && stage.progress !== null) {
+                        totalProgress += stage.progress;
+                        stagesWithProgress++;
+                    }
+                });
+                
+                // Si no hay stage activo, usar el primero
+                if (activeStageIndex === -1 && project.stages.length > 0) {
+                    activeStageIndex = 0;
+                }
+                
+                // Si el stage activo no tiene progreso, asignarle 10% por defecto
+                if (activeStageIndex >= 0 && (!project.stages[activeStageIndex].progress || project.stages[activeStageIndex].progress === 0)) {
+                    if (stagesWithProgress === 0) {
+                        totalProgress = 10; // Si ningún stage tiene progreso, usar 10% para el activo
+                        stagesWithProgress = 1;
+                    }
+                }
+                
+                // Calcular overall progress (promedio de stages con progreso, o 10% si solo hay uno activo)
+                let overallProgress = 0;
+                if (stagesWithProgress > 0) {
+                    overallProgress = Math.round(totalProgress / stagesWithProgress);
+                } else if (activeStageIndex >= 0) {
+                    overallProgress = 10; // Default para stage activo sin progreso guardado
+                }
+                
+                // Actualizar overall progress
+                if (overallProgressPercentage) {
+                    overallProgressPercentage.textContent = overallProgress + '%';
+                }
+                if (overallProgressFill) {
+                    overallProgressFill.style.width = overallProgress + '%';
+                }
+                
+                // Crear cards para cada stage
+                project.stages.forEach((stage, index) => {
                     const stageItem = document.createElement('div');
                     stageItem.className = 'stage-item';
-                    stageItem.innerHTML = `
-                        <div class="stage-name">${stage.name || 'Sin nombre'}</div>
-                        <div class="stage-date">${stage.dateRange || ''}</div>
-                    `;
+                    
+                    const isActive = index === activeStageIndex;
+                    const stageProgress = isActive ? (stage.progress || 10) : 0;
+                    
+                    // Determinar el estado del stage
+                    let stageStatusClass = 'dsu-stage-status--to-start';
+                    const stageNameLower = (stage.name || '').toLowerCase();
+                    if (stageNameLower.includes('progress') || stageNameLower === 'in progress') {
+                        stageStatusClass = 'dsu-stage-status--in-progress';
+                    } else if (stageNameLower.includes('done') || stageNameLower.includes('completed')) {
+                        stageStatusClass = 'dsu-stage-status--completed';
+                    }
+                    
+                    // Agregar clase inactive si no es el activo
+                    if (!isActive) {
+                        stageItem.classList.add('stage-item--inactive');
+                    }
+                    
+                    // Crear estructura del stage card según Figma
+                    const stageCard = document.createElement('div');
+                    stageCard.className = `dsu-stage-status ${stageStatusClass}`;
+                    
+                    // Badge con nombre del stage
+                    const badge = document.createElement('div');
+                    badge.className = 'dsu-stage-status__badge';
+                    const badgeText = document.createElement('span');
+                    badgeText.className = 'dsu-stage-status__badge-text';
+                    badgeText.textContent = stage.name || 'Sin nombre';
+                    badge.appendChild(badgeText);
+                    
+                    // Agregar icono solo si es in-progress
+                    if (isActive && stageStatusClass === 'dsu-stage-status--in-progress') {
+                        const badgeIcon = document.createElement('span');
+                        badgeIcon.className = 'dsu-stage-status__badge-icon';
+                        const iconImg = document.createElement('img');
+                        iconImg.src = 'images/Progress.svg';
+                        iconImg.alt = 'Progress';
+                        badgeIcon.appendChild(iconImg);
+                        badge.appendChild(badgeIcon);
+                    }
+                    
+                    // Fecha
+                    const date = document.createElement('p');
+                    date.className = 'dsu-stage-status__date';
+                    date.textContent = stage.dateRange || '';
+                    
+                    // Barra de progreso (solo para el stage activo)
+                    let progressBar = null;
+                    if (isActive) {
+                        progressBar = document.createElement('div');
+                        progressBar.className = 'dsu-progress dsu-progress--default dsu-progress--full-width';
+                        
+                        const progressPercentage = document.createElement('span');
+                        progressPercentage.className = 'dsu-progress__percentage';
+                        progressPercentage.textContent = stageProgress + '%';
+                        
+                        const progressBarContainer = document.createElement('div');
+                        progressBarContainer.className = 'dsu-progress__bar';
+                        
+                        const progressFill = document.createElement('div');
+                        progressFill.className = 'dsu-progress__fill';
+                        progressFill.style.width = stageProgress + '%';
+                        
+                        progressBarContainer.appendChild(progressFill);
+                        progressBar.appendChild(progressPercentage);
+                        progressBar.appendChild(progressBarContainer);
+                    }
+                    
+                    // Ensamblar card
+                    stageCard.appendChild(badge);
+                    stageCard.appendChild(date);
+                    if (progressBar) {
+                        stageCard.appendChild(progressBar);
+                    }
+                    
+                    stageItem.appendChild(stageCard);
                     stagesList.appendChild(stageItem);
                 });
+                
                 stagesSection.style.display = 'block';
+                console.log('✅ Stages mostrados:', project.stages.length, 'Overall progress:', overallProgress + '%');
             }
 
             // Mostrar teams (usando el mismo componente que project_empty.html)

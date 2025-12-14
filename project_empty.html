@@ -3734,6 +3734,37 @@
                 console.log('ℹ️ No hay currency para cargar');
             }
             
+            // Cargar project date si existe
+            const projectDateButtonText = document.getElementById('projectDateButtonText');
+            if (projectDateButtonText && project.projectDate) {
+                projectDateButtonText.textContent = project.projectDate;
+                console.log('✅ Project date cargado:', project.projectDate);
+            } else {
+                console.log('ℹ️ No hay project date para cargar');
+            }
+            
+            // Cargar project status si existe
+            const projectStatusButtonText = document.getElementById('projectStatusButtonText');
+            if (projectStatusButtonText && project.projectStatus) {
+                const statusText = project.projectStatus.split('-').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                projectStatusButtonText.textContent = statusText;
+                
+                // Actualizar la clase del botón según el status
+                const projectStatusButton = document.getElementById('projectStatusButton');
+                if (projectStatusButton) {
+                    // Remover todas las clases de status
+                    projectStatusButton.className = projectStatusButton.className.replace(/dsu-status-button--\w+/g, '');
+                    // Agregar la clase correcta
+                    projectStatusButton.classList.add('dsu-status-button', `dsu-status-button--${project.projectStatus}`);
+                }
+                
+                console.log('✅ Project status cargado:', project.projectStatus);
+            } else {
+                console.log('ℹ️ No hay project status para cargar');
+            }
+            
             // Cargar stages
             if (project.stages && Array.isArray(project.stages) && project.stages.length > 0) {
                 console.log('📋 Cargando stages:', project.stages.length);
@@ -8110,6 +8141,23 @@
                     const currencyInput = document.getElementById('currencyInput');
                     const currency = currencyInput ? currencyInput.value.trim() : '';
                     
+                    // Obtener project date si existe
+                    const projectDateButtonText = document.getElementById('projectDateButtonText');
+                    const projectDate = projectDateButtonText && projectDateButtonText.textContent !== 'Select a date to deliver the project' 
+                        ? projectDateButtonText.textContent.trim() 
+                        : '';
+                    
+                    // Obtener project status si existe
+                    const projectStatusButton = document.getElementById('projectStatusButton');
+                    let projectStatus = 'to-start'; // Valor por defecto
+                    if (projectStatusButton) {
+                        // Extraer el status de la clase del botón (ej: dsu-status-button--in-progress)
+                        const classMatch = projectStatusButton.className.match(/dsu-status-button--(\w+(-\w+)*)/);
+                        if (classMatch) {
+                            projectStatus = classMatch[1];
+                        }
+                    }
+                    
                     // Verificar que DocuProjectData esté disponible
                     if (typeof DocuProjectData === 'undefined') {
                         console.error('❌ DocuProjectData no está disponible');
@@ -8392,6 +8440,14 @@
                         if (currency) {
                             projectData.currency = currency;
                         }
+                        
+                        // Agregar project date si existe
+                        if (projectDate) {
+                            projectData.projectDate = projectDate;
+                        }
+                        
+                        // Agregar project status (siempre, con valor por defecto si no se seleccionó)
+                        projectData.projectStatus = projectStatus;
                         
                         let savedProject;
                         
