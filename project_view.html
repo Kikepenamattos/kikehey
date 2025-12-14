@@ -245,6 +245,61 @@
             margin: 0;
         }
 
+        /* Solo para secciones colapsables */
+        .project-section-title[data-section] {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .project-section-title__text {
+            flex: 1;
+        }
+
+        .project-section-title__chevron {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .project-section-title__chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-section-title--collapsed .project-section-title__chevron {
+            transform: rotate(0deg);
+        }
+
+        .project-section-title--expanded .project-section-title__chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido colapsable de la sección */
+        .project-section-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .project-section-content--collapsed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .project-section-content--expanded {
+            max-height: 10000px;
+            opacity: 1;
+        }
+
         /* Project Stages Header */
         .project-stages-header {
             display: flex;
@@ -252,6 +307,11 @@
             justify-content: space-between;
             width: 100%;
             margin-bottom: var(--spacing-24);
+        }
+
+        .project-stages-header .project-section-title {
+            flex: 0 0 auto;
+            margin-right: auto;
         }
 
         .overall-progress-wrapper {
@@ -301,6 +361,8 @@
             display: flex;
             gap: var(--spacing-08);
             align-items: center;
+            margin-bottom: 24px;
+            margin-top: 24px;
         }
 
         .project-objective-content {
@@ -498,6 +560,7 @@
             font-size: var(--font-size-base);
             color: var(--color-text-primary);
             line-height: 1.6;
+            margin-top: 24px;
         }
 
         .rich-text-content p {
@@ -895,20 +958,41 @@
                 
                 <!-- Project context Section -->
                 <div class="project-section" id="projectContextSection" style="display: none;">
-                    <h2 class="project-section-title">Project context</h2>
-                    <div class="rich-text-content" id="projectContextDisplay"></div>
+                    <div class="project-section-title project-section-title--expanded" data-section="projectContext">
+                        <span class="project-section-title__text">Project context</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="projectContext">
+                        <div class="rich-text-content" id="projectContextDisplay"></div>
+                    </div>
                 </div>
                 
                 <!-- What do you want to solve? Section -->
                 <div class="project-section" id="solveSection" style="display: none;">
-                    <h2 class="project-section-title">What do you want to solve?</h2>
-                    <div class="rich-text-content" id="solveDisplay"></div>
+                    <div class="project-section-title project-section-title--expanded" data-section="solve">
+                        <span class="project-section-title__text">What do you want to solve?</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="solve">
+                        <div class="rich-text-content" id="solveDisplay"></div>
+                    </div>
                 </div>
                 
                 <!-- Solution approach Section -->
                 <div class="project-section" id="solutionApproachSection" style="display: none;">
-                    <h2 class="project-section-title">Solution approach</h2>
-                    <div class="rich-text-content" id="solutionApproachDisplay"></div>
+                    <div class="project-section-title project-section-title--expanded" data-section="solutionApproach">
+                        <span class="project-section-title__text">Solution approach</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="solutionApproach">
+                        <div class="rich-text-content" id="solutionApproachDisplay"></div>
+                    </div>
                 </div>
                 
                 <!-- Assets or links -->
@@ -995,6 +1079,44 @@
 
             // Inicializar botones de acción
             initActionButtons();
+
+            // Inicializar funcionalidad de colapsar/plegar secciones
+            initCollapsibleSections();
+        }
+
+        // Initialize Collapsible Sections (solo para Project context, What do you want to solve, Solution approach)
+        function initCollapsibleSections() {
+            // Solo estas 3 secciones tienen funcionalidad de colapsar/plegar
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach'];
+            
+            collapsibleSections.forEach(sectionName => {
+                const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
+                const content = document.querySelector(`.project-section-content[data-content="${sectionName}"]`);
+                
+                if (!title || !content) return;
+                
+                title.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Toggle estado
+                    const isExpanded = this.classList.contains('project-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        this.classList.remove('project-section-title--expanded');
+                        this.classList.add('project-section-title--collapsed');
+                        content.classList.remove('project-section-content--expanded');
+                        content.classList.add('project-section-content--collapsed');
+                    } else {
+                        // Expandir
+                        this.classList.remove('project-section-title--collapsed');
+                        this.classList.add('project-section-title--expanded');
+                        content.classList.remove('project-section-content--collapsed');
+                        content.classList.add('project-section-content--expanded');
+                    }
+                });
+            });
         }
 
         // Initialize Action Buttons
