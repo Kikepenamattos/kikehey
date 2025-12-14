@@ -710,6 +710,76 @@
             margin: 0;
         }
 
+        /* Estilos para secciones colapsables (Project context, What do you want to solve, Solution approach) */
+        .project-section-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        /* Solo para secciones colapsables */
+        .project-section-title[data-section] {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .project-section-title__text {
+            flex: 1;
+        }
+
+        .project-section-title__chevron {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .project-section-title__chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-section-title--collapsed .project-section-title__chevron {
+            transform: rotate(0deg);
+        }
+
+        .project-section-title--expanded .project-section-title__chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido colapsable de la sección */
+        .project-section-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            margin: 0;
+            padding: 0;
+        }
+
+        .project-section-content--collapsed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .project-section-content--expanded {
+            max-height: 10000px;
+            opacity: 1;
+            margin: 0;
+            padding: 0;
+        }
+
         .project-test-hide {
             display: flex;
             align-items: center;
@@ -2211,12 +2281,6 @@
                                 <div class="dsu-input-label__text">
                                     <span>Currency</span>
                                 </div>
-                                <div class="dsu-input-label__hide" id="hideBudgetSectionBtn">
-                                    <span>Hide section</span>
-                                    <span class="dsu-input-label__hide-icon">
-                                        <img src="images/eye.svg" alt="Hide">
-                                    </span>
-                                </div>
                             </div>
                             <div class="dsu-input-container" style="position: relative;">
                                 <input 
@@ -2387,12 +2451,6 @@
                     <div class="project-objective-header">
                         <div class="project-objective-headline">
                             <h2 class="project-objective-title">What do you want to accomplish?</h2>
-                            <div class="project-objective-hide" id="hideObjectiveSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-objective-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
                         </div>
                         <p class="project-objective-subtitle">Define how you want to succeed.</p>
                         <div class="project-objective-tabs">
@@ -2621,18 +2679,16 @@
                 <!-- Test Section (Rich Text Input) -->
                 <div class="project-test-section" id="projectTestSection">
                     <div class="project-test-header">
-                        <div class="project-test-headline">
-                            <h2 class="project-test-title">Project context</h2>
-                            <div class="project-test-hide" id="hideTestSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-test-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
+                        <div class="project-section-title project-section-title--expanded" data-section="projectContext">
+                            <span class="project-section-title__text">Project context</span>
+                            <span class="project-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
                         </div>
                         <p class="project-test-description">Provide all the available information to star solid.</p>
                     </div>
-                    <div class="project-test-content">
+                    <div class="project-section-content project-section-content--expanded" data-content="projectContext">
+                        <div class="project-test-content">
                         <div class="dsu-rich-text-input" id="projectTestRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -2668,6 +2724,7 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 <!-- END: Test Section -->
@@ -2675,18 +2732,16 @@
                 <!-- What do you want to solve? Section -->
                 <div class="project-solve-section" id="projectSolveSection">
                     <div class="project-solve-header">
-                        <div class="project-solve-headline">
-                            <h2 class="project-solve-title">What do you want to solve?</h2>
-                            <div class="project-solve-hide" id="hideSolveSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-solve-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
+                        <div class="project-section-title project-section-title--expanded" data-section="solve">
+                            <span class="project-section-title__text">What do you want to solve?</span>
+                            <span class="project-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
                         </div>
                         <p class="project-solve-description">Describe the problem or challenge.</p>
                     </div>
-                    <div class="project-solve-content">
+                    <div class="project-section-content project-section-content--expanded" data-content="solve">
+                        <div class="project-solve-content">
                         <div class="dsu-rich-text-input" id="projectSolveRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -2722,6 +2777,7 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                 </div>
                 <!-- END: What do you want to solve? Section -->
@@ -2729,18 +2785,16 @@
                 <!-- Solution approach Section -->
                 <div class="project-solve-section" id="projectSolutionApproachSection">
                     <div class="project-solve-header">
-                        <div class="project-solve-headline">
-                            <h2 class="project-solve-title">Solution approach</h2>
-                            <div class="project-solve-hide" id="hideSolutionApproachSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-solve-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
+                        <div class="project-section-title project-section-title--expanded" data-section="solutionApproach">
+                            <span class="project-section-title__text">Solution approach</span>
+                            <span class="project-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
                         </div>
                         <p class="project-solve-description">Describe the problem or challenge.</p>
                     </div>
-                    <div class="project-solve-content">
+                    <div class="project-section-content project-section-content--expanded" data-content="solutionApproach">
+                        <div class="project-solve-content">
                         <div class="dsu-rich-text-input" id="projectSolutionApproachRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -2783,6 +2837,7 @@
                                 </span>
                                 <span>Generate a solution with AI</span>
                             </button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -2829,12 +2884,6 @@
                     <div class="project-deliverables-header">
                         <div class="project-deliverables-headline">
                             <h2 class="project-deliverables-title">Deliverables</h2>
-                            <div class="project-deliverables-hide" id="hideDeliverablesSectionBtn">
-                                <span>Hide section</span>
-                                <span class="project-deliverables-hide-icon">
-                                    <img src="images/eye.svg" alt="Hide">
-                                </span>
-                            </div>
                         </div>
                         <p class="project-deliverables-description">Provide all the available information to star solid.</p>
                     </div>
@@ -3057,6 +3106,9 @@
 
             // Inicializar solution approach section
             initSolutionApproachSection();
+
+            // Inicializar funcionalidad de colapsar/plegar para secciones específicas
+            initCollapsibleSections();
 
             // Inicializar assets section
             initAssetsSection();
@@ -4763,7 +4815,6 @@
         // Hide Budget Section
         // ============================================
         function initHideBudgetSection() {
-            const hideBudgetSectionBtn = document.getElementById('hideBudgetSectionBtn');
             const budgetAllocationInput = document.getElementById('budgetAllocationInput');
             const currencyInput = document.getElementById('currencyInput');
             const budgetInputGroup = document.querySelector('.project-budget-input');
@@ -4771,8 +4822,8 @@
             const currencyDropdown = document.getElementById('currencyDropdown');
             const currencyChevron = document.getElementById('currencyChevron');
 
-            if (!hideBudgetSectionBtn || !budgetAllocationInput || !currencyInput) {
-                console.warn('⚠️ Elementos de hide budget section no encontrados');
+            if (!budgetAllocationInput || !currencyInput) {
+                console.warn('⚠️ Elementos de budget section no encontrados');
                 return;
             }
 
@@ -4841,44 +4892,6 @@
                 });
             }
 
-            let isHidden = false;
-
-            hideBudgetSectionBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                isHidden = !isHidden;
-
-                if (isHidden) {
-                    // Deshabilitar ambos campos
-                    budgetAllocationInput.disabled = true;
-                    currencyInput.disabled = true;
-                    
-                    // Agregar clase para estilo deshabilitado
-                    if (budgetInputGroup) {
-                        budgetInputGroup.classList.add('dsu-input-group--hidden');
-                    }
-                    if (currencyInputGroup) {
-                        currencyInputGroup.classList.add('dsu-input-group--hidden');
-                    }
-
-                    console.log('🔒 Sección de budget deshabilitada');
-                } else {
-                    // Habilitar ambos campos
-                    budgetAllocationInput.disabled = false;
-                    currencyInput.disabled = false;
-                    
-                    // Remover clase de estilo deshabilitado
-                    if (budgetInputGroup) {
-                        budgetInputGroup.classList.remove('dsu-input-group--hidden');
-                    }
-                    if (currencyInputGroup) {
-                        currencyInputGroup.classList.remove('dsu-input-group--hidden');
-                    }
-
-                    console.log('🔓 Sección de budget habilitada');
-                }
-            });
         }
 
         // ============================================
@@ -7240,29 +7253,13 @@
         // ============================================
         function initTestSection() {
             const testSection = document.getElementById('projectTestSection');
-            const hideTestBtn = document.getElementById('hideTestSectionBtn');
             const richTextInput = document.getElementById('projectTestRichTextInput');
             
-            if (!testSection || !hideTestBtn) {
+            if (!testSection) {
                 console.warn('⚠️ Elementos de Test Section no encontrados');
                 return;
             }
 
-            // Hide section functionality
-            hideTestBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isDisabled = testSection.classList.contains('project-test-section--disabled');
-                
-                if (isDisabled) {
-                    testSection.classList.remove('project-test-section--disabled');
-                    console.log('🔓 Test Section habilitado');
-                } else {
-                    testSection.classList.add('project-test-section--disabled');
-                    console.log('🔒 Test Section deshabilitado');
-                }
-            });
 
             // Inicializar Rich Text Input
             if (richTextInput) {
@@ -7278,14 +7275,13 @@
         // ============================================
         function initObjectiveSection() {
             const objectiveSection = document.getElementById('projectObjectiveSection');
-            const hideObjectiveBtn = document.getElementById('hideObjectiveSectionBtn');
             const goalsTabBtn = document.getElementById('goalsTabBtn');
             const kpisTabBtn = document.getElementById('kpisTabBtn');
             const objectiveInput = document.getElementById('objectiveInput');
             const goalsItemsContainer = document.getElementById('goalsItemsContainer');
             const kpisItemsContainer = document.getElementById('kpisItemsContainer');
             
-            if (!objectiveSection || !hideObjectiveBtn) {
+            if (!objectiveSection) {
                 console.warn('⚠️ Elementos de Objective Section no encontrados');
                 return;
             }
@@ -7298,21 +7294,6 @@
                 return activeTab === 'goals' ? goalsItemsContainer : kpisItemsContainer;
             }
 
-            // Hide section functionality
-            hideObjectiveBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isDisabled = objectiveSection.classList.contains('project-objective-section--disabled');
-                
-                if (isDisabled) {
-                    objectiveSection.classList.remove('project-objective-section--disabled');
-                    console.log('🔓 Objective Section habilitado');
-                } else {
-                    objectiveSection.classList.add('project-objective-section--disabled');
-                    console.log('🔒 Objective Section deshabilitado');
-                }
-            });
 
             // Tabs functionality
             if (goalsTabBtn && kpisTabBtn) {
@@ -7402,29 +7383,13 @@
         // ============================================
         function initSolveSection() {
             const solveSection = document.getElementById('projectSolveSection');
-            const hideSolveBtn = document.getElementById('hideSolveSectionBtn');
             const richTextInput = document.getElementById('projectSolveRichTextInput');
             
-            if (!solveSection || !hideSolveBtn) {
+            if (!solveSection) {
                 console.warn('⚠️ Elementos de Solve Section no encontrados');
                 return;
             }
 
-            // Hide section functionality
-            hideSolveBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isDisabled = solveSection.classList.contains('project-solve-section--disabled');
-                
-                if (isDisabled) {
-                    solveSection.classList.remove('project-solve-section--disabled');
-                    console.log('🔓 Solve Section habilitado');
-                } else {
-                    solveSection.classList.add('project-solve-section--disabled');
-                    console.log('🔒 Solve Section deshabilitado');
-                }
-            });
 
             // Inicializar Rich Text Input
             if (richTextInput) {
@@ -7436,34 +7401,55 @@
         }
 
         // ============================================
+        // Initialize Collapsible Sections
+        // ============================================
+        function initCollapsibleSections() {
+            // Solo estas 3 secciones tienen funcionalidad de colapsar/plegar
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach'];
+            
+            collapsibleSections.forEach(sectionName => {
+                const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
+                const content = document.querySelector(`.project-section-content[data-content="${sectionName}"]`);
+                
+                if (!title || !content) return;
+                
+                title.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Toggle estado
+                    const isExpanded = this.classList.contains('project-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        this.classList.remove('project-section-title--expanded');
+                        this.classList.add('project-section-title--collapsed');
+                        content.classList.remove('project-section-content--expanded');
+                        content.classList.add('project-section-content--collapsed');
+                    } else {
+                        // Expandir
+                        this.classList.remove('project-section-title--collapsed');
+                        this.classList.add('project-section-title--expanded');
+                        content.classList.remove('project-section-content--collapsed');
+                        content.classList.add('project-section-content--expanded');
+                    }
+                });
+            });
+        }
+
+        // ============================================
         // Project Solution Approach Section
         // ============================================
         function initSolutionApproachSection() {
             const solutionApproachSection = document.getElementById('projectSolutionApproachSection');
-            const hideSolutionApproachBtn = document.getElementById('hideSolutionApproachSectionBtn');
             const richTextInput = document.getElementById('projectSolutionApproachRichTextInput');
             const generateSolutionBtn = document.getElementById('generateSolutionBtn');
             
-            if (!solutionApproachSection || !hideSolutionApproachBtn) {
+            if (!solutionApproachSection) {
                 console.warn('⚠️ Elementos de Solution Approach Section no encontrados');
                 return;
             }
 
-            // Hide section functionality
-            hideSolutionApproachBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isDisabled = solutionApproachSection.classList.contains('project-solve-section--disabled');
-                
-                if (isDisabled) {
-                    solutionApproachSection.classList.remove('project-solve-section--disabled');
-                    console.log('🔓 Solution Approach Section habilitado');
-                } else {
-                    solutionApproachSection.classList.add('project-solve-section--disabled');
-                    console.log('🔒 Solution Approach Section deshabilitado');
-                }
-            });
 
             // Generate solution button functionality
             if (generateSolutionBtn) {
@@ -7679,7 +7665,6 @@
         // ============================================
         function initDeliverablesSection() {
             const deliverablesSection = document.getElementById('projectDeliverablesSection');
-            const hideDeliverablesBtn = document.getElementById('hideDeliverablesSectionBtn');
             const deliverablesInput = document.getElementById('deliverablesInput');
             const deliverablesItemsContainer = document.getElementById('deliverablesItemsContainer');
             const uploadDeliverableFileBtn = document.getElementById('uploadDeliverableFileBtn');
@@ -7687,26 +7672,11 @@
             const deliverablesFileInput = document.getElementById('deliverablesFileInput');
             const deliverablesImageInput = document.getElementById('deliverablesImageInput');
             
-            if (!deliverablesSection || !hideDeliverablesBtn) {
+            if (!deliverablesSection) {
                 console.warn('⚠️ Elementos de Deliverables Section no encontrados');
                 return;
             }
 
-            // Hide section functionality
-            hideDeliverablesBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isDisabled = deliverablesSection.classList.contains('project-deliverables-section--disabled');
-                
-                if (isDisabled) {
-                    deliverablesSection.classList.remove('project-deliverables-section--disabled');
-                    console.log('🔓 Deliverables Section habilitado');
-                } else {
-                    deliverablesSection.classList.add('project-deliverables-section--disabled');
-                    console.log('🔒 Deliverables Section deshabilitado');
-                }
-            });
 
             // Function to check if string is a URL
             function isValidUrl(string) {
