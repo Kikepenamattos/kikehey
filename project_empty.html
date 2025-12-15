@@ -2033,7 +2033,7 @@
         
         /* Asegurar espacio para date picker en modal de stage */
         #stageModalOverlay .modal {
-            padding-bottom: calc(var(--spacing-24) + 350px);
+            padding-bottom: calc(var(--spacing-24) + 542px);
         }
         
         #stageModalOverlay .modal__body {
@@ -2290,7 +2290,7 @@
             display: flex;
             flex-direction: row;
             gap: var(--spacing-16);
-            margin-top: 48px;
+            /* margin-top: 48px; */
         }
         
         .stage-date-range-wrapper .dsu-input-group {
@@ -2351,10 +2351,22 @@
             line-height: var(--line-height-normal);
         }
 
+        .stage-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary, #6b7b8a);
+            line-height: var(--line-height-normal);
+            margin-top: var(--spacing-08);
+            text-align: left;
+        }
+
         .stage-card-date-range-wrapper {
             display: flex;
+            flex-direction: row;
             align-items: center;
-            gap: var(--spacing-08);
+            gap: var(--spacing-16);
+            /* margin-top: 48px; */
         }
 
         .stage-delete-btn {
@@ -2746,6 +2758,15 @@
                                     </div>
                                 </div>
                                 <input type="text" class="dsu-input" id="stageNameInput" placeholder="Enter stage name">
+                            </div>
+                            
+                            <div class="dsu-input-group modal-input-group">
+                                <div class="dsu-input-label">
+                                    <div class="dsu-input-label__text">
+                                        <span>Stage description (optional)</span>
+                                    </div>
+                                </div>
+                                <textarea class="dsu-input" id="stageDescriptionInput" placeholder="Describe the function of this stage" rows="3"></textarea>
                             </div>
                             
                             <div class="stage-date-range-wrapper">
@@ -4328,15 +4349,16 @@
                     }
                     
                     if (stage.name) {
+                        const stageDescription = stage.description || '';
                         // createStageCard debería estar disponible ya que initProjectStages se ejecuta antes
                         if (typeof createStageCard === 'function') {
-                            createStageCard(stage.name, startDateText, endDateText);
+                            createStageCard(stage.name, stageDescription, startDateText, endDateText);
                         } else {
                             console.warn('⚠️ createStageCard no está disponible, intentando de nuevo...');
                             // Reintentar después de un delay
                             setTimeout(() => {
                                 if (typeof createStageCard === 'function') {
-                                    createStageCard(stage.name, startDateText, endDateText);
+                                    createStageCard(stage.name, stageDescription, startDateText, endDateText);
                                 }
                             }, 200);
                         }
@@ -5767,6 +5789,8 @@
             // Confirmar stage
             confirmBtn.addEventListener('click', function() {
                 const stageName = stageNameInput?.value.trim();
+                const stageDescriptionInput = document.getElementById('stageDescriptionInput');
+                const stageDescription = stageDescriptionInput?.value.trim() || '';
                 const startDateButtonText = document.getElementById('stageStartDateButtonText');
                 const endDateButtonText = document.getElementById('stageEndDateButtonText');
                 
@@ -5805,8 +5829,19 @@
                     }
                 }
                 
-                // Crear card de stage
-                createStageCard(stageName, startDateText, endDateText);
+                // Verificar si estamos en modo edición
+                const editingStageId = modalOverlay.getAttribute('data-editing-stage-id');
+                if (editingStageId) {
+                    // Actualizar stage existente
+                    const existingStageItem = document.querySelector(`.project-stage-item[data-stage-id="${editingStageId}"]`);
+                    if (existingStageItem) {
+                        updateStageCard(existingStageItem, stageName, stageDescription, startDateText, endDateText);
+                    }
+                } else {
+                    // Crear nuevo card de stage
+                    createStageCard(stageName, stageDescription, startDateText, endDateText);
+                }
+                
                 closeStageModal();
             });
 
@@ -5827,8 +5862,11 @@
 
             if (!modalOverlay) return;
 
-            // Reset form
+            // Reset form y quitar flag de edición
+            modalOverlay.removeAttribute('data-editing-stage-id');
+            const stageDescriptionInput = document.getElementById('stageDescriptionInput');
             if (stageNameInput) stageNameInput.value = '';
+            if (stageDescriptionInput) stageDescriptionInput.value = '';
             if (startDateButtonText) startDateButtonText.textContent = 'Select start date';
             if (endDateButtonText) endDateButtonText.textContent = 'Select end date';
             if (errorMessage) {
@@ -5848,10 +5886,88 @@
             modalOverlay.classList.add('modal-overlay--visible');
         }
 
+        // Función para abrir modal en modo edición
+        function openStageModalForEdit(stageItem) {
+            const modalOverlay = document.getElementById('stageModalOverlay');
+            const stageNameInput = document.getElementById('stageNameInput');
+            const startDateButtonText = document.getElementById('stageStartDateButtonText');
+            const endDateButtonText = document.getElementById('stageEndDateButtonText');
+            const errorMessage = document.getElementById('stageModalError');
+
+            if (!modalOverlay || !stageItem) return;
+
+            // Obtener datos del stage existente
+            const stageCard = stageItem.querySelector('.project-stage-card');
+            if (!stageCard) return;
+
+            const stageName = stageCard.querySelector('.stage-status-badge__text')?.textContent.trim() || '';
+            const dateRangeText = stageCard.querySelector('.stage-date-range')?.textContent.trim() || '';
+            const stageDescriptionElement = stageCard.querySelector('.stage-description');
+            const stageDescription = stageDescriptionElement?.textContent.trim() || '';
+
+            // Parsear fechas del formato "May 5 to Jun 31 2025" a formato individual
+            let startDateFormatted = 'Select start date';
+            let endDateFormatted = 'Select end date';
+
+            if (dateRangeText) {
+                // Intentar parsear el formato "May 5 to Jun 31 2025"
+                const dateMatch = dateRangeText.match(/(\w{3} \d{1,2}) to (\w{3} \d{1,2} \d{4})/);
+                if (dateMatch) {
+                    const year = dateMatch[2].split(' ')[2];
+                    startDateFormatted = `${dateMatch[1]}, ${year}`;
+                    endDateFormatted = dateMatch[2];
+                }
+            }
+
+            // Pre-llenar formulario
+            if (stageNameInput) stageNameInput.value = stageName;
+            const stageDescriptionInput = document.getElementById('stageDescriptionInput');
+            if (stageDescriptionInput) stageDescriptionInput.value = stageDescription;
+            if (startDateButtonText) {
+                startDateButtonText.textContent = startDateFormatted;
+                // Si hay fecha, actualizar el estado del date picker
+                if (startDateFormatted !== 'Select start date') {
+                    const startDatePicker = document.getElementById('stageStartDatePicker');
+                    if (startDatePicker && window.stageStartDatePickerState) {
+                        const date = parseDateFromText(startDateFormatted);
+                        if (date) {
+                            window.stageStartDatePickerState.selectedDate = date;
+                        }
+                    }
+                }
+            }
+            if (endDateButtonText) {
+                endDateButtonText.textContent = endDateFormatted;
+                // Si hay fecha, actualizar el estado del date picker
+                if (endDateFormatted !== 'Select end date') {
+                    const endDatePicker = document.getElementById('stageEndDatePicker');
+                    if (endDatePicker && window.stageEndDatePickerState) {
+                        const date = parseDateFromText(endDateFormatted);
+                        if (date) {
+                            window.stageEndDatePickerState.selectedDate = date;
+                        }
+                    }
+                }
+            }
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+                errorMessage.textContent = '';
+            }
+
+            // Marcar modal como en modo edición y guardar referencia al stage item
+            const stageId = 'stage_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            stageItem.setAttribute('data-stage-id', stageId);
+            modalOverlay.setAttribute('data-editing-stage-id', stageId);
+
+            modalOverlay.classList.add('modal-overlay--visible');
+        }
+
         function closeStageModal() {
             const modalOverlay = document.getElementById('stageModalOverlay');
             if (modalOverlay) {
                 modalOverlay.classList.remove('modal-overlay--visible');
+                // Limpiar atributo de edición al cerrar
+                modalOverlay.removeAttribute('data-editing-stage-id');
             }
         }
 
@@ -5872,7 +5988,7 @@
             }
         }
 
-        function createStageCard(stageName, startDateText, endDateText) {
+        function createStageCard(stageName, stageDescription = '', startDateText, endDateText) {
             const stagesList = document.getElementById('projectStagesList');
             const addStageBtn = document.getElementById('addStageBtn');
             
@@ -5892,18 +6008,35 @@
             const statusText = document.createElement('p');
             statusText.className = 'stage-status-badge__text';
             statusText.textContent = stageName;
-            statusText.style.cursor = 'text';
             statusBadge.appendChild(statusText);
-            
-            // Hacer el texto editable al hacer clic
-            statusText.addEventListener('click', function(e) {
-                e.stopPropagation();
-                editStageStatusBadgeText(statusText, statusBadge);
-            });
 
-            // Date range wrapper con botón delete
+            // Descripción del stage (si existe)
+            if (stageDescription) {
+                const descriptionElement = document.createElement('p');
+                descriptionElement.className = 'stage-description';
+                descriptionElement.textContent = stageDescription;
+                statusBadge.appendChild(descriptionElement);
+            }
+
+            // Date range wrapper con botones delete y edit
             const dateRangeWrapper = document.createElement('div');
             dateRangeWrapper.className = 'stage-card-date-range-wrapper';
+
+            // Botón edit
+            const editBtn = document.createElement('button');
+            editBtn.className = 'stage-delete-btn'; // Usar el mismo estilo que delete
+            editBtn.type = 'button';
+            editBtn.title = 'Edit stage';
+            editBtn.innerHTML = '<img src="images/Edit.svg" alt="Edit">';
+            
+            // Event listener para editar el stage
+            editBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Abrir modal con datos del stage existente
+                openStageModalForEdit(stageItem);
+            });
 
             // Botón delete
             const deleteBtn = document.createElement('button');
@@ -5940,7 +6073,8 @@
             const formattedDates = formatDateRangeForCard(startDateText, endDateText);
             dateRange.textContent = formattedDates;
 
-            // Agregar botón delete y date range al wrapper
+            // Agregar botones edit, delete y date range al wrapper
+            dateRangeWrapper.appendChild(editBtn);
             dateRangeWrapper.appendChild(deleteBtn);
             dateRangeWrapper.appendChild(dateRange);
 
@@ -5982,82 +6116,50 @@
             }
         }
 
-        // Función para editar el texto del stage-status-badge
-        function editStageStatusBadgeText(textElement, badgeElement) {
-            const currentText = textElement.textContent.trim();
+        // Función para actualizar un stage existente
+        function updateStageCard(stageItem, stageName, stageDescription = '', startDateText, endDateText) {
+            if (!stageItem) return;
+
+            const statusBadge = stageItem.querySelector('.stage-status-badge');
             
-            // Crear input temporal
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = currentText;
-            input.className = 'stage-status-badge__text';
-            input.style.cssText = `
-                font-family: var(--font-family-secondary);
-                font-size: var(--font-size-sm);
-                font-weight: var(--font-weight-regular);
-                color: var(--color-text-primary);
-                line-height: var(--line-height-normal);
-                background: transparent;
-                border: 1px solid var(--color-border-light);
-                border-radius: var(--radius-sm);
-                padding: var(--spacing-04);
-                width: 100%;
-                text-align: center;
-                outline: none;
-            `;
-            
-            // Reemplazar el texto con el input
-            textElement.replaceWith(input);
-            input.focus();
-            input.select();
-            
-            // Función para guardar el cambio
-            const saveChange = () => {
-                const newText = input.value.trim() || currentText;
-                const newTextElement = document.createElement('p');
-                newTextElement.className = 'stage-status-badge__text';
-                newTextElement.textContent = newText;
-                newTextElement.style.cursor = 'text';
-                
-                // Restaurar el event listener
-                newTextElement.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    editStageStatusBadgeText(newTextElement, badgeElement);
-                });
-                
-                input.replaceWith(newTextElement);
-                
-                // Actualizar estado del botón Publish si es necesario
-                if (typeof updatePublishButtonState === 'function') {
-                    setTimeout(updatePublishButtonState, 100);
+            // Actualizar nombre del stage
+            const statusText = statusBadge?.querySelector('.stage-status-badge__text');
+            if (statusText) {
+                statusText.textContent = stageName;
+            }
+
+            // Actualizar o crear descripción
+            let descriptionElement = statusBadge?.querySelector('.stage-description');
+            if (stageDescription) {
+                if (descriptionElement) {
+                    descriptionElement.textContent = stageDescription;
+                } else if (statusBadge) {
+                    // Crear descripción si no existe
+                    descriptionElement = document.createElement('p');
+                    descriptionElement.className = 'stage-description';
+                    descriptionElement.textContent = stageDescription;
+                    statusBadge.appendChild(descriptionElement);
                 }
-            };
-            
-            // Guardar al presionar Enter
-            input.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveChange();
+            } else {
+                // Eliminar descripción si está vacía
+                if (descriptionElement) {
+                    descriptionElement.remove();
                 }
-            });
-            
-            // Guardar al perder el foco
-            input.addEventListener('blur', saveChange);
-            
-            // Cancelar con Escape
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    const newTextElement = document.createElement('p');
-                    newTextElement.className = 'stage-status-badge__text';
-                    newTextElement.textContent = currentText;
-                    newTextElement.style.cursor = 'text';
-                    newTextElement.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        editStageStatusBadgeText(newTextElement, badgeElement);
-                    });
-                    input.replaceWith(newTextElement);
-                }
-            });
+            }
+
+            // Actualizar fecha range
+            const dateRange = stageItem.querySelector('.stage-date-range');
+            if (dateRange) {
+                const formattedDates = formatDateRangeForCard(startDateText, endDateText);
+                dateRange.textContent = formattedDates;
+            }
+
+            // Actualizar estado del botón Publish si es necesario
+            if (typeof updatePublishButtonState === 'function') {
+                setTimeout(updatePublishButtonState, 100);
+            }
+
+            console.log(`✅ Stage "${stageName}" actualizado`);
         }
 
         function formatDateRangeForCard(startDateText, endDateText) {
@@ -9485,9 +9587,12 @@
                             if (stageCard) {
                                 const stageName = stageCard.querySelector('.stage-status-badge__text')?.textContent || '';
                                 const dateRange = stageCard.querySelector('.stage-date-range')?.textContent || '';
+                                const stageDescriptionElement = stageCard.querySelector('.stage-description');
+                                const stageDescription = stageDescriptionElement?.textContent.trim() || '';
                                 if (stageName) {
                                     stages.push({
                                         name: stageName,
+                                        description: stageDescription,
                                         dateRange: dateRange
                                     });
                                 }
