@@ -2327,12 +2327,45 @@
             line-height: var(--line-height-normal);
         }
 
+        .stage-card-date-range-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+        }
+
+        .stage-delete-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+
+        .stage-delete-btn:hover {
+            background-color: var(--color-status-disabled);
+            opacity: 1;
+        }
+
+        .stage-delete-btn img {
+            width: 16px;
+            height: 16px;
+        }
+
         .stage-date-range {
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-xs);
             font-weight: var(--font-weight-semibold);
             color: var(--color-text-primary);
             line-height: 1.5;
+            flex: 1;
         }
 
         .stage-progress-bar {
@@ -5832,12 +5865,48 @@
                 editStageStatusBadgeText(statusText, statusBadge);
             });
 
+            // Date range wrapper con botón delete
+            const dateRangeWrapper = document.createElement('div');
+            dateRangeWrapper.className = 'stage-card-date-range-wrapper';
+
+            // Botón delete
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'stage-delete-btn';
+            deleteBtn.type = 'button';
+            deleteBtn.title = 'Delete stage';
+            deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+            
+            // Event listener para eliminar el stage
+            deleteBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const stageNameText = statusText.textContent.trim();
+                
+                // Confirmar eliminación
+                if (confirm(`¿Estás seguro de que deseas eliminar el stage "${stageNameText}"?`)) {
+                    // Remover el elemento del DOM
+                    stageItem.remove();
+                    
+                    // Actualizar estado del botón Publish
+                    if (typeof updatePublishButtonState === 'function') {
+                        setTimeout(updatePublishButtonState, 100);
+                    }
+                    
+                    console.log(`✅ Stage "${stageNameText}" eliminado`);
+                }
+            });
+
             // Date range
             const dateRange = document.createElement('p');
             dateRange.className = 'stage-date-range';
             // Formatear fechas: "May 5 to Jun 31 2025"
             const formattedDates = formatDateRangeForCard(startDateText, endDateText);
             dateRange.textContent = formattedDates;
+
+            // Agregar botón delete y date range al wrapper
+            dateRangeWrapper.appendChild(deleteBtn);
+            dateRangeWrapper.appendChild(dateRange);
 
             // Progress bar
             const progressBar = document.createElement('div');
@@ -5860,7 +5929,7 @@
 
             // Ensamblar card
             stageCard.appendChild(statusBadge);
-            stageCard.appendChild(dateRange);
+            stageCard.appendChild(dateRangeWrapper);
             stageCard.appendChild(progressBar);
 
             // Agregar a stage item
