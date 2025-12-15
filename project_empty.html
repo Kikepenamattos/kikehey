@@ -1113,6 +1113,61 @@
             height: 24px;
         }
 
+        /* PDF Preview Styles */
+        .project-assets-item-preview-wrapper {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .project-assets-item-preview--pdf {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        .project-assets-item-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-assets-item-preview-label {
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Document icon with extension */
+        .project-assets-item-icon-extension {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 7px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1px 3px;
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .project-assets-item-icon {
+            position: relative;
+        }
+
         .project-assets-item-content {
             flex: 1;
             display: flex;
@@ -1389,6 +1444,61 @@
         .project-deliverables-item-icon img {
             width: 24px;
             height: 24px;
+        }
+
+        /* PDF Preview Styles for Deliverables */
+        .project-deliverables-item-preview-wrapper {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .project-deliverables-item-preview--pdf {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        .project-deliverables-item-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-deliverables-item-preview-label {
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Document icon with extension for Deliverables */
+        .project-deliverables-item-icon-extension {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 7px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1px 3px;
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .project-deliverables-item-icon {
+            position: relative;
         }
 
         .project-deliverables-item-content {
@@ -1993,6 +2103,162 @@
             background: var(--color-surface-especial);
             border-color: var(--color-basics-dark-blue);
             border-width: 2px;
+        }
+
+        /* Fullscreen Preview Modal */
+        .preview-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            backdrop-filter: blur(4px);
+            padding: var(--spacing-24);
+        }
+
+        .preview-modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .preview-modal {
+            width: 100%;
+            height: 100%;
+            max-width: 95vw;
+            max-height: 95vh;
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: previewModalFadeIn 0.2s ease;
+            overflow: hidden;
+        }
+
+        @keyframes previewModalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preview-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-16) var(--spacing-24);
+            border-bottom: 1px solid var(--color-basics-gray);
+            flex-shrink: 0;
+        }
+
+        .preview-modal-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .preview-modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .preview-modal-close-btn:hover {
+            background: var(--color-status-disabled);
+        }
+
+        .preview-modal-close-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .preview-modal-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-24);
+            overflow: auto;
+            position: relative;
+        }
+
+        .preview-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content .document-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-16);
+            text-align: center;
+        }
+
+        .preview-modal-content .document-preview-icon {
+            width: 80px;
+            height: 80px;
+            opacity: 0.5;
+        }
+
+        .preview-modal-content .document-preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .preview-modal-content .document-preview-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .preview-modal-content .document-preview-size {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
+        /* Make previews clickable */
+        .rich-text-attachment-preview {
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .rich-text-attachment-preview:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
         }
 
         /* Stage Modal Styles */
@@ -3004,6 +3270,21 @@
                         <div class="modal-teams-list" id="modalTeamsList">
                             <!-- Teams se cargarán aquí dinámicamente -->
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para preview de documentos/imágenes en pantalla completa -->
+            <div class="preview-modal-overlay" id="previewModalOverlay">
+                <div class="preview-modal">
+                    <div class="preview-modal-header">
+                        <h2 class="preview-modal-title" id="previewModalTitle">Preview</h2>
+                        <button class="preview-modal-close-btn" id="closePreviewModalBtn" aria-label="Close preview">
+                            <img src="images/close.svg" alt="Close" width="24" height="24">
+                        </button>
+                    </div>
+                    <div class="preview-modal-content" id="previewModalContent">
+                        <!-- El contenido del preview se insertará aquí dinámicamente -->
                     </div>
                 </div>
             </div>
@@ -4090,7 +4371,9 @@
                                 window.addAssetItem({
                                     type: 'file',
                                     name: asset.name,
-                                    size: asset.size || ''
+                                    size: asset.size || '',
+                                    preview: asset.preview || '',
+                                    fileExtension: asset.fileExtension || asset.name.split('.').pop().toLowerCase()
                                 });
                             } else if (asset.type === 'image' && asset.name) {
                                 window.addAssetItem({
@@ -4136,7 +4419,9 @@
                                         window.addAssetItem({
                                             type: 'file',
                                             name: asset.name,
-                                            size: asset.size || ''
+                                            size: asset.size || '',
+                                            preview: asset.preview || '',
+                                            fileExtension: asset.fileExtension || asset.name.split('.').pop().toLowerCase()
                                         });
                                     } else if (asset.type === 'image' && asset.name) {
                                         window.addAssetItem({
@@ -7630,7 +7915,54 @@
                 }
             }
 
-            // Function to add asset item
+            // Helper function to generate file preview based on file type (accessible globally)
+            window.generateFilePreview = function(file, dataUrl) {
+                if (!file) return null;
+                
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const mimeType = file.type || '';
+                
+                // PDF preview
+                if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                    return {
+                        type: 'pdf',
+                        preview: dataUrl || URL.createObjectURL(file),
+                        icon: 'pdf'
+                    };
+                }
+                
+                // Image preview (already handled separately, but included for completeness)
+                if (mimeType.startsWith('image/')) {
+                    return {
+                        type: 'image',
+                        preview: dataUrl || URL.createObjectURL(file),
+                        icon: null
+                    };
+                }
+                
+                // Document types - return icon type for custom styling
+                const documentIcons = {
+                    'doc': 'doc',
+                    'docx': 'doc',
+                    'xls': 'xls',
+                    'xlsx': 'xls',
+                    'ppt': 'ppt',
+                    'pptx': 'ppt',
+                    'txt': 'txt',
+                    'csv': 'csv'
+                };
+                
+                const iconType = documentIcons[fileExtension] || 'file';
+                
+                return {
+                    type: 'document',
+                    preview: null,
+                    icon: iconType,
+                    mimeType: mimeType,
+                    extension: fileExtension
+                };
+            }
+            
             // Hacer addAssetItem accesible globalmente para loadProjectData
             window.addAssetItem = function(data) {
                 if (!assetsItemsContainer) return;
@@ -7642,7 +7974,44 @@
                 let contentHtml = '';
                 
                 if (data.type === 'image' && data.preview) {
-                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-assets-item-preview">`;
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-assets-item-preview" data-preview-src="${data.preview}" data-preview-name="${data.name}" style="cursor: pointer;">`;
+                    contentHtml = `
+                        <div class="project-assets-item-content">
+                            <p class="project-assets-item-text">${data.name}</p>
+                            <p class="project-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file' && data.file) {
+                    const filePreview = window.generateFilePreview ? window.generateFilePreview(data.file, data.preview) : null;
+                    
+                    if (filePreview && filePreview.type === 'pdf' && filePreview.preview) {
+                        // PDF preview with iframe
+                        previewHtml = `
+                            <div class="project-assets-item-preview-wrapper" data-pdf-src="${filePreview.preview}" data-file-name="${data.name}" style="cursor: pointer;">
+                                <iframe src="${filePreview.preview}" class="project-assets-item-preview project-assets-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="project-assets-item-preview-overlay">
+                                    <span class="project-assets-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else if (filePreview && filePreview.type === 'document') {
+                        // Document with specific icon
+                        const iconClass = `project-assets-item-icon--${filePreview.icon}`;
+                        previewHtml = `
+                            <div class="project-assets-item-icon ${iconClass}" data-file-name="${data.name}" data-file-size="${data.size || ''}" data-file-extension="${filePreview.extension}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="${filePreview.icon.toUpperCase()}" title="${filePreview.extension.toUpperCase()}">
+                                <span class="project-assets-item-icon-extension">${filePreview.extension.toUpperCase()}</span>
+                            </div>
+                        `;
+                    } else {
+                        // Generic file icon
+                        previewHtml = `
+                            <div class="project-assets-item-icon" data-file-name="${data.name}" data-file-size="${data.size || ''}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="File">
+                            </div>
+                        `;
+                    }
+                    
                     contentHtml = `
                         <div class="project-assets-item-content">
                             <p class="project-assets-item-text">${data.name}</p>
@@ -7650,11 +8019,43 @@
                         </div>
                     `;
                 } else if (data.type === 'file') {
-                    previewHtml = `
-                        <div class="project-assets-item-icon">
-                            <img src="images/attachment.svg" alt="File">
-                        </div>
-                    `;
+                    // Handle files loaded from saved data (without File object)
+                    const fileExtension = data.fileExtension || data.name.split('.').pop().toLowerCase();
+                    const isPDF = fileExtension === 'pdf' || data.preview?.includes('data:application/pdf');
+                    
+                    if (isPDF && data.preview) {
+                        // PDF preview with iframe
+                        previewHtml = `
+                            <div class="project-assets-item-preview-wrapper" data-pdf-src="${data.preview}" data-file-name="${data.name}" style="cursor: pointer;">
+                                <iframe src="${data.preview}" class="project-assets-item-preview project-assets-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="project-assets-item-preview-overlay">
+                                    <span class="project-assets-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // Document with specific icon or generic file icon
+                        const documentIcons = {
+                            'doc': 'doc',
+                            'docx': 'doc',
+                            'xls': 'xls',
+                            'xlsx': 'xls',
+                            'ppt': 'ppt',
+                            'pptx': 'ppt',
+                            'txt': 'txt',
+                            'csv': 'csv'
+                        };
+                        const iconType = documentIcons[fileExtension] || 'file';
+                        const iconClass = iconType !== 'file' ? `project-assets-item-icon--${iconType}` : '';
+                        
+                        previewHtml = `
+                            <div class="project-assets-item-icon ${iconClass}" data-file-name="${data.name}" data-file-size="${data.size || ''}" data-file-extension="${fileExtension}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="${iconType.toUpperCase()}" title="${fileExtension.toUpperCase()}">
+                                ${iconType !== 'file' ? `<span class="project-assets-item-icon-extension">${fileExtension.toUpperCase()}</span>` : ''}
+                            </div>
+                        `;
+                    }
+                    
                     contentHtml = `
                         <div class="project-assets-item-content">
                             <p class="project-assets-item-text">${data.name}</p>
@@ -7726,6 +8127,44 @@
                     const file = e.target.files[0];
                     if (file) {
                         const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        const mimeType = file.type || '';
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        
+                        // Generate preview for PDFs and images
+                        let previewData = null;
+                        if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                            // For PDFs, create object URL for preview
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addAssetItem({
+                                    type: 'file',
+                                    name: file.name,
+                                    size: fileSize,
+                                    file: file,
+                                    preview: event.target.result
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        } else if (mimeType.startsWith('image/')) {
+                            // For images, use the image upload handler instead
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addAssetItem({
+                                    type: 'image',
+                                    name: file.name,
+                                    size: fileSize,
+                                    preview: event.target.result,
+                                    file: file
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        }
+                        
+                        // For other files, add directly
                         addAssetItem({
                             type: 'file',
                             name: file.name,
@@ -7790,6 +8229,54 @@
                 });
             }
 
+            // Event delegation para manejar clicks en previews de assets
+            if (assetsItemsContainer) {
+                assetsItemsContainer.addEventListener('click', function(e) {
+                    // Verificar si se hizo clic en un preview de imagen
+                    const imgPreview = e.target.closest('.project-assets-item-preview');
+                    if (imgPreview && imgPreview.tagName === 'IMG') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const src = imgPreview.src || imgPreview.dataset.previewSrc;
+                        const name = imgPreview.alt || imgPreview.dataset.previewName || 'Image';
+                        if (src) {
+                            openPreviewModal(src, name, 'image');
+                        }
+                        return;
+                    }
+                    
+                    // Verificar si se hizo clic en un preview de PDF
+                    const pdfPreview = e.target.closest('.project-assets-item-preview-wrapper');
+                    if (pdfPreview && pdfPreview.querySelector('iframe')) {
+                        if (e.target.tagName !== 'IFRAME') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const pdfSrc = pdfPreview.dataset.pdfSrc || pdfPreview.querySelector('iframe')?.src;
+                            const fileName = pdfPreview.dataset.fileName || pdfPreview.closest('.project-assets-item')?.querySelector('.project-assets-item-text')?.textContent || 'PDF Document';
+                            if (pdfSrc) {
+                                openPreviewModal(pdfSrc, fileName, 'pdf');
+                            }
+                        }
+                        return;
+                    }
+                    
+                    // Verificar si se hizo clic en un icono de documento
+                    const docIcon = e.target.closest('.project-assets-item-icon');
+                    if (docIcon && !docIcon.closest('.project-assets-item-preview-wrapper')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const fileName = docIcon.dataset.fileName || docIcon.closest('.project-assets-item')?.querySelector('.project-assets-item-text')?.textContent || 'Document';
+                        const fileSize = docIcon.dataset.fileSize || '';
+                        const fileExtension = docIcon.dataset.fileExtension || '';
+                        openPreviewModal(null, fileName, 'document', {
+                            size: fileSize,
+                            extension: fileExtension
+                        });
+                        return;
+                    }
+                });
+            }
+            
             console.log('✅ Assets Section inicializado correctamente');
         }
 
@@ -7854,7 +8341,44 @@
                 let contentHtml = '';
                 
                 if (data.type === 'image' && data.preview) {
-                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-deliverables-item-preview">`;
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="project-deliverables-item-preview" data-preview-src="${data.preview}" data-preview-name="${data.name}" style="cursor: pointer;">`;
+                    contentHtml = `
+                        <div class="project-deliverables-item-content">
+                            <p class="project-deliverables-item-text">${data.name}</p>
+                            <p class="project-deliverables-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file' && data.file) {
+                    const filePreview = window.generateFilePreview ? window.generateFilePreview(data.file, data.preview) : null;
+                    
+                    if (filePreview && filePreview.type === 'pdf' && filePreview.preview) {
+                        // PDF preview with iframe
+                        previewHtml = `
+                            <div class="project-deliverables-item-preview-wrapper">
+                                <iframe src="${filePreview.preview}" class="project-deliverables-item-preview project-deliverables-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="project-deliverables-item-preview-overlay">
+                                    <span class="project-deliverables-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else if (filePreview && filePreview.type === 'document') {
+                        // Document with specific icon
+                        const iconClass = `project-deliverables-item-icon--${filePreview.icon}`;
+                        previewHtml = `
+                            <div class="project-deliverables-item-icon ${iconClass}">
+                                <img src="images/attachment.svg" alt="${filePreview.icon.toUpperCase()}" title="${filePreview.extension.toUpperCase()}">
+                                <span class="project-deliverables-item-icon-extension">${filePreview.extension.toUpperCase()}</span>
+                            </div>
+                        `;
+                    } else {
+                        // Generic file icon
+                        previewHtml = `
+                            <div class="project-deliverables-item-icon">
+                                <img src="images/attachment.svg" alt="File">
+                            </div>
+                        `;
+                    }
+                    
                     contentHtml = `
                         <div class="project-deliverables-item-content">
                             <p class="project-deliverables-item-text">${data.name}</p>
@@ -7862,6 +8386,7 @@
                         </div>
                     `;
                 } else if (data.type === 'file') {
+                    // Fallback for files without File object
                     previewHtml = `
                         <div class="project-deliverables-item-icon">
                             <img src="images/attachment.svg" alt="File">
@@ -7977,6 +8502,43 @@
                     const file = e.target.files[0];
                     if (file) {
                         const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        const mimeType = file.type || '';
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        
+                        // Generate preview for PDFs and images
+                        if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                            // For PDFs, create object URL for preview
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addDeliverableItem({
+                                    type: 'file',
+                                    name: file.name,
+                                    size: fileSize,
+                                    file: file,
+                                    preview: event.target.result
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        } else if (mimeType.startsWith('image/')) {
+                            // For images, use the image upload handler instead
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addDeliverableItem({
+                                    type: 'image',
+                                    name: file.name,
+                                    size: fileSize,
+                                    preview: event.target.result,
+                                    file: file
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        }
+                        
+                        // For other files, add directly
                         addDeliverableItem({
                             type: 'file',
                             name: file.name,
@@ -8052,9 +8614,131 @@
             // Make addDeliverableItem available globally
             window.addDeliverableItem = addDeliverableItem;
 
+            // Event delegation para manejar clicks en previews de deliverables
+            if (deliverablesItemsContainer) {
+                deliverablesItemsContainer.addEventListener('click', function(e) {
+                    // Verificar si se hizo clic en un preview de imagen
+                    const imgPreview = e.target.closest('.project-deliverables-item-preview');
+                    if (imgPreview && imgPreview.tagName === 'IMG') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const src = imgPreview.src || imgPreview.dataset.previewSrc;
+                        const name = imgPreview.alt || imgPreview.dataset.previewName || 'Image';
+                        if (src) {
+                            openPreviewModal(src, name, 'image');
+                        }
+                        return;
+                    }
+                    
+                    // Verificar si se hizo clic en un preview de PDF
+                    const pdfPreview = e.target.closest('.project-deliverables-item-preview-wrapper');
+                    if (pdfPreview && pdfPreview.querySelector('iframe')) {
+                        if (e.target.tagName !== 'IFRAME') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const iframe = pdfPreview.querySelector('iframe');
+                            const src = iframe?.src;
+                            const item = pdfPreview.closest('.project-deliverables-item');
+                            const name = item?.querySelector('.project-deliverables-item-text')?.textContent || 'PDF Document';
+                            if (src) {
+                                openPreviewModal(src, name, 'pdf');
+                            }
+                        }
+                        return;
+                    }
+                });
+            }
+
             console.log('✅ Deliverables Section inicializado correctamente');
         }
 
+        // ============================================
+        // Preview Modal Functionality
+        // ============================================
+        function openPreviewModal(src, fileName, type, extraInfo = {}) {
+            const modalOverlay = document.getElementById('previewModalOverlay');
+            const modalTitle = document.getElementById('previewModalTitle');
+            const modalContent = document.getElementById('previewModalContent');
+            const closeBtn = document.getElementById('closePreviewModalBtn');
+            
+            if (!modalOverlay || !modalTitle || !modalContent) return;
+            
+            // Establecer título
+            modalTitle.textContent = fileName || 'Preview';
+            
+            // Limpiar contenido anterior
+            modalContent.innerHTML = '';
+            
+            // Crear contenido según el tipo
+            if (type === 'image' && src) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = fileName;
+                modalContent.appendChild(img);
+            } else if (type === 'pdf' && src) {
+                const iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.title = fileName;
+                modalContent.appendChild(iframe);
+            } else if (type === 'document') {
+                const docPreview = document.createElement('div');
+                docPreview.className = 'document-preview';
+                
+                const icon = document.createElement('img');
+                icon.src = 'images/attachment.svg';
+                icon.className = 'document-preview-icon';
+                icon.alt = 'Document';
+                
+                const info = document.createElement('div');
+                info.className = 'document-preview-info';
+                
+                const name = document.createElement('div');
+                name.className = 'document-preview-name';
+                name.textContent = fileName || 'Document';
+                
+                const size = document.createElement('div');
+                size.className = 'document-preview-size';
+                size.textContent = extraInfo.size || 'Unknown size';
+                
+                info.appendChild(name);
+                info.appendChild(size);
+                docPreview.appendChild(icon);
+                docPreview.appendChild(info);
+                
+                modalContent.appendChild(docPreview);
+            }
+            
+            // Mostrar modal
+            modalOverlay.classList.add('preview-modal-overlay--visible');
+            
+            // Cerrar modal al hacer clic en el botón de cerrar
+            if (closeBtn) {
+                const closeHandler = function() {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    closeBtn.removeEventListener('click', closeHandler);
+                };
+                closeBtn.addEventListener('click', closeHandler);
+            }
+            
+            // Cerrar modal al hacer clic fuera del contenido
+            const overlayClickHandler = function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    modalOverlay.removeEventListener('click', overlayClickHandler);
+                }
+            };
+            modalOverlay.addEventListener('click', overlayClickHandler);
+            
+            // Cerrar modal con tecla Escape
+            const escapeHandler = function(e) {
+                if (e.key === 'Escape') {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+        }
+        
         // ============================================
         // Rich Text Input Functionality
         // ============================================
@@ -8114,8 +8798,202 @@
                             checkPlaceholder();
                         }
                     } else if (command === 'attachment') {
-                        // Implementar funcionalidad de adjuntar archivo
-                        console.log('📎 Adjuntar archivo');
+                        // Crear input file dinámicamente si no existe
+                        let fileInput = richTextInput.querySelector('input[type="file"].rich-text-attachment-input');
+                        if (!fileInput) {
+                            fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.className = 'rich-text-attachment-input';
+                            fileInput.accept = '*/*';
+                            fileInput.style.display = 'none';
+                            richTextInput.appendChild(fileInput);
+                        }
+                        
+                        // Manejar la selección de archivo
+                        fileInput.onchange = function(e) {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            
+                            const mimeType = file.type || '';
+                            const fileExtension = file.name.split('.').pop().toLowerCase();
+                            
+                            // Generar preview según el tipo de archivo
+                            if (mimeType.startsWith('image/')) {
+                                // Preview para imágenes
+                                const reader = new FileReader();
+                                reader.onload = function(event) {
+                                    const img = document.createElement('img');
+                                    img.src = event.target.result;
+                                    img.className = 'rich-text-attachment-preview rich-text-attachment-preview--image';
+                                    img.alt = file.name;
+                                    img.style.maxWidth = '300px';
+                                    img.style.maxHeight = '200px';
+                                    img.style.borderRadius = 'var(--radius-md)';
+                                    img.style.margin = '8px 0';
+                                    img.style.display = 'block';
+                                    
+                                    // Hacer la imagen clickeable para abrir en modal
+                                    img.style.cursor = 'pointer';
+                                    img.addEventListener('click', function() {
+                                        openPreviewModal(event.target.result, file.name, 'image');
+                                    });
+                                    
+                                    // Insertar en el editor
+                                    editor.focus();
+                                    const selection = window.getSelection();
+                                    const range = selection.getRangeAt(0);
+                                    range.insertNode(img);
+                                    
+                                    // Mover cursor después de la imagen
+                                    range.setStartAfter(img);
+                                    range.collapse(true);
+                                    selection.removeAllRanges();
+                                    selection.addRange(range);
+                                    
+                                    checkPlaceholder();
+                                };
+                                reader.readAsDataURL(file);
+                            } else if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                                // Preview para PDFs
+                                const reader = new FileReader();
+                                reader.onload = function(event) {
+                                    const pdfContainer = document.createElement('div');
+                                    pdfContainer.className = 'rich-text-attachment-preview rich-text-attachment-preview--pdf';
+                                    pdfContainer.style.margin = '8px 0';
+                                    pdfContainer.style.border = '1px solid var(--color-basics-gray, #e0e5ea)';
+                                    pdfContainer.style.borderRadius = 'var(--radius-md)';
+                                    pdfContainer.style.overflow = 'hidden';
+                                    pdfContainer.style.maxWidth = '300px';
+                                    
+                                    const iframe = document.createElement('iframe');
+                                    iframe.src = event.target.result;
+                                    iframe.style.width = '100%';
+                                    iframe.style.height = '200px';
+                                    iframe.style.border = 'none';
+                                    iframe.title = file.name;
+                                    
+                                    const label = document.createElement('div');
+                                    label.style.background = 'var(--color-status-disabled, #f4f7fb)';
+                                    label.style.padding = '4px 8px';
+                                    label.style.fontSize = '12px';
+                                    label.style.fontWeight = '600';
+                                    label.textContent = `📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+                                    
+                                    pdfContainer.appendChild(iframe);
+                                    pdfContainer.appendChild(label);
+                                    pdfContainer.style.cursor = 'pointer';
+                                    
+                                    // Guardar la data URL para el modal
+                                    pdfContainer.dataset.pdfSrc = event.target.result;
+                                    pdfContainer.dataset.fileName = file.name;
+                                    
+                                    // Hacer el contenedor clickeable para abrir en modal
+                                    pdfContainer.addEventListener('click', function(e) {
+                                        // No abrir modal si se hace clic en el iframe directamente
+                                        if (e.target === iframe) return;
+                                        openPreviewModal(this.dataset.pdfSrc, this.dataset.fileName, 'pdf');
+                                    });
+                                    
+                                    // Insertar en el editor
+                                    editor.focus();
+                                    const selection = window.getSelection();
+                                    const range = selection.getRangeAt(0);
+                                    range.insertNode(pdfContainer);
+                                    
+                                    // Mover cursor después del PDF
+                                    range.setStartAfter(pdfContainer);
+                                    range.collapse(true);
+                                    selection.removeAllRanges();
+                                    selection.addRange(range);
+                                    
+                                    checkPlaceholder();
+                                };
+                                reader.readAsDataURL(file);
+                            } else {
+                                // Preview genérico para otros documentos
+                                const docContainer = document.createElement('div');
+                                docContainer.className = 'rich-text-attachment-preview rich-text-attachment-preview--document';
+                                docContainer.style.margin = '8px 0';
+                                docContainer.style.padding = '12px';
+                                docContainer.style.border = '1px solid var(--color-basics-gray, #e0e5ea)';
+                                docContainer.style.borderRadius = 'var(--radius-md)';
+                                docContainer.style.background = 'var(--color-status-disabled, #f4f7fb)';
+                                docContainer.style.display = 'inline-flex';
+                                docContainer.style.alignItems = 'center';
+                                docContainer.style.gap = '8px';
+                                docContainer.style.maxWidth = '300px';
+                                
+                                const icon = document.createElement('img');
+                                icon.src = 'images/attachment.svg';
+                                icon.style.width = '24px';
+                                icon.style.height = '24px';
+                                icon.style.flexShrink = '0';
+                                
+                                const info = document.createElement('div');
+                                info.style.display = 'flex';
+                                info.style.flexDirection = 'column';
+                                info.style.gap = '2px';
+                                
+                                const fileName = document.createElement('div');
+                                fileName.style.fontSize = '14px';
+                                fileName.style.fontWeight = '600';
+                                fileName.style.color = 'var(--color-text-primary, #0a243f)';
+                                fileName.textContent = file.name;
+                                
+                                const fileSize = document.createElement('div');
+                                fileSize.style.fontSize = '12px';
+                                fileSize.style.color = 'var(--color-text-secondary, #6b7b8a)';
+                                fileSize.textContent = (file.size / 1024).toFixed(2) + ' KB';
+                                
+                                const extension = document.createElement('span');
+                                extension.style.marginLeft = '4px';
+                                extension.style.fontSize = '10px';
+                                extension.style.fontWeight = '600';
+                                extension.style.color = 'var(--color-text-primary, #0a243f)';
+                                extension.textContent = fileExtension.toUpperCase();
+                                
+                                info.appendChild(fileName);
+                                info.appendChild(fileSize);
+                                
+                                docContainer.appendChild(icon);
+                                docContainer.appendChild(info);
+                                docContainer.appendChild(extension);
+                                docContainer.style.cursor = 'pointer';
+                                
+                                // Guardar información del archivo
+                                docContainer.dataset.fileName = file.name;
+                                docContainer.dataset.fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                                docContainer.dataset.fileExtension = fileExtension;
+                                
+                                // Hacer el contenedor clickeable para mostrar info en modal
+                                docContainer.addEventListener('click', function() {
+                                    openPreviewModal(null, this.dataset.fileName, 'document', {
+                                        size: this.dataset.fileSize,
+                                        extension: this.dataset.fileExtension
+                                    });
+                                });
+                                
+                                // Insertar en el editor
+                                editor.focus();
+                                const selection = window.getSelection();
+                                const range = selection.getRangeAt(0);
+                                range.insertNode(docContainer);
+                                
+                                // Mover cursor después del documento
+                                range.setStartAfter(docContainer);
+                                range.collapse(true);
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                                
+                                checkPlaceholder();
+                            }
+                            
+                            // Limpiar el input para permitir seleccionar el mismo archivo nuevamente
+                            e.target.value = '';
+                        };
+                        
+                        // Abrir el selector de archivos
+                        fileInput.click();
                     }
                 });
             });
@@ -8127,6 +9005,57 @@
             
             editor.addEventListener('mouseup', function() {
                 updateToolbarButtons(richTextInput);
+            });
+            
+            // Event delegation para manejar clicks en previews (incluyendo elementos cargados)
+            editor.addEventListener('click', function(e) {
+                // Buscar el contenedor de preview más cercano
+                const previewContainer = e.target.closest('.rich-text-attachment-preview');
+                if (!previewContainer) {
+                    // Si no hay contenedor, verificar si es una imagen directamente con la clase
+                    if (e.target.tagName === 'IMG' && e.target.classList.contains('rich-text-attachment-preview--image')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openPreviewModal(e.target.src, e.target.alt || 'Image', 'image');
+                        return;
+                    }
+                    return;
+                }
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Verificar tipo de preview
+                if (previewContainer.classList.contains('rich-text-attachment-preview--image')) {
+                    // Preview de imagen
+                    const img = previewContainer.tagName === 'IMG' ? previewContainer : previewContainer.querySelector('img');
+                    if (img && img.src) {
+                        openPreviewModal(img.src, img.alt || 'Image', 'image');
+                    }
+                } else if (previewContainer.classList.contains('rich-text-attachment-preview--pdf')) {
+                    // Preview de PDF - no abrir si se hace clic directamente en el iframe
+                    if (e.target.tagName === 'IFRAME') {
+                        return;
+                    }
+                    const pdfSrc = previewContainer.dataset.pdfSrc || previewContainer.querySelector('iframe')?.src;
+                    const fileName = previewContainer.dataset.fileName || previewContainer.querySelector('.project-assets-item-preview-label')?.textContent?.replace(/📄\s*/, '').split('(')[0].trim() || 'PDF Document';
+                    if (pdfSrc) {
+                        openPreviewModal(pdfSrc, fileName, 'pdf');
+                    }
+                } else if (previewContainer.classList.contains('rich-text-attachment-preview--document')) {
+                    // Preview de documento
+                    const fileName = previewContainer.dataset.fileName || 
+                                    previewContainer.querySelector('.project-assets-item-text, .project-deliverables-item-text')?.textContent || 
+                                    'Document';
+                    const fileSize = previewContainer.dataset.fileSize || 
+                                    previewContainer.querySelector('.project-assets-item-link, .project-deliverables-item-link')?.textContent || 
+                                    '';
+                    const fileExtension = previewContainer.dataset.fileExtension || '';
+                    openPreviewModal(null, fileName, 'document', {
+                        size: fileSize,
+                        extension: fileExtension
+                    });
+                }
             });
         }
         
@@ -8458,10 +9387,53 @@
                         assetItems.forEach(item => {
                             const assetText = item.querySelector('.project-assets-item-text')?.textContent || '';
                             const assetLink = item.querySelector('.project-assets-item-link')?.textContent || '';
-                            if (assetText || assetLink) {
+                            
+                            // Verificar si es una imagen
+                            const imgPreview = item.querySelector('.project-assets-item-preview[src]');
+                            if (imgPreview && imgPreview.tagName === 'IMG') {
                                 assets.push({
-                                    text: assetText,
-                                    link: assetLink
+                                    type: 'image',
+                                    name: assetText,
+                                    size: assetLink,
+                                    preview: imgPreview.src || imgPreview.dataset.previewSrc || ''
+                                });
+                            }
+                            // Verificar si es un PDF
+                            else if (item.querySelector('.project-assets-item-preview-wrapper iframe')) {
+                                const pdfWrapper = item.querySelector('.project-assets-item-preview-wrapper');
+                                const iframe = pdfWrapper?.querySelector('iframe');
+                                assets.push({
+                                    type: 'file',
+                                    name: assetText,
+                                    size: assetLink,
+                                    preview: pdfWrapper?.dataset.pdfSrc || iframe?.src || '',
+                                    fileExtension: 'pdf'
+                                });
+                            }
+                            // Verificar si es un link
+                            else if (assetLink && (assetLink.startsWith('http://') || assetLink.startsWith('https://'))) {
+                                assets.push({
+                                    type: 'link',
+                                    name: assetText || assetLink,
+                                    url: assetLink
+                                });
+                            }
+                            // Verificar si es un archivo (documento)
+                            else if (item.querySelector('.project-assets-item-icon')) {
+                                const icon = item.querySelector('.project-assets-item-icon');
+                                const fileExtension = icon.dataset.fileExtension || assetText.split('.').pop().toLowerCase();
+                                assets.push({
+                                    type: 'file',
+                                    name: assetText,
+                                    size: assetLink,
+                                    fileExtension: fileExtension
+                                });
+                            }
+                            // Es texto (bullet)
+                            else if (assetText) {
+                                assets.push({
+                                    type: 'text',
+                                    text: assetText.replace(/^-\s*/, '')
                                 });
                             }
                         });
