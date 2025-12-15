@@ -1671,9 +1671,33 @@
             color: var(--color-text-primary);
         }
 
+        .project-objective-item-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: var(--color-basics-dark-blue, #0a243f);
+        }
+
+        .project-objective-item-checkbox:checked {
+            accent-color: #3be4a9;
+        }
+
         .project-objective-item-text {
             flex: 1;
             margin: 0;
+            transition: text-decoration 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .project-objective-item--completed .project-objective-item-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .project-objective-item--completed {
+            background-color: #D1FFEF;
+            border-color: #3BE4A9;
         }
 
         .project-objective-item-actions {
@@ -2649,14 +2673,14 @@
                 <div class="project-date-status-section">
                     <div class="project-date-wrapper">
                         <span class="project-status-label" id="estimatedDeliveryDateLabel" style="display: none;">Estimated delivery date:</span>
-                        <div class="dsu-date-button-wrapper">
-                            <button class="dsu-button dsu-button--tertiary dsu-button--small" id="projectDateButton">
-                                <span class="dsu-agreements__date-button-icon">
-                                    <img src="images/calendar.svg" alt="Calendar">
-                                </span>
-                                <span id="projectDateButtonText">Select a date to deliver the project</span>
-                            </button>
-                            <div class="dsu-date-picker" id="projectDatePicker"></div>
+                    <div class="dsu-date-button-wrapper">
+                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="projectDateButton">
+                            <span class="dsu-agreements__date-button-icon">
+                                <img src="images/calendar.svg" alt="Calendar">
+                            </span>
+                            <span id="projectDateButtonText">Select a date to deliver the project</span>
+                        </button>
+                        <div class="dsu-date-picker" id="projectDatePicker"></div>
                         </div>
                         <button class="project-date-reset-btn" id="projectDateResetBtn" style="display: none;" title="Clear date">
                             <img src="images/trash.svg" alt="Clear">
@@ -2935,16 +2959,16 @@
                                             <span>Send email</span>
                                         </button>
                                     </div>
+                                    </div>
                                 </div>
-                            </div>
-                            
+                                
                             <!-- Botón flotante fuera del content para que no se vea afectado por el scroll -->
-                            <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
-                                <span>New agreement</span>
-                                <span class="dsu-button__icon">
-                                    <img src="images/plus.svg" alt="Plus">
-                                </span>
-                            </button>
+                                <button class="dsu-button dsu-button--tertiary dsu-button--medium" id="projectCreateAgreementBtn">
+                                    <span>New agreement</span>
+                                    <span class="dsu-button__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
                         </div>
                     </div>
                     
@@ -3026,12 +3050,12 @@
                             <span class="project-section-title__text">Project context</span>
                             <span class="project-section-title__chevron">
                                 <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
+                                </span>
                         </div>
                         <p class="project-test-description">Provide all the available information to star solid.</p>
                     </div>
                     <div class="project-section-content project-section-content--expanded" data-content="projectContext">
-                        <div class="project-test-content">
+                    <div class="project-test-content">
                         <div class="dsu-rich-text-input" id="projectTestRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -3065,8 +3089,8 @@
                                         <img src="images/trash.svg" alt="Delete">
                                     </button>
                                 </div>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -3079,12 +3103,12 @@
                             <span class="project-section-title__text">What do you want to solve?</span>
                             <span class="project-section-title__chevron">
                                 <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
+                                </span>
                         </div>
                         <p class="project-solve-description">Describe the problem or challenge.</p>
                     </div>
                     <div class="project-section-content project-section-content--expanded" data-content="solve">
-                        <div class="project-solve-content">
+                    <div class="project-solve-content">
                         <div class="dsu-rich-text-input" id="projectSolveRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -3118,8 +3142,8 @@
                                         <img src="images/trash.svg" alt="Delete">
                                     </button>
                                 </div>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -3132,12 +3156,12 @@
                             <span class="project-section-title__text">Solution approach</span>
                             <span class="project-section-title__chevron">
                                 <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
+                                </span>
                         </div>
                         <p class="project-solve-description">Describe the problem or challenge.</p>
                     </div>
                     <div class="project-section-content project-section-content--expanded" data-content="solutionApproach">
-                        <div class="project-solve-content">
+                    <div class="project-solve-content">
                         <div class="dsu-rich-text-input" id="projectSolutionApproachRichTextInput">
                             <div class="dsu-rich-text-input__toolbar">
                                 <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
@@ -3235,23 +3259,23 @@
                             <!-- Items se agregarán aquí dinámicamente -->
                         </div>
                         <div class="project-deliverables-input-row">
-                            <div class="dsu-input-group">
-                                <div class="dsu-input-container project-deliverables-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        class="dsu-input dsu-input--only" 
-                                        id="deliverablesInput" 
-                                        placeholder="Choose an unique name"
-                                    >
-                                    <div class="project-deliverables-input-actions">
-                                        <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
-                                            <img src="images/attachment.svg" alt="Upload">
-                                        </button>
-                                        <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
-                                            <img src="images/project.svg" alt="Image">
-                                        </button>
-                                        <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
-                                        <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container project-deliverables-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="deliverablesInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                                <div class="project-deliverables-input-actions">
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
+                                        <img src="images/attachment.svg" alt="Upload">
+                                    </button>
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
+                                        <img src="images/project.svg" alt="Image">
+                                    </button>
+                                    <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
+                                    <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
                                     </div>
                                 </div>
                             </div>
@@ -4205,7 +4229,7 @@
             // NO cargar datos aquí, se cargarán después de que todas las secciones estén inicializadas
             // en initProjectEmptyPage para asegurar que todas las funciones estén disponibles
         }
-
+        
         // ============================================
         // Load Project Data into Form
         // ============================================
@@ -4507,9 +4531,12 @@
                         // Cargar Goals
                         if (hasGoals && goalsItemsContainer && typeof window.addObjectiveItem === 'function') {
                             console.log('📋 Cargando Goals:', project.goals.length);
-                            project.goals.forEach(goalText => {
+                            project.goals.forEach(goal => {
+                                // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                                const goalText = typeof goal === 'string' ? goal : (goal.text || '');
+                                const isCompleted = typeof goal === 'object' ? (goal.completed || false) : false;
                                 if (goalText && goalText.trim()) {
-                                    window.addObjectiveItem(goalText.trim(), 'goals');
+                                    window.addObjectiveItem(goalText.trim(), 'goals', isCompleted);
                                 }
                             });
                             console.log('✅ Goals cargados');
@@ -4529,9 +4556,12 @@
                             console.warn('⚠️ addObjectiveItem no está disponible aún, reintentando...');
                             setTimeout(() => {
                                 if (typeof window.addObjectiveItem === 'function' && goalsItemsContainer) {
-                                    project.goals.forEach(goalText => {
+                                    project.goals.forEach(goal => {
+                                        // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                                        const goalText = typeof goal === 'string' ? goal : (goal.text || '');
+                                        const isCompleted = typeof goal === 'object' ? (goal.completed || false) : false;
                                         if (goalText && goalText.trim()) {
-                                            window.addObjectiveItem(goalText.trim(), 'goals');
+                                            window.addObjectiveItem(goalText.trim(), 'goals', isCompleted);
                                         }
                                     });
                                     if (goalsItemsContainer) {
@@ -4550,9 +4580,12 @@
                         // Cargar KPIs
                         if (hasKpis && kpisItemsContainer && typeof window.addObjectiveItem === 'function') {
                             console.log('📊 Cargando KPIs:', project.kpis.length);
-                            project.kpis.forEach(kpiText => {
+                            project.kpis.forEach(kpi => {
+                                // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                                const kpiText = typeof kpi === 'string' ? kpi : (kpi.text || '');
+                                const isCompleted = typeof kpi === 'object' ? (kpi.completed || false) : false;
                                 if (kpiText && kpiText.trim()) {
-                                    window.addObjectiveItem(kpiText.trim(), 'kpis');
+                                    window.addObjectiveItem(kpiText.trim(), 'kpis', isCompleted);
                                 }
                             });
                             console.log('✅ KPIs cargados');
@@ -4565,9 +4598,12 @@
                             console.warn('⚠️ addObjectiveItem no está disponible aún para KPIs, reintentando...');
                             setTimeout(() => {
                                 if (typeof window.addObjectiveItem === 'function' && kpisItemsContainer) {
-                                    project.kpis.forEach(kpiText => {
+                                    project.kpis.forEach(kpi => {
+                                        // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                                        const kpiText = typeof kpi === 'string' ? kpi : (kpi.text || '');
+                                        const isCompleted = typeof kpi === 'object' ? (kpi.completed || false) : false;
                                         if (kpiText && kpiText.trim()) {
-                                            window.addObjectiveItem(kpiText.trim(), 'kpis');
+                                            window.addObjectiveItem(kpiText.trim(), 'kpis', isCompleted);
                                         }
                                     });
                                     if (kpisItemsContainer) {
@@ -6332,7 +6368,7 @@
                 // Agregar el team al contenedor
                 if (teamsListContainer) {
                     // Simplemente agregar el team al contenedor (el botón siempre está fuera del contenedor)
-                    teamsListContainer.appendChild(teamItem);
+                        teamsListContainer.appendChild(teamItem);
                     
                     // Actualizar estado del botón Publish después de agregar team
                     if (typeof updatePublishButtonState === 'function') {
@@ -6868,9 +6904,9 @@
                         if (e.key === 'Enter' && this.value.trim()) {
                             e.preventDefault();
                             const newTitle = this.value.trim();
-                            updateAgreementTitle(newTitle);
+                        updateAgreementTitle(newTitle);
                             if (sendButton) {
-                                sendButton.disabled = false;
+                            sendButton.disabled = false;
                             }
                         }
                     });
@@ -7570,9 +7606,9 @@
                         if (e.key === 'Enter' && this.value.trim()) {
                             e.preventDefault();
                             const newTitle = this.value.trim();
-                            updateAgreementTitleForGroup(newTitle, uniqueId);
+                        updateAgreementTitleForGroup(newTitle, uniqueId);
                             if (sendButtonForGroup) {
-                                sendButtonForGroup.disabled = false;
+                            sendButtonForGroup.disabled = false;
                             }
                         }
                     });
@@ -7814,7 +7850,7 @@
             }
 
             // Function to add objective item (bullet) to active container
-            function addObjectiveItem(text, type = null) {
+            function addObjectiveItem(text, type = null, completed = false) {
                 // Si se proporciona type, usar ese contenedor específico, sino usar el activo
                 const activeContainer = type === 'goals' ? goalsItemsContainer : 
                                        type === 'kpis' ? kpisItemsContainer : 
@@ -7822,18 +7858,46 @@
                 if (!activeContainer || !text.trim()) return;
                 
                 const item = document.createElement('div');
-                item.className = 'project-objective-item';
-                item.innerHTML = `
-                    <p class="project-objective-item-text">-${text}</p>
-                    <div class="project-objective-item-actions">
-                        <button class="project-objective-item-action" onclick="this.closest('.project-objective-item').remove()">
+                item.className = 'project-objective-item' + (completed ? ' project-objective-item--completed' : '');
+                
+                // Crear checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'project-objective-item-checkbox';
+                checkbox.checked = completed;
+                
+                // Event listener para marcar como completado
+                checkbox.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    if (isChecked) {
+                        item.classList.add('project-objective-item--completed');
+                    } else {
+                        item.classList.remove('project-objective-item--completed');
+                    }
+                });
+                
+                // Crear texto
+                const textElement = document.createElement('p');
+                textElement.className = 'project-objective-item-text';
+                textElement.textContent = `-${text}`;
+                
+                // Crear acciones
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'project-objective-item-actions';
+                actionsDiv.innerHTML = `
+                    <button class="project-objective-item-action" onclick="this.closest('.project-objective-item').remove(); if(typeof updatePublishButtonState === 'function') setTimeout(updatePublishButtonState, 100);">
                             <img src="images/trash.svg" alt="Delete">
                         </button>
                         <button class="project-objective-item-action" onclick="editObjectiveItem(this)">
                             <img src="images/Edit.svg" alt="Edit">
                         </button>
-                    </div>
                 `;
+                
+                // Ensamblar item
+                item.appendChild(checkbox);
+                item.appendChild(textElement);
+                item.appendChild(actionsDiv);
+                
                 activeContainer.appendChild(item);
             }
             
@@ -8055,7 +8119,7 @@
                     
                     if (filePreview && filePreview.type === 'pdf' && filePreview.preview) {
                         // PDF preview with iframe
-                        previewHtml = `
+                    previewHtml = `
                             <div class="project-assets-item-preview-wrapper" data-pdf-src="${filePreview.preview}" data-file-name="${data.name}" style="cursor: pointer;">
                                 <iframe src="${filePreview.preview}" class="project-assets-item-preview project-assets-item-preview--pdf" title="${data.name}"></iframe>
                                 <div class="project-assets-item-preview-overlay">
@@ -8076,9 +8140,9 @@
                         // Generic file icon
                         previewHtml = `
                             <div class="project-assets-item-icon" data-file-name="${data.name}" data-file-size="${data.size || ''}" style="cursor: pointer;">
-                                <img src="images/attachment.svg" alt="File">
-                            </div>
-                        `;
+                            <img src="images/attachment.svg" alt="File">
+                        </div>
+                    `;
                     }
                     
                     contentHtml = `
@@ -8205,10 +8269,10 @@
                             // For PDFs, create object URL for preview
                             const reader = new FileReader();
                             reader.onload = function(event) {
-                                addAssetItem({
-                                    type: 'file',
-                                    name: file.name,
-                                    size: fileSize,
+                        addAssetItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
                                     file: file,
                                     preview: event.target.result
                                 });
@@ -8225,11 +8289,11 @@
                                     name: file.name,
                                     size: fileSize,
                                     preview: event.target.result,
-                                    file: file
-                                });
+                            file: file
+                        });
                             };
                             reader.readAsDataURL(file);
-                            e.target.value = '';
+                        e.target.value = '';
                             return;
                         }
                         
@@ -8345,7 +8409,7 @@
                     }
                 });
             }
-            
+
             console.log('✅ Assets Section inicializado correctamente');
         }
 
@@ -8492,8 +8556,8 @@
                 // Item content (without status button inside)
                 item.innerHTML = `
                     <div class="project-deliverables-item-main">
-                        ${previewHtml}
-                        ${contentHtml}
+                    ${previewHtml}
+                    ${contentHtml}
                     </div>
                     <div class="project-deliverables-item-actions">
                         <button class="project-deliverables-item-action" onclick="this.closest('.project-deliverables-item-row').remove()">
@@ -8579,10 +8643,10 @@
                             // For PDFs, create object URL for preview
                             const reader = new FileReader();
                             reader.onload = function(event) {
-                                addDeliverableItem({
-                                    type: 'file',
-                                    name: file.name,
-                                    size: fileSize,
+                        addDeliverableItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
                                     file: file,
                                     preview: event.target.result
                                 });
@@ -8599,11 +8663,11 @@
                                     name: file.name,
                                     size: fileSize,
                                     preview: event.target.result,
-                                    file: file
-                                });
+                            file: file
+                        });
                             };
                             reader.readAsDataURL(file);
-                            e.target.value = '';
+                        e.target.value = '';
                             return;
                         }
                         
@@ -8807,7 +8871,7 @@
             };
             document.addEventListener('keydown', escapeHandler);
         }
-        
+
         // ============================================
         // Rich Text Input Functionality
         // ============================================
@@ -9518,9 +9582,17 @@
                         const goalItems = goalsItemsContainer.querySelectorAll('.project-objective-item');
                         goalItems.forEach(item => {
                             const goalText = item.querySelector('.project-objective-item-text')?.textContent || '';
+                            const checkbox = item.querySelector('.project-objective-item-checkbox');
+                            const isCompleted = checkbox ? checkbox.checked : false;
                             if (goalText) {
                                 // Remover el prefijo "-" si existe
-                                goals.push(goalText.replace(/^-\s*/, '').trim());
+                                const cleanText = goalText.replace(/^-\s*/, '').trim();
+                                if (cleanText) {
+                                    goals.push({
+                                        text: cleanText,
+                                        completed: isCompleted
+                                    });
+                                }
                             }
                         });
                     }
@@ -9529,9 +9601,17 @@
                         const kpiItems = kpisItemsContainer.querySelectorAll('.project-objective-item');
                         kpiItems.forEach(item => {
                             const kpiText = item.querySelector('.project-objective-item-text')?.textContent || '';
+                            const checkbox = item.querySelector('.project-objective-item-checkbox');
+                            const isCompleted = checkbox ? checkbox.checked : false;
                             if (kpiText) {
                                 // Remover el prefijo "-" si existe
-                                kpis.push(kpiText.replace(/^-\s*/, '').trim());
+                                const cleanText = kpiText.replace(/^-\s*/, '').trim();
+                                if (cleanText) {
+                                    kpis.push({
+                                        text: cleanText,
+                                        completed: isCompleted
+                                    });
+                                }
                             }
                         });
                     }
@@ -9762,8 +9842,8 @@
                             console.log('🔄 Actualizando proyecto existente:', existingProjectId);
                             savedProject = DocuProjectData.updateProject(existingProjectId, projectData);
                             console.log('✅ Proyecto actualizado exitosamente:', savedProject);
-                            
-                            // Generar HTML del proyecto publicado (los datos ya están en projectData)
+                        
+                        // Generar HTML del proyecto publicado (los datos ya están en projectData)
                             generateProjectHTML(savedProject);
                             
                             // Recargar proyectos en el sidebar
@@ -9784,16 +9864,16 @@
                             
                             // Generar HTML del proyecto publicado (los datos ya están en projectData)
                             generateProjectHTML(savedProject);
-                            
-                            // Recargar proyectos en el sidebar
-                            setTimeout(() => {
-                                loadProjectsInSidebar();
-                            }, 200);
-                            
-                            // Mostrar mensaje de éxito
-                            alert(`Project "${projectName}" has been created successfully!`);
-                            
-                            // Redirigir a la vista del proyecto publicado
+                        
+                        // Recargar proyectos en el sidebar
+                        setTimeout(() => {
+                            loadProjectsInSidebar();
+                        }, 200);
+                        
+                        // Mostrar mensaje de éxito
+                        alert(`Project "${projectName}" has been created successfully!`);
+                        
+                        // Redirigir a la vista del proyecto publicado
                             window.location.href = `project_view.html?id=${savedProject.id}`;
                         }
                     } catch (error) {
