@@ -299,7 +299,7 @@
 
         /* Override for tertiary button styles */
         .dsu-button--tertiary {
-            background-color: #f4f7fb;
+            /* background-color: #f4f7fb; */
             color: var(--color-text-primary);
             border: none;
             box-shadow: var(--button-tertiary-elevation-default);
@@ -572,6 +572,238 @@
         .team-members-section--disabled .teams-list-container {
             opacity: 0.6;
             pointer-events: none;
+        }
+
+        /* Project Ceremonies Section */
+        .project-ceremonies-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-ceremonies-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-ceremonies-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .ceremonies-dropdown-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .ceremonies-dropdown-trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #ceremoniesDropdownText {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .ceremonies-dropdown-trigger:hover {
+            border-color: var(--color-basics-mid-blue);
+        }
+
+        .ceremonies-dropdown-trigger--open {
+            border-color: var(--color-basics-mid-blue);
+            box-shadow: 0 0 0 2px rgba(10, 36, 63, 0.1);
+        }
+
+        .ceremonies-dropdown-chevron {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .ceremonies-dropdown-trigger--open .ceremonies-dropdown-chevron {
+            transform: rotate(180deg);
+        }
+
+        .ceremonies-dropdown-chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .ceremonies-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + var(--spacing-08));
+            left: 0;
+            right: 0;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 16px rgba(10, 36, 63, 0.15);
+            z-index: 1000;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .ceremonies-dropdown--open {
+            display: block;
+        }
+
+        .ceremony-option {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .ceremony-option:hover {
+            background-color: var(--color-status-disabled);
+        }
+
+        .ceremony-option-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: var(--color-basics-dark-blue);
+        }
+
+        .ceremony-option-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .ceremony-option-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .ceremony-option-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: var(--line-height-normal);
+        }
+
+        .selected-ceremonies-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            margin-top: var(--spacing-16);
+        }
+
+        .selected-ceremony-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+        }
+
+        .selected-ceremony-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .selected-ceremony-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: bold;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .selected-ceremony-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .selected-ceremony-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex-shrink: 0;
+            margin-left: var(--spacing-16);
+        }
+
+        .selected-ceremony-schedule-btn {
+            flex-shrink: 0;
+        }
+
+        .selected-ceremony-remove-btn {
+            flex-shrink: 0;
+        }
+
+        .ceremony-custom-form {
+            display: none;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: none;
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-12);
+        }
+
+        .ceremony-custom-form--visible {
+            display: flex;
+        }
+
+        .ceremony-custom-form .dsu-input-group {
+            margin-bottom: 0;
+        }
+
+        .ceremony-custom-form-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            justify-content: flex-end;
+            margin-top: var(--spacing-08);
+        }
+
+        .ceremony-add-another-btn {
+            width: 100%;
+            margin-top: var(--spacing-08);
+            justify-content: center;
         }
 
         /* Project Agreements Section */
@@ -2834,6 +3066,27 @@
                     </div>
                 </div>
 
+                <!-- Project Ceremonies Section -->
+                <div class="project-ceremonies-section" id="projectCeremoniesSection">
+                    <div class="project-ceremonies-header">
+                        <h2 class="project-ceremonies-title">Project ceremonies</h2>
+                    </div>
+                    <div class="ceremonies-dropdown-wrapper">
+                        <button class="ceremonies-dropdown-trigger" id="ceremoniesDropdownTrigger">
+                            <span id="ceremoniesDropdownText">Select ceremonies to schedule (optional)</span>
+                            <span class="ceremonies-dropdown-chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
+                        </button>
+                        <div class="ceremonies-dropdown" id="ceremoniesDropdown">
+                            <!-- Opciones de ceremonias se agregarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                    <div class="selected-ceremonies-list" id="selectedCeremoniesList">
+                        <!-- Ceremonias seleccionadas se mostrarán aquí -->
+                    </div>
+                </div>
+
                 <!-- What do you want to accomplish? Section -->
                 <div class="project-objective-section" id="projectObjectiveSection">
                     <div class="project-objective-header">
@@ -3494,6 +3747,9 @@
 
             // Inicializar team members
             initTeamMembers();
+
+            // Inicializar project ceremonies
+            initProjectCeremonies();
 
             // Inicializar agreements
             initAgreements();
@@ -6512,6 +6768,364 @@
                     console.log('❌ Modal cerrado (click fuera)');
                 }
             });
+        }
+
+        // ============================================
+        // Project Ceremonies
+        // ============================================
+        function initProjectCeremonies() {
+            const dropdownTrigger = document.getElementById('ceremoniesDropdownTrigger');
+            const dropdown = document.getElementById('ceremoniesDropdown');
+            const dropdownText = document.getElementById('ceremoniesDropdownText');
+            const selectedCeremoniesList = document.getElementById('selectedCeremoniesList');
+
+            if (!dropdownTrigger || !dropdown || !dropdownText || !selectedCeremoniesList) {
+                console.warn('⚠️ Elementos de ceremonies dropdown no encontrados');
+                return;
+            }
+
+            // Ceremonias predefinidas
+            const predefinedCeremonies = [
+                {
+                    name: 'Sprint Planning',
+                    description: 'The team decides what work will be done in the next sprint and how it will be carried out.'
+                },
+                {
+                    name: 'Stand-up',
+                    description: 'A quick check-in (max. 15 min) to synchronize the team, identify impediments, and plan for the next day.'
+                },
+                {
+                    name: 'Sprint Review',
+                    description: 'The team presents the completed product increment to stakeholders and receives feedback.'
+                },
+                {
+                    name: 'Sprint Retrospective',
+                    description: 'To reflect on the past sprint to identify what worked well and what can be improved in the next iteration.'
+                }
+            ];
+
+            // Array para almacenar ceremonias seleccionadas
+            let selectedCeremonies = [];
+
+            // Cargar ceremonias guardadas si existen
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            if (projectId && typeof DocuProjectData !== 'undefined') {
+                const project = DocuProjectData.getProjectById(projectId);
+                if (project && project.ceremonies && Array.isArray(project.ceremonies)) {
+                    selectedCeremonies = project.ceremonies;
+                }
+            }
+
+            // Función para renderizar opciones en el dropdown
+            function renderDropdownOptions() {
+                dropdown.innerHTML = '';
+                predefinedCeremonies.forEach(ceremony => {
+                    const option = document.createElement('div');
+                    option.className = 'ceremony-option';
+                    option.setAttribute('data-ceremony-name', ceremony.name);
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'ceremony-option-checkbox';
+                    checkbox.checked = selectedCeremonies.some(c => c.name === ceremony.name);
+                    
+                    // Función para manejar el cambio de selección
+                    const handleSelection = function(e) {
+                        if (e) e.stopPropagation();
+                        const isChecked = checkbox.checked;
+                        
+                        if (isChecked) {
+                            // Agregar ceremonia si no existe
+                            if (!selectedCeremonies.some(c => c.name === ceremony.name)) {
+                                selectedCeremonies.push(ceremony);
+                            }
+                        } else {
+                            // Remover ceremonia
+                            selectedCeremonies = selectedCeremonies.filter(c => c.name !== ceremony.name);
+                            // Remover de la lista de seleccionadas
+                            const selectedItem = selectedCeremoniesList.querySelector(`[data-ceremony-name="${ceremony.name}"]`);
+                            if (selectedItem) {
+                                selectedItem.remove();
+                            }
+                        }
+                        // Actualizar referencia global
+                        window.selectedCeremonies = selectedCeremonies;
+                        updateDropdownText();
+                        renderSelectedCeremonies();
+                        // Actualizar estado del botón Publish
+                        if (typeof updatePublishButtonState === 'function') {
+                            setTimeout(updatePublishButtonState, 100);
+                        }
+                    };
+                    
+                    checkbox.addEventListener('change', handleSelection);
+                    
+                    // Hacer toda la opción clickeable
+                    option.addEventListener('click', function(e) {
+                        // No hacer nada si el clic fue directamente en el checkbox (ya se maneja con change)
+                        if (e.target !== checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            handleSelection(e);
+                        }
+                    });
+
+                    const optionInfo = document.createElement('div');
+                    optionInfo.className = 'ceremony-option-info';
+
+                    const optionName = document.createElement('div');
+                    optionName.className = 'ceremony-option-name';
+                    optionName.textContent = ceremony.name;
+
+                    const optionDescription = document.createElement('div');
+                    optionDescription.className = 'ceremony-option-description';
+                    optionDescription.textContent = ceremony.description;
+
+                    optionInfo.appendChild(optionName);
+                    optionInfo.appendChild(optionDescription);
+
+                    option.appendChild(checkbox);
+                    option.appendChild(optionInfo);
+                    dropdown.appendChild(option);
+                });
+
+                // Botón "Add another"
+                const addAnotherBtn = document.createElement('button');
+                addAnotherBtn.className = 'dsu-button dsu-button--secondary dsu-button--small ceremony-add-another-btn';
+                addAnotherBtn.textContent = 'Add another';
+                addAnotherBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const customForm = dropdown.querySelector('.ceremony-custom-form');
+                    if (customForm) {
+                        customForm.classList.toggle('ceremony-custom-form--visible');
+                        if (customForm.classList.contains('ceremony-custom-form--visible')) {
+                            const nameInput = customForm.querySelector('#customCeremonyNameInput');
+                            if (nameInput) nameInput.focus();
+                        }
+                    }
+                });
+                dropdown.appendChild(addAnotherBtn);
+
+                // Formulario personalizado (inicialmente oculto)
+                let customForm = dropdown.querySelector('.ceremony-custom-form');
+                if (!customForm) {
+                    customForm = document.createElement('div');
+                    customForm.className = 'ceremony-custom-form';
+                    customForm.id = 'ceremonyCustomFormInDropdown';
+
+                    const nameInputGroup = document.createElement('div');
+                    nameInputGroup.className = 'dsu-input-group';
+                    const nameLabel = document.createElement('div');
+                    nameLabel.className = 'dsu-input-label';
+                    nameLabel.innerHTML = '<div class="dsu-input-label__text"><span>Name</span></div>';
+                    const nameInput = document.createElement('input');
+                    nameInput.type = 'text';
+                    nameInput.className = 'dsu-input';
+                    nameInput.id = 'customCeremonyNameInput';
+                    nameInput.placeholder = 'Enter ceremony name';
+                    nameInputGroup.appendChild(nameLabel);
+                    nameInputGroup.appendChild(nameInput);
+
+                    const descriptionInputGroup = document.createElement('div');
+                    descriptionInputGroup.className = 'dsu-input-group';
+                    const descriptionLabel = document.createElement('div');
+                    descriptionLabel.className = 'dsu-input-label';
+                    descriptionLabel.innerHTML = '<div class="dsu-input-label__text"><span>Description</span></div>';
+                    const descriptionInput = document.createElement('textarea');
+                    descriptionInput.className = 'dsu-input';
+                    descriptionInput.id = 'customCeremonyDescriptionInput';
+                    descriptionInput.placeholder = 'Enter ceremony description';
+                    descriptionInput.rows = 3;
+                    descriptionInputGroup.appendChild(descriptionLabel);
+                    descriptionInputGroup.appendChild(descriptionInput);
+
+                    const formActions = document.createElement('div');
+                    formActions.className = 'ceremony-custom-form-actions';
+
+                    const cancelBtn = document.createElement('button');
+                    cancelBtn.className = 'dsu-button dsu-button--secondary dsu-button--small';
+                    cancelBtn.textContent = 'Cancel';
+                    cancelBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        customForm.classList.remove('ceremony-custom-form--visible');
+                        nameInput.value = '';
+                        descriptionInput.value = '';
+                    });
+
+                    const scheduleFormBtn = document.createElement('button');
+                    scheduleFormBtn.className = 'dsu-button dsu-button--primary dsu-button--small';
+                    scheduleFormBtn.textContent = 'Add';
+                    scheduleFormBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        const name = nameInput.value.trim();
+                        const description = descriptionInput.value.trim();
+
+                        if (!name) {
+                            alert('Please enter a ceremony name');
+                            return;
+                        }
+
+                        if (!description) {
+                            alert('Please enter a ceremony description');
+                            return;
+                        }
+
+                        // Crear nueva ceremonia personalizada
+                        const newCeremony = {
+                            name: name,
+                            description: description,
+                            isCustom: true
+                        };
+
+                        // Agregar a selectedCeremonies si no existe
+                        if (!selectedCeremonies.some(c => c.name === newCeremony.name)) {
+                            selectedCeremonies.push(newCeremony);
+                            // Actualizar referencia global
+                            window.selectedCeremonies = selectedCeremonies;
+                            // Renderizar la nueva ceremonia seleccionada
+                            renderSelectedCeremonies();
+                            // Actualizar texto del dropdown
+                            updateDropdownText();
+                            // Ocultar formulario y limpiar campos
+                            customForm.classList.remove('ceremony-custom-form--visible');
+                            nameInput.value = '';
+                            descriptionInput.value = '';
+                            // Actualizar estado del botón Publish
+                            if (typeof updatePublishButtonState === 'function') {
+                                setTimeout(updatePublishButtonState, 100);
+                            }
+                            console.log('✅ Nueva ceremonia personalizada agregada:', newCeremony);
+                        } else {
+                            alert('This ceremony already exists');
+                        }
+                    });
+
+                    formActions.appendChild(cancelBtn);
+                    formActions.appendChild(scheduleFormBtn);
+
+                    customForm.appendChild(nameInputGroup);
+                    customForm.appendChild(descriptionInputGroup);
+                    customForm.appendChild(formActions);
+                    dropdown.appendChild(customForm);
+                }
+            }
+
+            // Función para actualizar el texto del dropdown
+            function updateDropdownText() {
+                if (selectedCeremonies.length === 0) {
+                    dropdownText.textContent = 'Select ceremonies to schedule (optional)';
+                } else if (selectedCeremonies.length === 1) {
+                    dropdownText.textContent = `1 ceremony selected`;
+                } else {
+                    dropdownText.textContent = `${selectedCeremonies.length} ceremonies selected`;
+                }
+            }
+
+            // Función para renderizar ceremonias seleccionadas
+            function renderSelectedCeremonies() {
+                selectedCeremoniesList.innerHTML = '';
+                selectedCeremonies.forEach(ceremony => {
+                    const selectedItem = document.createElement('div');
+                    selectedItem.className = 'selected-ceremony-item';
+                    selectedItem.setAttribute('data-ceremony-name', ceremony.name);
+
+                    const selectedInfo = document.createElement('div');
+                    selectedInfo.className = 'selected-ceremony-info';
+
+                    const selectedName = document.createElement('div');
+                    selectedName.className = 'selected-ceremony-name';
+                    selectedName.textContent = ceremony.name;
+
+                    const selectedDescription = document.createElement('div');
+                    selectedDescription.className = 'selected-ceremony-description';
+                    selectedDescription.textContent = ceremony.description;
+
+                    selectedInfo.appendChild(selectedName);
+                    selectedInfo.appendChild(selectedDescription);
+
+                    const actionsContainer = document.createElement('div');
+                    actionsContainer.className = 'selected-ceremony-actions';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'dsu-button dsu-button--tertiary dsu-button--small selected-ceremony-remove-btn';
+                    removeBtn.innerHTML = '<img src="images/trash.svg" alt="Remove" width="16" height="16">';
+                    removeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Remover ceremonia del array
+                        selectedCeremonies = selectedCeremonies.filter(c => c.name !== ceremony.name);
+                        // Actualizar referencia global
+                        window.selectedCeremonies = selectedCeremonies;
+                        // Remover del DOM
+                        selectedItem.remove();
+                        // Actualizar texto del dropdown y re-renderizar opciones si está abierto
+                        updateDropdownText();
+                        if (dropdown.classList.contains('ceremonies-dropdown--open')) {
+                            renderDropdownOptions();
+                        }
+                        // Actualizar estado del botón Publish
+                        if (typeof updatePublishButtonState === 'function') {
+                            setTimeout(updatePublishButtonState, 100);
+                        }
+                        console.log('🗑️ Ceremonia removida:', ceremony.name);
+                    });
+
+                    const scheduleBtn = document.createElement('button');
+                    scheduleBtn.className = 'dsu-button dsu-button--primary dsu-button--small selected-ceremony-schedule-btn';
+                    scheduleBtn.textContent = 'Schedule';
+                    scheduleBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log('📅 Agendar ceremonia:', ceremony.name);
+                        // TODO: Implementar funcionalidad de agendar
+                        alert(`Agendar: ${ceremony.name}`);
+                    });
+
+                    actionsContainer.appendChild(removeBtn);
+                    actionsContainer.appendChild(scheduleBtn);
+
+                    selectedItem.appendChild(selectedInfo);
+                    selectedItem.appendChild(actionsContainer);
+                    selectedCeremoniesList.appendChild(selectedItem);
+                });
+            }
+
+            // Toggle dropdown
+            dropdownTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.contains('ceremonies-dropdown--open');
+                
+                if (isOpen) {
+                    dropdown.classList.remove('ceremonies-dropdown--open');
+                    dropdownTrigger.classList.remove('ceremonies-dropdown-trigger--open');
+                } else {
+                    dropdown.classList.add('ceremonies-dropdown--open');
+                    dropdownTrigger.classList.add('ceremonies-dropdown-trigger--open');
+                    renderDropdownOptions();
+                }
+            });
+
+            // Cerrar dropdown al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!dropdownTrigger.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('ceremonies-dropdown--open');
+                    dropdownTrigger.classList.remove('ceremonies-dropdown-trigger--open');
+                }
+            });
+
+            // Inicializar
+            updateDropdownText();
+            renderSelectedCeremonies();
+
+            // Hacer selectedCeremonies accesible globalmente para guardar
+            window.selectedCeremonies = selectedCeremonies;
+
+            console.log('✅ Project ceremonies inicializadas');
         }
 
         // ============================================
@@ -9896,6 +10510,10 @@
                     }
                     console.log('📦 Deliverables recopilados:', deliverables.length, deliverables);
                     
+                    // Recopilar Ceremonies desde window.selectedCeremonies
+                    const ceremonies = window.selectedCeremonies || [];
+                    console.log('🎯 Ceremonies recopiladas:', ceremonies.length, ceremonies);
+                    
                     // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
                     const urlParams = new URLSearchParams(window.location.search);
                     const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
@@ -9912,6 +10530,7 @@
                             status: 'published',
                             stages: stages,
                             teams: teams,
+                            ceremonies: ceremonies,
                             assets: assets,
                             goals: goals,
                             kpis: kpis,
