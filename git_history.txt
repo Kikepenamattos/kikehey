@@ -1,3 +1,5 @@
+519330cfdadcc01fcfc0520f21f383a84b288bfe|Ubits|ubits@macbookpro.lan|2025-12-17 10:52:29 -0500|Refactor: Mover status button debajo de fechas y agregar estilos
+8cb9142d520f12b98fee97ca5b872d10dc2c94da|Ubits|ubits@macbookpro.lan|2025-12-17 10:47:05 -0500|Update: Actualizar changelog con últimos cambios
 19fec7bf787c37cdd156cd9f359394eb59f50818|Ubits|ubits@macbookpro.lan|2025-12-17 10:44:50 -0500|Refactor: Eliminar indicador visual de status y ajustar z-index
 a2a2f00a1a195afde3729e6c7807cb7e0b3635c0|Ubits|ubits@macbookpro.lan|2025-12-17 10:40:16 -0500|Update: Actualizar changelog con últimos cambios
 101ca2943d890c14db3ab872fecc6b227ae068cc|Ubits|ubits@macbookpro.lan|2025-12-17 10:40:02 -0500|Feat: Agregar selector de status en modal de stages
