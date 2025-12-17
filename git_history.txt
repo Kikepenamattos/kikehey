@@ -1,3 +1,5 @@
+b79ae7f66c460a7c89ea502282bdb426b50ddedf|Ubits|ubits@macbookpro.lan|2025-12-17 10:27:49 -0500|Style: Revertir ancho de botón secundario a 100%
+614c645d7159354fda3edaad3294e2773bdffaf4|Ubits|ubits@macbookpro.lan|2025-12-17 10:26:26 -0500|Update: Actualizar changelog con últimos cambios
 7a6ea3f084f6d8d6e25f5fc0efd9b6cf9a3e701f|Ubits|ubits@macbookpro.lan|2025-12-17 10:26:15 -0500|Style: Ajustar anchos de botón secundario y label de status
 c568e1f5b74af897ab4a068d96ed6e62d3b7c6fc|Ubits|ubits@macbookpro.lan|2025-12-17 10:23:16 -0500|Update: Actualizar changelog con últimos cambios
 afab12bce5b4919173f7e2ead97b21c1e3865afb|Ubits|ubits@macbookpro.lan|2025-12-17 10:22:57 -0500|Feat: Agregar botón 'Share project' en project-date-status-section
