@@ -1,3 +1,4 @@
+9f5322d34b354c1804e567dee9a802d1cc8d2d83|Ubits|ubits@macbookpro.lan|2025-12-17 11:20:50 -0500|Update: Actualizar changelog con últimos cambios
 99416c588cea786eaea6781efdf0e023cab2e7a8|Ubits|ubits@macbookpro.lan|2025-12-17 11:20:42 -0500|Update: Actualizar changelog con últimos cambios
 78577eeeb58dd593001251957cf49df509931e47|Ubits|ubits@macbookpro.lan|2025-12-17 11:20:18 -0500|Update: Actualizar changelog con últimos cambios
 adc01f2b9d554ff7760e26b3d2fc3a11b01583a4|Ubits|ubits@macbookpro.lan|2025-12-17 11:20:18 -0500|Update: Actualizar changelog con últimos cambios
