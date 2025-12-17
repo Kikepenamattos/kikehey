@@ -2506,6 +2506,132 @@
             color: var(--color-text-secondary);
         }
 
+        /* Team Details Modal Styles */
+        .team-details-name-section {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .team-details-name {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .team-details-cost-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12);
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-24);
+        }
+
+        .team-details-cost-label {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .team-details-cost-value {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .team-details-members-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .team-details-members-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-details-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .team-details-member-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+        }
+
+        .team-details-member-item:hover {
+            background-color: var(--color-surface-secondary);
+        }
+
+        .team-details-member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .team-details-member-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .team-details-member-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-details-member-role {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .team-details-member-cost {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            padding: 4px 8px;
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+
+        .with-members-row__left {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .with-members-row__left:hover {
+            opacity: 0.8;
+        }
+
         /* Make previews clickable */
         .rich-text-attachment-preview {
             cursor: pointer;
@@ -3620,6 +3746,38 @@
                 </div>
             </div>
 
+            <!-- Modal para mostrar detalles del team -->
+            <div class="modal-overlay" id="teamDetailsModalOverlay">
+                <div class="modal" id="teamDetailsModal">
+                    <div class="modal-headline">
+                        <h2 class="modal__title" id="teamDetailsModalTitle">Team Details</h2>
+                        <button class="modal__close-btn" id="closeTeamDetailsModalBtn" aria-label="Close">
+                            <img src="images/close.svg" alt="Close" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <!-- Team name -->
+                        <div class="team-details-name-section">
+                            <h3 id="teamDetailsName" class="team-details-name"></h3>
+                        </div>
+                        
+                        <!-- Team cost -->
+                        <div class="team-details-cost-section">
+                            <span class="team-details-cost-label">Team cost:</span>
+                            <span id="teamDetailsCost" class="team-details-cost-value"></span>
+                        </div>
+                        
+                        <!-- Team members -->
+                        <div class="team-details-members-section">
+                            <h4 class="team-details-members-title">Team members</h4>
+                            <div id="teamDetailsMembersList" class="team-details-members-list">
+                                <!-- Los miembros se insertarán aquí dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Sticky Buttons -->
             <!-- 
                 NOTAS PARA AGREGAR NUEVOS BOTONES:
@@ -3747,6 +3905,9 @@
 
             // Inicializar team members
             initTeamMembers();
+
+            // Inicializar modal de detalles de team
+            initTeamDetailsModal();
 
             // Inicializar project ceremonies
             initProjectCeremonies();
@@ -5397,6 +5558,15 @@
             
             const withMembersRowLeft = document.createElement('div');
             withMembersRowLeft.className = 'with-members-row__left';
+            withMembersRowLeft.setAttribute('data-team-id', teamId);
+            withMembersRowLeft.setAttribute('role', 'button');
+            withMembersRowLeft.setAttribute('tabindex', '0');
+            withMembersRowLeft.setAttribute('aria-label', `View details for ${teamName}`);
+            
+            // Agregar event listener para abrir modal de detalles
+            withMembersRowLeft.addEventListener('click', function() {
+                openTeamDetailsModal(teamId);
+            });
             
             const avatarsRow = document.createElement('div');
             avatarsRow.className = 'avatars-row';
@@ -6679,6 +6849,15 @@
 
                 const withMembersRowLeft = document.createElement('div');
                 withMembersRowLeft.className = 'with-members-row__left';
+                withMembersRowLeft.setAttribute('data-team-id', team.id);
+                withMembersRowLeft.setAttribute('role', 'button');
+                withMembersRowLeft.setAttribute('tabindex', '0');
+                withMembersRowLeft.setAttribute('aria-label', `View details for ${team.name}`);
+                
+                // Agregar event listener para abrir modal de detalles
+                withMembersRowLeft.addEventListener('click', function() {
+                    openTeamDetailsModal(team.id);
+                });
 
                 const avatarsRow = document.createElement('div');
                 avatarsRow.className = 'avatars-row';
@@ -10695,6 +10874,175 @@
             }
             
             console.log('🗑️ === FIN deleteProject ===');
+        }
+
+        // ============================================
+        // Team Details Modal
+        // ============================================
+        async function openTeamDetailsModal(teamId) {
+            console.log('📋 Abriendo modal de detalles del team:', teamId);
+            
+            // Obtener datos del team desde localStorage usando DocuProjectData
+            let teamData = null;
+            
+            try {
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    alert('No se pudieron cargar los datos del equipo.');
+                    return;
+                }
+                
+                // Obtener todos los datos del proyecto
+                const projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos del proyecto obtenidos:', projectData);
+                
+                // Buscar el team por ID en el array de teams
+                if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
+                    teamData = projectData.teams.find(team => team.id === teamId);
+                    console.log('🔍 Resultado de búsqueda del team:', teamData ? 'Encontrado' : 'No encontrado');
+                } else {
+                    console.warn('⚠️ No hay teams disponibles en projectData');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error al cargar datos del team:', error);
+            }
+            
+            if (!teamData) {
+                console.warn('⚠️ No se encontraron datos para el team:', teamId);
+                alert('No se pudieron cargar los datos del equipo.');
+                return;
+            }
+            
+            console.log('📦 Datos del team cargados:', teamData);
+            
+            // Actualizar título del modal
+            const modalTitle = document.getElementById('teamDetailsModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = 'Team Details';
+            }
+            
+            // Actualizar nombre del team
+            const teamNameElement = document.getElementById('teamDetailsName');
+            if (teamNameElement) {
+                teamNameElement.textContent = teamData.name || 'Unnamed Team';
+            }
+            
+            // Actualizar team cost
+            const teamCostElement = document.getElementById('teamDetailsCost');
+            if (teamCostElement) {
+                let teamCostValue = 'N/A';
+                
+                // Si hay teamCost guardado y no está vacío, usarlo
+                if (teamData.teamCost && teamData.teamCost.trim() !== '') {
+                    teamCostValue = teamData.teamCost;
+                } else {
+                    // Si no hay teamCost guardado, calcularlo desde los miembros
+                    let totalCost = 0;
+                    if (teamData.members && Array.isArray(teamData.members)) {
+                        teamData.members.forEach(member => {
+                            const cost = member.cost || '';
+                            if (cost) {
+                                // Remover cualquier carácter no numérico excepto punto decimal
+                                const numericValue = parseFloat(cost.replace(/[^\d.]/g, ''));
+                                if (!isNaN(numericValue)) {
+                                    totalCost += numericValue;
+                                }
+                            }
+                        });
+                    }
+                    teamCostValue = `USD ${totalCost.toFixed(2)}`;
+                }
+                
+                teamCostElement.textContent = teamCostValue;
+            }
+            
+            // Actualizar lista de miembros
+            const membersList = document.getElementById('teamDetailsMembersList');
+            if (membersList && teamData.members && Array.isArray(teamData.members)) {
+                membersList.innerHTML = '';
+                
+                for (const member of teamData.members) {
+                    const memberItem = document.createElement('div');
+                    memberItem.className = 'team-details-member-item';
+                    
+                    // Avatar
+                    const avatar = document.createElement('img');
+                    avatar.className = 'team-details-member-avatar';
+                    avatar.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
+                    
+                    // Obtener imagen del miembro
+                    if (typeof getMemberImage === 'function') {
+                        try {
+                            const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                            avatar.src = imageSrc;
+                        } catch (error) {
+                            console.error('❌ Error al cargar imagen del miembro:', error);
+                            avatar.src = 'images/avatar_icon.svg';
+                        }
+                    } else {
+                        avatar.src = member.image || member.avatar || 'images/avatar_icon.svg';
+                    }
+                    
+                    // Info del miembro
+                    const memberInfo = document.createElement('div');
+                    memberInfo.className = 'team-details-member-info';
+                    
+                    const memberName = document.createElement('p');
+                    memberName.className = 'team-details-member-name';
+                    memberName.textContent = `${member.name || ''} ${member.lastName || ''}`.trim() || 'Unnamed Member';
+                    
+                    const memberRole = document.createElement('p');
+                    memberRole.className = 'team-details-member-role';
+                    memberRole.textContent = member.role || 'No role assigned';
+                    
+                    memberInfo.appendChild(memberName);
+                    memberInfo.appendChild(memberRole);
+                    
+                    // Cost del miembro
+                    const memberCost = document.createElement('span');
+                    memberCost.className = 'team-details-member-cost';
+                    memberCost.textContent = member.cost || 'N/A';
+                    
+                    memberItem.appendChild(avatar);
+                    memberItem.appendChild(memberInfo);
+                    memberItem.appendChild(memberCost);
+                    
+                    membersList.appendChild(memberItem);
+                }
+            }
+            
+            // Mostrar modal
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.add('modal-overlay--visible');
+            }
+        }
+        
+        function closeTeamDetailsModal() {
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('modal-overlay--visible');
+            }
+        }
+        
+        // Inicializar event listeners para el modal de team details
+        function initTeamDetailsModal() {
+            const closeBtn = document.getElementById('closeTeamDetailsModalBtn');
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeTeamDetailsModal);
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        closeTeamDetailsModal();
+                    }
+                });
+            }
         }
 
         // ============================================
