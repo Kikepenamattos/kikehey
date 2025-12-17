@@ -1632,7 +1632,8 @@
         /* Asegurar que el dropdown de status tenga prioridad sobre sticky buttons */
         .dsu-status-button-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 1000;
+            width: 100%;
         }
 
         .dsu-status-dropdown {
@@ -2745,30 +2746,6 @@
             line-height: var(--line-height-normal);
             margin-top: var(--spacing-08);
             text-align: left;
-        }
-        
-        /* Stage Status Indicator */
-        .stage-status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-top: var(--spacing-08);
-        }
-        
-        .stage-status-indicator--to-start {
-            background-color: var(--color-status-to-start, #efefef);
-        }
-        
-        .stage-status-indicator--in-progress {
-            background-color: var(--color-status-in-progress, #ffc048);
-        }
-        
-        .stage-status-indicator--done {
-            background-color: var(--color-status-done, #3be4a9);
-        }
-        
-        .stage-status-indicator--paused {
-            background-color: var(--color-status-paused, #6b7b8a);
         }
 
         .stage-card-date-range-wrapper {
@@ -6614,11 +6591,6 @@
                 descriptionElement.textContent = stageDescription;
                 statusBadge.appendChild(descriptionElement);
             }
-            
-            // Status indicator (punto de color según status)
-            const statusIndicator = document.createElement('div');
-            statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
-            statusBadge.appendChild(statusIndicator);
 
             // Date range wrapper con botones delete y edit
             const dateRangeWrapper = document.createElement('div');
@@ -6740,31 +6712,13 @@
                     descriptionElement = document.createElement('p');
                     descriptionElement.className = 'stage-description';
                     descriptionElement.textContent = stageDescription;
-                    // Insertar antes del status indicator si existe
-                    const statusIndicator = statusBadge.querySelector('.stage-status-indicator');
-                    if (statusIndicator) {
-                        statusBadge.insertBefore(descriptionElement, statusIndicator);
-                    } else {
-                        statusBadge.appendChild(descriptionElement);
-                    }
+                    statusBadge.appendChild(descriptionElement);
                 }
             } else {
                 // Eliminar descripción si está vacía
                 if (descriptionElement) {
                     descriptionElement.remove();
                 }
-            }
-            
-            // Actualizar status indicator
-            let statusIndicator = statusBadge?.querySelector('.stage-status-indicator');
-            if (statusIndicator) {
-                // Actualizar clase del status
-                statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
-            } else if (statusBadge) {
-                // Crear status indicator si no existe
-                statusIndicator = document.createElement('div');
-                statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
-                statusBadge.appendChild(statusIndicator);
             }
             
             // Actualizar data attribute del status
