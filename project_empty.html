@@ -1632,17 +1632,17 @@
         /* Asegurar que el dropdown de status tenga prioridad sobre sticky buttons */
         .dsu-status-button-wrapper {
             position: relative;
-            z-index: 1000;
-            width: 100%;
+            z-index: 50;
+            /* width: 100%; */
         }
 
         .dsu-status-dropdown {
-            z-index: 150 !important; /* Mayor que dsu-sticky-buttons (z-index: 100) */
+            z-index: 75 !important; /* Mayor que el wrapper pero menor que el botón flotante (150) */
         }
 
         /* Asegurar que el dropdown expandido esté por encima de todo */
         .dsu-status-dropdown--expanded {
-            z-index: 150 !important;
+            z-index: 75 !important;
         }
 
         /* Dropdown mostrado hacia arriba cuando está cerca del bottom */
@@ -2072,7 +2072,7 @@
             position: absolute;
             bottom: 24px;
             right: 16px; /* Alineado a la derecha con padding */
-            z-index: 50; /* Por encima de contenido normal, por debajo de modales (100) y dropdowns (10000) */
+            z-index: 150; /* Por encima de status dropdowns (50) y modales (100) */
             background-color: var(--color-basics-dark-blue) !important;
             color: var(--color-basics-white) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -2693,6 +2693,7 @@
         #stageModalOverlay .dsu-status-button-wrapper {
             position: relative;
             z-index: 10002;
+            width: 100%;
         }
         
         #stageModalOverlay .dsu-status-dropdown {
