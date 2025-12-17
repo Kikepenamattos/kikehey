@@ -78,7 +78,7 @@
             box-sizing: border-box;
             position: sticky;
             bottom: 0;
-            z-index: 100;
+            z-index: 2000;
             justify-content: center;
         }
 
@@ -1632,17 +1632,34 @@
         /* Asegurar que el dropdown de status tenga prioridad sobre sticky buttons */
         .dsu-status-button-wrapper {
             position: relative;
-            z-index: 50;
+            /* z-index: 1; */
             /* width: 100%; */
         }
 
         .dsu-status-dropdown {
-            z-index: 75 !important; /* Mayor que el wrapper pero menor que el botón flotante (150) */
+            position: absolute;
+            z-index: 1000 !important;
+            overflow: hidden !important; /* Forzar que el contenido no se salga */
+            isolation: isolate; /* Crear un nuevo contexto de apilamiento */
         }
 
         /* Asegurar que el dropdown expandido esté por encima de todo */
         .dsu-status-dropdown--expanded {
-            z-index: 75 !important;
+            z-index: 1000 !important;
+            overflow: hidden !important;
+        }
+
+        /* Los items dentro del dropdown deben estar contenidos */
+        .dsu-status-dropdown__item {
+            position: static !important; /* Eliminar cualquier positioning que cause problemas */
+            z-index: 1 !important;
+            isolation: auto;
+        }
+
+        /* Asegurar que no haya elementos flotando dentro del dropdown */
+        .dsu-status-dropdown * {
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         /* Dropdown mostrado hacia arriba cuando está cerca del bottom */
@@ -2072,7 +2089,7 @@
             position: absolute;
             bottom: 24px;
             right: 16px; /* Alineado a la derecha con padding */
-            z-index: 150; /* Por encima de status dropdowns (50) y modales (100) */
+            z-index: 2000; /* Por encima de dropdowns (1000) y modales */
             background-color: var(--color-basics-dark-blue) !important;
             color: var(--color-basics-white) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);

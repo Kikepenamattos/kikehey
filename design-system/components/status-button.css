@@ -110,13 +110,14 @@
   border-radius: var(--radius-md);
   box-shadow: var(--elevation-3);
   overflow: hidden;
-  z-index: 100;
+  z-index: 1000;
   margin-top: var(--spacing-04);
   max-height: 0;
   opacity: 0;
   transform: translateY(-4px);
   pointer-events: none;
   transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+  isolation: isolate;
 }
 
 .dsu-status-dropdown--expanded {
@@ -142,6 +143,9 @@
   text-align: left;
   width: 100%;
   border-bottom: 1px solid var(--color-basics-gray);
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
 }
 
 .dsu-status-dropdown__item:last-child {
