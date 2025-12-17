@@ -1,3 +1,5 @@
+95abdbf68ac0563b1be2f30d511f0c0ff873176f|Ubits|ubits@macbookpro.lan|2025-12-17 11:00:41 -0500|Fix: Aumentar z-index del date picker en modal de stages
+c9d0d93fcb5126fbc34eded7ff32bb1ab81ff615|Ubits|ubits@macbookpro.lan|2025-12-17 10:58:02 -0500|Update: Actualizar changelog con últimos cambios
 8071b767bd939be1388eee5bafc58f7eb79735d5|Ubits|ubits@macbookpro.lan|2025-12-17 10:57:44 -0500|Fix: Corregir visibilidad del dropdown de status en modal de stages
 fa3517cb87bdc9bd2f541f1653087f3667207f07|Ubits|ubits@macbookpro.lan|2025-12-17 10:52:43 -0500|Update: Actualizar changelog con últimos cambios
 519330cfdadcc01fcfc0520f21f383a84b288bfe|Ubits|ubits@macbookpro.lan|2025-12-17 10:52:29 -0500|Refactor: Mover status button debajo de fechas y agregar estilos
