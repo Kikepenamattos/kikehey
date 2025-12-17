@@ -1,3 +1,4 @@
+30cae7476fc5ffd714abfb6c391f02ee5a79dda6|Ubits|ubits@macbookpro.lan|2025-12-17 12:29:59 -0500|Update: Actualizar changelog con últimos cambios
 1679d87bdabac073873a517b9879801c0d82acbf|Ubits|ubits@macbookpro.lan|2025-12-17 12:29:34 -0500|Fix: Resolver conflictos de z-index en dropdowns y ajustar jerarquía de capas
 520d3b31a78bdfcb77b3f1a8d52bb51ae1516134|Ubits|ubits@macbookpro.lan|2025-12-17 11:21:28 -0500|Update: Actualizar changelog con últimos cambios
 15c510699ab3cda5e4001aa93cbb31cff5389c15|Ubits|ubits@macbookpro.lan|2025-12-17 11:21:18 -0500|Update: Actualizar changelog con últimos cambios
