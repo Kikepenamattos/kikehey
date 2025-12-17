@@ -1,3 +1,5 @@
+afab12bce5b4919173f7e2ead97b21c1e3865afb|Ubits|ubits@macbookpro.lan|2025-12-17 10:22:57 -0500|Feat: Agregar botón 'Share project' en project-date-status-section
+be43893fc17953fca413a1831bc9dd4c0d622dcc|Ubits|ubits@macbookpro.lan|2025-12-17 10:19:28 -0500|Update: Actualizar changelog con últimos cambios
 66a6f8b5a6cc431116c2dd86a33834534747fc25|Ubits|ubits@macbookpro.lan|2025-12-17 10:19:11 -0500|Feat: Agregar botón 'Share team' en cost-edit-level
 fe37225318326ab3b280f1b3e67f29eb610ebb7f|Ubits|ubits@macbookpro.lan|2025-12-17 10:14:09 -0500|Update: Actualizar changelog con últimos cambios
 c6ddc50017e15403d17c39128dc92ee29c74d164|Ubits|ubits@macbookpro.lan|2025-12-17 10:13:58 -0500|Style: Ajustar ancho del botón 'Manage team' a 30%
