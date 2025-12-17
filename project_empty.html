@@ -5941,6 +5941,40 @@
                     budgetAllocationInput.readOnly = false;
                 }
             }
+
+            // Restaurar estado de secciones colapsables
+            if (project.collapsibleSectionsState && typeof project.collapsibleSectionsState === 'object') {
+                // Esperar un poco para asegurar que initCollapsibleSections ya se haya ejecutado
+                setTimeout(() => {
+                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies'];
+                    collapsibleSections.forEach(sectionName => {
+                        const savedState = project.collapsibleSectionsState[sectionName];
+                        if (savedState !== undefined) {
+                            const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
+                            const content = document.querySelector(`.project-section-content[data-content="${sectionName}"]`);
+                            
+                            if (title && content) {
+                                if (savedState) {
+                                    // Expandir
+                                    title.classList.remove('project-section-title--collapsed');
+                                    title.classList.add('project-section-title--expanded');
+                                    content.classList.remove('project-section-content--collapsed');
+                                    content.classList.add('project-section-content--expanded');
+                                } else {
+                                    // Colapsar
+                                    title.classList.remove('project-section-title--expanded');
+                                    title.classList.add('project-section-title--collapsed');
+                                    content.classList.remove('project-section-content--expanded');
+                                    content.classList.add('project-section-content--collapsed');
+                                }
+                                console.log(`✅ Estado de sección "${sectionName}" restaurado: ${savedState ? 'expandida' : 'colapsada'}`);
+                            }
+                        }
+                    });
+                }, 100);
+            } else {
+                console.log('ℹ️ No hay estado de secciones colapsables guardado, usando estado por defecto');
+            }
         }
         
         // Función helper para agregar team al proyecto (accesible desde loadProjectData)
@@ -11430,6 +11464,17 @@
                     const ceremonies = window.selectedCeremonies || [];
                     console.log('🎯 Ceremonies recopiladas:', ceremonies.length, ceremonies);
                     
+                    // Recopilar estado de secciones colapsables
+                    const collapsibleSectionsState = {};
+                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies'];
+                    collapsibleSections.forEach(sectionName => {
+                        const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
+                        if (title) {
+                            collapsibleSectionsState[sectionName] = title.classList.contains('project-section-title--expanded');
+                        }
+                    });
+                    console.log('📋 Estado de secciones colapsables:', collapsibleSectionsState);
+                    
                     // Recopilar Communication Channels
                     const communicationChannels = [];
                     const communicationChannelsContainer = document.getElementById('communicationChannelsItemsContainer');
@@ -11476,7 +11521,8 @@
                             projectContext: projectContext,
                             solveDescription: solveDescription,
                             solutionApproach: solutionApproach,
-                            deliverables: deliverables
+                            deliverables: deliverables,
+                            collapsibleSectionsState: collapsibleSectionsState
                         };
                         
                         // Agregar budget allocation solo si tiene valor
