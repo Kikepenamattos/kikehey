@@ -2746,6 +2746,30 @@
             margin-top: var(--spacing-08);
             text-align: left;
         }
+        
+        /* Stage Status Indicator */
+        .stage-status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-top: var(--spacing-08);
+        }
+        
+        .stage-status-indicator--to-start {
+            background-color: var(--color-status-to-start, #efefef);
+        }
+        
+        .stage-status-indicator--in-progress {
+            background-color: var(--color-status-in-progress, #ffc048);
+        }
+        
+        .stage-status-indicator--done {
+            background-color: var(--color-status-done, #3be4a9);
+        }
+        
+        .stage-status-indicator--paused {
+            background-color: var(--color-status-paused, #6b7b8a);
+        }
 
         .stage-card-date-range-wrapper {
             display: flex;
@@ -3137,7 +3161,6 @@
                 <div class="modal-overlay" id="stageModalOverlay">
                     <div class="modal">
                         <div class="modal-headline">
-                            <h2 class="modal__title">Add Stage</h2>
                             <button class="modal-close-btn" id="closeStageModalBtn" aria-label="Close modal">
                                 <img src="images/close.svg" alt="Close" width="20" height="20">
                             </button>
@@ -3150,6 +3173,30 @@
                                     </div>
                                 </div>
                                 <input type="text" class="dsu-input" id="stageNameInput" placeholder="Enter stage name">
+                            </div>
+                            
+                            <!-- Stage Status -->
+                            <div class="dsu-status-button-wrapper" id="stageStatusWrapper">
+                                <button class="dsu-status-button dsu-status-button--to-start" id="stageModalStatusButton">
+                                    <span id="stageModalStatusButtonText">To start</span>
+                                    <span class="dsu-status-button__chevron">
+                                        <img src="images/down-chevron.svg" alt="Chevron" id="stageModalStatusChevron">
+                                    </span>
+                                </button>
+                                <div class="dsu-status-dropdown" id="stageModalStatusDropdown">
+                                    <div class="dsu-status-dropdown__item" data-status="to-start">
+                                        <span class="dsu-status-dropdown__text">To start</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="in-progress">
+                                        <span class="dsu-status-dropdown__text">In progress</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="done">
+                                        <span class="dsu-status-dropdown__text">Done</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="paused">
+                                        <span class="dsu-status-dropdown__text">Paused</span>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="dsu-input-group modal-input-group">
@@ -6241,6 +6288,66 @@
             // Inicializar date pickers
             initDatePicker('stageStartDatePicker', 'stageStartDateButton', 'stageStartDateButtonText');
             initDatePicker('stageEndDatePicker', 'stageEndDateButton', 'stageEndDateButtonText');
+            
+            // Inicializar status dropdown del modal
+            const stageModalStatusButton = document.getElementById('stageModalStatusButton');
+            const stageModalStatusDropdown = document.getElementById('stageModalStatusDropdown');
+            const stageModalStatusChevron = document.getElementById('stageModalStatusChevron');
+            
+            if (stageModalStatusButton && stageModalStatusDropdown) {
+                // Toggle dropdown
+                stageModalStatusButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isExpanded = stageModalStatusDropdown.classList.contains('dsu-status-dropdown--expanded');
+                    stageModalStatusDropdown.classList.toggle('dsu-status-dropdown--expanded');
+                    
+                    // Rotar chevron
+                    if (stageModalStatusChevron) {
+                        if (isExpanded) {
+                            stageModalStatusChevron.style.transform = 'rotate(0deg)';
+                        } else {
+                            stageModalStatusChevron.style.transform = 'rotate(180deg)';
+                        }
+                    }
+                });
+                
+                // Seleccionar status
+                const statusItems = stageModalStatusDropdown.querySelectorAll('.dsu-status-dropdown__item');
+                statusItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const selectedStatus = this.getAttribute('data-status');
+                        const statusText = this.querySelector('.dsu-status-dropdown__text').textContent;
+                        
+                        // Actualizar botón
+                        const buttonText = document.getElementById('stageModalStatusButtonText');
+                        if (buttonText) {
+                            buttonText.textContent = statusText;
+                        }
+                        
+                        // Actualizar clases de color
+                        stageModalStatusButton.className = 'dsu-status-button dsu-status-button--' + selectedStatus;
+                        
+                        // Guardar el status en el modal para usarlo después
+                        modalOverlay.setAttribute('data-stage-status', selectedStatus);
+                        
+                        // Cerrar dropdown
+                        stageModalStatusDropdown.classList.remove('dsu-status-dropdown--expanded');
+                        if (stageModalStatusChevron) {
+                            stageModalStatusChevron.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                });
+                
+                // Cerrar dropdown al hacer clic fuera
+                document.addEventListener('click', function(e) {
+                    if (!stageModalStatusButton.contains(e.target) && !stageModalStatusDropdown.contains(e.target)) {
+                        stageModalStatusDropdown.classList.remove('dsu-status-dropdown--expanded');
+                        if (stageModalStatusChevron) {
+                            stageModalStatusChevron.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+            }
 
             // Cerrar modal
             closeBtn.addEventListener('click', closeStageModal);
@@ -6293,17 +6400,20 @@
                     }
                 }
                 
+                // Obtener status seleccionado
+                const stageStatus = modalOverlay.getAttribute('data-stage-status') || 'to-start';
+                
                 // Verificar si estamos en modo edición
                 const editingStageId = modalOverlay.getAttribute('data-editing-stage-id');
                 if (editingStageId) {
                     // Actualizar stage existente
                     const existingStageItem = document.querySelector(`.project-stage-item[data-stage-id="${editingStageId}"]`);
                     if (existingStageItem) {
-                        updateStageCard(existingStageItem, stageName, stageDescription, startDateText, endDateText);
+                        updateStageCard(existingStageItem, stageName, stageDescription, startDateText, endDateText, stageStatus);
                     }
                 } else {
                     // Crear nuevo card de stage
-                    createStageCard(stageName, stageDescription, startDateText, endDateText);
+                    createStageCard(stageName, stageDescription, startDateText, endDateText, stageStatus);
                 }
                 
                 closeStageModal();
@@ -6418,6 +6528,28 @@
                 errorMessage.textContent = '';
             }
 
+            // Cargar status del stage en el modal
+            const stageStatus = stageItem.getAttribute('data-stage-status') || 'to-start';
+            const stageModalStatusButton = document.getElementById('stageModalStatusButton');
+            const stageModalStatusButtonText = document.getElementById('stageModalStatusButtonText');
+            
+            if (stageModalStatusButton && stageModalStatusButtonText) {
+                // Actualizar botón de status
+                stageModalStatusButton.className = `dsu-status-button dsu-status-button--${stageStatus}`;
+                
+                // Actualizar texto del status
+                const statusTextMap = {
+                    'to-start': 'To start',
+                    'in-progress': 'In progress',
+                    'done': 'Done',
+                    'paused': 'Paused'
+                };
+                stageModalStatusButtonText.textContent = statusTextMap[stageStatus] || 'To start';
+                
+                // Guardar status en el modal
+                modalOverlay.setAttribute('data-stage-status', stageStatus);
+            }
+            
             // Marcar modal como en modo edición y guardar referencia al stage item
             const stageId = 'stage_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
             stageItem.setAttribute('data-stage-id', stageId);
@@ -6452,7 +6584,7 @@
             }
         }
 
-        function createStageCard(stageName, stageDescription = '', startDateText, endDateText) {
+        function createStageCard(stageName, stageDescription = '', startDateText, endDateText, stageStatus = 'to-start') {
             const stagesList = document.getElementById('projectStagesList');
             const addStageBtn = document.getElementById('addStageBtn');
             
@@ -6461,6 +6593,7 @@
             // Crear contenedor del stage
             const stageItem = document.createElement('div');
             stageItem.className = 'project-stage-item';
+            stageItem.setAttribute('data-stage-status', stageStatus);
 
             // Crear card
             const stageCard = document.createElement('div');
@@ -6481,6 +6614,11 @@
                 descriptionElement.textContent = stageDescription;
                 statusBadge.appendChild(descriptionElement);
             }
+            
+            // Status indicator (punto de color según status)
+            const statusIndicator = document.createElement('div');
+            statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
+            statusBadge.appendChild(statusIndicator);
 
             // Date range wrapper con botones delete y edit
             const dateRangeWrapper = document.createElement('div');
@@ -6581,7 +6719,7 @@
         }
 
         // Función para actualizar un stage existente
-        function updateStageCard(stageItem, stageName, stageDescription = '', startDateText, endDateText) {
+        function updateStageCard(stageItem, stageName, stageDescription = '', startDateText, endDateText, stageStatus = 'to-start') {
             if (!stageItem) return;
 
             const statusBadge = stageItem.querySelector('.stage-status-badge');
@@ -6602,7 +6740,13 @@
                     descriptionElement = document.createElement('p');
                     descriptionElement.className = 'stage-description';
                     descriptionElement.textContent = stageDescription;
-                    statusBadge.appendChild(descriptionElement);
+                    // Insertar antes del status indicator si existe
+                    const statusIndicator = statusBadge.querySelector('.stage-status-indicator');
+                    if (statusIndicator) {
+                        statusBadge.insertBefore(descriptionElement, statusIndicator);
+                    } else {
+                        statusBadge.appendChild(descriptionElement);
+                    }
                 }
             } else {
                 // Eliminar descripción si está vacía
@@ -6610,6 +6754,21 @@
                     descriptionElement.remove();
                 }
             }
+            
+            // Actualizar status indicator
+            let statusIndicator = statusBadge?.querySelector('.stage-status-indicator');
+            if (statusIndicator) {
+                // Actualizar clase del status
+                statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
+            } else if (statusBadge) {
+                // Crear status indicator si no existe
+                statusIndicator = document.createElement('div');
+                statusIndicator.className = `stage-status-indicator stage-status-indicator--${stageStatus}`;
+                statusBadge.appendChild(statusIndicator);
+            }
+            
+            // Actualizar data attribute del status
+            stageItem.setAttribute('data-stage-status', stageStatus);
 
             // Actualizar fecha range
             const dateRange = stageItem.querySelector('.stage-date-range');
