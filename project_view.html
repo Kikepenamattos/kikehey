@@ -533,26 +533,68 @@
         }
 
         .asset-item {
-            padding: var(--spacing-12);
-            background-color: var(--color-surface-especial);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
             border-radius: var(--radius-md);
-            border: 1px solid var(--color-basics-gray);
+        }
+
+        .asset-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .asset-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .asset-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .asset-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
         }
 
         .asset-text {
             font-family: var(--font-family-secondary);
-            font-size: var(--font-size-base);
+            font-size: var(--font-size-sm);
             color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
         }
 
         .asset-link {
             font-family: var(--font-family-secondary);
-            font-size: var(--font-size-sm);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .asset-link a {
             color: var(--color-basics-dark-blue);
             text-decoration: none;
         }
 
-        .asset-link:hover {
+        .asset-link a:hover {
             text-decoration: underline;
         }
 
@@ -662,6 +704,102 @@
         }
 
         .deliverable-item-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ceremonies Section Styles */
+        .ceremonies-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            margin-top: 24px;
+        }
+
+        .ceremony-item {
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .ceremony-item-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--spacing-08) 0;
+        }
+
+        .ceremony-item-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Communication Channels Section Styles */
+        .communication-channels-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .communication-channel-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-basics-gray);
+        }
+
+        .communication-channel-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .communication-channel-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .communication-channel-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .communication-channel-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .communication-channel-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .communication-channel-item-link a {
+            color: var(--color-basics-dark-blue);
+            text-decoration: none;
+        }
+
+        .communication-channel-item-link a:hover {
             text-decoration: underline;
         }
 
@@ -933,6 +1071,25 @@
                     <div class="teams-list-container" id="teamsListDisplay"></div>
                 </div>
                 
+                <!-- Project Ceremonies Section -->
+                <div class="project-section" id="ceremoniesSection" style="display: none;">
+                    <div class="project-section-title project-section-title--expanded" data-section="ceremonies">
+                        <span class="project-section-title__text">Project ceremonies</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="ceremonies">
+                        <div class="ceremonies-list" id="ceremoniesListDisplay"></div>
+                    </div>
+                </div>
+                
+                <!-- Communication Channels Section -->
+                <div class="project-section" id="communicationChannelsSection" style="display: none;">
+                    <h2 class="project-section-title">Communication channels</h2>
+                    <div class="communication-channels-list" id="communicationChannelsListDisplay"></div>
+                </div>
+                
                 <!-- Goals and KPIs Section -->
                 <div class="project-section" id="objectivesSection" style="display: none;">
                     <h2 class="project-section-title">What do you want to accomplish?</h2>
@@ -1099,10 +1256,10 @@
             }
         }
 
-        // Initialize Collapsible Sections (solo para Project context, What do you want to solve, Solution approach)
+        // Initialize Collapsible Sections (Project context, What do you want to solve, Solution approach, Ceremonies)
         function initCollapsibleSections() {
-            // Solo estas 3 secciones tienen funcionalidad de colapsar/plegar
-            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach'];
+            // Secciones con funcionalidad de colapsar/plegar
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies'];
             
             collapsibleSections.forEach(sectionName => {
                 const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
@@ -1600,12 +1757,19 @@
                     if (hasGoals && goalsItemsDisplay) {
                         goalsItemsDisplay.innerHTML = '';
                         goalsItemsDisplay.style.display = 'flex';
-                        project.goals.forEach(goalText => {
+                        project.goals.forEach(goal => {
+                            // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                            const goalText = typeof goal === 'string' ? goal : (goal.text || '');
+                            const isCompleted = typeof goal === 'object' ? (goal.completed || false) : false;
+                            
                             if (goalText && goalText.trim()) {
                                 const goalItem = document.createElement('div');
                                 goalItem.className = 'project-objective-item';
+                                if (isCompleted) {
+                                    goalItem.classList.add('project-objective-item--completed');
+                                }
                                 goalItem.innerHTML = `
-                                    <p class="project-objective-item-text">-${goalText.trim()}</p>
+                                    <p class="project-objective-item-text">-${escapeHtml(goalText.trim())}</p>
                                 `;
                                 goalsItemsDisplay.appendChild(goalItem);
                             }
@@ -1620,12 +1784,19 @@
                         kpisItemsDisplay.innerHTML = '';
                         // Inicialmente oculto (se mostrará cuando se haga clic en el tab KPIs)
                         kpisItemsDisplay.style.display = 'none';
-                        project.kpis.forEach(kpiText => {
+                        project.kpis.forEach(kpi => {
+                            // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                            const kpiText = typeof kpi === 'string' ? kpi : (kpi.text || '');
+                            const isCompleted = typeof kpi === 'object' ? (kpi.completed || false) : false;
+                            
                             if (kpiText && kpiText.trim()) {
                                 const kpiItem = document.createElement('div');
                                 kpiItem.className = 'project-objective-item';
+                                if (isCompleted) {
+                                    kpiItem.classList.add('project-objective-item--completed');
+                                }
                                 kpiItem.innerHTML = `
-                                    <p class="project-objective-item-text">-${kpiText.trim()}</p>
+                                    <p class="project-objective-item-text">-${escapeHtml(kpiText.trim())}</p>
                                 `;
                                 kpisItemsDisplay.appendChild(kpiItem);
                             }
@@ -1964,6 +2135,107 @@
                 teamsSection.style.display = 'block';
             }
 
+            // Mostrar Project Ceremonies
+            const ceremoniesSection = document.getElementById('ceremoniesSection');
+            const ceremoniesListDisplay = document.getElementById('ceremoniesListDisplay');
+            if (ceremoniesSection && ceremoniesListDisplay && project.ceremonies && Array.isArray(project.ceremonies) && project.ceremonies.length > 0) {
+                ceremoniesListDisplay.innerHTML = '';
+                
+                project.ceremonies.forEach((ceremony) => {
+                    const ceremonyItem = document.createElement('div');
+                    ceremonyItem.className = 'ceremony-item';
+                    
+                    const ceremonyName = document.createElement('div');
+                    ceremonyName.className = 'ceremony-item-name';
+                    ceremonyName.textContent = ceremony.name || '';
+                    
+                    const ceremonyDescription = document.createElement('div');
+                    ceremonyDescription.className = 'ceremony-item-description';
+                    ceremonyDescription.textContent = ceremony.description || '';
+                    
+                    ceremonyItem.appendChild(ceremonyName);
+                    ceremonyItem.appendChild(ceremonyDescription);
+                    ceremoniesListDisplay.appendChild(ceremonyItem);
+                });
+                
+                ceremoniesSection.style.display = 'block';
+                
+                // Restaurar estado colapsado/expandido si existe
+                if (project.collapsibleSectionsState && project.collapsibleSectionsState.ceremonies !== undefined) {
+                    const ceremoniesTitle = ceremoniesSection.querySelector('.project-section-title[data-section="ceremonies"]');
+                    const ceremoniesContent = ceremoniesSection.querySelector('.project-section-content[data-content="ceremonies"]');
+                    
+                    if (ceremoniesTitle && ceremoniesContent) {
+                        if (project.collapsibleSectionsState.ceremonies) {
+                            // Expandida
+                            ceremoniesTitle.classList.remove('project-section-title--collapsed');
+                            ceremoniesTitle.classList.add('project-section-title--expanded');
+                            ceremoniesContent.classList.remove('project-section-content--collapsed');
+                            ceremoniesContent.classList.add('project-section-content--expanded');
+                        } else {
+                            // Colapsada
+                            ceremoniesTitle.classList.remove('project-section-title--expanded');
+                            ceremoniesTitle.classList.add('project-section-title--collapsed');
+                            ceremoniesContent.classList.remove('project-section-content--expanded');
+                            ceremoniesContent.classList.add('project-section-content--collapsed');
+                        }
+                    }
+                }
+                
+                console.log('✅ Project ceremonies mostradas:', project.ceremonies.length);
+            } else {
+                console.log('ℹ️ No hay Project ceremonies para mostrar');
+            }
+
+            // Mostrar Communication Channels
+            const communicationChannelsSection = document.getElementById('communicationChannelsSection');
+            const communicationChannelsListDisplay = document.getElementById('communicationChannelsListDisplay');
+            if (communicationChannelsSection && communicationChannelsListDisplay && project.communicationChannels && Array.isArray(project.communicationChannels) && project.communicationChannels.length > 0) {
+                communicationChannelsListDisplay.innerHTML = '';
+                
+                project.communicationChannels.forEach((channel) => {
+                    if (channel.type === 'link' && channel.url) {
+                        const channelItem = document.createElement('div');
+                        channelItem.className = 'communication-channel-item';
+                        
+                        const channelIcon = document.createElement('div');
+                        channelIcon.className = 'communication-channel-item-icon';
+                        const iconImg = document.createElement('img');
+                        iconImg.src = 'images/link.svg';
+                        iconImg.alt = 'Link';
+                        channelIcon.appendChild(iconImg);
+                        
+                        const channelContent = document.createElement('div');
+                        channelContent.className = 'communication-channel-item-content';
+                        
+                        const channelText = document.createElement('p');
+                        channelText.className = 'communication-channel-item-text';
+                        channelText.textContent = channel.name || channel.url;
+                        
+                        const channelLink = document.createElement('p');
+                        channelLink.className = 'communication-channel-item-link';
+                        const linkAnchor = document.createElement('a');
+                        linkAnchor.href = channel.url;
+                        linkAnchor.target = '_blank';
+                        linkAnchor.rel = 'noopener noreferrer';
+                        linkAnchor.textContent = channel.url;
+                        channelLink.appendChild(linkAnchor);
+                        
+                        channelContent.appendChild(channelText);
+                        channelContent.appendChild(channelLink);
+                        
+                        channelItem.appendChild(channelIcon);
+                        channelItem.appendChild(channelContent);
+                        communicationChannelsListDisplay.appendChild(channelItem);
+                    }
+                });
+                
+                communicationChannelsSection.style.display = 'block';
+                console.log('✅ Communication Channels mostrados:', project.communicationChannels.length);
+            } else {
+                console.log('ℹ️ No hay Communication Channels para mostrar');
+            }
+
             // Mostrar assets
             const assetsSection = document.getElementById('assetsSection');
             const assetsListDisplay = document.getElementById('assetsListDisplay');
@@ -1972,17 +2244,72 @@
                 project.assets.forEach(asset => {
                     const assetItem = document.createElement('div');
                     assetItem.className = 'asset-item';
-                    let content = '';
-                    if (asset.text) {
-                        content += `<div class="asset-text">${asset.text}</div>`;
+                    
+                    let previewHtml = '';
+                    let contentHtml = '';
+                    
+                    if (asset.type === 'text' && asset.text) {
+                        // Texto (bullet) - sin preview, solo contenido
+                        contentHtml = `<div class="asset-item-content"><div class="asset-text">-${escapeHtml(asset.text)}</div></div>`;
+                    } else if (asset.type === 'link' && asset.url) {
+                        // Link
+                        previewHtml = `
+                            <div class="asset-item-icon">
+                                <img src="images/link.svg" alt="Link">
+                            </div>
+                        `;
+                        contentHtml = `
+                            <div class="asset-item-content">
+                                <div class="asset-text">${escapeHtml(asset.name || asset.url)}</div>
+                                <div class="asset-link"><a href="${escapeHtml(asset.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(asset.url)}</a></div>
+                            </div>
+                        `;
+                    } else if (asset.type === 'image' && asset.preview) {
+                        // Imagen - preview de 48x48px
+                        previewHtml = `<img src="${escapeHtml(asset.preview)}" alt="${escapeHtml(asset.name || 'Image')}" class="asset-item-preview">`;
+                        contentHtml = `
+                            <div class="asset-item-content">
+                                <div class="asset-text">${escapeHtml(asset.name || '')}</div>
+                                ${asset.size ? `<div class="asset-link">${escapeHtml(asset.size)}</div>` : ''}
+                            </div>
+                        `;
+                    } else if (asset.type === 'file') {
+                        // Archivo
+                        previewHtml = `
+                            <div class="asset-item-icon">
+                                <img src="images/attachment.svg" alt="File">
+                            </div>
+                        `;
+                        contentHtml = `
+                            <div class="asset-item-content">
+                                <div class="asset-text">${escapeHtml(asset.name || '')}</div>
+                                ${asset.size ? `<div class="asset-link">${escapeHtml(asset.size)}</div>` : ''}
+                            </div>
+                        `;
+                    } else if (asset.text) {
+                        // Fallback para formato antiguo (texto)
+                        contentHtml = `<div class="asset-item-content"><div class="asset-text">${escapeHtml(asset.text)}</div></div>`;
+                    } else if (asset.link) {
+                        // Fallback para formato antiguo (link)
+                        previewHtml = `
+                            <div class="asset-item-icon">
+                                <img src="images/link.svg" alt="Link">
+                            </div>
+                        `;
+                        contentHtml = `
+                            <div class="asset-item-content">
+                                <div class="asset-link"><a href="${escapeHtml(asset.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(asset.link)}</a></div>
+                            </div>
+                        `;
                     }
-                    if (asset.link) {
-                        content += `<a href="${asset.link}" target="_blank" class="asset-link">${asset.link}</a>`;
-                    }
-                    assetItem.innerHTML = content;
+                    
+                    assetItem.innerHTML = previewHtml + contentHtml;
                     assetsListDisplay.appendChild(assetItem);
                 });
                 assetsSection.style.display = 'block';
+                console.log('✅ Assets mostrados:', project.assets.length);
+            } else {
+                console.log('ℹ️ No hay Assets para mostrar');
             }
             
             // Mostrar Agreements
@@ -2044,16 +2371,25 @@
                 projectContextDisplay.innerHTML = project.projectContext;
                 if (projectContextSection) {
                     projectContextSection.style.display = 'block';
-                    // Asegurar que la sección esté expandida
+                    // Restaurar estado colapsado/expandido si existe, sino expandir por defecto
                     const projectContextTitle = projectContextSection.querySelector('.project-section-title[data-section="projectContext"]');
                     const projectContextContent = projectContextSection.querySelector('.project-section-content[data-content="projectContext"]');
-                    if (projectContextTitle) {
-                        projectContextTitle.classList.remove('project-section-title--collapsed');
-                        projectContextTitle.classList.add('project-section-title--expanded');
-                    }
-                    if (projectContextContent) {
-                        projectContextContent.classList.remove('project-section-content--collapsed');
-                        projectContextContent.classList.add('project-section-content--expanded');
+                    if (projectContextTitle && projectContextContent) {
+                        const savedState = project.collapsibleSectionsState && project.collapsibleSectionsState.projectContext !== undefined 
+                            ? project.collapsibleSectionsState.projectContext 
+                            : true; // Por defecto expandida
+                        
+                        if (savedState) {
+                            projectContextTitle.classList.remove('project-section-title--collapsed');
+                            projectContextTitle.classList.add('project-section-title--expanded');
+                            projectContextContent.classList.remove('project-section-content--collapsed');
+                            projectContextContent.classList.add('project-section-content--expanded');
+                        } else {
+                            projectContextTitle.classList.remove('project-section-title--expanded');
+                            projectContextTitle.classList.add('project-section-title--collapsed');
+                            projectContextContent.classList.remove('project-section-content--expanded');
+                            projectContextContent.classList.add('project-section-content--collapsed');
+                        }
                     }
                 }
                 console.log('✅ Project context mostrado');
@@ -2068,16 +2404,25 @@
                 solveDisplay.innerHTML = project.solveDescription;
                 if (solveSection) {
                     solveSection.style.display = 'block';
-                    // Asegurar que la sección esté expandida
+                    // Restaurar estado colapsado/expandido si existe, sino expandir por defecto
                     const solveTitle = solveSection.querySelector('.project-section-title[data-section="solve"]');
                     const solveContent = solveSection.querySelector('.project-section-content[data-content="solve"]');
-                    if (solveTitle) {
-                        solveTitle.classList.remove('project-section-title--collapsed');
-                        solveTitle.classList.add('project-section-title--expanded');
-                    }
-                    if (solveContent) {
-                        solveContent.classList.remove('project-section-content--collapsed');
-                        solveContent.classList.add('project-section-content--expanded');
+                    if (solveTitle && solveContent) {
+                        const savedState = project.collapsibleSectionsState && project.collapsibleSectionsState.solve !== undefined 
+                            ? project.collapsibleSectionsState.solve 
+                            : true; // Por defecto expandida
+                        
+                        if (savedState) {
+                            solveTitle.classList.remove('project-section-title--collapsed');
+                            solveTitle.classList.add('project-section-title--expanded');
+                            solveContent.classList.remove('project-section-content--collapsed');
+                            solveContent.classList.add('project-section-content--expanded');
+                        } else {
+                            solveTitle.classList.remove('project-section-title--expanded');
+                            solveTitle.classList.add('project-section-title--collapsed');
+                            solveContent.classList.remove('project-section-content--expanded');
+                            solveContent.classList.add('project-section-content--collapsed');
+                        }
                     }
                 }
                 console.log('✅ What do you want to solve mostrado');
@@ -2092,16 +2437,25 @@
                 solutionApproachDisplay.innerHTML = project.solutionApproach;
                 if (solutionApproachSection) {
                     solutionApproachSection.style.display = 'block';
-                    // Asegurar que la sección esté expandida
+                    // Restaurar estado colapsado/expandido si existe, sino expandir por defecto
                     const solutionApproachTitle = solutionApproachSection.querySelector('.project-section-title[data-section="solutionApproach"]');
                     const solutionApproachContent = solutionApproachSection.querySelector('.project-section-content[data-content="solutionApproach"]');
-                    if (solutionApproachTitle) {
-                        solutionApproachTitle.classList.remove('project-section-title--collapsed');
-                        solutionApproachTitle.classList.add('project-section-title--expanded');
-                    }
-                    if (solutionApproachContent) {
-                        solutionApproachContent.classList.remove('project-section-content--collapsed');
-                        solutionApproachContent.classList.add('project-section-content--expanded');
+                    if (solutionApproachTitle && solutionApproachContent) {
+                        const savedState = project.collapsibleSectionsState && project.collapsibleSectionsState.solutionApproach !== undefined 
+                            ? project.collapsibleSectionsState.solutionApproach 
+                            : true; // Por defecto expandida
+                        
+                        if (savedState) {
+                            solutionApproachTitle.classList.remove('project-section-title--collapsed');
+                            solutionApproachTitle.classList.add('project-section-title--expanded');
+                            solutionApproachContent.classList.remove('project-section-content--collapsed');
+                            solutionApproachContent.classList.add('project-section-content--expanded');
+                        } else {
+                            solutionApproachTitle.classList.remove('project-section-title--expanded');
+                            solutionApproachTitle.classList.add('project-section-title--collapsed');
+                            solutionApproachContent.classList.remove('project-section-content--expanded');
+                            solutionApproachContent.classList.add('project-section-content--collapsed');
+                        }
                     }
                 }
                 console.log('✅ Solution approach mostrado');
