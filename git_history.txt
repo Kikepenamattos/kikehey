@@ -1,3 +1,4 @@
+cd974877643d095e6d9e0e20fa462b547062f9c4|Ubits|ubits@macbookpro.lan|2025-12-17 16:05:24 -0500|Feat: Persistir estado de secciones colapsables al publicar proyecto
 0e3ad023ff2f65c22bd39ed4ee7f6a9687b6f73b|Ubits|ubits@macbookpro.lan|2025-12-17 15:58:46 -0500|Update: Actualizar changelog con últimos cambios
 a168e3c279e9df82082ecdbe721ec8ff330a1d4f|Ubits|ubits@macbookpro.lan|2025-12-17 15:58:36 -0500|Update: Actualizar changelog con últimos cambios
 c9917c2afe73497ee605e35ea0f578df8dce3e01|Ubits|ubits@macbookpro.lan|2025-12-17 15:58:23 -0500|Feat: Agregar funcionalidad de colapsar/expandir a Project ceremonies
