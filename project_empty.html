@@ -2295,6 +2295,12 @@
             width: 100%;
             margin-bottom: var(--spacing-12);
         }
+        
+        /* Modal headline sin título (solo botón cerrar) */
+        .modal-headline:has(.modal-close-btn:only-child) {
+            justify-content: flex-end;
+            margin-bottom: 0;
+        }
 
         .modal__title {
             font-family: var(--font-family-secondary);
@@ -2524,7 +2530,7 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-08);
-            padding: var(--spacing-12);
+            /* padding: var(--spacing-12); */
             background-color: var(--color-surface-secondary);
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-24);
@@ -3750,8 +3756,7 @@
             <div class="modal-overlay" id="teamDetailsModalOverlay">
                 <div class="modal" id="teamDetailsModal">
                     <div class="modal-headline">
-                        <h2 class="modal__title" id="teamDetailsModalTitle">Team Details</h2>
-                        <button class="modal__close-btn" id="closeTeamDetailsModalBtn" aria-label="Close">
+                        <button class="modal-close-btn" id="closeTeamDetailsModalBtn" aria-label="Close">
                             <img src="images/close.svg" alt="Close" width="20" height="20">
                         </button>
                     </div>
@@ -10916,12 +10921,6 @@
             }
             
             console.log('📦 Datos del team cargados:', teamData);
-            
-            // Actualizar título del modal
-            const modalTitle = document.getElementById('teamDetailsModalTitle');
-            if (modalTitle) {
-                modalTitle.textContent = 'Team Details';
-            }
             
             // Actualizar nombre del team
             const teamNameElement = document.getElementById('teamDetailsName');
