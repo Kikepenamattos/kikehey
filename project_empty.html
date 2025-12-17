@@ -584,13 +584,22 @@
             pointer-events: none;
         }
 
+        /* Project Ceremonies and Communication Channels Wrapper */
+        .project-ceremonies-channels-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            margin-top: var(--spacing-48);
+            align-items: flex-start;
+        }
+
         /* Project Ceremonies Section */
         .project-ceremonies-section {
             display: flex;
             flex-direction: column;
             gap: var(--spacing-16);
             width: 100%;
-            margin-top: var(--spacing-48);
         }
 
         .project-ceremonies-header {
@@ -1468,6 +1477,241 @@
         }
 
         .project-assets-section--disabled .project-assets-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* Project Communication Channels Section */
+        .project-communication-channels-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: 48px;
+        }
+
+        .project-communication-channels-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-communication-channels-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-communication-channels-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-communication-channels-hide {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-04);
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            cursor: pointer;
+        }
+
+        .project-communication-channels-hide-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-communication-channels-hide-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-communication-channels-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .project-communication-channels-content {
+            display: flex;
+            flex-direction: column;
+            /* gap: var(--spacing-16); */
+            width: 100%;
+        }
+
+        .project-communication-channels-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .project-communication-channels-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .project-communication-channels-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .project-communication-channels-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .project-communication-channels-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+        }
+
+        .project-communication-channels-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* PDF Preview Styles */
+        .project-communication-channels-item-preview-wrapper {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .project-communication-channels-item-preview--pdf {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        .project-communication-channels-item-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-communication-channels-item-preview-label {
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Document icon with extension */
+        .project-communication-channels-item-icon-extension {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 7px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1px 3px;
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .project-communication-channels-item-icon {
+            position: relative;
+        }
+
+        .project-communication-channels-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .project-communication-channels-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .project-communication-channels-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .project-communication-channels-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-communication-channels-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-communication-channels-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-communication-channels-section--disabled .dsu-input {
+            background-color: var(--color-status-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+
+        .project-communication-channels-section--disabled .project-communication-channels-items-container {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .project-communication-channels-section--disabled .project-communication-channels-hide {
             opacity: 1;
             pointer-events: auto;
             cursor: pointer;
@@ -2917,6 +3161,17 @@
             .project-budget-section {
                 flex-direction: column;
             }
+
+            /* Project Ceremonies and Communication Channels Wrapper - Stack vertically on mobile */
+            .project-ceremonies-channels-wrapper {
+                flex-direction: column;
+                gap: var(--spacing-24);
+            }
+
+            .project-ceremonies-section,
+            .project-communication-channels-section {
+                width: 100%;
+            }
         }
 
         /* Tablet: Ajustar padding para mejor distribución */
@@ -3304,26 +3559,58 @@
                     </div>
                 </div>
 
-                <!-- Project Ceremonies Section -->
-                <div class="project-ceremonies-section" id="projectCeremoniesSection">
-                    <div class="project-ceremonies-header">
-                        <h2 class="project-ceremonies-title">Project ceremonies</h2>
-                    </div>
-                    <div class="ceremonies-dropdown-wrapper">
-                        <button class="ceremonies-dropdown-trigger" id="ceremoniesDropdownTrigger">
-                            <span id="ceremoniesDropdownText">Select ceremonies to schedule (optional)</span>
-                            <span class="ceremonies-dropdown-chevron">
-                                <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
-                        </button>
-                        <div class="ceremonies-dropdown" id="ceremoniesDropdown">
-                            <!-- Opciones de ceremonias se agregarán aquí dinámicamente -->
+                <!-- Project Ceremonies and Communication Channels Wrapper -->
+                <div class="project-ceremonies-channels-wrapper">
+                    <!-- Project Ceremonies Section -->
+                    <div class="project-ceremonies-section" id="projectCeremoniesSection">
+                        <div class="project-ceremonies-header">
+                            <h2 class="project-ceremonies-title">Project ceremonies</h2>
+                        </div>
+                        <p class="project-communication-channels-description">Provide all the available information to star solid.</p>
+                        <div class="ceremonies-dropdown-wrapper">
+                            <button class="ceremonies-dropdown-trigger" id="ceremoniesDropdownTrigger">
+                                <span id="ceremoniesDropdownText">Select ceremonies to schedule (optional)</span>
+                                <span class="ceremonies-dropdown-chevron">
+                                    <img src="images/down-chevron.svg" alt="Toggle">
+                                </span>
+                            </button>
+                            <div class="ceremonies-dropdown" id="ceremoniesDropdown">
+                                <!-- Opciones de ceremonias se agregarán aquí dinámicamente -->
+                            </div>
+                        </div>
+                        <div class="selected-ceremonies-list" id="selectedCeremoniesList">
+                            <!-- Ceremonias seleccionadas se mostrarán aquí -->
                         </div>
                     </div>
-                    <div class="selected-ceremonies-list" id="selectedCeremoniesList">
-                        <!-- Ceremonias seleccionadas se mostrarán aquí -->
+                    <!-- END: Project Ceremonies Section -->
+
+                    <!-- Communication Channels Section -->
+                    <div class="project-communication-channels-section" id="projectCommunicationChannelsSection">
+                        <div class="project-communication-channels-header">
+                            <div class="project-communication-channels-headline">
+                                <h2 class="project-communication-channels-title">Communication channels</h2>
+                            </div>
+                        </div>
+                        <p class="project-communication-channels-description">Provide all the available information to star solid.</p>
+                        <div class="project-communication-channels-content">
+                            <div class="project-communication-channels-items-container" id="communicationChannelsItemsContainer">
+                                <!-- Items se agregarán aquí dinámicamente -->
+                            </div>
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container project-communication-channels-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="communicationChannelsInput" 
+                                        placeholder="Add a link or URL (e.g., https://example.com)"
+                                    >
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- END: Communication Channels Section -->
                 </div>
+                <!-- END: Project Ceremonies and Communication Channels Wrapper -->
 
                 <!-- What do you want to accomplish? Section -->
                 <div class="project-objective-section" id="projectObjectiveSection">
@@ -4048,6 +4335,9 @@
 
             // Inicializar assets section
             initAssetsSection();
+
+            // Inicializar communication channels section
+            initCommunicationChannelsSection();
             
             // Actualizar estado del botón Publish después de inicializar todas las secciones
             setTimeout(function() {
@@ -5064,6 +5354,53 @@
                 }, 500);
             } else {
                 console.log('ℹ️ No hay assets para cargar');
+            }
+
+            // Cargar Communication Channels
+            if (project.communicationChannels && Array.isArray(project.communicationChannels) && project.communicationChannels.length > 0) {
+                console.log('📡 Cargando communication channels:', project.communicationChannels.length);
+                // Esperar a que initCommunicationChannelsSection haya inicializado addCommunicationChannelItem
+                setTimeout(() => {
+                    if (typeof window.addCommunicationChannelItem === 'function') {
+                        project.communicationChannels.forEach(channel => {
+                            if (channel.type === 'link' && channel.url) {
+                                window.addCommunicationChannelItem({
+                                    type: 'link',
+                                    name: channel.name || channel.url,
+                                    url: channel.url
+                                });
+                            }
+                        });
+                        if (typeof updatePublishButtonState === 'function') {
+                            updatePublishButtonState();
+                        }
+                        console.log('✅ Communication channels cargados, estado del botón Publish actualizado');
+                    } else {
+                        console.warn('⚠️ addCommunicationChannelItem no está disponible aún, reintentando...');
+                        // Reintentar después de un delay más largo
+                        setTimeout(() => {
+                            if (typeof window.addCommunicationChannelItem === 'function') {
+                                project.communicationChannels.forEach(channel => {
+                                    if (channel.type === 'link' && channel.url) {
+                                        window.addCommunicationChannelItem({
+                                            type: 'link',
+                                            name: channel.name || channel.url,
+                                            url: channel.url
+                                        });
+                                    }
+                                });
+                                if (typeof updatePublishButtonState === 'function') {
+                                    updatePublishButtonState();
+                                }
+                                console.log('✅ Communication channels cargados después de reintento');
+                            } else {
+                                console.error('❌ addCommunicationChannelItem no está disponible después de múltiples intentos');
+                            }
+                        }, 800);
+                    }
+                }, 500);
+            } else {
+                console.log('ℹ️ No hay communication channels para cargar');
             }
             
             // Cargar Goals y KPIs
@@ -9514,6 +9851,138 @@
         }
 
         // ============================================
+        // Project Communication Channels Section
+        // ============================================
+        function initCommunicationChannelsSection() {
+            const communicationChannelsSection = document.getElementById('projectCommunicationChannelsSection');
+            const communicationChannelsInput = document.getElementById('communicationChannelsInput');
+            const communicationChannelsItemsContainer = document.getElementById('communicationChannelsItemsContainer');
+            
+            if (!communicationChannelsSection) {
+                console.warn('⚠️ Elementos de Communication Channels Section no encontrados');
+                return;
+            }
+
+            // Function to check if string is a URL
+            function isValidUrl(string) {
+                try {
+                    // Try to create URL object - if it works and has http/https protocol, it's valid
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    // If URL constructor throws, try adding https:// prefix
+                    try {
+                        const url = new URL('https://' + string);
+                        return true;
+                    } catch (_) {
+                        return false;
+                    }
+                }
+            }
+
+            // Function to normalize URL (add https:// if missing)
+            function normalizeUrl(url) {
+                if (!url) return '';
+                url = url.trim();
+                if (url.startsWith('http://') || url.startsWith('https://')) {
+                    return url;
+                }
+                return 'https://' + url;
+            }
+
+            // Function to add communication channel item (only links)
+            function addCommunicationChannelItem(data) {
+                if (!communicationChannelsItemsContainer) return;
+                
+                const item = document.createElement('div');
+                item.className = 'project-communication-channels-item';
+                
+                const url = data.url || data.link || '';
+                const name = data.name || url;
+                const normalizedUrl = normalizeUrl(url);
+                
+                item.innerHTML = `
+                    <div class="project-communication-channels-item-icon">
+                        <img src="images/link.svg" alt="Link">
+                    </div>
+                    <div class="project-communication-channels-item-content">
+                        <p class="project-communication-channels-item-text">${name}</p>
+                        <a href="${normalizedUrl}" target="_blank" rel="noopener noreferrer" class="project-communication-channels-item-link">${url}</a>
+                    </div>
+                    <div class="project-communication-channels-item-actions">
+                        <button class="project-communication-channels-item-action" onclick="this.closest('.project-communication-channels-item').remove(); if(typeof updatePublishButtonState === 'function') setTimeout(updatePublishButtonState, 100);">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="project-communication-channels-item-action" onclick="editCommunicationChannelItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                
+                communicationChannelsItemsContainer.appendChild(item);
+                
+                // Actualizar estado del botón Publish después de agregar item
+                if (typeof updatePublishButtonState === 'function') {
+                    setTimeout(updatePublishButtonState, 100);
+                }
+            }
+
+            // Edit item functionality
+            window.editCommunicationChannelItem = function(button) {
+                const item = button.closest('.project-communication-channels-item');
+                const textElement = item.querySelector('.project-communication-channels-item-text');
+                const linkElement = item.querySelector('.project-communication-channels-item-link');
+                if (!textElement || !linkElement) return;
+                
+                const currentName = textElement.textContent;
+                const currentUrl = linkElement.textContent;
+                const newName = prompt('Edit channel name:', currentName);
+                if (newName && newName.trim()) {
+                    textElement.textContent = newName.trim();
+                }
+            };
+
+            // Input functionality - Add link on Enter
+            if (communicationChannelsInput) {
+                communicationChannelsInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        const value = this.value.trim();
+                        
+                        if (isValidUrl(value)) {
+                            // Es un link válido
+                            addCommunicationChannelItem({
+                                type: 'link',
+                                url: value,
+                                name: value
+                            });
+                        } else {
+                            // Intentar agregar https:// si no tiene protocolo
+                            const normalizedValue = normalizeUrl(value);
+                            if (isValidUrl(normalizedValue)) {
+                                addCommunicationChannelItem({
+                                    type: 'link',
+                                    url: normalizedValue,
+                                    name: value
+                                });
+                            } else {
+                                alert('Please enter a valid URL (e.g., https://example.com)');
+                                return;
+                            }
+                        }
+                        
+                        this.value = '';
+                    }
+                });
+            }
+
+            // Hacer addCommunicationChannelItem accesible globalmente para loadProjectData
+            window.addCommunicationChannelItem = addCommunicationChannelItem;
+
+            console.log('✅ Communication Channels Section inicializado correctamente');
+        }
+
+        // ============================================
         // Project Deliverables Section
         // ============================================
         function initDeliverablesSection() {
@@ -10915,6 +11384,27 @@
                     const ceremonies = window.selectedCeremonies || [];
                     console.log('🎯 Ceremonies recopiladas:', ceremonies.length, ceremonies);
                     
+                    // Recopilar Communication Channels
+                    const communicationChannels = [];
+                    const communicationChannelsContainer = document.getElementById('communicationChannelsItemsContainer');
+                    if (communicationChannelsContainer) {
+                        const channelItems = communicationChannelsContainer.querySelectorAll('.project-communication-channels-item');
+                        channelItems.forEach(item => {
+                            const channelText = item.querySelector('.project-communication-channels-item-text')?.textContent || '';
+                            const channelLink = item.querySelector('.project-communication-channels-item-link');
+                            const channelUrl = channelLink ? (channelLink.href || channelLink.textContent) : '';
+                            
+                            if (channelUrl) {
+                                communicationChannels.push({
+                                    type: 'link',
+                                    name: channelText || channelUrl,
+                                    url: channelUrl
+                                });
+                            }
+                        });
+                    }
+                    console.log('📡 Communication Channels recopilados:', communicationChannels.length, communicationChannels);
+                    
                     // Verificar si existe un proyecto actual para actualizar o crear uno nuevo
                     const urlParams = new URLSearchParams(window.location.search);
                     const existingProjectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
@@ -10932,6 +11422,7 @@
                             stages: stages,
                             teams: teams,
                             ceremonies: ceremonies,
+                            communicationChannels: communicationChannels,
                             assets: assets,
                             goals: goals,
                             kpis: kpis,
