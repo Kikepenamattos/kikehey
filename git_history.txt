@@ -1,3 +1,4 @@
+2fc11a592b5695d0b0c20c47a3f0cb0d5ddb7d8a|Ubits|ubits@macbookpro.lan|2025-12-16 22:15:18 -0500|Fix: Sincronizar cambios pendientes en project_view.html
 559daadda003b779932cefd355dfe3ca9a0782fc|Ubits|ubits@macbookpro.lan|2025-12-16 22:13:50 -0500|Update: Actualizar changelog con últimos cambios
 3ac269bda8a003dd2d044c53bd82c61ebad77621|Ubits|ubits@macbookpro.lan|2025-12-16 22:13:40 -0500|Style: Ajustar modal de team details según diseño estándar
 a56fd812bc36f67027644e6bef7add96456b107c|Ubits|ubits@macbookpro.lan|2025-12-16 22:09:38 -0500|Update: Actualizar changelog con últimos cambios
