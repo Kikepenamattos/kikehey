@@ -85,6 +85,8 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-12);
+            position: relative;
+            z-index: 10;
         }
 
         /* Edit Project Link - Según Figma */
@@ -99,6 +101,10 @@
             text-decoration: none;
             cursor: pointer;
             transition: opacity 0.2s ease;
+            position: relative;
+            z-index: 11;
+            pointer-events: auto;
+            user-select: none;
         }
 
         .edit-project-link:hover {
@@ -862,7 +868,7 @@
                 <div class="project-name-container">
                     <h1 class="project-name-title" id="projectNameDisplay">Project name</h1>
                     <div class="project-actions">
-                        <a href="#" class="edit-project-link" id="editProjectBtn">
+                        <a href="#" class="edit-project-link" id="editProjectBtn" onclick="handleEditProjectClick(event); return false;">
                             <span>Edit project</span>
                             <span class="edit-project-icon">
                                 <img src="images/Edit.svg" alt="Edit">
@@ -1074,14 +1080,23 @@
             loadTeamsInSidebar();
             loadProjectsInSidebar();
 
-            // Cargar datos del proyecto
+            // Inicializar funcionalidad de colapsar/plegar secciones PRIMERO
+            // para que los event listeners estén listos cuando se carguen los datos
+            try {
+                initCollapsibleSections();
+            } catch (error) {
+                console.error('❌ Error al inicializar secciones colapsables:', error);
+            }
+
+            // Cargar datos del proyecto DESPUÉS de inicializar las secciones colapsables
             loadProjectData();
 
-            // Inicializar botones de acción
-            initActionButtons();
-
-            // Inicializar funcionalidad de colapsar/plegar secciones
-            initCollapsibleSections();
+            // Inicializar botones de acción (con manejo de errores)
+            try {
+                initActionButtons();
+            } catch (error) {
+                console.error('❌ Error al inicializar botones de acción:', error);
+            }
         }
 
         // Initialize Collapsible Sections (solo para Project context, What do you want to solve, Solution approach)
@@ -1119,36 +1134,63 @@
             });
         }
 
+        // Función global para manejar el clic en Edit Project (respaldo)
+        function handleEditProjectClick(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            console.log('🖱️ handleEditProjectClick ejecutado');
+            
+            // Obtener el ID del proyecto actual desde la URL o sessionStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
+            console.log('📋 Project ID obtenido:', projectId);
+            
+            if (projectId) {
+                // Guardar el ID del proyecto en sessionStorage para que project_empty.html lo cargue
+                try {
+                    sessionStorage.setItem('docu_selected_project_id', projectId);
+                    sessionStorage.setItem('docu_editing_project', 'true');
+                    console.log('✅ ID del proyecto guardado en sessionStorage');
+                } catch (error) {
+                    console.warn('⚠️ No se pudo guardar en sessionStorage:', error);
+                }
+                
+                // Redirigir a project_empty.html con el ID del proyecto
+                console.log('🔄 Redirigiendo a project_empty.html con ID:', projectId);
+                window.location.href = `project_empty.html?id=${projectId}`;
+            } else {
+                // Si no hay ID, ir a project_empty.html sin parámetros
+                console.warn('⚠️ No se encontró ID del proyecto, redirigiendo a project_empty.html');
+                window.location.href = 'project_empty.html';
+            }
+        }
+
         // Initialize Action Buttons
         function initActionButtons() {
             // Edit Project Link
             const editProjectBtn = document.getElementById('editProjectBtn');
+            console.log('🔍 Edit Project Button encontrado:', editProjectBtn);
             if (editProjectBtn) {
-                editProjectBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Obtener el ID del proyecto actual desde la URL o sessionStorage
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const projectId = urlParams.get('id') || sessionStorage.getItem('docu_selected_project_id');
-                    
-                    if (projectId) {
-                        // Guardar el ID del proyecto en sessionStorage para que project_empty.html lo cargue
-                        try {
-                            sessionStorage.setItem('docu_selected_project_id', projectId);
-                            sessionStorage.setItem('docu_editing_project', 'true');
-                        } catch (error) {
-                            console.warn('⚠️ No se pudo guardar en sessionStorage:', error);
-                        }
-                        
-                        // Redirigir a project_empty.html con el ID del proyecto
-                        window.location.href = `project_empty.html?id=${projectId}`;
-                    } else {
-                        // Si no hay ID, ir a project_empty.html sin parámetros
-                        console.warn('⚠️ No se encontró ID del proyecto, redirigiendo a project_empty.html');
-                        window.location.href = 'project_empty.html';
-                    }
+                console.log('✅ Agregando event listener al botón Edit Project');
+                // Remover cualquier listener anterior para evitar duplicados
+                editProjectBtn.replaceWith(editProjectBtn.cloneNode(true));
+                const newEditBtn = document.getElementById('editProjectBtn');
+                
+                newEditBtn.addEventListener('click', function(e) {
+                    console.log('🖱️ Click en Edit Project button (addEventListener)');
+                    handleEditProjectClick(e);
                 });
+                
+                // También agregar onclick como respaldo
+                newEditBtn.onclick = function(e) {
+                    console.log('🖱️ Click en Edit Project button (onclick)');
+                    return handleEditProjectClick(e);
+                };
+            } else {
+                console.error('❌ Edit Project Button no encontrado en el DOM');
             }
         }
 
@@ -2002,6 +2044,17 @@
                 projectContextDisplay.innerHTML = project.projectContext;
                 if (projectContextSection) {
                     projectContextSection.style.display = 'block';
+                    // Asegurar que la sección esté expandida
+                    const projectContextTitle = projectContextSection.querySelector('.project-section-title[data-section="projectContext"]');
+                    const projectContextContent = projectContextSection.querySelector('.project-section-content[data-content="projectContext"]');
+                    if (projectContextTitle) {
+                        projectContextTitle.classList.remove('project-section-title--collapsed');
+                        projectContextTitle.classList.add('project-section-title--expanded');
+                    }
+                    if (projectContextContent) {
+                        projectContextContent.classList.remove('project-section-content--collapsed');
+                        projectContextContent.classList.add('project-section-content--expanded');
+                    }
                 }
                 console.log('✅ Project context mostrado');
             } else {
@@ -2015,6 +2068,17 @@
                 solveDisplay.innerHTML = project.solveDescription;
                 if (solveSection) {
                     solveSection.style.display = 'block';
+                    // Asegurar que la sección esté expandida
+                    const solveTitle = solveSection.querySelector('.project-section-title[data-section="solve"]');
+                    const solveContent = solveSection.querySelector('.project-section-content[data-content="solve"]');
+                    if (solveTitle) {
+                        solveTitle.classList.remove('project-section-title--collapsed');
+                        solveTitle.classList.add('project-section-title--expanded');
+                    }
+                    if (solveContent) {
+                        solveContent.classList.remove('project-section-content--collapsed');
+                        solveContent.classList.add('project-section-content--expanded');
+                    }
                 }
                 console.log('✅ What do you want to solve mostrado');
             } else {
@@ -2028,6 +2092,17 @@
                 solutionApproachDisplay.innerHTML = project.solutionApproach;
                 if (solutionApproachSection) {
                     solutionApproachSection.style.display = 'block';
+                    // Asegurar que la sección esté expandida
+                    const solutionApproachTitle = solutionApproachSection.querySelector('.project-section-title[data-section="solutionApproach"]');
+                    const solutionApproachContent = solutionApproachSection.querySelector('.project-section-content[data-content="solutionApproach"]');
+                    if (solutionApproachTitle) {
+                        solutionApproachTitle.classList.remove('project-section-title--collapsed');
+                        solutionApproachTitle.classList.add('project-section-title--expanded');
+                    }
+                    if (solutionApproachContent) {
+                        solutionApproachContent.classList.remove('project-section-content--collapsed');
+                        solutionApproachContent.classList.add('project-section-content--expanded');
+                    }
                 }
                 console.log('✅ Solution approach mostrado');
             } else {
