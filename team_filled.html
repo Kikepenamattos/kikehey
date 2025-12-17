@@ -689,6 +689,12 @@
             justify-content: space-between;
             gap: 16px;
         }
+        
+        .cost-edit-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12, 12px);
+        }
 
         /* Team cost display para teams publicados */
         .team-cost-display {
@@ -1001,12 +1007,20 @@
                         <div class="team-cost-display">
                             <span>Team cost: </span>USD 0.00
                         </div>
-                        <button class="dsu-button dsu-button--tertiary dsu-button--small" id="editGroupBtn">
-                            <span class="dsu-button__icon">
-                                <img src="images/Edit.svg" alt="Edit">
-                            </span>
-                            <span class="dsu-button__text">Edit group</span>
-                        </button>
+                        <div class="cost-edit-actions">
+                            <button class="dsu-button dsu-button--tertiary dsu-button--small" id="editGroupBtn">
+                                <span class="dsu-button__icon">
+                                    <img src="images/Edit.svg" alt="Edit">
+                                </span>
+                                <span class="dsu-button__text">Edit group</span>
+                            </button>
+                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareTeamBtnBottom">
+                                <span class="dsu-button__icon">
+                                    <img src="images/share.svg" alt="Share">
+                                </span>
+                                Share team
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1311,6 +1325,23 @@
             const shareTeamBtn = document.getElementById('shareTeamBtn');
             if (shareTeamBtn) {
                 shareTeamBtn.addEventListener('click', function() {
+                    const teamURL = window.location.href;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(teamURL).then(function() {
+                            alert('URL del team copiada al portapapeles: ' + teamURL);
+                        }).catch(function() {
+                            prompt('Copia esta URL:', teamURL);
+                        });
+                    } else {
+                        prompt('Copia esta URL:', teamURL);
+                    }
+                });
+            }
+            
+            // Share team (botón inferior)
+            const shareTeamBtnBottom = document.getElementById('shareTeamBtnBottom');
+            if (shareTeamBtnBottom) {
+                shareTeamBtnBottom.addEventListener('click', function() {
                     const teamURL = window.location.href;
                     if (navigator.clipboard && navigator.clipboard.writeText) {
                         navigator.clipboard.writeText(teamURL).then(function() {
