@@ -604,8 +604,8 @@
 
         .project-ceremonies-header {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: var(--spacing-08);
             width: 100%;
         }
 
@@ -620,6 +620,28 @@
         .ceremonies-dropdown-wrapper {
             position: relative;
             width: 100%;
+            overflow: visible;
+        }
+
+        /* Asegurar que el dropdown funcione correctamente dentro de contenido colapsable */
+        .project-section-content .ceremonies-dropdown-wrapper {
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .project-section-content--collapsed .ceremonies-dropdown {
+            display: none !important;
+        }
+
+        /* Asegurar que el dropdown y su contenido sean visibles cuando está abierto */
+        .project-section-content--expanded .ceremonies-dropdown-wrapper {
+            overflow: visible;
+        }
+
+        .project-section-content--expanded .ceremonies-dropdown--open {
+            overflow-y: auto;
+            overflow-x: visible;
         }
 
         .ceremonies-dropdown-trigger {
@@ -681,8 +703,9 @@
             border-radius: var(--radius-md);
             box-shadow: 0 4px 16px rgba(10, 36, 63, 0.15);
             z-index: 1000;
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
+            overflow-x: visible;
             padding: 24px;
         }
 
@@ -802,6 +825,8 @@
             border: none;
             border-radius: var(--radius-md);
             margin-top: var(--spacing-12);
+            overflow: visible;
+            min-height: fit-content;
         }
 
         .ceremony-custom-form--visible {
@@ -1051,7 +1076,7 @@
 
         /* Contenido colapsable de la sección */
         .project-section-content {
-            overflow: hidden;
+            overflow: visible;
             transition: max-height 0.3s ease, opacity 0.3s ease;
             margin: 0;
             padding: 0;
@@ -1068,6 +1093,7 @@
         .project-section-content--expanded {
             max-height: 10000px;
             opacity: 1;
+            overflow: visible;
             margin: 0;
             padding: 0;
         }
@@ -3567,22 +3593,29 @@
                     <!-- Project Ceremonies Section -->
                     <div class="project-ceremonies-section" id="projectCeremoniesSection">
                         <div class="project-ceremonies-header">
-                            <h2 class="project-ceremonies-title">Project ceremonies</h2>
-                        </div>
-                        <p class="project-communication-channels-description">Provide all the available information to star solid.</p>
-                        <div class="ceremonies-dropdown-wrapper">
-                            <button class="ceremonies-dropdown-trigger" id="ceremoniesDropdownTrigger">
-                                <span id="ceremoniesDropdownText">Select ceremonies to schedule (optional)</span>
-                                <span class="ceremonies-dropdown-chevron">
+                            <div class="project-section-title project-section-title--expanded" data-section="ceremonies">
+                                <span class="project-section-title__text">Project ceremonies</span>
+                                <span class="project-section-title__chevron">
                                     <img src="images/down-chevron.svg" alt="Toggle">
                                 </span>
-                            </button>
-                            <div class="ceremonies-dropdown" id="ceremoniesDropdown">
-                                <!-- Opciones de ceremonias se agregarán aquí dinámicamente -->
                             </div>
+                            <p class="project-communication-channels-description">Provide all the available information to star solid.</p>
                         </div>
-                        <div class="selected-ceremonies-list" id="selectedCeremoniesList">
-                            <!-- Ceremonias seleccionadas se mostrarán aquí -->
+                        <div class="project-section-content project-section-content--expanded" data-content="ceremonies">
+                            <div class="ceremonies-dropdown-wrapper">
+                                <button class="ceremonies-dropdown-trigger" id="ceremoniesDropdownTrigger">
+                                    <span id="ceremoniesDropdownText">Select ceremonies to schedule (optional)</span>
+                                    <span class="ceremonies-dropdown-chevron">
+                                        <img src="images/down-chevron.svg" alt="Toggle">
+                                    </span>
+                                </button>
+                                <div class="ceremonies-dropdown" id="ceremoniesDropdown">
+                                    <!-- Opciones de ceremonias se agregarán aquí dinámicamente -->
+                                </div>
+                            </div>
+                            <div class="selected-ceremonies-list" id="selectedCeremoniesList">
+                                <!-- Ceremonias seleccionadas se mostrarán aquí -->
+                            </div>
                         </div>
                     </div>
                     <!-- END: Project Ceremonies Section -->
@@ -9395,8 +9428,8 @@
         // Initialize Collapsible Sections
         // ============================================
         function initCollapsibleSections() {
-            // Solo estas 3 secciones tienen funcionalidad de colapsar/plegar
-            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach'];
+            // Secciones con funcionalidad de colapsar/plegar
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies'];
             
             collapsibleSections.forEach(sectionName => {
                 const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
@@ -9417,6 +9450,16 @@
                         this.classList.add('project-section-title--collapsed');
                         content.classList.remove('project-section-content--expanded');
                         content.classList.add('project-section-content--collapsed');
+                        
+                        // Cerrar dropdown de ceremonies si la sección es ceremonies
+                        if (sectionName === 'ceremonies') {
+                            const ceremoniesDropdown = document.getElementById('ceremoniesDropdown');
+                            const ceremoniesDropdownTrigger = document.getElementById('ceremoniesDropdownTrigger');
+                            if (ceremoniesDropdown && ceremoniesDropdownTrigger) {
+                                ceremoniesDropdown.classList.remove('ceremonies-dropdown--open');
+                                ceremoniesDropdownTrigger.classList.remove('ceremonies-dropdown-trigger--open');
+                            }
+                        }
                     } else {
                         // Expandir
                         this.classList.remove('project-section-title--collapsed');
