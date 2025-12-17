@@ -1,3 +1,5 @@
+c6ddc50017e15403d17c39128dc92ee29c74d164|Ubits|ubits@macbookpro.lan|2025-12-17 10:13:58 -0500|Style: Ajustar ancho del botón 'Manage team' a 30%
+63cacf3fd2067dcdc18a1dc7724ff0b9f0c369fa|Ubits|ubits@macbookpro.lan|2025-12-17 10:11:54 -0500|Update: Actualizar changelog con últimos cambios
 db0ddf00780a152111d3aa9d84bc64df38eac473|Ubits|ubits@macbookpro.lan|2025-12-17 10:11:44 -0500|Feat: Agregar botón 'Manage team' al modal de detalles
 e8b5e776f274a26427c58dc3f7a30bb3ed1ade9c|Ubits|ubits@macbookpro.lan|2025-12-16 22:15:29 -0500|Update: Actualizar changelog con últimos cambios
 2fc11a592b5695d0b0c20c47a3f0cb0d5ddb7d8a|Ubits|ubits@macbookpro.lan|2025-12-16 22:15:18 -0500|Fix: Sincronizar cambios pendientes en project_view.html
