@@ -2680,6 +2680,14 @@
             /* margin-top: 48px; */
         }
         
+        /* Status button en modal de stage */
+        .dsu-status-button--to-start {
+            background-color: var(--color-status-to-start);
+            color: var(--color-basics-dark-blue);
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
         .stage-date-range-wrapper .dsu-input-group {
             flex: 1;
         }
@@ -3152,30 +3160,6 @@
                                 <input type="text" class="dsu-input" id="stageNameInput" placeholder="Enter stage name">
                             </div>
                             
-                            <!-- Stage Status -->
-                            <div class="dsu-status-button-wrapper" id="stageStatusWrapper">
-                                <button class="dsu-status-button dsu-status-button--to-start" id="stageModalStatusButton">
-                                    <span id="stageModalStatusButtonText">To start</span>
-                                    <span class="dsu-status-button__chevron">
-                                        <img src="images/down-chevron.svg" alt="Chevron" id="stageModalStatusChevron">
-                                    </span>
-                                </button>
-                                <div class="dsu-status-dropdown" id="stageModalStatusDropdown">
-                                    <div class="dsu-status-dropdown__item" data-status="to-start">
-                                        <span class="dsu-status-dropdown__text">To start</span>
-                                    </div>
-                                    <div class="dsu-status-dropdown__item" data-status="in-progress">
-                                        <span class="dsu-status-dropdown__text">In progress</span>
-                                    </div>
-                                    <div class="dsu-status-dropdown__item" data-status="done">
-                                        <span class="dsu-status-dropdown__text">Done</span>
-                                    </div>
-                                    <div class="dsu-status-dropdown__item" data-status="paused">
-                                        <span class="dsu-status-dropdown__text">Paused</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div class="dsu-input-group modal-input-group">
                                 <div class="dsu-input-label">
                                     <div class="dsu-input-label__text">
@@ -3217,6 +3201,30 @@
                                             <span id="stageEndDateButtonText">Select end date</span>
                                         </button>
                                         <div class="dsu-date-picker" id="stageEndDatePicker"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stage Status -->
+                            <div class="dsu-status-button-wrapper" id="stageStatusWrapper">
+                                <button class="dsu-status-button dsu-status-button--to-start" id="stageModalStatusButton">
+                                    <span id="stageModalStatusButtonText">To start</span>
+                                    <span class="dsu-status-button__chevron">
+                                        <img src="images/down-chevron.svg" alt="Chevron" id="stageModalStatusChevron">
+                                    </span>
+                                </button>
+                                <div class="dsu-status-dropdown" id="stageModalStatusDropdown">
+                                    <div class="dsu-status-dropdown__item" data-status="to-start">
+                                        <span class="dsu-status-dropdown__text">To start</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="in-progress">
+                                        <span class="dsu-status-dropdown__text">In progress</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="done">
+                                        <span class="dsu-status-dropdown__text">Done</span>
+                                    </div>
+                                    <div class="dsu-status-dropdown__item" data-status="paused">
+                                        <span class="dsu-status-dropdown__text">Paused</span>
                                     </div>
                                 </div>
                             </div>
