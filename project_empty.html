@@ -2529,11 +2529,22 @@
         .team-details-cost-section {
             display: flex;
             align-items: center;
-            gap: var(--spacing-08);
+            justify-content: space-between;
+            gap: var(--spacing-16);
             /* padding: var(--spacing-12); */
             background-color: var(--color-surface-secondary);
             border-radius: var(--radius-md);
             margin-bottom: var(--spacing-24);
+        }
+        
+        .team-details-cost-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+        }
+        
+        .team-details-manage-btn {
+            flex-shrink: 0;
         }
 
         .team-details-cost-label {
@@ -3768,8 +3779,13 @@
                         
                         <!-- Team cost -->
                         <div class="team-details-cost-section">
-                            <span class="team-details-cost-label">Team cost:</span>
-                            <span id="teamDetailsCost" class="team-details-cost-value"></span>
+                            <div class="team-details-cost-info">
+                                <span class="team-details-cost-label">Team cost:</span>
+                                <span id="teamDetailsCost" class="team-details-cost-value"></span>
+                            </div>
+                            <button class="dsu-button dsu-button--secondary dsu-button--small team-details-manage-btn" id="manageTeamBtn">
+                                Manage team
+                            </button>
                         </div>
                         
                         <!-- Team members -->
@@ -10887,6 +10903,12 @@
         async function openTeamDetailsModal(teamId) {
             console.log('📋 Abriendo modal de detalles del team:', teamId);
             
+            // Guardar teamId en el modal para usarlo en el botón "Manage team"
+            const modal = document.getElementById('teamDetailsModal');
+            if (modal) {
+                modal.setAttribute('data-team-id', teamId);
+            }
+            
             // Obtener datos del team desde localStorage usando DocuProjectData
             let teamData = null;
             
@@ -11030,6 +11052,7 @@
         function initTeamDetailsModal() {
             const closeBtn = document.getElementById('closeTeamDetailsModalBtn');
             const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            const manageTeamBtn = document.getElementById('manageTeamBtn');
             
             if (closeBtn) {
                 closeBtn.addEventListener('click', closeTeamDetailsModal);
@@ -11039,6 +11062,22 @@
                 modalOverlay.addEventListener('click', function(e) {
                     if (e.target === modalOverlay) {
                         closeTeamDetailsModal();
+                    }
+                });
+            }
+            
+            // Event listener para el botón "Manage team"
+            if (manageTeamBtn) {
+                manageTeamBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('teamDetailsModal');
+                    const teamId = modal ? modal.getAttribute('data-team-id') : null;
+                    
+                    if (teamId) {
+                        console.log('🔧 Redirigiendo a edición del team:', teamId);
+                        // Redirigir a la vista de edición del equipo
+                        window.location.href = `create_team.html?edit=true&id=${teamId}`;
+                    } else {
+                        console.warn('⚠️ No se encontró el ID del team');
                     }
                 });
             }
