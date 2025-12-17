@@ -3099,6 +3099,12 @@
                                 </div>
                             </div>
                         </div>
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProjectBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/share.svg" alt="Share">
+                            </span>
+                            Share project
+                        </button>
                     </div>
                 </div>
 
@@ -10319,6 +10325,23 @@
                     updatePublishButtonState();
                 });
                 teamsObserver.observe(teamsListContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+            }
+            
+            // Share project button
+            const shareProjectBtn = document.getElementById('shareProjectBtn');
+            if (shareProjectBtn) {
+                shareProjectBtn.addEventListener('click', function() {
+                    const projectURL = window.location.href;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(projectURL).then(function() {
+                            alert('URL del proyecto copiada al portapapeles: ' + projectURL);
+                        }).catch(function() {
+                            prompt('Copia esta URL:', projectURL);
+                        });
+                    } else {
+                        prompt('Copia esta URL:', projectURL);
+                    }
+                });
             }
             
             // Observar cambios en assets
