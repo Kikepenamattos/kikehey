@@ -2685,7 +2685,35 @@
             background-color: var(--color-status-to-start);
             color: var(--color-basics-dark-blue);
             width: 100%;
-            margin-bottom: 16px;
+            /* margin-bottom: 16px; */
+            margin-top: 16px;
+        }
+        
+        /* Asegurar que el dropdown de status sea visible en el modal */
+        #stageModalOverlay .dsu-status-button-wrapper {
+            position: relative;
+            z-index: 10002;
+        }
+        
+        #stageModalOverlay .dsu-status-dropdown {
+            position: absolute;
+            z-index: 10003 !important;
+            width: 100%;
+            top: calc(100% + var(--spacing-08));
+            left: 0;
+        }
+        
+        /* Fix: Permitir que el dropdown se expanda correctamente */
+        #stageModalOverlay .dsu-status-dropdown--expanded {
+            max-height: 300px !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+        }
+        
+        #stageModalOverlay .modal__body {
+            overflow: visible;
+            position: relative;
         }
         
         .stage-date-range-wrapper .dsu-input-group {
