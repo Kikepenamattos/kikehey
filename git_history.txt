@@ -1,3 +1,5 @@
+101ca2943d890c14db3ab872fecc6b227ae068cc|Ubits|ubits@macbookpro.lan|2025-12-17 10:40:02 -0500|Feat: Agregar selector de status en modal de stages
+75f95b34e59f88edf58c6d254bcda56ec3d89647|Ubits|ubits@macbookpro.lan|2025-12-17 10:30:22 -0500|Update: Actualizar changelog con últimos cambios
 6748a788c4255c8c1c38658d16b381484cf6c4bd|Ubits|ubits@macbookpro.lan|2025-12-17 10:30:11 -0500|Sync: Sincronizar changelog y git_history
 dc5e6e3a3dbf650a49a87f79a7b754c2c07086af|Ubits|ubits@macbookpro.lan|2025-12-17 10:28:06 -0500|Update: Actualizar changelog con últimos cambios
 b79ae7f66c460a7c89ea502282bdb426b50ddedf|Ubits|ubits@macbookpro.lan|2025-12-17 10:27:49 -0500|Style: Revertir ancho de botón secundario a 100%
