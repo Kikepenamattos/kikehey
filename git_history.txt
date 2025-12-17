@@ -1,3 +1,4 @@
+fff62ee5d9e5d7e5b06d22b60270dce8350534df|Ubits|ubits@macbookpro.lan|2025-12-17 15:15:29 -0500|Style: Ajustar distribución de botones en ceremony-custom-form-actions
 305b41b679a74405bb61c16d0cb74024da3cecde|Ubits|ubits@macbookpro.lan|2025-12-17 15:04:30 -0500|Update: Actualizar changelog con últimos cambios
 7ad05e92e1d59e283af7c2e28616f26b7750af55|Ubits|ubits@macbookpro.lan|2025-12-17 15:04:20 -0500|Update: Actualizar changelog con últimos cambios
 889d5ba53129d1dcf7dabff6d9519aef4e85fe33|Ubits|ubits@macbookpro.lan|2025-12-17 15:03:57 -0500|Update: Actualizar changelog con últimos cambios
