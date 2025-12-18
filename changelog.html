@@ -927,7 +927,7 @@
             const githubUrl = 'https://raw.githubusercontent.com/Kikepenamattos/kikehey/main/git_history.txt';
             const isFileProtocol = window.location.protocol === 'file:';
             
-            // Si estamos en file://, intentar GitHub primero (más confiable)
+            // Si estamos en file://, intentar GitHub primero pero comparar con datos embebidos
             if (isFileProtocol) {
                 try {
                     console.log('📂 Modo file:// detectado, cargando desde GitHub...');
@@ -936,6 +936,24 @@
                         const text = await githubResponse.text();
                         const commits = parseGitHistory(text);
                         console.log(`📝 Cargados ${commits.length} commits del historial desde GitHub`);
+                        
+                        // VERIFICACIÓN CRÍTICA: Comparar con datos embebidos - usar el conjunto más actualizado
+                        if (realCommits && realCommits.length > 0) {
+                            // Comparar fecha del commit más reciente de cada fuente
+                            const sortedGithubCommits = [...commits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            const sortedRealCommits = [...realCommits].sort((a, b) => new Date(b.date) - new Date(a.date));
+                            
+                            const latestGithubDate = sortedGithubCommits.length > 0 ? new Date(sortedGithubCommits[0].date) : new Date(0);
+                            const latestRealDate = sortedRealCommits.length > 0 ? new Date(sortedRealCommits[0].date) : new Date(0);
+                            
+                            // Usar datos embebidos si tienen más commits O si tienen un commit más reciente
+                            if (realCommits.length > commits.length || latestRealDate > latestGithubDate) {
+                                console.warn(`⚠️ Usando datos embebidos: ${realCommits.length} commits (más reciente: ${sortedRealCommits[0]?.hash} - ${sortedRealCommits[0]?.date}) vs ${commits.length} commits de GitHub (más reciente: ${sortedGithubCommits[0]?.hash} - ${sortedGithubCommits[0]?.date})`);
+                                renderCommits(sortedRealCommits);
+                                return;
+                            }
+                        }
+                        
                         renderCommits(commits);
                         return;
                     }
@@ -1427,6 +1445,14 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: 'be19d66',
+                fullHash: 'be19d66e722772b929a1445c637204adce29ed37',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-18 14:57:26 -0500',
+                message: 'Update: Actualizar changelog con 327 commits (corregido)'
+            },
             {
                 hash: 'db1259a',
                 fullHash: 'db1259ac24d6e6202d85d48b8129b205f3e4f51f',
