@@ -1,3 +1,5 @@
+3ae784ff95e1f0620818cbb13be92fa502e98ec7|Ubits|ubits@macbookpro.lan|2025-12-18 10:43:59 -0500|feat: Agregar modal de detalles del equipo en project_view.html con funcionalidad de navegación y ajustes de layout
+0fe9a4ec52b338d182dce98b4b9e9c780cc99b4a|Ubits|ubits@macbookpro.lan|2025-12-17 18:54:45 -0500|Update: Actualizar changelog con últimos cambios
 df70537fa3c276b45a9c3972f7d1049aab3fd275|Ubits|ubits@macbookpro.lan|2025-12-17 18:54:33 -0500|feat: Agregar secciones Project ceremonies y Communication channels en project_view.html y ajustar tamaño de imágenes de assets
 de284d3d6a1a9d8737530580c87a5302bf433d9b|Ubits|ubits@macbookpro.lan|2025-12-17 16:05:47 -0500|Update: Actualizar changelog con últimos cambios
 0481c0f9b7e6b8a822f62a52bbc076eff93a9615|Ubits|ubits@macbookpro.lan|2025-12-17 16:05:37 -0500|Update: Actualizar changelog con últimos cambios
