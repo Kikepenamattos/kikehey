@@ -790,6 +790,23 @@
             color: var(--color-text-secondary);
             margin: 0;
             line-height: 1.5;
+            flex: 1;
+        }
+
+        .ceremony-item-description-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-16);
+        }
+
+        .ceremony-item-status {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         /* Communication Channels Section Styles */
@@ -859,6 +876,50 @@
         }
 
         /* Agreements Section Styles */
+        .agreements-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-16);
+            margin-bottom: var(--spacing-16);
+            flex-wrap: wrap;
+        }
+
+        .agreements-section-header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+        }
+
+        .agreements-section-header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+        }
+
+        .agreements-section-header-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .agreements-section-header-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .agreements-section-info-label {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            white-space: nowrap;
+        }
+
         .agreements-list {
             display: flex;
             flex-direction: column;
@@ -867,10 +928,34 @@
         }
 
         .agreement-item {
-            padding: var(--spacing-16);
             background-color: var(--color-surface-regular);
-            border: 1px solid var(--color-status-disabled);
+            /* border: 1px solid var(--color-status-disabled); */
             border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .agreement-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-16);
+            cursor: pointer;
+            user-select: none;
+            /* transition: background-color 0.2s ease; */
+            background-color: #F4F7FB;
+        }
+
+        .agreement-item-header:hover {
+            background-color: var(--color-surface-especial);
+        }
+
+        .agreement-item-header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-16);
+            flex: 1;
+            min-width: 0;
         }
 
         .agreement-item-title {
@@ -878,53 +963,115 @@
             font-size: var(--font-size-base);
             font-weight: var(--font-weight-black);
             color: var(--color-text-primary);
-            margin-bottom: var(--spacing-12);
+            margin: 0;
+            flex: 1;
+            word-break: break-word;
+            min-width: 0;
         }
 
         .agreement-item-meta {
             display: flex;
             align-items: center;
             gap: var(--spacing-16);
-            margin-bottom: var(--spacing-12);
+            flex-shrink: 0;
         }
 
         .agreement-item-date {
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
             color: var(--color-text-secondary);
+            white-space: nowrap;
         }
 
         .agreement-item-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
-            padding: var(--spacing-04) var(--spacing-08);
-            border-radius: var(--radius-sm);
+            font-weight: var(--font-weight-regular);
+            line-height: normal;
+            padding: var(--spacing-08) var(--spacing-24);
+            border: none;
+            border-radius: 40px;
+            white-space: nowrap;
+            text-align: center;
         }
 
         .agreement-item-status--to-start {
-            background-color: var(--color-status-to-start-bg, #f0f0f0);
-            color: var(--color-status-to-start-text, #666);
+            background-color: var(--color-status-to-start);
+            color: var(--color-basics-dark-blue);
         }
 
         .agreement-item-status--in-progress {
-            background-color: var(--color-status-in-progress-bg, #e3f2fd);
-            color: var(--color-status-in-progress-text, #1976d2);
+            background-color: var(--color-status-in-progress);
+            color: var(--color-basics-dark-blue);
         }
 
         .agreement-item-status--paused {
-            background-color: var(--color-status-paused-bg, #fff3e0);
-            color: var(--color-status-paused-text, #f57c00);
+            background-color: var(--color-status-paused);
+            color: var(--color-basics-white);
         }
 
         .agreement-item-status--done {
-            background-color: var(--color-status-done-bg, #e8f5e9);
-            color: var(--color-status-done-text, #388e3c);
+            background-color: var(--color-status-done);
+            color: var(--color-basics-dark-blue);
+        }
+
+        .agreement-item-status--approved {
+            background-color: var(--color-status-done);
+            color: var(--color-basics-dark-blue);
+        }
+
+        .agreement-item-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .agreement-item-toggle:hover {
+            opacity: 0.7;
+        }
+
+        .agreement-item-toggle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .agreement-item-content {
+            padding: 0 var(--spacing-16) var(--spacing-16) var(--spacing-16);
+            overflow: hidden;
+            /* transition: max-height 0.3s ease, opacity 0.3s ease; */
+        }
+
+        .agreement-item-content--collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 var(--spacing-16);
+            overflow: hidden;
+        }
+
+        .agreement-item-content--expanded {
+            max-height: 10000px;
+            opacity: 1;
+            background-color: #F4F7FB;
         }
 
         .agreement-item-items {
             display: flex;
             flex-direction: column;
             gap: var(--spacing-08);
+            margin-top: var(--spacing-12);
         }
 
         .agreement-item-item {
@@ -972,6 +1119,11 @@
             max-height: 45%;
             overflow-y: auto;
             animation: modalFadeIn 0.2s ease;
+        }
+
+        #allAgreementsModal {
+            width: 60%;
+            max-height: 80%;
         }
 
         @keyframes modalFadeIn {
@@ -1515,30 +1667,50 @@
                 
                 <!-- Goals and KPIs Section -->
                 <div class="project-section" id="objectivesSection" style="display: none;">
-                    <h2 class="project-section-title">What do you want to accomplish?</h2>
-                    <div class="project-objective-tabs">
-                        <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
-                            <span class="dsu-chip__text">Goals</span>
-                        </button>
-                        <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
-                            <span class="dsu-chip__text">KPIs</span>
-                        </button>
+                    <div class="project-section-title project-section-title--expanded" data-section="objectives">
+                        <span class="project-section-title__text">What do you want to accomplish?</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
                     </div>
-                    <div class="project-objective-content">
-                        <!-- Goals Items Container -->
-                        <div class="project-objective-items-container" id="goalsItemsDisplay" data-tab="goals">
-                            <!-- Goals items will be added dynamically here -->
+                    <div class="project-section-content project-section-content--expanded" data-content="objectives">
+                        <div class="project-objective-tabs">
+                            <button class="dsu-chip dsu-chip--active" id="goalsTabBtn">
+                                <span class="dsu-chip__text">Goals</span>
+                            </button>
+                            <button class="dsu-chip dsu-chip--inactive" id="kpisTabBtn">
+                                <span class="dsu-chip__text">KPIs</span>
+                            </button>
                         </div>
-                        <!-- KPIs Items Container -->
-                        <div class="project-objective-items-container" id="kpisItemsDisplay" data-tab="kpis" style="display: none;">
-                            <!-- KPIs items will be added dynamically here -->
+                        <div class="project-objective-content">
+                            <!-- Goals Items Container -->
+                            <div class="project-objective-items-container" id="goalsItemsDisplay" data-tab="goals">
+                                <!-- Goals items will be added dynamically here -->
+                            </div>
+                            <!-- KPIs Items Container -->
+                            <div class="project-objective-items-container" id="kpisItemsDisplay" data-tab="kpis" style="display: none;">
+                                <!-- KPIs items will be added dynamically here -->
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Agreements Section -->
                 <div class="project-section" id="agreementsSection" style="display: none;">
-                    <h2 class="project-section-title">Agreements</h2>
+                    <div class="agreements-section-header">
+                        <div class="agreements-section-header-left">
+                            <div class="agreements-section-header-icon">
+                                <img src="images/project.svg" alt="Agreements">
+                            </div>
+                            <h2 class="project-section-title">Project agreements</h2>
+                        </div>
+                        <div class="agreements-section-header-right">
+                            <span class="agreements-section-info-label">Showing the last 3 agreements</span>
+                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="showAllAgreementsBtn">
+                                Display all
+                            </button>
+                        </div>
+                    </div>
                     <div class="agreements-list" id="agreementsListDisplay"></div>
                 </div>
                 
@@ -1647,6 +1819,23 @@
         </div>
     </div>
 
+    <!-- Modal para mostrar todos los agreements -->
+    <div class="modal-overlay" id="allAgreementsModalOverlay">
+        <div class="modal" id="allAgreementsModal">
+            <div class="modal-headline">
+                <h3 class="modal__title">All Project Agreements</h3>
+                <button class="modal-close-btn" id="closeAllAgreementsModalBtn" aria-label="Close">
+                    <img src="images/close.svg" alt="Close" width="20" height="20">
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="agreements-list" id="allAgreementsListDisplay">
+                    <!-- Todos los agreements se insertarán aquí dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
     <script src="js/image-storage.js"></script>
@@ -1726,6 +1915,13 @@
                 console.error('❌ Error al inicializar modal de detalles de team:', error);
             }
 
+            // Inicializar modal de todos los agreements
+            try {
+                initAllAgreementsModal();
+            } catch (error) {
+                console.error('❌ Error al inicializar modal de todos los agreements:', error);
+            }
+
             // Cargar datos del proyecto DESPUÉS de inicializar las secciones colapsables
             loadProjectData();
 
@@ -1737,10 +1933,10 @@
             }
         }
 
-        // Initialize Collapsible Sections (Project context, What do you want to solve, Solution approach, Ceremonies)
+        // Initialize Collapsible Sections (Project context, What do you want to solve, Solution approach, Ceremonies, Objectives)
         function initCollapsibleSections() {
             // Secciones con funcionalidad de colapsar/plegar
-            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies'];
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives'];
             
             collapsibleSections.forEach(sectionName => {
                 const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
@@ -2233,6 +2429,28 @@
                 
                 if (hasGoals || hasKpis) {
                     objectivesSection.style.display = 'block';
+                    
+                    // Restaurar estado colapsado/expandido si existe
+                    if (project.collapsibleSectionsState && project.collapsibleSectionsState.objectives !== undefined) {
+                        const objectivesTitle = objectivesSection.querySelector('.project-section-title[data-section="objectives"]');
+                        const objectivesContent = objectivesSection.querySelector('.project-section-content[data-content="objectives"]');
+                        
+                        if (objectivesTitle && objectivesContent) {
+                            if (project.collapsibleSectionsState.objectives) {
+                                // Expandida
+                                objectivesTitle.classList.remove('project-section-title--collapsed');
+                                objectivesTitle.classList.add('project-section-title--expanded');
+                                objectivesContent.classList.remove('project-section-content--collapsed');
+                                objectivesContent.classList.add('project-section-content--expanded');
+                            } else {
+                                // Colapsada
+                                objectivesTitle.classList.remove('project-section-title--expanded');
+                                objectivesTitle.classList.add('project-section-title--collapsed');
+                                objectivesContent.classList.remove('project-section-content--expanded');
+                                objectivesContent.classList.add('project-section-content--collapsed');
+                            }
+                        }
+                    }
                     
                     // Mostrar Goals
                     if (hasGoals && goalsItemsDisplay) {
@@ -2777,12 +2995,23 @@
                     ceremonyName.className = 'ceremony-item-name';
                     ceremonyName.textContent = ceremony.name || '';
                     
+                    // Wrapper para descripción y status
+                    const descriptionWrapper = document.createElement('div');
+                    descriptionWrapper.className = 'ceremony-item-description-wrapper';
+                    
                     const ceremonyDescription = document.createElement('div');
                     ceremonyDescription.className = 'ceremony-item-description';
                     ceremonyDescription.textContent = ceremony.description || '';
                     
+                    const ceremonyStatus = document.createElement('span');
+                    ceremonyStatus.className = 'ceremony-item-status';
+                    ceremonyStatus.textContent = 'Pending to schedule';
+                    
+                    descriptionWrapper.appendChild(ceremonyDescription);
+                    descriptionWrapper.appendChild(ceremonyStatus);
+                    
                     ceremonyContent.appendChild(ceremonyName);
-                    ceremonyContent.appendChild(ceremonyDescription);
+                    ceremonyContent.appendChild(descriptionWrapper);
                     
                     ceremonyItem.appendChild(ceremonyIcon);
                     ceremonyItem.appendChild(ceremonyContent);
@@ -2960,54 +3189,156 @@
                 console.log('ℹ️ No hay Assets para mostrar');
             }
             
-            // Mostrar Agreements
+            // Mostrar Agreements (solo últimos 3, más reciente expandido)
             const agreementsSection = document.getElementById('agreementsSection');
             const agreementsListDisplay = document.getElementById('agreementsListDisplay');
-            if (agreementsSection && agreementsListDisplay && project.agreements && project.agreements.length > 0) {
+            if (agreementsSection && agreementsListDisplay && project.agreements && Array.isArray(project.agreements) && project.agreements.length > 0) {
                 agreementsListDisplay.innerHTML = '';
                 
-                project.agreements.forEach((agreement, index) => {
+                // El array project.agreements tiene el más reciente primero: [más reciente, ..., más antiguo]
+                // Verificar el orden antes de procesar
+                console.log('📋 Total agreements en proyecto:', project.agreements.length);
+                if (project.agreements.length > 0) {
+                    console.log('   Primer agreement (debe ser el más reciente):', project.agreements[0]?.name || 'Sin nombre');
+                    if (project.agreements.length > 1) {
+                        console.log('   Último agreement (debe ser el más antiguo):', project.agreements[project.agreements.length - 1]?.name || 'Sin nombre');
+                    }
+                }
+                
+                // Tomar los primeros 3 (más recientes) - no necesitamos invertir
+                const lastThreeAgreements = project.agreements.slice(0, 3);
+                const reversedAgreements = lastThreeAgreements; // Ya están en el orden correcto
+                
+                console.log('📋 Mostrando los primeros', reversedAgreements.length, 'agreements (más recientes)');
+                
+                reversedAgreements.forEach((agreement, displayIndex) => {
+                    // El primer agreement (índice 0) debe estar expandido, los otros colapsados
+                    const isFirstItem = displayIndex === 0;
+                    const isExpanded = isFirstItem;
+                    
                     const agreementItem = document.createElement('div');
                     agreementItem.className = 'agreement-item';
+                    // Mantener el índice original del array completo para referencia
+                    // Como tomamos los primeros 3, el índice original es simplemente displayIndex
+                    const originalIndex = displayIndex;
+                    agreementItem.setAttribute('data-agreement-index', originalIndex);
                     
-                    let agreementHTML = '';
+                    // Header del agreement (clickeable para toggle)
+                    const agreementHeader = document.createElement('div');
+                    agreementHeader.className = 'agreement-item-header';
+                    agreementHeader.setAttribute('role', 'button');
+                    agreementHeader.setAttribute('tabindex', '0');
+                    agreementHeader.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                    
+                    // Contenedor del contenido del header (título + meta)
+                    const headerContent = document.createElement('div');
+                    headerContent.className = 'agreement-item-header-content';
                     
                     // Título del agreement
-                    if (agreement.name) {
-                        agreementHTML += `<div class="agreement-item-title">${escapeHtml(agreement.name)}</div>`;
-                    }
+                    const agreementTitle = document.createElement('div');
+                    agreementTitle.className = 'agreement-item-title';
+                    agreementTitle.textContent = agreement.name || '';
                     
                     // Meta información (fecha y status)
-                    let metaHTML = '<div class="agreement-item-meta">';
+                    const agreementMeta = document.createElement('div');
+                    agreementMeta.className = 'agreement-item-meta';
+                    
                     if (agreement.date) {
-                        metaHTML += `<span class="agreement-item-date">${escapeHtml(agreement.date)}</span>`;
+                        const agreementDate = document.createElement('span');
+                        agreementDate.className = 'agreement-item-date';
+                        agreementDate.textContent = agreement.date;
+                        agreementMeta.appendChild(agreementDate);
                     }
+                    
                     if (agreement.status) {
                         const statusText = agreement.status.split('-').map(word => 
                             word.charAt(0).toUpperCase() + word.slice(1)
                         ).join(' ');
-                        metaHTML += `<span class="agreement-item-status agreement-item-status--${agreement.status}">${escapeHtml(statusText)}</span>`;
+                        const agreementStatus = document.createElement('span');
+                        agreementStatus.className = `agreement-item-status agreement-item-status--${agreement.status}`;
+                        agreementStatus.textContent = statusText;
+                        agreementMeta.appendChild(agreementStatus);
                     }
-                    metaHTML += '</div>';
-                    agreementHTML += metaHTML;
                     
-                    // Items del agreement
+                    headerContent.appendChild(agreementTitle);
+                    headerContent.appendChild(agreementMeta);
+                    
+                    // Botón toggle
+                    const agreementToggle = document.createElement('button');
+                    agreementToggle.className = 'agreement-item-toggle';
+                    agreementToggle.setAttribute('aria-label', 'Toggle agreement');
+                    agreementToggle.setAttribute('type', 'button');
+                    const toggleImg = document.createElement('img');
+                    toggleImg.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
+                    toggleImg.alt = isExpanded ? 'Collapse' : 'Expand';
+                    agreementToggle.appendChild(toggleImg);
+                    
+                    agreementHeader.appendChild(headerContent);
+                    agreementHeader.appendChild(agreementToggle);
+                    
+                    // Contenido colapsable (items)
+                    const agreementContent = document.createElement('div');
+                    agreementContent.className = isExpanded 
+                        ? 'agreement-item-content agreement-item-content--expanded'
+                        : 'agreement-item-content agreement-item-content--collapsed';
+                    
                     if (agreement.items && Array.isArray(agreement.items) && agreement.items.length > 0) {
-                        agreementHTML += '<div class="agreement-item-items">';
+                        const agreementItems = document.createElement('div');
+                        agreementItems.className = 'agreement-item-items';
+                        
                         agreement.items.forEach(itemText => {
                             if (itemText && itemText.trim()) {
-                                agreementHTML += `<div class="agreement-item-item">-${escapeHtml(itemText.trim())}</div>`;
+                                const agreementItemText = document.createElement('div');
+                                agreementItemText.className = 'agreement-item-item';
+                                agreementItemText.textContent = `-${itemText.trim()}`;
+                                agreementItems.appendChild(agreementItemText);
                             }
                         });
-                        agreementHTML += '</div>';
+                        
+                        agreementContent.appendChild(agreementItems);
                     }
                     
-                    agreementItem.innerHTML = agreementHTML;
+                    // Agregar event listener para toggle
+                    agreementHeader.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isCurrentlyExpanded = agreementContent.classList.contains('agreement-item-content--expanded');
+                        
+                        if (isCurrentlyExpanded) {
+                            // Colapsar
+                            agreementContent.classList.remove('agreement-item-content--expanded');
+                            agreementContent.classList.add('agreement-item-content--collapsed');
+                            toggleImg.src = 'images/plus.svg';
+                            toggleImg.alt = 'Expand';
+                            agreementHeader.setAttribute('aria-expanded', 'false');
+                        } else {
+                            // Expandir
+                            agreementContent.classList.remove('agreement-item-content--collapsed');
+                            agreementContent.classList.add('agreement-item-content--expanded');
+                            toggleImg.src = 'images/minus.svg';
+                            toggleImg.alt = 'Collapse';
+                            agreementHeader.setAttribute('aria-expanded', 'true');
+                        }
+                    });
+                    
+                    // También permitir toggle con el botón directamente
+                    agreementToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        agreementHeader.click();
+                    });
+                    
+                    // Ensamblar estructura
+                    agreementItem.appendChild(agreementHeader);
+                    agreementItem.appendChild(agreementContent);
                     agreementsListDisplay.appendChild(agreementItem);
                 });
                 
                 agreementsSection.style.display = 'block';
-                console.log('✅ Agreements mostrados:', project.agreements.length);
+                const totalAgreements = project.agreements.length;
+                const displayedAgreements = reversedAgreements.length;
+                console.log(`✅ Agreements mostrados: ${displayedAgreements} de ${totalAgreements} (más recientes, el primero expandido)`);
             } else {
                 console.log('ℹ️ No hay Agreements para mostrar');
             }
@@ -3474,6 +3805,209 @@
                     }
                 });
             }
+        }
+
+        // ============================================
+        // All Agreements Modal
+        // ============================================
+        function openAllAgreementsModal() {
+            console.log('📋 Abriendo modal de todos los agreements');
+            
+            const modalOverlay = document.getElementById('allAgreementsModalOverlay');
+            const allAgreementsListDisplay = document.getElementById('allAgreementsListDisplay');
+            
+            if (!modalOverlay || !allAgreementsListDisplay) {
+                console.error('❌ No se encontraron los elementos del modal');
+                return;
+            }
+
+            // Obtener el proyecto actual
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get('id');
+            
+            if (!projectId) {
+                console.error('❌ No se encontró el ID del proyecto');
+                return;
+            }
+
+            const project = window.DocuProjectData.getProjectById(projectId);
+            
+            if (!project || !project.agreements || !Array.isArray(project.agreements) || project.agreements.length === 0) {
+                allAgreementsListDisplay.innerHTML = '<div style="padding: var(--spacing-24); text-align: center; color: var(--color-text-secondary);">No hay agreements para mostrar</div>';
+                modalOverlay.classList.add('modal-overlay--visible');
+                return;
+            }
+
+            // Limpiar el contenedor
+            allAgreementsListDisplay.innerHTML = '';
+
+            // El array project.agreements ya tiene el más reciente primero: [más reciente, ..., más antiguo]
+            // Renderizar todos los agreements (más reciente primero)
+            project.agreements.forEach((agreement, index) => {
+                // El primer agreement (índice 0) debe estar expandido, los otros colapsados
+                const isFirstItem = index === 0;
+                const isExpanded = isFirstItem;
+                
+                const agreementItem = document.createElement('div');
+                agreementItem.className = 'agreement-item';
+                agreementItem.setAttribute('data-agreement-index', index);
+                
+                // Header del agreement (clickeable para toggle)
+                const agreementHeader = document.createElement('div');
+                agreementHeader.className = 'agreement-item-header';
+                agreementHeader.setAttribute('role', 'button');
+                agreementHeader.setAttribute('tabindex', '0');
+                agreementHeader.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+                
+                // Contenedor del contenido del header (título + meta)
+                const headerContent = document.createElement('div');
+                headerContent.className = 'agreement-item-header-content';
+                
+                // Título del agreement
+                const agreementTitle = document.createElement('div');
+                agreementTitle.className = 'agreement-item-title';
+                agreementTitle.textContent = agreement.name || '';
+                
+                // Meta información (fecha y status)
+                const agreementMeta = document.createElement('div');
+                agreementMeta.className = 'agreement-item-meta';
+                
+                if (agreement.date) {
+                    const agreementDate = document.createElement('span');
+                    agreementDate.className = 'agreement-item-date';
+                    agreementDate.textContent = agreement.date;
+                    agreementMeta.appendChild(agreementDate);
+                }
+                
+                if (agreement.status) {
+                    const statusText = agreement.status.split('-').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
+                    const agreementStatus = document.createElement('span');
+                    agreementStatus.className = `agreement-item-status agreement-item-status--${agreement.status}`;
+                    agreementStatus.textContent = statusText;
+                    agreementMeta.appendChild(agreementStatus);
+                }
+                
+                headerContent.appendChild(agreementTitle);
+                headerContent.appendChild(agreementMeta);
+                
+                // Botón toggle
+                const agreementToggle = document.createElement('button');
+                agreementToggle.className = 'agreement-item-toggle';
+                agreementToggle.setAttribute('aria-label', 'Toggle agreement');
+                agreementToggle.setAttribute('type', 'button');
+                const toggleImg = document.createElement('img');
+                toggleImg.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
+                toggleImg.alt = isExpanded ? 'Collapse' : 'Expand';
+                agreementToggle.appendChild(toggleImg);
+                
+                agreementHeader.appendChild(headerContent);
+                agreementHeader.appendChild(agreementToggle);
+                
+                // Contenido colapsable (items)
+                const agreementContent = document.createElement('div');
+                agreementContent.className = isExpanded 
+                    ? 'agreement-item-content agreement-item-content--expanded'
+                    : 'agreement-item-content agreement-item-content--collapsed';
+                
+                if (agreement.items && Array.isArray(agreement.items) && agreement.items.length > 0) {
+                    const agreementItems = document.createElement('div');
+                    agreementItems.className = 'agreement-item-items';
+                    
+                    agreement.items.forEach(itemText => {
+                        if (itemText && itemText.trim()) {
+                            const agreementItemText = document.createElement('div');
+                            agreementItemText.className = 'agreement-item-item';
+                            agreementItemText.textContent = `-${itemText.trim()}`;
+                            agreementItems.appendChild(agreementItemText);
+                        }
+                    });
+                    
+                    agreementContent.appendChild(agreementItems);
+                }
+                
+                // Agregar event listener para toggle
+                agreementHeader.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isCurrentlyExpanded = agreementContent.classList.contains('agreement-item-content--expanded');
+                    
+                    if (isCurrentlyExpanded) {
+                        // Colapsar
+                        agreementContent.classList.remove('agreement-item-content--expanded');
+                        agreementContent.classList.add('agreement-item-content--collapsed');
+                        toggleImg.src = 'images/plus.svg';
+                        toggleImg.alt = 'Expand';
+                        agreementHeader.setAttribute('aria-expanded', 'false');
+                    } else {
+                        // Expandir
+                        agreementContent.classList.remove('agreement-item-content--collapsed');
+                        agreementContent.classList.add('agreement-item-content--expanded');
+                        toggleImg.src = 'images/minus.svg';
+                        toggleImg.alt = 'Collapse';
+                        agreementHeader.setAttribute('aria-expanded', 'true');
+                    }
+                });
+                
+                // También permitir toggle con el botón directamente
+                agreementToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    agreementHeader.click();
+                });
+                
+                // Ensamblar estructura
+                agreementItem.appendChild(agreementHeader);
+                agreementItem.appendChild(agreementContent);
+                allAgreementsListDisplay.appendChild(agreementItem);
+            });
+
+            // Mostrar modal
+            modalOverlay.classList.add('modal-overlay--visible');
+            console.log(`✅ Modal abierto con ${project.agreements.length} agreements`);
+        }
+
+        function closeAllAgreementsModal() {
+            const modalOverlay = document.getElementById('allAgreementsModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('modal-overlay--visible');
+            }
+        }
+
+        // Inicializar event listeners para el modal de todos los agreements
+        function initAllAgreementsModal() {
+            const showAllBtn = document.getElementById('showAllAgreementsBtn');
+            const closeBtn = document.getElementById('closeAllAgreementsModalBtn');
+            const modalOverlay = document.getElementById('allAgreementsModalOverlay');
+            
+            if (showAllBtn) {
+                showAllBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openAllAgreementsModal();
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeAllAgreementsModal);
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        closeAllAgreementsModal();
+                    }
+                });
+            }
+
+            // Cerrar con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('modal-overlay--visible')) {
+                    closeAllAgreementsModal();
+                }
+            });
         }
     </script>
 </body>
