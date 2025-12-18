@@ -1,3 +1,5 @@
+25ab84bf317c1962dae77b1af2081abc9ec3fdc9|Ubits|ubits@macbookpro.lan|2025-12-18 10:56:59 -0500|feat: Agregar iconos únicos y colores variados para cada ceremonia en project_view.html y ajustar espaciados
+1e7a27219748cdd91d1f843e5d6c77a9f242fcfc|Ubits|ubits@macbookpro.lan|2025-12-18 10:44:18 -0500|Update: Actualizar changelog con últimos cambios
 3ae784ff95e1f0620818cbb13be92fa502e98ec7|Ubits|ubits@macbookpro.lan|2025-12-18 10:43:59 -0500|feat: Agregar modal de detalles del equipo en project_view.html con funcionalidad de navegación y ajustes de layout
 0fe9a4ec52b338d182dce98b4b9e9c780cc99b4a|Ubits|ubits@macbookpro.lan|2025-12-17 18:54:45 -0500|Update: Actualizar changelog con últimos cambios
 df70537fa3c276b45a9c3972f7d1049aab3fd275|Ubits|ubits@macbookpro.lan|2025-12-17 18:54:33 -0500|feat: Agregar secciones Project ceremonies y Communication channels en project_view.html y ajustar tamaño de imágenes de assets
