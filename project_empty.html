@@ -3732,17 +3732,17 @@
                                 </div>
                                 
                                 <div class="dsu-agreements__agreement" id="projectAgreementForm" style="display: none;">
-                                    <div class="dsu-agreements__agreement-header">
+                                    <div class="dsu-agreements__agreement-header" style="cursor: pointer;" onclick="if(event.target.tagName !== 'INPUT' && event.target.tagName !== 'BUTTON' && !event.target.closest('input') && !event.target.closest('button')) toggleAgreementContent('base')">
                                         <div class="dsu-input-group agreement-name-input-wrapper" style="flex: 1; position: relative;">
                                             <div class="dsu-input-label">
                                                 <span>Agreement name</span>
                                             </div>
-                                            <input type="text" class="dsu-input" id="projectAgreementName" placeholder="i.e: Meeting May 5">
+                                            <input type="text" class="dsu-input" id="projectAgreementName" placeholder="i.e: Meeting May 5" onclick="event.stopPropagation()">
                                             <button class="agreement-name-edit-btn" id="projectAgreementNameEditBtn" style="display: none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; padding: 4px; margin-top: 12px;">
                                                 <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                                             </button>
                                         </div>
-                                        <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn" style="display: none;">
+                                        <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn">
                                             <img src="images/minus.svg" alt="Collapse">
                                         </button>
                                     </div>
@@ -7937,6 +7937,75 @@
         // ============================================
         // Project Agreements
         // ============================================
+        
+        // Función global para toggle completo del agreement
+        // Definir antes de initAgreements para que esté disponible en los onclick inline
+        window.toggleAgreementContent = function(uniqueId) {
+            const agreementId = uniqueId === 'base' ? 'projectAgreementForm' : `projectAgreementForm_${uniqueId}`;
+            const agreement = document.getElementById(agreementId);
+            if (!agreement) {
+                return;
+            }
+            
+            const metaId = uniqueId === 'base' ? 'projectEmptyMeta' : `projectEmptyMeta_${uniqueId}`;
+            const itemsId = uniqueId === 'base' ? 'projectEmptyItems' : `projectEmptyItems_${uniqueId}`;
+            const toggleBtnId = uniqueId === 'base' ? 'projectEmptyToggleBtn' : `projectEmptyToggleBtn_${uniqueId}`;
+            const formId = uniqueId === 'base' ? 'projectAgreementFormForm' : `projectAgreementFormForm_${uniqueId}`;
+            
+            const meta = document.getElementById(metaId);
+            const items = document.getElementById(itemsId);
+            const toggleBtn = document.getElementById(toggleBtnId);
+            const form = uniqueId === 'base' 
+                ? document.querySelector('#projectAgreementForm').nextElementSibling
+                : document.getElementById(formId);
+            
+            // Verificar estado actual - usar getComputedStyle para verificar visibilidad real
+            let isExpanded = false;
+            if (meta) {
+                const computedStyle = window.getComputedStyle(meta);
+                isExpanded = computedStyle.display !== 'none';
+            } else {
+                // Si no hay meta, asumir que está expandido por defecto
+                isExpanded = true;
+            }
+            
+            if (isExpanded) {
+                // Colapsar todo
+                if (meta) {
+                    meta.style.display = 'none';
+                }
+                if (items) {
+                    items.style.display = 'none';
+                }
+                if (form && form.classList.contains('dsu-agreements__agreement-form')) {
+                    form.style.display = 'none';
+                }
+                if (toggleBtn) {
+                    const img = toggleBtn.querySelector('img');
+                    if (img) img.src = 'images/plus.svg';
+                }
+            } else {
+                // Expandir todo
+                if (meta) {
+                    meta.style.display = 'flex';
+                }
+                if (items) {
+                    // Solo mostrar items si tiene contenido
+                    if (items.children.length > 0) {
+                        items.style.display = 'flex';
+                    }
+                }
+                if (form && form.classList.contains('dsu-agreements__agreement-form')) {
+                    form.style.display = 'flex';
+                }
+                if (toggleBtn) {
+                    toggleBtn.style.display = 'block';
+                    const img = toggleBtn.querySelector('img');
+                    if (img) img.src = 'images/minus.svg';
+                }
+            }
+        };
+        
         function initAgreements() {
             const agreementsSection = document.getElementById('projectAgreementsSection');
             const hideAgreementsBtn = document.getElementById('hideAgreementsSectionBtn');
@@ -8037,7 +8106,7 @@
                                             <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                                         </button>
                                     </div>
-                                    <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn" style="display: none;">
+                                    <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn">
                                         <img src="images/minus.svg" alt="Collapse">
                                     </button>
                                 </div>
@@ -8251,32 +8320,29 @@
                             
                             // Re-initialize toggle button
                             if (newEmptyToggleBtn) {
-                                let emptyExpanded = true;
+                                // El toggle siempre está visible
+                                newEmptyToggleBtn.style.display = 'block';
+                                
+                                // Establecer el icono inicial basado en el estado del contenido
+                                setTimeout(() => {
+                                    // Verificar si el meta está visible usando getComputedStyle
+                                    let isExpanded = true;
+                                    if (newEmptyMeta) {
+                                        const computedStyle = window.getComputedStyle(newEmptyMeta);
+                                        isExpanded = computedStyle.display !== 'none';
+                                    }
+                                    const img = newEmptyToggleBtn.querySelector('img');
+                                    if (img) {
+                                        img.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
+                                    }
+                                }, 100);
+                                
+                                // Remover el onclick inline si existe y usar solo addEventListener
+                                newEmptyToggleBtn.removeAttribute('onclick');
                                 newEmptyToggleBtn.addEventListener('click', function(e) {
                                     e.stopPropagation();
-                                    const agreementFormForm = document.querySelector('#projectAgreementForm').nextElementSibling;
-                                    
-                                    if (emptyExpanded) {
-                                        if (newEmptyItemsContainer) newEmptyItemsContainer.style.display = 'none';
-                                        if (newEmptyMeta) newEmptyMeta.style.display = 'none';
-                                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                            agreementFormForm.style.display = 'none';
-                                        }
-                                        const img = this.querySelector('img');
-                                        if (img) img.src = img.src.replace('minus.svg', 'plus.svg');
-                                        emptyExpanded = false;
-                                    } else {
-                                        if (newEmptyItemsContainer && newEmptyItemsContainer.children.length > 0) {
-                                            newEmptyItemsContainer.style.display = 'flex';
-                                        }
-                                        if (newEmptyMeta) newEmptyMeta.style.display = 'flex';
-                                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                            agreementFormForm.style.display = 'flex';
-                                        }
-                                        const img = this.querySelector('img');
-                                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                                        emptyExpanded = true;
-                                    }
+                                    e.preventDefault();
+                                    toggleAgreementContent('base');
                                 });
                             }
                             
@@ -8535,53 +8601,34 @@
             
             // Toggle Empty state agreement
             if (emptyToggleBtn) {
-                // El toggle debe estar visible cuando hay contenido (nombre o items)
-                // Mostrar el toggle inicialmente si hay contenido
+                // El toggle siempre está visible
+                emptyToggleBtn.style.display = 'block';
+                
+                // Establecer el icono inicial basado en el estado del contenido
                 setTimeout(() => {
-                    const hasTitle = document.querySelector('#projectAgreementForm .dsu-agreements__agreement-title');
-                    const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
-                    
-                    if (hasTitle || hasItems) {
-                        emptyToggleBtn.style.display = 'block';
-                        const img = emptyToggleBtn.querySelector('img');
-                        if (img && hasTitle) {
-                            img.src = 'images/minus.svg'; // Expandido si hay título
-                        } else if (img) {
-                            img.src = 'images/plus.svg'; // Colapsado si solo hay items
-                        }
+                    // Verificar si el meta está visible usando getComputedStyle
+                    let isExpanded = true;
+                    if (emptyMeta) {
+                        const computedStyle = window.getComputedStyle(emptyMeta);
+                        isExpanded = computedStyle.display !== 'none';
+                    }
+                    const img = emptyToggleBtn.querySelector('img');
+                    if (img) {
+                        img.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
                     }
                 }, 100);
                 
+                // Remover el onclick inline y usar solo addEventListener para evitar conflictos
+                emptyToggleBtn.removeAttribute('onclick');
                 emptyToggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    const agreementFormForm = document.querySelector('#projectAgreementForm').nextElementSibling;
-                    
-                    // Obtener el estado actual basado en la visibilidad del meta
-                    const isCurrentlyExpanded = emptyMeta && emptyMeta.style.display !== 'none';
-                    
-                    if (isCurrentlyExpanded) {
-                        // Colapsar
-                        if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
-                        if (emptyMeta) emptyMeta.style.display = 'none';
-                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                            agreementFormForm.style.display = 'none';
-                        }
-                        const img = this.querySelector('img');
-                        if (img) img.src = 'images/plus.svg';
-                    } else {
-                        // Expandir
-                        if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
-                            emptyItemsContainer.style.display = 'flex';
-                        }
-                        if (emptyMeta) emptyMeta.style.display = 'flex';
-                        if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                            agreementFormForm.style.display = 'flex';
-                        }
-                        const img = this.querySelector('img');
-                        if (img) img.src = 'images/minus.svg';
-                    }
+                    e.preventDefault();
+                    toggleAgreementContent('base');
                 });
             }
+            
+            // Date picker functionality para formulario base
+            // initDatePicker ya maneja el toggle del date picker, no necesitamos código adicional
             
             // Helper function to add agreement item in Empty state
             function addEmptyAgreementItem(text, container) {
@@ -8618,14 +8665,8 @@
             window.checkEmptyItemsVisibility = function() {
                 if (emptyItemsContainer && emptyItemsContainer.children.length === 0) {
                     emptyItemsContainer.style.display = 'none';
-                    if (emptyToggleBtn) {
-                        emptyToggleBtn.style.display = 'none';
-                        const img = emptyToggleBtn.querySelector('img');
-                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                    }
+                    // El toggle button siempre está visible, no lo ocultamos
                     if (emptyMeta) emptyMeta.style.display = 'flex';
-                } else if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
-                    if (emptyToggleBtn) emptyToggleBtn.style.display = 'block';
                 }
             };
             
@@ -8654,17 +8695,17 @@
                 agreementDiv.id = `projectAgreementForm_${uniqueId}`;
                 
                 agreementDiv.innerHTML = `
-                    <div class="dsu-agreements__agreement-header">
+                    <div class="dsu-agreements__agreement-header" style="cursor: pointer;" onclick="if(event.target.tagName !== 'INPUT' && event.target.tagName !== 'BUTTON' && !event.target.closest('input') && !event.target.closest('button')) toggleAgreementContent('${uniqueId}')">
                         <div class="dsu-input-group agreement-name-input-wrapper" style="flex: 1; position: relative;">
                             <div class="dsu-input-label">
                                 <span>Agreement name</span>
                             </div>
-                            <input type="text" class="dsu-input" id="projectAgreementName_${uniqueId}" placeholder="i.e: Meeting May 5">
+                            <input type="text" class="dsu-input" id="projectAgreementName_${uniqueId}" placeholder="i.e: Meeting May 5" onclick="event.stopPropagation()">
                             <button class="agreement-name-edit-btn" id="projectAgreementNameEditBtn_${uniqueId}" style="display: none; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; cursor: pointer; padding: 4px; margin-top: 12px;">
                                 <img src="images/Edit.svg" alt="Edit" style="width: 20px; height: 20px;">
                             </button>
                         </div>
-                        <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn_${uniqueId}" style="display: none;">
+                        <button class="dsu-agreements__agreement-toggle" id="projectEmptyToggleBtn_${uniqueId}">
                             <img src="images/minus.svg" alt="Collapse">
                         </button>
                     </div>
@@ -8898,6 +8939,26 @@
                 // Date picker functionality for group
                 if (dateButton) {
                     initDatePicker(`projectAgreementDatePicker_${uniqueId}`, `projectAgreementDateButton_${uniqueId}`, `projectAgreementDateButtonText_${uniqueId}`);
+                    
+                    // Agregar funcionalidad de toggle para date picker
+                    const datePicker = document.getElementById(`projectAgreementDatePicker_${uniqueId}`);
+                    if (datePicker) {
+                        dateButton.addEventListener('click', function(e) {
+                            // Si el date picker está visible, ocultarlo; si está oculto, mostrarlo
+                            const isVisible = datePicker.style.display !== 'none' && datePicker.style.display !== '';
+                            if (isVisible) {
+                                datePicker.style.display = 'none';
+                            } else {
+                                // Cerrar otros date pickers abiertos primero
+                                document.querySelectorAll('.dsu-date-picker').forEach(picker => {
+                                    if (picker.id !== `projectAgreementDatePicker_${uniqueId}`) {
+                                        picker.style.display = 'none';
+                                    }
+                                });
+                                datePicker.style.display = 'block';
+                            }
+                        });
+                    }
                 }
                 
                 // Status Button Dropdown functionality for group
@@ -8906,6 +8967,9 @@
                 
                 if (statusButtonGroup && statusDropdownGroup) {
                     initStatusDropdown(`projectAgreementStatusButton_${uniqueId}`, `projectAgreementStatusDropdown_${uniqueId}`, `projectAgreementStatusChevron_${uniqueId}`, `projectAgreementStatusButtonText_${uniqueId}`);
+                    
+                    // El toggle del status dropdown ya está manejado por initStatusDropdown
+                    // Solo necesitamos asegurarnos de que funcione correctamente
                 }
                 
                 // Enable/disable send button (agreement name OR item input)
@@ -8966,48 +9030,29 @@
                 
                 // Toggle functionality
                 if (emptyToggleBtn) {
-                    // El toggle debe estar visible cuando hay contenido (nombre o items)
-                    // Mostrar el toggle si hay título o items después de un delay
+                    // El toggle siempre está visible
+                    emptyToggleBtn.style.display = 'block';
+                    
+                    // Establecer el icono inicial basado en el estado del contenido
                     setTimeout(() => {
-                        const headerContainer = document.getElementById(`projectAgreementForm_${uniqueId}`);
-                        const hasTitle = headerContainer && headerContainer.querySelector('.dsu-agreements__agreement-title');
-                        const hasItems = emptyItemsContainer && emptyItemsContainer.children.length > 0;
-                        
-                        if (hasTitle || hasItems) {
-                            emptyToggleBtn.style.display = 'block';
-                            const img = emptyToggleBtn.querySelector('img');
-                            if (img && hasTitle) {
-                                img.src = 'images/minus.svg'; // Expandido si hay título
-                            } else if (img) {
-                                img.src = 'images/plus.svg'; // Colapsado si solo hay items
-                            }
+                        // Verificar si el meta está visible usando getComputedStyle
+                        let isExpanded = true;
+                        if (emptyMeta) {
+                            const computedStyle = window.getComputedStyle(emptyMeta);
+                            isExpanded = computedStyle.display !== 'none';
+                        }
+                        const img = emptyToggleBtn.querySelector('img');
+                        if (img) {
+                            img.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
                         }
                     }, 100);
                     
+                    // Remover el onclick inline y usar solo addEventListener para evitar conflictos
+                    emptyToggleBtn.removeAttribute('onclick');
                     emptyToggleBtn.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        const agreementFormForm = document.getElementById(`projectAgreementFormForm_${uniqueId}`);
-                        
-                        // Obtener el estado actual basado en la visibilidad del meta
-                        const isCurrentlyExpanded = emptyMeta && emptyMeta.style.display !== 'none';
-                        
-                        if (isCurrentlyExpanded) {
-                            // Colapsar
-                            if (emptyItemsContainer) emptyItemsContainer.style.display = 'none';
-                            if (emptyMeta) emptyMeta.style.display = 'none';
-                            if (agreementFormForm) agreementFormForm.style.display = 'none';
-                            const img = this.querySelector('img');
-                            if (img) img.src = 'images/plus.svg';
-                        } else {
-                            // Expandir
-                            if (emptyItemsContainer && emptyItemsContainer.children.length > 0) {
-                                emptyItemsContainer.style.display = 'flex';
-                            }
-                            if (emptyMeta) emptyMeta.style.display = 'flex';
-                            if (agreementFormForm) agreementFormForm.style.display = 'flex';
-                            const img = this.querySelector('img');
-                            if (img) img.src = 'images/minus.svg';
-                        }
+                        e.preventDefault();
+                        toggleAgreementContent(uniqueId);
                     });
                 }
             }
@@ -9020,12 +9065,9 @@
                     container.style.display = 'flex';
                 }
                 
-                const emptyToggleBtnGroup = document.getElementById(`projectEmptyToggleBtn_${groupId}`);
                 const emptyMetaGroup = document.getElementById(`projectEmptyMeta_${groupId}`);
                 
-                if (emptyToggleBtnGroup && emptyToggleBtnGroup.style.display === 'none') {
-                    emptyToggleBtnGroup.style.display = 'block';
-                }
+                // El toggle button siempre está visible, no necesitamos verificar
                 if (emptyMetaGroup && emptyMetaGroup.style.display === 'none') {
                     emptyMetaGroup.style.display = 'flex';
                 }
@@ -9049,19 +9091,12 @@
             // Check if Empty items container should be hidden for a group
             window.checkEmptyItemsVisibilityForGroup = function(groupId) {
                 const emptyItemsContainerGroup = document.getElementById(`projectEmptyItems_${groupId}`);
-                const emptyToggleBtnGroup = document.getElementById(`projectEmptyToggleBtn_${groupId}`);
                 const emptyMetaGroup = document.getElementById(`projectEmptyMeta_${groupId}`);
                 
                 if (emptyItemsContainerGroup && emptyItemsContainerGroup.children.length === 0) {
                     emptyItemsContainerGroup.style.display = 'none';
-                    if (emptyToggleBtnGroup) {
-                        emptyToggleBtnGroup.style.display = 'none';
-                        const img = emptyToggleBtnGroup.querySelector('img');
-                        if (img) img.src = img.src.replace('plus.svg', 'minus.svg');
-                    }
+                    // El toggle button siempre está visible, no lo ocultamos
                     if (emptyMetaGroup) emptyMetaGroup.style.display = 'flex';
-                } else if (emptyItemsContainerGroup && emptyItemsContainerGroup.children.length > 0) {
-                    if (emptyToggleBtnGroup) emptyToggleBtnGroup.style.display = 'block';
                 }
             };
             
@@ -9100,10 +9135,7 @@
                     
                     inputWrapper.replaceWith(headerTitle);
                     
-                    const emptyToggleBtnGroup = document.getElementById(`projectEmptyToggleBtn_${uniqueId}`);
-                    if (emptyToggleBtnGroup) {
-                        emptyToggleBtnGroup.style.display = 'block';
-                    }
+                    // El toggle button siempre está visible, no necesitamos verificar
                 } else if (headerTitle) {
                     headerTitle.textContent = title;
                 }
