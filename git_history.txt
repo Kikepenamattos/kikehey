@@ -1,3 +1,4 @@
+7b115cfaca1094f61c4595e2ee55eac21f9423c9|Ubits|ubits@macbookpro.lan|2025-12-18 12:24:15 -0500|Update: Actualizar changelog con últimos cambios
 eaf2e993a9c75ce9b8763ef01c2dfbeb2fa7fd5b|Ubits|ubits@macbookpro.lan|2025-12-18 12:24:04 -0500|feat: Agregar funcionalidad de preview modal para imágenes en Assets y Deliverables en project_view.html
 db5df8335a95190a7b41d5b084165415fd8f9e6b|Ubits|ubits@macbookpro.lan|2025-12-18 10:57:10 -0500|Update: Actualizar changelog con últimos cambios
 25ab84bf317c1962dae77b1af2081abc9ec3fdc9|Ubits|ubits@macbookpro.lan|2025-12-18 10:56:59 -0500|feat: Agregar iconos únicos y colores variados para cada ceremonia en project_view.html y ajustar espaciados
