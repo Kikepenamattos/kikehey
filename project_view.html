@@ -165,6 +165,12 @@
             margin-bottom: var(--spacing-24);
         }
 
+        .project-date-wrapper {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-24);
+        }
+
         .project-date-status-section .dsu-date-button-wrapper {
             position: relative;
         }
@@ -207,7 +213,10 @@
             font-size: 14px;
             font-weight: 400;
             color: var(--color-text-primary, #0a243f);
-            width: 206px;
+        }
+
+        .project-date-wrapper .project-status-label {
+            width: auto;
         }
 
         /* Status Button en modo publicado - sin cursor pointer ni hover */
@@ -324,6 +333,7 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-12);
+            width: 50%;
         }
 
         .overall-progress-label {
@@ -890,6 +900,228 @@
             font-style: italic;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .modal {
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-basics-mid-blue);
+            width: 28%;
+            padding: var(--spacing-24);
+            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+            max-height: 45%;
+            overflow-y: auto;
+            animation: modalFadeIn 0.2s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: var(--spacing-12);
+        }
+
+        /* Modal headline sin título (solo botón cerrar) */
+        .modal-headline:has(.modal-close-btn:only-child) {
+            justify-content: flex-end;
+            margin-bottom: 0;
+        }
+
+        .modal__title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal__body {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
+        /* Team Details Modal Styles */
+        .team-details-name-section {
+            margin-bottom: 24px;
+        }
+
+        .team-details-name {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .team-details-cost-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-16);
+            /* padding: var(--spacing-12); */
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-24);
+        }
+        
+        .team-details-cost-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+        }
+        
+        .team-details-manage-btn {
+            flex-shrink: 0;
+            width: 30%;
+        }
+
+        .team-details-cost-label {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .team-details-cost-value {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .team-details-members-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .team-details-members-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-details-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .team-details-member-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+        }
+
+        .team-details-member-item:hover {
+            background-color: var(--color-surface-secondary);
+        }
+
+        .team-details-member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .team-details-member-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .team-details-member-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-details-member-role {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .team-details-member-cost {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text-primary);
+            padding: 4px 8px;
+            background-color: var(--color-surface-secondary);
+            border-radius: var(--radius-sm);
+            flex-shrink: 0;
+        }
+
+        .with-members-row__left {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .with-members-row__left:hover {
+            opacity: 0.8;
+        }
+
     </style>
 </head>
 <body>
@@ -1026,13 +1258,16 @@
                 
                 <!-- Project Date and Status Section -->
                 <div class="project-date-status-section" id="dateStatusSection" style="display: none;">
-                    <div class="dsu-date-button-wrapper">
-                        <button class="dsu-button dsu-button--tertiary dsu-button--small" disabled>
-                            <span class="dsu-agreements__date-button-icon">
-                                <img src="images/calendar.svg" alt="Calendar">
-                            </span>
-                            <span id="projectDateDisplay">Select a date to deliver the project</span>
-                        </button>
+                    <div class="project-date-wrapper">
+                        <span class="project-status-label">Estimated delivery date:</span>
+                        <div class="dsu-date-button-wrapper">
+                            <button class="dsu-button dsu-button--tertiary dsu-button--small" disabled>
+                                <span class="dsu-agreements__date-button-icon">
+                                    <img src="images/calendar.svg" alt="Calendar">
+                                </span>
+                                <span id="projectDateDisplay">Select a date to deliver the project</span>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="project-status-wrapper">
@@ -1042,9 +1277,6 @@
                                 <span>To start</span>
                             </div>
                         </div>
-                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProjectBtn">
-                            <span class="dsu-button__text">Share project</span>
-                        </button>
                     </div>
                 </div>
                 
@@ -1053,7 +1285,7 @@
                     <div class="project-stages-header">
                         <h2 class="project-section-title">Project stages</h2>
                         <div class="overall-progress-wrapper">
-                            <span class="overall-progress-label">Overall progress:</span>
+                            <span class="overall-progress-label">Overall project progress</span>
                             <div class="dsu-progress dsu-progress--default dsu-progress--full-width" id="overallProgress">
                                 <span class="dsu-progress__percentage" id="overallProgressPercentage">0%</span>
                                 <div class="dsu-progress__bar">
@@ -1173,6 +1405,42 @@
         </div>
     </div>
 
+    <!-- Modal para mostrar detalles del team -->
+    <div class="modal-overlay" id="teamDetailsModalOverlay">
+        <div class="modal" id="teamDetailsModal">
+            <div class="modal-headline">
+                <button class="modal-close-btn" id="closeTeamDetailsModalBtn" aria-label="Close">
+                    <img src="images/close.svg" alt="Close" width="20" height="20">
+                </button>
+            </div>
+            <div class="modal__body">
+                <!-- Team name -->
+                <div class="team-details-name-section">
+                    <h3 id="teamDetailsName" class="team-details-name"></h3>
+                </div>
+                
+                <!-- Team cost -->
+                <div class="team-details-cost-section">
+                    <div class="team-details-cost-info">
+                        <span class="team-details-cost-label">Team cost:</span>
+                        <span id="teamDetailsCost" class="team-details-cost-value"></span>
+                    </div>
+                    <button class="dsu-button dsu-button--secondary dsu-button--small team-details-manage-btn" id="manageTeamBtn">
+                        Go to the team
+                    </button>
+                </div>
+                
+                <!-- Team members -->
+                <div class="team-details-members-section">
+                    <h4 class="team-details-members-title">Team members</h4>
+                    <div id="teamDetailsMembersList" class="team-details-members-list">
+                        <!-- Los miembros se insertarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/auth.js"></script>
     <script src="js/project-data.js"></script>
     <script src="js/image-storage.js"></script>
@@ -1243,6 +1511,13 @@
                 initCollapsibleSections();
             } catch (error) {
                 console.error('❌ Error al inicializar secciones colapsables:', error);
+            }
+
+            // Inicializar modal de detalles de team
+            try {
+                initTeamDetailsModal();
+            } catch (error) {
+                console.error('❌ Error al inicializar modal de detalles de team:', error);
             }
 
             // Cargar datos del proyecto DESPUÉS de inicializar las secciones colapsables
@@ -2068,9 +2343,30 @@
                     
                     const withMembersRowLeft = document.createElement('div');
                     withMembersRowLeft.className = 'with-members-row__left';
+                    withMembersRowLeft.setAttribute('data-team-id', projectTeam.id);
+                    withMembersRowLeft.setAttribute('role', 'button');
+                    withMembersRowLeft.setAttribute('tabindex', '0');
+                    withMembersRowLeft.setAttribute('aria-label', `View details for ${teamName}`);
+                    
+                    // Agregar event listener para abrir modal de detalles
+                    withMembersRowLeft.addEventListener('click', function() {
+                        if (typeof openTeamDetailsModal === 'function') {
+                            openTeamDetailsModal(projectTeam.id);
+                        }
+                    });
                     
                     const avatarsRow = document.createElement('div');
                     avatarsRow.className = 'avatars-row';
+                    avatarsRow.setAttribute('data-team-id', projectTeam.id);
+                    avatarsRow.style.cursor = 'pointer';
+                    
+                    // Agregar event listener también en avatarsRow
+                    avatarsRow.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (typeof openTeamDetailsModal === 'function') {
+                            openTeamDetailsModal(projectTeam.id);
+                        }
+                    });
                     
                     // Mostrar máximo 5 avatares
                     const maxVisible = 5;
@@ -2536,6 +2832,192 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // ============================================
+        // Team Details Modal
+        // ============================================
+        async function openTeamDetailsModal(teamId) {
+            console.log('📋 Abriendo modal de detalles del team:', teamId);
+            
+            // Guardar teamId en el modal para usarlo en el botón "Go to the team"
+            const modal = document.getElementById('teamDetailsModal');
+            if (modal) {
+                modal.setAttribute('data-team-id', teamId);
+            }
+            
+            // Obtener datos del team desde localStorage usando DocuProjectData
+            let teamData = null;
+            
+            try {
+                // Verificar que DocuProjectData esté disponible
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    alert('No se pudieron cargar los datos del equipo.');
+                    return;
+                }
+                
+                // Obtener todos los datos del proyecto
+                const projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos del proyecto obtenidos:', projectData);
+                
+                // Buscar el team por ID en el array de teams
+                if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
+                    teamData = projectData.teams.find(team => team.id === teamId);
+                    console.log('🔍 Resultado de búsqueda del team:', teamData ? 'Encontrado' : 'No encontrado');
+                } else {
+                    console.warn('⚠️ No hay teams disponibles en projectData');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error al cargar datos del team:', error);
+            }
+            
+            if (!teamData) {
+                console.warn('⚠️ No se encontraron datos para el team:', teamId);
+                alert('No se pudieron cargar los datos del equipo.');
+                return;
+            }
+            
+            console.log('📦 Datos del team cargados:', teamData);
+            
+            // Actualizar nombre del team
+            const teamNameElement = document.getElementById('teamDetailsName');
+            if (teamNameElement) {
+                teamNameElement.textContent = teamData.name || 'Unnamed Team';
+            }
+            
+            // Actualizar team cost
+            const teamCostElement = document.getElementById('teamDetailsCost');
+            if (teamCostElement) {
+                let teamCostValue = 'N/A';
+                
+                // Si hay teamCost guardado y no está vacío, usarlo
+                if (teamData.teamCost && teamData.teamCost.trim() !== '') {
+                    teamCostValue = teamData.teamCost;
+                } else {
+                    // Si no hay teamCost guardado, calcularlo desde los miembros
+                    let totalCost = 0;
+                    if (teamData.members && Array.isArray(teamData.members)) {
+                        teamData.members.forEach(member => {
+                            const cost = member.cost || '';
+                            if (cost) {
+                                // Remover cualquier carácter no numérico excepto punto decimal
+                                const numericValue = parseFloat(cost.replace(/[^\d.]/g, ''));
+                                if (!isNaN(numericValue)) {
+                                    totalCost += numericValue;
+                                }
+                            }
+                        });
+                    }
+                    teamCostValue = `USD ${totalCost.toFixed(2)}`;
+                }
+                
+                teamCostElement.textContent = teamCostValue;
+            }
+            
+            // Actualizar lista de miembros
+            const membersList = document.getElementById('teamDetailsMembersList');
+            if (membersList && teamData.members && Array.isArray(teamData.members)) {
+                membersList.innerHTML = '';
+                
+                for (const member of teamData.members) {
+                    const memberItem = document.createElement('div');
+                    memberItem.className = 'team-details-member-item';
+                    
+                    // Avatar
+                    const avatar = document.createElement('img');
+                    avatar.className = 'team-details-member-avatar';
+                    avatar.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
+                    
+                    // Obtener imagen del miembro
+                    if (typeof getMemberImage === 'function') {
+                        try {
+                            const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                            avatar.src = imageSrc;
+                        } catch (error) {
+                            console.error('❌ Error al cargar imagen del miembro:', error);
+                            avatar.src = 'images/avatar_icon.svg';
+                        }
+                    } else {
+                        avatar.src = member.image || member.avatar || 'images/avatar_icon.svg';
+                    }
+                    
+                    // Info del miembro
+                    const memberInfo = document.createElement('div');
+                    memberInfo.className = 'team-details-member-info';
+                    
+                    const memberName = document.createElement('p');
+                    memberName.className = 'team-details-member-name';
+                    memberName.textContent = `${member.name || ''} ${member.lastName || ''}`.trim() || 'Unnamed Member';
+                    
+                    const memberRole = document.createElement('p');
+                    memberRole.className = 'team-details-member-role';
+                    memberRole.textContent = member.role || 'No role assigned';
+                    
+                    memberInfo.appendChild(memberName);
+                    memberInfo.appendChild(memberRole);
+                    
+                    // Cost del miembro
+                    const memberCost = document.createElement('span');
+                    memberCost.className = 'team-details-member-cost';
+                    memberCost.textContent = member.cost || 'N/A';
+                    
+                    memberItem.appendChild(avatar);
+                    memberItem.appendChild(memberInfo);
+                    memberItem.appendChild(memberCost);
+                    
+                    membersList.appendChild(memberItem);
+                }
+            }
+            
+            // Mostrar modal
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.add('modal-overlay--visible');
+            }
+        }
+        
+        function closeTeamDetailsModal() {
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            if (modalOverlay) {
+                modalOverlay.classList.remove('modal-overlay--visible');
+            }
+        }
+        
+        // Inicializar event listeners para el modal de team details
+        function initTeamDetailsModal() {
+            const closeBtn = document.getElementById('closeTeamDetailsModalBtn');
+            const modalOverlay = document.getElementById('teamDetailsModalOverlay');
+            const manageTeamBtn = document.getElementById('manageTeamBtn');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeTeamDetailsModal);
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        closeTeamDetailsModal();
+                    }
+                });
+            }
+            
+            // Event listener para el botón "Go to the team"
+            if (manageTeamBtn) {
+                manageTeamBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('teamDetailsModal');
+                    const teamId = modal ? modal.getAttribute('data-team-id') : null;
+                    
+                    if (teamId) {
+                        console.log('🔧 Redirigiendo a vista del team:', teamId);
+                        // Redirigir a la vista publicada del equipo
+                        window.location.href = `team_filled.html?id=${teamId}`;
+                    } else {
+                        console.warn('⚠️ No se encontró el ID del team');
+                    }
+                });
+            }
         }
     </script>
 </body>
