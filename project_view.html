@@ -541,6 +541,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-12);
+            margin-top: 24px;
         }
 
         .asset-item {
@@ -559,6 +560,13 @@
             border-radius: var(--radius-md);
             object-fit: cover;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .asset-item-preview:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
         }
 
         .asset-item-icon {
@@ -650,6 +658,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-12);
+            margin-top: 24px;
         }
 
         .deliverable-item {
@@ -668,6 +677,13 @@
             border-radius: var(--radius-md);
             object-fit: cover;
             flex-shrink: 0;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .deliverable-item-preview:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
         }
 
         .deliverable-item-icon {
@@ -847,6 +863,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-16);
+            margin-top: 24px;
         }
 
         .agreement-item {
@@ -1149,6 +1166,151 @@
 
         .with-members-row__left:hover {
             opacity: 0.8;
+        }
+
+        /* Fullscreen Preview Modal */
+        .preview-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            backdrop-filter: blur(4px);
+            padding: var(--spacing-24);
+        }
+
+        .preview-modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .preview-modal {
+            width: 100%;
+            height: 100%;
+            max-width: 95vw;
+            max-height: 95vh;
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: previewModalFadeIn 0.2s ease;
+            overflow: hidden;
+        }
+
+        @keyframes previewModalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preview-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-16) var(--spacing-24);
+            border-bottom: 1px solid var(--color-basics-gray);
+            flex-shrink: 0;
+        }
+
+        .preview-modal-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .preview-modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .preview-modal-close-btn:hover {
+            background: var(--color-status-disabled);
+        }
+
+        .preview-modal-close-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .preview-modal-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-24);
+            overflow: auto;
+            position: relative;
+        }
+
+        .preview-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content .document-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-16);
+            text-align: center;
+        }
+
+        .preview-modal-content .document-preview-icon {
+            width: 80px;
+            height: 80px;
+            opacity: 0.5;
+        }
+
+        .preview-modal-content .document-preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .preview-modal-content .document-preview-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .preview-modal-content .document-preview-size {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
         }
 
     </style>
@@ -1466,6 +1628,21 @@
                         <!-- Los miembros se insertarán aquí dinámicamente -->
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para preview de documentos/imágenes en pantalla completa -->
+    <div class="preview-modal-overlay" id="previewModalOverlay">
+        <div class="preview-modal">
+            <div class="preview-modal-header">
+                <h2 class="preview-modal-title" id="previewModalTitle">Preview</h2>
+                <button class="preview-modal-close-btn" id="closePreviewModalBtn" aria-label="Close preview">
+                    <img src="images/close.svg" alt="Close" width="24" height="24">
+                </button>
+            </div>
+            <div class="preview-modal-content" id="previewModalContent">
+                <!-- El contenido del preview se insertará aquí dinámicamente -->
             </div>
         </div>
     </div>
@@ -2720,7 +2897,7 @@
                         `;
                     } else if (asset.type === 'image' && asset.preview) {
                         // Imagen - preview de 48x48px
-                        previewHtml = `<img src="${escapeHtml(asset.preview)}" alt="${escapeHtml(asset.name || 'Image')}" class="asset-item-preview">`;
+                        previewHtml = `<img src="${escapeHtml(asset.preview)}" alt="${escapeHtml(asset.name || 'Image')}" class="asset-item-preview" data-preview-src="${escapeHtml(asset.preview)}" data-preview-name="${escapeHtml(asset.name || 'Image')}" style="cursor: pointer;">`;
                         contentHtml = `
                             <div class="asset-item-content">
                                 <div class="asset-text">${escapeHtml(asset.name || '')}</div>
@@ -2762,6 +2939,23 @@
                 });
                 assetsSection.style.display = 'block';
                 console.log('✅ Assets mostrados:', project.assets.length);
+                
+                // Event delegation para abrir preview al hacer clic en imágenes
+                if (assetsListDisplay) {
+                    assetsListDisplay.addEventListener('click', function(e) {
+                        const imgPreview = e.target.closest('.asset-item-preview');
+                        if (imgPreview && imgPreview.tagName === 'IMG') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const src = imgPreview.src || imgPreview.dataset.previewSrc;
+                            const name = imgPreview.alt || imgPreview.dataset.previewName || 'Image';
+                            if (src && typeof openPreviewModal === 'function') {
+                                openPreviewModal(src, name, 'image');
+                            }
+                            return;
+                        }
+                    });
+                }
             } else {
                 console.log('ℹ️ No hay Assets para mostrar');
             }
@@ -2931,7 +3125,7 @@
                     let contentHtml = '';
                     
                     if (deliverable.type === 'image' && deliverable.preview) {
-                        previewHtml = `<img src="${deliverable.preview}" alt="${escapeHtml(deliverable.name || '')}" class="deliverable-item-preview">`;
+                        previewHtml = `<img src="${deliverable.preview}" alt="${escapeHtml(deliverable.name || '')}" class="deliverable-item-preview" data-preview-src="${escapeHtml(deliverable.preview)}" data-preview-name="${escapeHtml(deliverable.name || '')}" style="cursor: pointer;">`;
                         contentHtml = `
                             <div class="deliverable-item-content">
                                 <p class="deliverable-item-text">${escapeHtml(deliverable.name || '')}</p>
@@ -2980,6 +3174,23 @@
                     deliverablesSection.style.display = 'block';
                 }
                 console.log('✅ Deliverables mostrados:', project.deliverables.length);
+                
+                // Event delegation para abrir preview al hacer clic en imágenes
+                if (deliverablesListDisplay) {
+                    deliverablesListDisplay.addEventListener('click', function(e) {
+                        const imgPreview = e.target.closest('.deliverable-item-preview');
+                        if (imgPreview && imgPreview.tagName === 'IMG') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const src = imgPreview.src || imgPreview.dataset.previewSrc;
+                            const name = imgPreview.alt || imgPreview.dataset.previewName || 'Image';
+                            if (src && typeof openPreviewModal === 'function') {
+                                openPreviewModal(src, name, 'image');
+                            }
+                            return;
+                        }
+                    });
+                }
             } else {
                 console.log('ℹ️ No hay Deliverables para mostrar');
             }
@@ -2990,6 +3201,93 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // ============================================
+        // Preview Modal Functionality
+        // ============================================
+        function openPreviewModal(src, fileName, type, extraInfo = {}) {
+            const modalOverlay = document.getElementById('previewModalOverlay');
+            const modalTitle = document.getElementById('previewModalTitle');
+            const modalContent = document.getElementById('previewModalContent');
+            const closeBtn = document.getElementById('closePreviewModalBtn');
+            
+            if (!modalOverlay || !modalTitle || !modalContent) return;
+            
+            // Establecer título
+            modalTitle.textContent = fileName || 'Preview';
+            
+            // Limpiar contenido anterior
+            modalContent.innerHTML = '';
+            
+            // Crear contenido según el tipo
+            if (type === 'image' && src) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = fileName;
+                modalContent.appendChild(img);
+            } else if (type === 'pdf' && src) {
+                const iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.title = fileName;
+                modalContent.appendChild(iframe);
+            } else if (type === 'document') {
+                const docPreview = document.createElement('div');
+                docPreview.className = 'document-preview';
+                
+                const icon = document.createElement('img');
+                icon.src = 'images/attachment.svg';
+                icon.className = 'document-preview-icon';
+                icon.alt = 'Document';
+                
+                const info = document.createElement('div');
+                info.className = 'document-preview-info';
+                
+                const name = document.createElement('div');
+                name.className = 'document-preview-name';
+                name.textContent = fileName || 'Document';
+                
+                const size = document.createElement('div');
+                size.className = 'document-preview-size';
+                size.textContent = extraInfo.size || 'Unknown size';
+                
+                info.appendChild(name);
+                info.appendChild(size);
+                docPreview.appendChild(icon);
+                docPreview.appendChild(info);
+                
+                modalContent.appendChild(docPreview);
+            }
+            
+            // Mostrar modal
+            modalOverlay.classList.add('preview-modal-overlay--visible');
+            
+            // Cerrar modal al hacer clic en el botón de cerrar
+            if (closeBtn) {
+                const closeHandler = function() {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    closeBtn.removeEventListener('click', closeHandler);
+                };
+                closeBtn.addEventListener('click', closeHandler);
+            }
+            
+            // Cerrar modal al hacer clic fuera del contenido
+            const overlayClickHandler = function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    modalOverlay.removeEventListener('click', overlayClickHandler);
+                }
+            };
+            modalOverlay.addEventListener('click', overlayClickHandler);
+            
+            // Cerrar modal con tecla Escape
+            const escapeHandler = function(e) {
+                if (e.key === 'Escape') {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
         }
 
         // ============================================
