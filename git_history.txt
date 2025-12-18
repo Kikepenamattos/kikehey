@@ -1,3 +1,4 @@
+1b84beac1dfe1e7c16d286f3dc204b314530f78c|Ubits|ubits@macbookpro.lan|2025-12-18 15:17:01 -0500|Update: Actualizar changelog con últimos cambios
 cc330a22374cae96d7980d97dc882922ea933686|Ubits|ubits@macbookpro.lan|2025-12-18 15:00:57 -0500|Update: Actualizar changelog con 329 commits
 ca3cad7b6974c25fec66e8e1dd411a4000059dff|Ubits|ubits@macbookpro.lan|2025-12-18 15:00:44 -0500|Fix: Priorizar datos embebidos sobre GitHub en changelog y actualizar con 328 commits
 be19d66e722772b929a1445c637204adce29ed37|Ubits|ubits@macbookpro.lan|2025-12-18 14:57:26 -0500|Update: Actualizar changelog con 327 commits (corregido)
