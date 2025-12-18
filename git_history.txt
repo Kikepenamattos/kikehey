@@ -1,3 +1,4 @@
+32d20cd61173af86a1fb725b780c8a5800dc586b|Ubits|ubits@macbookpro.lan|2025-12-18 14:53:32 -0500|Update: Actualizar changelog con últimos cambios
 9355b4ca8e96f3d843047a5caccfaf0e2ab6d6bd|Ubits|ubits@macbookpro.lan|2025-12-18 12:46:18 -0500|Update: Actualizar changelog con últimos cambios
 7b115cfaca1094f61c4595e2ee55eac21f9423c9|Ubits|ubits@macbookpro.lan|2025-12-18 12:24:15 -0500|Update: Actualizar changelog con últimos cambios
 eaf2e993a9c75ce9b8763ef01c2dfbeb2fa7fd5b|Ubits|ubits@macbookpro.lan|2025-12-18 12:24:04 -0500|feat: Agregar funcionalidad de preview modal para imágenes en Assets y Deliverables en project_view.html
@@ -115,15 +116,12 @@ fa72ac15fa4f8011d057efef8b8c6b4b8ae88e77|Ubits|ubits@macbookpro.lan|2025-12-13 0
 a7011966be2023ddbf001c886d9b05b16fc69b31|Ubits|ubits@macbookpro.lan|2025-12-13 09:57:58 -0500|Merge: Resolver conflictos en changelog
 79b4ea1bc5dbec950243fd664c94f02bd62f6caf|Ubits|ubits@macbookpro.lan|2025-12-12 21:13:48 -0500|Update: Changelog actualizado
 e0cbd38835d7cd798ad856995db2c3ee49ec00b9|Ubits|ubits@macbookpro.lan|2025-12-12 21:14:57 -0500|Update: Estilos de chips corregidos en project_view.html, orden de secciones ajustado y funcionalidad de edición de stage-status-badge
-<<<<<<< HEAD
 f366634cda71d280b0dc7d66471eccd82447e0b2|Ubits|ubits@macbookpro.lan|2025-12-12 19:55:08 -0500|Update: Changelog actualizado según protocolo - Sincronización completa
 d8ddcaa4f5f81dd7e731c23ae4235f3fee508ca0|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:55 -0500|Update: Changelog actualizado con commits 5dde631 y 132addf
 5dde63169295b160eaccc42ebf91c59fa1d9cf07|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:03 -0500|Update: Changelog actualizado - Cards ahora muestran todos los commits
 17428d7da516789a5893c97c8173617bcbba324a|Ubits|ubits@macbookpro.lan|2025-12-12 21:13:11 -0500|Update: Estilos de chips corregidos en project_view.html, orden de secciones ajustado y funcionalidad de edición de stage-status-badge
-=======
 d8ddcaa4f5f81dd7e731c23ae4235f3fee508ca0|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:55 -0500|Update: Changelog actualizado con commits 5dde631 y 132addf
 5dde63169295b160eaccc42ebf91c59fa1d9cf07|Ubits|ubits@macbookpro.lan|2025-12-12 19:54:03 -0500|Update: Changelog actualizado - Cards ahora muestran todos los commits
->>>>>>> f366634cda71d280b0dc7d66471eccd82447e0b2
 132addf55a4efcc63c0d7ad0e92b2984667700f0|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:48 -0500|Fix: Changelog ahora usa datos embebidos si tienen más commits que GitHub/local - Previene cards faltantes
 6929994d9b26309543d231a8bf5021b094ad6fb6|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:10 -0500|Update: Changelog actualizado con sincronización completa de commits
 322d19434d9cd5f5a17ec0daf7d371512d3bbb70|Ubits|ubits@macbookpro.lan|2025-12-12 19:53:02 -0500|Fix: update-changelog-complete.sh ahora sincroniza commits locales y remotos - Previene pérdida de commits no pusheados
