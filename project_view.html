@@ -533,6 +533,7 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            margin-top: 16px;
         }
 
         /* Assets Display */
@@ -726,10 +727,37 @@
         }
 
         .ceremony-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-16);
             padding: var(--spacing-16);
             background-color: var(--color-surface-regular);
             border: 1px solid var(--color-status-disabled);
             border-radius: var(--radius-md);
+        }
+
+        .ceremony-item-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 50%;
+            background-color: #ffd6e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ceremony-item-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .ceremony-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
         }
 
         .ceremony-item-name {
@@ -737,7 +765,7 @@
             font-size: var(--font-size-base);
             font-weight: var(--font-weight-bold);
             color: var(--color-text-primary);
-            margin: 0 0 var(--spacing-08) 0;
+            margin: 0;
         }
 
         .ceremony-item-description {
@@ -753,6 +781,7 @@
             display: flex;
             flex-direction: column;
             gap: var(--spacing-12);
+            margin-top: 16px;
         }
 
         .communication-channel-item {
@@ -2431,6 +2460,119 @@
                 teamsSection.style.display = 'block';
             }
 
+            // Función para obtener icono y color según el tipo de ceremonia
+            function getCeremonyIconAndColor(ceremonyName) {
+                const name = (ceremonyName || '').toLowerCase();
+                const colors = [
+                    '#ffd6e8', // Rosa claro
+                    '#d6f0ff', // Azul claro
+                    '#ffe6d6', // Naranja claro
+                    '#e6ffe6', // Verde claro
+                    '#fff0d6', // Amarillo claro
+                    '#f0d6ff', // Morado claro
+                    '#ffe0e0', // Rojo claro
+                    '#d6ffe6', // Verde menta
+                    '#e0f0ff', // Azul cielo
+                    '#fff5d6'  // Beige claro
+                ];
+                
+                // Iconos SVG para diferentes ceremonias
+                const icons = {
+                    'sprint planning': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 2v4M16 2v4M3 10h18" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="15" r="2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[0]
+                    },
+                    'stand-up': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="8" r="4" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 21c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 12v6M9 15h6" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[1]
+                    },
+                    'sprint review': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 6v6l4 2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="1" fill="#8B4513"/>
+                        </svg>`,
+                        color: colors[2]
+                    },
+                    'sprint retrospective': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[3]
+                    },
+                    'daily': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 6v6l4 2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[4]
+                    },
+                    'meeting': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="14" rx="2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 10h18" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="8" cy="7" r="1" fill="#8B4513"/>
+                            <circle cx="12" cy="7" r="1" fill="#8B4513"/>
+                            <circle cx="16" cy="7" r="1" fill="#8B4513"/>
+                        </svg>`,
+                        color: colors[5]
+                    },
+                    'review': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[6]
+                    },
+                    'retrospective': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[7]
+                    },
+                    'planning': {
+                        icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="4" width="18" height="18" rx="2" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 2v4M16 2v4M3 10h18" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 14h8M8 18h8" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`,
+                        color: colors[8]
+                    }
+                };
+                
+                // Buscar coincidencia parcial en el nombre
+                for (const [key, value] of Object.entries(icons)) {
+                    if (name.includes(key)) {
+                        return value;
+                    }
+                }
+                
+                // Si no hay coincidencia, usar icono por defecto con color basado en hash del nombre
+                let hash = 0;
+                for (let i = 0; i < name.length; i++) {
+                    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                const colorIndex = Math.abs(hash) % colors.length;
+                
+                return {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 21c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#8B4513" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>`,
+                    color: colors[colorIndex]
+                };
+            }
+
             // Mostrar Project Ceremonies
             const ceremoniesSection = document.getElementById('ceremoniesSection');
             const ceremoniesListDisplay = document.getElementById('ceremoniesListDisplay');
@@ -2441,6 +2583,19 @@
                     const ceremonyItem = document.createElement('div');
                     ceremonyItem.className = 'ceremony-item';
                     
+                    // Obtener icono y color según el tipo de ceremonia
+                    const { icon, color } = getCeremonyIconAndColor(ceremony.name);
+                    
+                    // Icono circular con icono específico de la ceremonia
+                    const ceremonyIcon = document.createElement('div');
+                    ceremonyIcon.className = 'ceremony-item-icon';
+                    ceremonyIcon.style.backgroundColor = color;
+                    ceremonyIcon.innerHTML = icon;
+                    
+                    // Contenedor de contenido (nombre y descripción)
+                    const ceremonyContent = document.createElement('div');
+                    ceremonyContent.className = 'ceremony-item-content';
+                    
                     const ceremonyName = document.createElement('div');
                     ceremonyName.className = 'ceremony-item-name';
                     ceremonyName.textContent = ceremony.name || '';
@@ -2449,8 +2604,11 @@
                     ceremonyDescription.className = 'ceremony-item-description';
                     ceremonyDescription.textContent = ceremony.description || '';
                     
-                    ceremonyItem.appendChild(ceremonyName);
-                    ceremonyItem.appendChild(ceremonyDescription);
+                    ceremonyContent.appendChild(ceremonyName);
+                    ceremonyContent.appendChild(ceremonyDescription);
+                    
+                    ceremonyItem.appendChild(ceremonyIcon);
+                    ceremonyItem.appendChild(ceremonyContent);
                     ceremoniesListDisplay.appendChild(ceremonyItem);
                 });
                 
