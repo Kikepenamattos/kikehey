@@ -981,6 +981,24 @@
             font-size: var(--font-size-sm);
             color: var(--color-text-secondary);
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .agreement-item-date-icon {
+            width: 14px;
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .agreement-item-date-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .agreement-item-status {
@@ -3249,7 +3267,26 @@
                     if (agreement.date) {
                         const agreementDate = document.createElement('span');
                         agreementDate.className = 'agreement-item-date';
-                        agreementDate.textContent = agreement.date;
+                        
+                        // Crear icono de calendario
+                        const dateIcon = document.createElement('span');
+                        dateIcon.className = 'agreement-item-date-icon';
+                        const iconImg = document.createElement('img');
+                        iconImg.src = 'images/calendar.svg';
+                        iconImg.alt = 'Calendar';
+                        dateIcon.appendChild(iconImg);
+                        
+                        // Crear texto "Created:"
+                        const createdText = document.createTextNode('Created: ');
+                        
+                        // Crear texto de la fecha
+                        const dateText = document.createTextNode(agreement.date);
+                        
+                        // Agregar elementos al span
+                        agreementDate.appendChild(dateIcon);
+                        agreementDate.appendChild(createdText);
+                        agreementDate.appendChild(dateText);
+                        
                         agreementMeta.appendChild(agreementDate);
                     }
                     
@@ -3878,7 +3915,26 @@
                 if (agreement.date) {
                     const agreementDate = document.createElement('span');
                     agreementDate.className = 'agreement-item-date';
-                    agreementDate.textContent = agreement.date;
+                    
+                    // Crear icono de calendario
+                    const dateIcon = document.createElement('span');
+                    dateIcon.className = 'agreement-item-date-icon';
+                    const iconImg = document.createElement('img');
+                    iconImg.src = 'images/calendar.svg';
+                    iconImg.alt = 'Calendar';
+                    dateIcon.appendChild(iconImg);
+                    
+                    // Crear texto "Created:"
+                    const createdText = document.createTextNode('Created: ');
+                    
+                    // Crear texto de la fecha
+                    const dateText = document.createTextNode(agreement.date);
+                    
+                    // Agregar elementos al span
+                    agreementDate.appendChild(dateIcon);
+                    agreementDate.appendChild(createdText);
+                    agreementDate.appendChild(dateText);
+                    
                     agreementMeta.appendChild(agreementDate);
                 }
                 
