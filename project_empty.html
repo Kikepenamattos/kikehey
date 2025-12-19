@@ -8092,10 +8092,31 @@
                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
                     const existingAgreementForm = document.getElementById('projectAgreementForm');
                     
+                    // Si el formulario ya existe, mostrarlo completamente
+                    if (existingAgreementForm) {
+                        existingAgreementForm.style.display = 'block';
+                        const existingFormForm = existingAgreementForm.nextElementSibling;
+                        if (existingFormForm && existingFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                            existingFormForm.style.display = 'flex';
+                        }
+                        // Asegurar que el meta esté visible
+                        const existingMeta = document.getElementById('projectEmptyMeta');
+                        if (existingMeta) {
+                            existingMeta.style.display = 'flex';
+                        }
+                        // Asegurar que el toggle button esté visible
+                        const existingToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                        if (existingToggleBtn) {
+                            existingToggleBtn.style.display = 'block';
+                            const img = existingToggleBtn.querySelector('img');
+                            if (img) img.src = 'images/minus.svg';
+                        }
+                    }
+                    
                     if (!existingAgreementForm && contentContainer) {
                         // Recreate the empty agreement structure
                         const agreementFormHTML = `
-                            <div class="dsu-agreements__agreement" id="projectAgreementForm" style="display: none;">
+                            <div class="dsu-agreements__agreement" id="projectAgreementForm" style="display: block;">
                                 <div class="dsu-agreements__agreement-header">
                                     <div class="dsu-input-group agreement-name-input-wrapper" style="flex: 1; position: relative;">
                                         <div class="dsu-input-label">
@@ -8111,7 +8132,7 @@
                                     </button>
                                 </div>
                                 
-                                <div class="dsu-agreements__agreement-meta" id="projectEmptyMeta">
+                                <div class="dsu-agreements__agreement-meta" id="projectEmptyMeta" style="display: flex;">
                                     <div class="dsu-date-button-wrapper">
                                         <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectAgreementDateButton">
                                             <span class="dsu-agreements__date-button-icon">
@@ -8152,7 +8173,7 @@
                                 </div>
                             </div>
                             
-                            <div class="dsu-agreements__agreement-form">
+                            <div class="dsu-agreements__agreement-form" style="display: flex;">
                                 <div class="dsu-input-group dsu-agreements__agreement-form-input">
                                     <input type="text" class="dsu-input dsu-input--only" id="projectAgreementItem1" placeholder="Create and send an agreement">
                                 </div>
@@ -8170,13 +8191,26 @@
                             </div>
                         `;
                         
-                        // Asegurar que el form asociado también esté oculto si se recrea
+                        // Asegurar que el form asociado también esté visible cuando se recrea
                         setTimeout(() => {
                             const recreatedForm = document.getElementById('projectAgreementForm');
                             if (recreatedForm) {
+                                recreatedForm.style.display = 'block';
                                 const recreatedFormForm = recreatedForm.nextElementSibling;
                                 if (recreatedFormForm && recreatedFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                    recreatedFormForm.style.display = 'none';
+                                    recreatedFormForm.style.display = 'flex';
+                                }
+                                // Asegurar que el meta esté visible
+                                const recreatedMeta = document.getElementById('projectEmptyMeta');
+                                if (recreatedMeta) {
+                                    recreatedMeta.style.display = 'flex';
+                                }
+                                // Asegurar que el toggle button esté visible
+                                const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                                if (recreatedToggleBtn) {
+                                    recreatedToggleBtn.style.display = 'block';
+                                    const img = recreatedToggleBtn.querySelector('img');
+                                    if (img) img.src = 'images/minus.svg';
                                 }
                             }
                         }, 0);
@@ -8307,13 +8341,20 @@
                                         agreementFormForm.remove();
                                     }
                                     
-                                    // If no more agreements, show default state
+                                    // Si no hay más agreements, mantener el estado empty (no volver al default)
+                                    // El usuario puede hacer clic en "add one" nuevamente para crear un nuevo formulario
                                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
-                                    const remainingAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement').length : 0;
+                                    const remainingDynamicAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length : 0;
                                     
-                                    if (remainingAgreements === 0) {
-                                        emptyContainer.style.display = 'none';
-                                        defaultContainer.style.display = 'block';
+                                    // Verificar si el formulario base está visible
+                                    const baseAgreementForm = document.getElementById('projectAgreementForm');
+                                    const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
+                                    
+                                    // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty pero sin formularios
+                                    // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                                    if (remainingDynamicAgreements === 0 && !baseFormVisible) {
+                                        // Mantener el estado empty, no volver al default
+                                        // El formulario base se recreará cuando el usuario haga clic en "add one"
                                     }
                                 });
                             }
@@ -8432,13 +8473,20 @@
                         agreementFormForm.remove();
                     }
                     
-                    // If no more agreements, show default state
+                    // Si no hay más agreements, mantener el estado empty (no volver al default)
+                    // El usuario puede hacer clic en "add one" nuevamente para crear un nuevo formulario
                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
-                    const remainingAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement').length : 0;
+                    const remainingDynamicAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length : 0;
                     
-                    if (remainingAgreements === 0) {
-                        emptyContainer.style.display = 'none';
-                        defaultContainer.style.display = 'block';
+                    // Verificar si el formulario base está visible
+                    const baseAgreementForm = document.getElementById('projectAgreementForm');
+                    const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
+                    
+                    // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty pero sin formularios
+                    // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                    if (remainingDynamicAgreements === 0 && !baseFormVisible) {
+                        // Mantener el estado empty, no volver al default
+                        // El formulario base se recreará cuando el usuario haga clic en "add one"
                     }
                 });
             }
@@ -8932,6 +8980,32 @@
                         
                         if (agreementFormFormGroup) {
                             agreementFormFormGroup.remove();
+                        }
+                        
+                        // Verificar si quedan agreements después de eliminar
+                        // Si no hay más agreements (ni dinámicos ni base visible), mantener el estado empty
+                        const emptyContainer = document.getElementById('projectAgreementsEmpty');
+                        const defaultContainer = document.getElementById('projectAgreementsDefault');
+                        
+                        if (emptyContainer && defaultContainer) {
+                            const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
+                            if (contentContainer) {
+                                // Contar solo agreements dinámicos (con ID que contiene _)
+                                const remainingDynamicAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length;
+                                
+                                // Verificar si el formulario base está visible
+                                const baseAgreementForm = document.getElementById('projectAgreementForm');
+                                const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
+                                
+                                // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty
+                                // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                                if (remainingDynamicAgreements === 0 && !baseFormVisible) {
+                                    // Mantener el estado empty, no volver al default
+                                    // El formulario base se recreará cuando el usuario haga clic en "add one"
+                                    emptyContainer.style.display = 'block';
+                                    defaultContainer.style.display = 'none';
+                                }
+                            }
                         }
                     });
                 }
