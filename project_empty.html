@@ -803,9 +803,10 @@
         .selected-ceremony-actions {
             display: flex;
             align-items: center;
-            gap: var(--spacing-12);
+            gap: 8px;
             flex-shrink: 0;
-            margin-left: var(--spacing-16);
+            /* margin-left: var(--spacing-16); */
+            margin-right: 50px;
         }
 
         .selected-ceremony-schedule-btn {
@@ -2439,6 +2440,7 @@
         .dsu-agreements__agreement-form-buttons .dsu-agreements__send-button {
             flex: 1;
             order: 2;
+            height: 37px;
         }
         
         /* Estilos del botón Send email - Copiados del design system */
@@ -2471,6 +2473,21 @@
             background-color: var(--color-status-to-start);
             color: var(--color-text-secondary);
             cursor: not-allowed;
+        }
+
+        .dsu-button--primary {
+            background-color: var(--color-button-primary-bg-default);
+            color: var(--color-basics-dark-blue);
+            box-shadow: none;
+            width: 100%;
+        }
+
+        .dsu-button--primary:disabled {
+            background-color: var(--color-status-disabled);
+            color: var(--color-text-secondary);
+            opacity: 1;
+            box-shadow: none;
+            width: 100%;
         }
         
 
@@ -2784,6 +2801,74 @@
             background: var(--color-surface-especial);
             border-color: var(--color-basics-dark-blue);
             border-width: 2px;
+        }
+
+        /* Send Agreement Modal Styles */
+        .send-agreement-step {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .send-agreement-step-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0 0 var(--spacing-16) 0;
+        }
+
+        .send-agreement-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .send-agreement-option {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .send-agreement-option:hover {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+        }
+
+        .send-agreement-option input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .send-agreement-option input[type="radio"]:checked + span {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-basics-dark-blue);
+        }
+
+        .send-agreement-option:has(input[type="radio"]:checked) {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+            /* border-width: 2px; */
+        }
+
+        .send-agreement-teams-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12);
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
         }
 
         /* Fullscreen Preview Modal */
@@ -4288,6 +4373,60 @@
                 </div>
             </div>
 
+            <!-- Modal para enviar agreement -->
+            <div class="modal-overlay" id="sendAgreementModal">
+                <div class="modal" style="width: 35%; max-width: 600px;">
+                    <div class="modal-headline">
+                        <div class="modal__title">Send Agreement</div>
+                        <button class="modal-close-btn" id="closeSendAgreementModalBtn" aria-label="Close modal">
+                            <img src="images/close.svg" alt="Close" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <!-- Step 1: Selección de teams -->
+                        <div class="send-agreement-step" id="sendAgreementStep1">
+                            <h3 class="send-agreement-step-title">Select teams</h3>
+                            <div class="send-agreement-options">
+                                <label class="send-agreement-option">
+                                    <input type="radio" name="teamSelection" value="all" id="selectAllTeams">
+                                    <span>All teams in the project</span>
+                                </label>
+                                <label class="send-agreement-option">
+                                    <input type="radio" name="teamSelection" value="one" id="selectOneTeam">
+                                    <span>Select one team</span>
+                                </label>
+                            </div>
+                            <div class="send-agreement-teams-list" id="sendAgreementTeamsList" style="display: none; margin-top: 16px; max-height: 200px; overflow-y: auto;">
+                                <!-- Teams se cargarán aquí dinámicamente -->
+                            </div>
+                            <div class="send-agreement-actions" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" id="cancelSendAgreementBtn">Cancel</button>
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="nextSendAgreementBtn" disabled>Next</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Selección de medio -->
+                        <div class="send-agreement-step" id="sendAgreementStep2" style="display: none;">
+                            <h3 class="send-agreement-step-title">Select communication method</h3>
+                            <div class="send-agreement-options">
+                                <label class="send-agreement-option">
+                                    <input type="radio" name="communicationMethod" value="email" id="selectEmail">
+                                    <span>Send via email</span>
+                                </label>
+                                <label class="send-agreement-option">
+                                    <input type="radio" name="communicationMethod" value="channels" id="selectChannels">
+                                    <span>Use communication channels</span>
+                                </label>
+                            </div>
+                            <div class="send-agreement-actions" style="margin-top: 24px; display: flex; justify-content: space-between; gap: 12px;">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" id="backSendAgreementBtn">Back</button>
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="confirmSendAgreementBtn" disabled>Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal para preview de documentos/imágenes en pantalla completa -->
             <div class="preview-modal-overlay" id="previewModalOverlay">
                 <div class="preview-modal">
@@ -4475,6 +4614,9 @@
 
             // Inicializar agreements
             initAgreements();
+
+            // Inicializar send agreement modal
+            initSendAgreementModal();
 
             // Inicializar test section (componente de prueba)
             initTestSection();
@@ -9239,22 +9381,16 @@
             // Send button in Empty state
             if (sendButton) {
                 sendButton.addEventListener('click', function() {
-                    // Validación: Verificar si hay teams asociados al proyecto
-                    const teamsListContainer = document.getElementById('teamsListContainer');
-                    const hasTeams = teamsListContainer && 
-                                    teamsListContainer.style.display !== 'none' && 
-                                    teamsListContainer.querySelectorAll('.team-item').length > 0;
-                    
-                    if (!hasTeams) {
-                        alert('To send an email, please create or add a team to your project');
-                        return;
-                    }
-                    
+                    // Si hay un item pendiente en el input, agregarlo primero
                     if (item1Input && item1Input.value.trim()) {
                         addEmptyAgreementItem(item1Input.value.trim(), emptyItemsContainer);
                         item1Input.value = '';
                     }
-                    // Button stays enabled
+                    
+                    // Abrir modal de envío
+                    if (typeof window.openSendAgreementModal === 'function') {
+                        window.openSendAgreementModal('base');
+                    }
                 });
             }
             
@@ -9703,22 +9839,16 @@
                 // Send button functionality
                 if (sendButton) {
                     sendButton.addEventListener('click', function() {
-                        // Validación: Verificar si hay teams asociados al proyecto
-                        const teamsListContainer = document.getElementById('teamsListContainer');
-                        const hasTeams = teamsListContainer && 
-                                        teamsListContainer.style.display !== 'none' && 
-                                        teamsListContainer.querySelectorAll('.team-item').length > 0;
-                        
-                        if (!hasTeams) {
-                            alert('To send an email, please create or add a team to your project');
-                            return;
-                        }
-                        
+                        // Si hay un item pendiente en el input, agregarlo primero
                         if (item1Input && item1Input.value.trim()) {
                             addEmptyAgreementItemForGroup(item1Input.value.trim(), emptyItemsContainer, uniqueId);
                             item1Input.value = '';
                         }
-                        // Button stays enabled
+                        
+                        // Abrir modal de envío
+                        if (typeof window.openSendAgreementModal === 'function') {
+                            window.openSendAgreementModal(uniqueId);
+                        }
                     });
                 }
                 
@@ -12658,6 +12788,329 @@
                     }
                 });
             }
+        }
+
+        // ============================================
+        // Send Agreement Modal
+        // ============================================
+        function initSendAgreementModal() {
+            const sendAgreementModal = document.getElementById('sendAgreementModal');
+            const closeSendAgreementModalBtn = document.getElementById('closeSendAgreementModalBtn');
+            const cancelSendAgreementBtn = document.getElementById('cancelSendAgreementBtn');
+            const nextSendAgreementBtn = document.getElementById('nextSendAgreementBtn');
+            const backSendAgreementBtn = document.getElementById('backSendAgreementBtn');
+            const confirmSendAgreementBtn = document.getElementById('confirmSendAgreementBtn');
+            const sendAgreementStep1 = document.getElementById('sendAgreementStep1');
+            const sendAgreementStep2 = document.getElementById('sendAgreementStep2');
+            const sendAgreementTeamsList = document.getElementById('sendAgreementTeamsList');
+            const selectAllTeams = document.getElementById('selectAllTeams');
+            const selectOneTeam = document.getElementById('selectOneTeam');
+            const selectEmail = document.getElementById('selectEmail');
+            const selectChannels = document.getElementById('selectChannels');
+
+            let selectedTeamIds = [];
+            let selectedCommunicationMethod = null;
+
+            // Función para validar que existan teams y communication channels
+            function validateRequiredSections() {
+                // Validar teams
+                const teamsListContainer = document.getElementById('teamsListContainer');
+                const hasTeams = teamsListContainer && 
+                                teamsListContainer.style.display !== 'none' && 
+                                teamsListContainer.querySelectorAll('.team-item').length > 0;
+
+                // Validar communication channels
+                const communicationChannelsContainer = document.getElementById('communicationChannelsItemsContainer');
+                const hasChannels = communicationChannelsContainer && 
+                                   communicationChannelsContainer.querySelectorAll('.project-communication-channels-item').length > 0;
+
+                if (!hasTeams && !hasChannels) {
+                    alert('To send an agreement, you need to have at least one team in "Team members" section and at least one communication channel in "Communication channels" section.');
+                    return false;
+                }
+
+                if (!hasTeams) {
+                    alert('To send an agreement, you need to have at least one team in "Team members" section.');
+                    return false;
+                }
+
+                if (!hasChannels) {
+                    alert('To send an agreement, you need to have at least one communication channel in "Communication channels" section.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            // Función para cargar teams en el modal
+            function loadTeamsInSendModal() {
+                if (!sendAgreementTeamsList) return;
+
+                sendAgreementTeamsList.innerHTML = '';
+
+                // Obtener teams del DOM
+                const teamsListContainer = document.getElementById('teamsListContainer');
+                if (!teamsListContainer || teamsListContainer.style.display === 'none') {
+                    return;
+                }
+
+                const teamItems = teamsListContainer.querySelectorAll('.team-item');
+                if (teamItems.length === 0) {
+                    return;
+                }
+
+                teamItems.forEach(teamItem => {
+                    // Obtener teamId del elemento o de sus hijos
+                    let teamId = teamItem.getAttribute('data-team-id');
+                    if (!teamId) {
+                        const withMembersRow = teamItem.querySelector('.with-members-row__left');
+                        if (withMembersRow) {
+                            teamId = withMembersRow.getAttribute('data-team-id');
+                        }
+                    }
+                    
+                    // Obtener nombre del team desde el título (usar los selectores correctos)
+                    let teamName = 'Sin nombre';
+                    const teamTitle = teamItem.querySelector('.team-name-title');
+                    if (teamTitle) {
+                        const teamTitleText = teamTitle.querySelector('.team-name-title__text');
+                        if (teamTitleText) {
+                            teamName = teamTitleText.textContent.trim();
+                        }
+                    }
+                    
+                    // Si aún no se encontró el nombre, intentar obtenerlo directamente del elemento
+                    if (teamName === 'Sin nombre' && teamId) {
+                        // Intentar obtener desde DocuProjectData como fallback
+                        try {
+                            if (typeof DocuProjectData !== 'undefined') {
+                                const projectData = DocuProjectData.getProjectData();
+                                if (projectData && projectData.teams) {
+                                    const team = projectData.teams.find(t => t.id === teamId);
+                                    if (team && team.name) {
+                                        teamName = team.name;
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.warn('No se pudo obtener el nombre del team desde DocuProjectData:', error);
+                        }
+                    }
+                    
+                    if (!teamId) return;
+
+                    const teamOption = document.createElement('label');
+                    teamOption.className = 'send-agreement-option';
+                    teamOption.style.margin = '0';
+                    teamOption.innerHTML = `
+                        <input type="checkbox" name="teamSelection" value="${teamId}" data-team-id="${teamId}">
+                        <span>${escapeHtml(teamName)}</span>
+                    `;
+
+                    teamOption.addEventListener('change', function() {
+                        const checkbox = teamOption.querySelector('input[type="checkbox"]');
+                        if (checkbox.checked) {
+                            if (!selectedTeamIds.includes(teamId)) {
+                                selectedTeamIds.push(teamId);
+                            }
+                        } else {
+                            selectedTeamIds = selectedTeamIds.filter(id => id !== teamId);
+                        }
+                        updateNextButtonState();
+                    });
+
+                    sendAgreementTeamsList.appendChild(teamOption);
+                });
+            }
+
+            // Función para actualizar estado del botón Next
+            function updateNextButtonState() {
+                if (selectAllTeams && selectAllTeams.checked) {
+                    nextSendAgreementBtn.disabled = false;
+                } else if (selectOneTeam && selectOneTeam.checked) {
+                    nextSendAgreementBtn.disabled = selectedTeamIds.length === 0;
+                } else {
+                    nextSendAgreementBtn.disabled = true;
+                }
+            }
+
+            // Función para actualizar estado del botón Send
+            function updateSendButtonState() {
+                confirmSendAgreementBtn.disabled = !selectedCommunicationMethod;
+            }
+
+            // Función para resetear el modal
+            function resetModal() {
+                selectedTeamIds = [];
+                selectedCommunicationMethod = null;
+                
+                if (selectAllTeams) selectAllTeams.checked = false;
+                if (selectOneTeam) selectOneTeam.checked = false;
+                if (selectEmail) selectEmail.checked = false;
+                if (selectChannels) selectChannels.checked = false;
+                
+                sendAgreementStep1.style.display = 'flex';
+                sendAgreementStep2.style.display = 'none';
+                sendAgreementTeamsList.style.display = 'none';
+                
+                nextSendAgreementBtn.disabled = true;
+                confirmSendAgreementBtn.disabled = true;
+            }
+
+            // Función para abrir el modal
+            window.openSendAgreementModal = function(agreementId) {
+                // Validar que existan teams y communication channels
+                if (!validateRequiredSections()) {
+                    return;
+                }
+
+                // Resetear modal
+                resetModal();
+
+                // Cargar teams
+                loadTeamsInSendModal();
+
+                // Mostrar modal
+                if (sendAgreementModal) {
+                    sendAgreementModal.classList.add('modal-overlay--visible');
+                }
+            };
+
+            // Event listeners
+            if (closeSendAgreementModalBtn) {
+                closeSendAgreementModalBtn.addEventListener('click', function() {
+                    if (sendAgreementModal) {
+                        sendAgreementModal.classList.remove('modal-overlay--visible');
+                    }
+                    resetModal();
+                });
+            }
+
+            if (cancelSendAgreementBtn) {
+                cancelSendAgreementBtn.addEventListener('click', function() {
+                    if (sendAgreementModal) {
+                        sendAgreementModal.classList.remove('modal-overlay--visible');
+                    }
+                    resetModal();
+                });
+            }
+
+            // Selección de teams
+            if (selectAllTeams) {
+                selectAllTeams.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (selectOneTeam) selectOneTeam.checked = false;
+                        sendAgreementTeamsList.style.display = 'none';
+                        selectedTeamIds = [];
+                        updateNextButtonState();
+                    }
+                });
+            }
+
+            if (selectOneTeam) {
+                selectOneTeam.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (selectAllTeams) selectAllTeams.checked = false;
+                        sendAgreementTeamsList.style.display = 'flex';
+                        selectedTeamIds = [];
+                        updateNextButtonState();
+                    }
+                });
+            }
+
+            // Botón Next
+            if (nextSendAgreementBtn) {
+                nextSendAgreementBtn.addEventListener('click', function() {
+                    if (selectAllTeams && selectAllTeams.checked) {
+                        // Obtener todos los teams
+                        const teamsListContainer = document.getElementById('teamsListContainer');
+                        if (teamsListContainer) {
+                            const teamItems = teamsListContainer.querySelectorAll('.team-item');
+                            selectedTeamIds = Array.from(teamItems).map(item => {
+                                let teamId = item.getAttribute('data-team-id');
+                                if (!teamId) {
+                                    const withMembersRow = item.querySelector('.with-members-row__left');
+                                    if (withMembersRow) {
+                                        teamId = withMembersRow.getAttribute('data-team-id');
+                                    }
+                                }
+                                return teamId;
+                            }).filter(id => id);
+                        }
+                    }
+
+                    if (selectedTeamIds.length > 0 || (selectAllTeams && selectAllTeams.checked)) {
+                        sendAgreementStep1.style.display = 'none';
+                        sendAgreementStep2.style.display = 'flex';
+                    }
+                });
+            }
+
+            // Botón Back
+            if (backSendAgreementBtn) {
+                backSendAgreementBtn.addEventListener('click', function() {
+                    sendAgreementStep1.style.display = 'flex';
+                    sendAgreementStep2.style.display = 'none';
+                });
+            }
+
+            // Selección de método de comunicación
+            if (selectEmail) {
+                selectEmail.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (selectChannels) selectChannels.checked = false;
+                        selectedCommunicationMethod = 'email';
+                        updateSendButtonState();
+                    }
+                });
+            }
+
+            if (selectChannels) {
+                selectChannels.addEventListener('change', function() {
+                    if (this.checked) {
+                        if (selectEmail) selectEmail.checked = false;
+                        selectedCommunicationMethod = 'channels';
+                        updateSendButtonState();
+                    }
+                });
+            }
+
+            // Botón Confirm Send
+            if (confirmSendAgreementBtn) {
+                confirmSendAgreementBtn.addEventListener('click', function() {
+                    if (!selectedCommunicationMethod) {
+                        alert('Please select a communication method');
+                        return;
+                    }
+
+                    // Aquí se implementaría la lógica de envío
+                    console.log('📧 Enviando agreement:', {
+                        teams: selectAllTeams && selectAllTeams.checked ? 'all' : selectedTeamIds,
+                        method: selectedCommunicationMethod
+                    });
+
+                    // Cerrar modal
+                    if (sendAgreementModal) {
+                        sendAgreementModal.classList.remove('modal-overlay--visible');
+                    }
+                    resetModal();
+
+                    // Mostrar mensaje de éxito (temporal)
+                    alert('Agreement sent successfully!');
+                });
+            }
+
+            // Cerrar modal al hacer clic fuera
+            if (sendAgreementModal) {
+                sendAgreementModal.addEventListener('click', function(e) {
+                    if (e.target === sendAgreementModal) {
+                        sendAgreementModal.classList.remove('modal-overlay--visible');
+                        resetModal();
+                    }
+                });
+            }
+
+            console.log('✅ Send Agreement Modal inicializado');
         }
 
         // ============================================
