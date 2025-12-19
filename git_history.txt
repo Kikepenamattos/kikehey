@@ -1,3 +1,4 @@
+e02013ba71b62b00f0b66229a3f384fe53766bb4|Ubits|ubits@macbookpro.lan|2025-12-19 09:28:36 -0500|Update: Actualizar changelog con últimos cambios
 98b1a45d09543ac08b62d4ee2abef12b6c5fc7ac|Ubits|ubits@macbookpro.lan|2025-12-19 09:28:07 -0500|Fix: Corregir funcionalidad del status dropdown en formulario base para que siempre funcione al hacer clic
 425d79d4982152f7bd92e065d65211f718e45e56|Ubits|ubits@macbookpro.lan|2025-12-19 09:24:42 -0500|Update: Actualizar changelog con últimos cambios
 acc6d3c01e3a3c4b0ae107b058dbb8b33d52b54a|Ubits|ubits@macbookpro.lan|2025-12-19 09:24:14 -0500|Fix: Corregir funcionalidad del date picker en nuevos formularios de agreement y agregar cierre al hacer clic fuera

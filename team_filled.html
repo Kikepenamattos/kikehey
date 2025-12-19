@@ -177,12 +177,6 @@
             pointer-events: auto !important;
         }
 
-        /* Primary Actions Level */
-        .primary-actions {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
 
         .btn-share-team {
             display: flex;
@@ -832,7 +826,7 @@
 
         .team-members-grid {
             display: flex;
-            gap: 41px;
+            gap: 35px;
             flex-wrap: wrap;
             align-items: flex-start;
             /* justify-content: start; */
@@ -868,6 +862,32 @@
         .dsu-sticky-buttons__button {
             flex: 1;
             min-width: 0;
+        }
+
+        .dsu-button--secondary {
+            background-color: transparent;
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-basics-dark-blue);
+            box-shadow: var(--button-secondary-elevation-default);
+            /* width: 100%; */
+        }
+
+        /* Estilos específicos para botones en el modal add-member-modal */
+        .add-member-modal .dsu-button--medium {
+            padding: 12px 24px;
+            height: 48px;
+            font-size: 16px;
+            border-radius: 40px;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .add-member-modal .dsu-button--secondary {
+            background-color: transparent !important;
+            color: var(--color-text-primary) !important;
+            border: 1px solid var(--color-basics-dark-blue) !important;
+            box-shadow: var(--button-secondary-elevation-default) !important;
+            width: 100%;
         }
 
         /* Responsive */
@@ -1003,14 +1023,6 @@
                     <div class="name-level">
                         <div class="dsu-input-group project-name-group published">
                             <div class="project-name-display" id="projectNameDisplay"></div>
-                        </div>
-                        <div class="primary-actions">
-                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareTeamBtn">
-                                <span class="dsu-button__icon">
-                                    <img src="images/share.svg" alt="Share">
-                                </span>
-                                Share team
-                            </button>
                         </div>
                     </div>
 
