@@ -1,3 +1,4 @@
+0266a34a065d0eaaf4c7a6558b4416b8d851a144|Ubits|ubits@macbookpro.lan|2025-12-19 12:29:03 -0500|Update: Actualizar changelog con últimos cambios
 5d69fd31a43b13eb9abbee87cb8c0b2dd5fbd544|Ubits|ubits@macbookpro.lan|2025-12-19 12:28:45 -0500|Fix: Corregir referencias incorrectas y mejorar manejo de errores en addTeamToList para mostrar teams agregados correctamente
 5b9d458c3e66954517e4d663b2162a3345bd4aa0|Ubits|ubits@macbookpro.lan|2025-12-19 12:21:44 -0500|Update: Actualizar changelog con últimos cambios
 541c522d5bc5d701876281639b1eba539aec153f|Ubits|ubits@macbookpro.lan|2025-12-19 12:21:29 -0500|Update: Actualizar clase dsu-agreements__agreement-toggle con margin-top y ajustar gap en team-members-grid

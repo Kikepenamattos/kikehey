@@ -93,8 +93,8 @@
         .edit-project-link {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            gap: 8px;
+            font-family: var(--font-family-secondary);
             font-size: 14px;
             font-weight: 400;
             color: var(--color-text-primary, #0a243f);
@@ -1582,10 +1582,10 @@
                     <h1 class="project-name-title" id="projectNameDisplay">Project name</h1>
                     <div class="project-actions">
                         <a href="#" class="edit-project-link" id="editProjectBtn" onclick="handleEditProjectClick(event); return false;">
-                            <span>Edit project</span>
                             <span class="edit-project-icon">
                                 <img src="images/Edit.svg" alt="Edit">
                             </span>
+                            <span>Edit project</span>
                         </a>
                     </div>
                 </div>
@@ -1788,8 +1788,11 @@
                         <span class="team-details-cost-label">Team cost:</span>
                         <span id="teamDetailsCost" class="team-details-cost-value"></span>
                     </div>
-                    <button class="dsu-button dsu-button--secondary dsu-button--small team-details-manage-btn" id="manageTeamBtn">
-                        Go to the team
+                    <button class="dsu-button dsu-button--tertiary dsu-button--small team-details-manage-btn" id="manageTeamBtn">
+                        <span class="dsu-button__icon">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </span>
+                        <span class="dsu-button__text">Edit group</span>
                     </button>
                 </div>
                 

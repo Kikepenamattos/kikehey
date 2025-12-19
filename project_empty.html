@@ -6406,6 +6406,9 @@
         window.projectDatePickerState = {
             selectedDate: null
         };
+        
+        // Store date picker states for all date pickers (global state management)
+        window.datePickerStates = window.datePickerStates || {};
 
         // Function to reset project date picker
         function initProjectDateReset() {
@@ -6467,8 +6470,44 @@
             
             if (!picker || !button) return;
             
+            // Inicializar estado global para este date picker si no existe
+            if (!window.datePickerStates[pickerId]) {
+                window.datePickerStates[pickerId] = {
+                    selectedDate: null
+                };
+            }
+            
             let currentDate = new Date();
-            let selectedDate = null;
+            let selectedDate = window.datePickerStates[pickerId].selectedDate;
+            
+            // Función helper para parsear fecha desde texto del botón
+            function parseDateFromButtonText(text) {
+                if (!text || text === 'Select a date' || text === 'Select a date to deliver the project') {
+                    return null;
+                }
+                
+                try {
+                    // Intentar parsear directamente
+                    const parsedDate = new Date(text);
+                    if (!isNaN(parsedDate.getTime())) {
+                        const normalizedDate = new Date(parsedDate);
+                        normalizedDate.setHours(0, 0, 0, 0);
+                        return normalizedDate;
+                    }
+                } catch (error) {
+                    console.warn('⚠️ No se pudo parsear fecha desde texto:', text);
+                }
+                
+                return null;
+            }
+            
+            // Restaurar selectedDate desde el texto del botón si no está en el estado
+            if (!selectedDate && buttonText) {
+                selectedDate = parseDateFromButtonText(buttonText.textContent);
+                if (selectedDate) {
+                    window.datePickerStates[pickerId].selectedDate = selectedDate;
+                }
+            }
             
             function renderDatePicker(date) {
                 const year = date.getFullYear();
@@ -6509,8 +6548,9 @@
                 // Current month days
                 for (let day = 1; day <= daysInMonth; day++) {
                     const dateObj = new Date(year, month, day);
+                    dateObj.setHours(0, 0, 0, 0); // Normalizar horas para comparación correcta
                     const isToday = dateObj.getTime() === today.getTime();
-                    const isSelected = selectedDate && dateObj.getTime() === selectedDate.getTime();
+                    const isSelected = selectedDate && selectedDate.getTime() === dateObj.getTime();
                     const classes = ['dsu-date-picker__day'];
                     if (isToday) classes.push('dsu-date-picker__day--today');
                     if (isSelected) classes.push('dsu-date-picker__day--selected');
@@ -6551,18 +6591,25 @@
                         e.stopPropagation();
                         const day = parseInt(dayEl.dataset.day);
                         selectedDate = new Date(year, month, day);
+                        selectedDate.setHours(0, 0, 0, 0); // Normalizar horas para comparación correcta
                         
-                        // Store date for project date picker
+                        // Store date in global state
+                        window.datePickerStates[pickerId].selectedDate = selectedDate;
+                        
+                        // Store date for project date picker (backward compatibility)
                         if (pickerId === 'projectDatePicker' && window.projectDatePickerState) {
                             window.projectDatePickerState.selectedDate = selectedDate;
                         }
                         
+                        // Actualizar currentDate para mostrar el mes de la fecha seleccionada
+                        currentDate = new Date(selectedDate);
                         renderDatePicker(currentDate);
                         
-                        // Update button text
-                        if (buttonText) {
+                        // Update button text - obtener referencia actualizada
+                        const currentButtonText = document.getElementById(buttonTextId);
+                        if (currentButtonText) {
                             const dateStr = selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                            buttonText.textContent = dateStr;
+                            currentButtonText.textContent = dateStr;
                         }
                         
                         // Show label and reset button if this is the project date picker
@@ -6595,15 +6642,43 @@
                 if (isVisible) {
                     picker.classList.remove('dsu-date-picker--visible');
                 } else {
-                    // For project date picker, check stored state if button text is default
-                    if (pickerId === 'projectDatePicker' && window.projectDatePickerState) {
-                        if (buttonText && buttonText.textContent === 'Select a date to deliver the project') {
-                            selectedDate = null;
-                        } else if (window.projectDatePickerState.selectedDate) {
-                            selectedDate = window.projectDatePickerState.selectedDate;
+                    // Obtener referencia actualizada del buttonText
+                    const currentButtonText = document.getElementById(buttonTextId);
+                    
+                    // Restaurar selectedDate desde el estado global
+                    const storedState = window.datePickerStates[pickerId];
+                    if (storedState && storedState.selectedDate) {
+                        selectedDate = new Date(storedState.selectedDate);
+                        selectedDate.setHours(0, 0, 0, 0);
+                    } else {
+                        // Si no hay estado almacenado, intentar parsear desde el texto del botón
+                        if (currentButtonText) {
+                            selectedDate = parseDateFromButtonText(currentButtonText.textContent);
+                            if (selectedDate) {
+                                window.datePickerStates[pickerId].selectedDate = selectedDate;
+                            }
                         }
                     }
-                    currentDate = selectedDate || new Date();
+                    
+                    // Backward compatibility para projectDatePicker
+                    if (pickerId === 'projectDatePicker' && window.projectDatePickerState) {
+                        if (currentButtonText && currentButtonText.textContent === 'Select a date to deliver the project') {
+                            selectedDate = null;
+                            window.datePickerStates[pickerId].selectedDate = null;
+                        } else if (window.projectDatePickerState.selectedDate) {
+                            selectedDate = new Date(window.projectDatePickerState.selectedDate);
+                            selectedDate.setHours(0, 0, 0, 0);
+                            window.datePickerStates[pickerId].selectedDate = selectedDate;
+                        }
+                    }
+                    
+                    // Establecer currentDate al mes de la fecha seleccionada o al mes actual
+                    if (selectedDate) {
+                        currentDate = new Date(selectedDate);
+                    } else {
+                        currentDate = new Date();
+                    }
+                    
                     renderDatePicker(currentDate);
                     picker.classList.add('dsu-date-picker--visible');
                 }
