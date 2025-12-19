@@ -7529,6 +7529,11 @@
                 // Mostrar contenedor de teams (el botón siempre permanece visible)
                 if (teamsListContainer) {
                     teamsListContainer.style.display = 'flex';
+                    // Forzar reflow para asegurar que el cambio de display se aplique
+                    teamsListContainer.offsetHeight;
+                    console.log('✅ Contenedor de teams mostrado');
+                } else {
+                    console.error('❌ teamsListContainer no encontrado');
                 }
                 // Asegurar que el botón esté siempre visible
                 if (addMemberBtnEmpty) {
@@ -7607,14 +7612,14 @@
 
                 const withMembersRowLeft = document.createElement('div');
                 withMembersRowLeft.className = 'with-members-row__left';
-                withMembersRowLeft.setAttribute('data-team-id', team.id);
+                withMembersRowLeft.setAttribute('data-team-id', teamId);
                 withMembersRowLeft.setAttribute('role', 'button');
                 withMembersRowLeft.setAttribute('tabindex', '0');
-                withMembersRowLeft.setAttribute('aria-label', `View details for ${team.name}`);
+                withMembersRowLeft.setAttribute('aria-label', `View details for ${teamName}`);
                 
                 // Agregar event listener para abrir modal de detalles
                 withMembersRowLeft.addEventListener('click', function() {
-                    openTeamDetailsModal(team.id);
+                    openTeamDetailsModal(teamId);
                 });
 
                 const avatarsRow = document.createElement('div');
@@ -7637,9 +7642,18 @@
                     avatarImg.className = 'avatar__img';
                     avatarImg.alt = `${member.name || ''} ${member.lastName || ''}`.trim() || 'member';
                     
-                    // Obtener imagen del miembro
-                    const imageSrc = await getMemberImage(member.image || member.avatar || '');
-                    avatarImg.src = imageSrc;
+                    // Obtener imagen del miembro con manejo de errores
+                    try {
+                        if (typeof getMemberImage === 'function') {
+                            const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                            avatarImg.src = imageSrc;
+                        } else {
+                            avatarImg.src = member.image || member.avatar || 'images/avatar_icon.svg';
+                        }
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen del miembro:', error);
+                        avatarImg.src = 'images/avatar_icon.svg';
+                    }
                     
                     avatarElement.appendChild(avatarImg);
                     avatarsRow.appendChild(avatarElement);
@@ -7660,15 +7674,35 @@
                 teamItem.appendChild(teamTitle);
                 teamItem.appendChild(withMembersRow);
 
-                // Agregar el team al contenedor
+                // Agregar el team al contenedor INMEDIATAMENTE (antes de que se carguen las imágenes)
+                // Esto asegura que el team sea visible incluso si hay errores en la carga de imágenes
                 if (teamsListContainer) {
-                    // Simplemente agregar el team al contenedor (el botón siempre está fuera del contenedor)
-                        teamsListContainer.appendChild(teamItem);
+                    // Asegurar que el contenedor esté visible antes de agregar
+                    if (teamsListContainer.style.display === 'none') {
+                        teamsListContainer.style.display = 'flex';
+                        console.log('✅ Contenedor de teams mostrado antes de agregar elemento');
+                    }
+                    
+                    teamsListContainer.appendChild(teamItem);
+                    console.log('✅ Team agregado al DOM:', teamName, '(ID:', teamId, ')');
+                    
+                    // Verificar que el elemento se agregó correctamente
+                    const addedItem = teamsListContainer.querySelector(`[data-team-id="${teamId}"]`);
+                    if (addedItem) {
+                        console.log('✅ Verificación: Team encontrado en el DOM');
+                    } else {
+                        console.error('❌ Error: Team no encontrado en el DOM después de agregarlo');
+                    }
+                    
+                    // Forzar reflow para asegurar que el elemento sea visible
+                    teamsListContainer.offsetHeight;
                     
                     // Actualizar estado del botón Publish después de agregar team
                     if (typeof updatePublishButtonState === 'function') {
                         setTimeout(updatePublishButtonState, 100);
                     }
+                } else {
+                    console.error('❌ teamsListContainer no encontrado, no se puede agregar el team');
                 }
             }
 

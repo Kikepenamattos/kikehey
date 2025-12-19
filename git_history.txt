@@ -1,3 +1,4 @@
+5b9d458c3e66954517e4d663b2162a3345bd4aa0|Ubits|ubits@macbookpro.lan|2025-12-19 12:21:44 -0500|Update: Actualizar changelog con últimos cambios
 541c522d5bc5d701876281639b1eba539aec153f|Ubits|ubits@macbookpro.lan|2025-12-19 12:21:29 -0500|Update: Actualizar clase dsu-agreements__agreement-toggle con margin-top y ajustar gap en team-members-grid
 d92930d7d6077bef1a46326cac86fdf0dd242655|Ubits|ubits@macbookpro.lan|2025-12-19 10:44:25 -0500|Update: Actualizar changelog con últimos cambios
 2917349c2d91e4fab7e900040fc5271e127949fb|Ubits|ubits@macbookpro.lan|2025-12-19 10:44:11 -0500|Update: Ajustar estilos de botones secundarios y medianos, eliminar div primary-actions, y actualizar estilos en team_filled y member_profile
