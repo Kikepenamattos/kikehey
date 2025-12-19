@@ -1,3 +1,4 @@
+abfeddc400c3bb5d325b8170da65e4a49e821b2f|Ubits|ubits@macbookpro.lan|2025-12-19 14:50:50 -0500|Add: Agregar botón de reset con icono trash a la derecha de cada date picker en agreements para permitir resetear la fecha
 6551b792609293cbab64a1f45f51240f057909f3|Ubits|ubits@macbookpro.lan|2025-12-19 14:43:52 -0500|Update: Actualizar changelog con últimos cambios
 595569f5231e789a6c1f75ef0f8d6e75505138ec|Ubits|ubits@macbookpro.lan|2025-12-19 14:43:11 -0500|Update: Agregar icono de calendario y texto 'Created:' en agreement-item-date de project_view
 b0fe4e8c9ee2f32b8bd1ea9107e8f6845a42a0fd|Ubits|ubits@macbookpro.lan|2025-12-19 12:57:19 -0500|Update: Actualizar changelog con últimos cambios
