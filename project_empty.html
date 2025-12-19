@@ -5968,11 +5968,41 @@
                                             
                                             // Esperar un poco más para que se carguen los datos
                                             await new Promise(resolve => setTimeout(resolve, 100));
+                                            
+                                            // Solo el primer agreement (índice 0, el más reciente) debe estar expandido
+                                            // Los demás deben estar colapsados
+                                            if (index === 0) {
+                                                // Expandir el primer agreement (más reciente)
+                                                expandAgreement(uniqueId);
+                                            } else {
+                                                // Colapsar los demás agreements
+                                                collapseAgreement(uniqueId);
+                                            }
                                         } else {
                                             console.warn(`⚠️ No se pudo encontrar el agreement creado para el índice ${index}`);
                                         }
                                     }
                                 }
+                                
+                                // Después de cargar todos los agreements, asegurar que solo el primero esté expandido
+                                // y colapsar el formulario base si existe
+                                setTimeout(() => {
+                                    const firstAgreement = contentContainer.querySelector('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
+                                    if (firstAgreement) {
+                                        const firstUniqueId = firstAgreement.id.replace('projectAgreementForm_', '');
+                                        // Colapsar todos excepto el primero
+                                        collapseAllAgreementsExcept(firstUniqueId);
+                                        // Asegurar que el primero esté expandido
+                                        expandAgreement(firstUniqueId);
+                                        
+                                        // Colapsar el formulario base si existe
+                                        const baseAgreementForm = document.getElementById('projectAgreementForm');
+                                        if (baseAgreementForm) {
+                                            collapseAgreement('base');
+                                        }
+                                    }
+                                }, 300);
+                                
                                 console.log('✅ Todos los agreements han sido cargados');
                             })();
                         }
@@ -8273,6 +8303,89 @@
         // Project Agreements
         // ============================================
         
+        // Función helper para colapsar un agreement específico
+        function collapseAgreement(uniqueId) {
+            const metaId = uniqueId === 'base' ? 'projectEmptyMeta' : `projectEmptyMeta_${uniqueId}`;
+            const itemsId = uniqueId === 'base' ? 'projectEmptyItems' : `projectEmptyItems_${uniqueId}`;
+            const toggleBtnId = uniqueId === 'base' ? 'projectEmptyToggleBtn' : `projectEmptyToggleBtn_${uniqueId}`;
+            const formId = uniqueId === 'base' ? 'projectAgreementFormForm' : `projectAgreementFormForm_${uniqueId}`;
+            
+            const meta = document.getElementById(metaId);
+            const items = document.getElementById(itemsId);
+            const toggleBtn = document.getElementById(toggleBtnId);
+            const form = uniqueId === 'base' 
+                ? document.querySelector('#projectAgreementForm')?.nextElementSibling
+                : document.getElementById(formId);
+            
+            if (meta) meta.style.display = 'none';
+            if (items) items.style.display = 'none';
+            if (form && form.classList.contains('dsu-agreements__agreement-form')) {
+                form.style.display = 'none';
+            }
+            if (toggleBtn) {
+                const img = toggleBtn.querySelector('img');
+                if (img) img.src = 'images/plus.svg';
+            }
+        }
+        
+        // Función helper para expandir un agreement específico
+        function expandAgreement(uniqueId) {
+            const metaId = uniqueId === 'base' ? 'projectEmptyMeta' : `projectEmptyMeta_${uniqueId}`;
+            const itemsId = uniqueId === 'base' ? 'projectEmptyItems' : `projectEmptyItems_${uniqueId}`;
+            const toggleBtnId = uniqueId === 'base' ? 'projectEmptyToggleBtn' : `projectEmptyToggleBtn_${uniqueId}`;
+            const formId = uniqueId === 'base' ? 'projectAgreementFormForm' : `projectAgreementFormForm_${uniqueId}`;
+            
+            const meta = document.getElementById(metaId);
+            const items = document.getElementById(itemsId);
+            const toggleBtn = document.getElementById(toggleBtnId);
+            const form = uniqueId === 'base' 
+                ? document.querySelector('#projectAgreementForm')?.nextElementSibling
+                : document.getElementById(formId);
+            
+            if (meta) meta.style.display = 'flex';
+            if (items) {
+                // Solo mostrar items si tiene contenido
+                if (items.children.length > 0) {
+                    items.style.display = 'flex';
+                }
+            }
+            if (form && form.classList.contains('dsu-agreements__agreement-form')) {
+                form.style.display = 'flex';
+            }
+            if (toggleBtn) {
+                toggleBtn.style.display = 'block';
+                const img = toggleBtn.querySelector('img');
+                if (img) img.src = 'images/minus.svg';
+            }
+        }
+        
+        // Función helper para colapsar todos los agreements excepto uno específico
+        function collapseAllAgreementsExcept(exceptUniqueId) {
+            const emptyContainer = document.getElementById('projectAgreementsEmpty');
+            if (!emptyContainer) return;
+            
+            const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
+            if (!contentContainer) return;
+            
+            // Obtener todos los agreements (base y dinámicos)
+            const allAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm"]');
+            
+            allAgreements.forEach(agreement => {
+                let uniqueId = null;
+                
+                if (agreement.id === 'projectAgreementForm') {
+                    uniqueId = 'base';
+                } else if (agreement.id.startsWith('projectAgreementForm_')) {
+                    uniqueId = agreement.id.replace('projectAgreementForm_', '');
+                }
+                
+                // Colapsar todos excepto el especificado
+                if (uniqueId !== null && uniqueId !== exceptUniqueId) {
+                    collapseAgreement(uniqueId);
+                }
+            });
+        }
+        
         // Función global para toggle completo del agreement
         // Definir antes de initAgreements para que esté disponible en los onclick inline
         window.toggleAgreementContent = function(uniqueId) {
@@ -8427,31 +8540,48 @@
                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
                     const existingAgreementForm = document.getElementById('projectAgreementForm');
                     
+                    // Verificar si hay agreements dinámicos
+                    const dynamicAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
+                    const hasDynamicAgreements = dynamicAgreements.length > 0;
+                    
                     // SIEMPRE mostrar la estructura completa cuando se hace clic en "add one"
                     if (existingAgreementForm) {
                         // Asegurar que el formulario principal esté visible
                         existingAgreementForm.style.display = 'block';
-                        
+
                         // Asegurar que el form asociado esté visible
                         const existingFormForm = existingAgreementForm.nextElementSibling;
                         if (existingFormForm && existingFormForm.classList.contains('dsu-agreements__agreement-form')) {
                             existingFormForm.style.display = 'flex';
                         }
-                        
-                        // Asegurar que el meta esté visible y expandido
-                        const existingMeta = document.getElementById('projectEmptyMeta');
-                        if (existingMeta) {
-                            existingMeta.style.display = 'flex';
+
+                        // Si hay agreements dinámicos, el base debe estar colapsado
+                        // Si no hay agreements dinámicos, el base debe estar expandido
+                        if (hasDynamicAgreements) {
+                            // Colapsar el base y expandir solo el primer agreement dinámico
+                            collapseAgreement('base');
+                            const firstDynamicAgreement = dynamicAgreements[0];
+                            if (firstDynamicAgreement) {
+                                const firstUniqueId = firstDynamicAgreement.id.replace('projectAgreementForm_', '');
+                                expandAgreement(firstUniqueId);
+                                collapseAllAgreementsExcept(firstUniqueId);
+                            }
+                        } else {
+                            // No hay agreements dinámicos, expandir el base
+                            const existingMeta = document.getElementById('projectEmptyMeta');
+                            if (existingMeta) {
+                                existingMeta.style.display = 'flex';
+                            }
+
+                            // Asegurar que el toggle button esté visible con icono de menos (expandido)
+                            const existingToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                            if (existingToggleBtn) {
+                                existingToggleBtn.style.display = 'block';
+                                const img = existingToggleBtn.querySelector('img');
+                                if (img) img.src = 'images/minus.svg';
+                            }
                         }
-                        
-                        // Asegurar que el toggle button esté visible con icono de menos (expandido)
-                        const existingToggleBtn = document.getElementById('projectEmptyToggleBtn');
-                        if (existingToggleBtn) {
-                            existingToggleBtn.style.display = 'block';
-                            const img = existingToggleBtn.querySelector('img');
-                            if (img) img.src = 'images/minus.svg';
-                        }
-                        
+
                         // Asegurar que los items estén ocultos inicialmente
                         const existingItems = document.getElementById('projectEmptyItems');
                         if (existingItems) {
@@ -8617,18 +8747,35 @@
                                         recreatedFormForm.style.display = 'flex';
                                     }
                                     
-                                    // Meta visible y expandido
-                                    const recreatedMeta = document.getElementById('projectEmptyMeta');
-                                    if (recreatedMeta) {
-                                        recreatedMeta.style.display = 'flex';
-                                    }
+                                    // Verificar si hay agreements dinámicos
+                                    const dynamicAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
+                                    const hasDynamicAgreements = dynamicAgreements.length > 0;
                                     
-                                    // Toggle button visible con icono de menos (expandido)
-                                    const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
-                                    if (recreatedToggleBtn) {
-                                        recreatedToggleBtn.style.display = 'block';
-                                        const img = recreatedToggleBtn.querySelector('img');
-                                        if (img) img.src = 'images/minus.svg';
+                                    // Si hay agreements dinámicos, el base debe estar colapsado
+                                    // Si no hay agreements dinámicos, el base debe estar expandido
+                                    if (hasDynamicAgreements) {
+                                        // Colapsar el base y expandir solo el primer agreement dinámico
+                                        collapseAgreement('base');
+                                        const firstDynamicAgreement = dynamicAgreements[0];
+                                        if (firstDynamicAgreement) {
+                                            const firstUniqueId = firstDynamicAgreement.id.replace('projectAgreementForm_', '');
+                                            expandAgreement(firstUniqueId);
+                                            collapseAllAgreementsExcept(firstUniqueId);
+                                        }
+                                    } else {
+                                        // No hay agreements dinámicos, expandir el base
+                                        const recreatedMeta = document.getElementById('projectEmptyMeta');
+                                        if (recreatedMeta) {
+                                            recreatedMeta.style.display = 'flex';
+                                        }
+                                        
+                                        // Toggle button visible con icono de menos (expandido)
+                                        const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                                        if (recreatedToggleBtn) {
+                                            recreatedToggleBtn.style.display = 'block';
+                                            const img = recreatedToggleBtn.querySelector('img');
+                                            if (img) img.src = 'images/minus.svg';
+                                        }
                                     }
                                     
                                     // Items ocultos inicialmente
@@ -9211,6 +9358,10 @@
             
             // Function to create a new agreement group (make it globally available)
             window.createNewAgreementGroup = function() {
+                // Colapsar todos los agreements existentes antes de crear uno nuevo
+                // Esto asegura que solo el nuevo agreement (el más reciente) esté expandido
+                collapseAllAgreementsExcept(null);
+                
                 window.agreementCounter = (window.agreementCounter || 0) + 1;
                 const uniqueId = window.agreementCounter;
                 
@@ -9341,6 +9492,14 @@
                     
                     // Initialize functionality for the new group
                     initNewAgreementGroup(uniqueId);
+                    
+                    // Asegurar que el nuevo agreement esté expandido (es el más reciente)
+                    // Usar setTimeout para asegurar que la inicialización esté completa
+                    setTimeout(() => {
+                        expandAgreement(uniqueId);
+                        // Colapsar todos los demás agreements (incluyendo el base si existe)
+                        collapseAllAgreementsExcept(uniqueId);
+                    }, 100);
                 }
                 
                 // Add scroll if needed and adjust to keep headline and new agreement visible
