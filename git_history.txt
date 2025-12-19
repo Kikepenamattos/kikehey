@@ -1,3 +1,4 @@
+067b25840c62421bbc543fb9a40eece7a73fe389|Ubits|ubits@macbookpro.lan|2025-12-19 15:27:10 -0500|Feature: Solo el último agreement creado aparece expandido por defecto
 4f97a0602528ea29811a93b35da0da92d3a2df59|Ubits|ubits@macbookpro.lan|2025-12-19 15:03:51 -0500|Update: Actualizar changelog con últimos cambios
 1bab9cd1e8b1f68face4b4de68df109620ddbf7d|Ubits|ubits@macbookpro.lan|2025-12-19 15:03:33 -0500|Update: Ajustar estilos de dsu-agreements__agreement-items y dsu-agreements__agreement-form (width y padding)
 00498e2972089f8131934e597b56901ec546065e|Ubits|ubits@macbookpro.lan|2025-12-19 14:51:20 -0500|Update: Actualizar changelog con últimos cambios

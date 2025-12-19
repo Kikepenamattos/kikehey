@@ -5969,37 +5969,28 @@
                                             // Esperar un poco más para que se carguen los datos
                                             await new Promise(resolve => setTimeout(resolve, 100));
                                             
-                                            // Solo el primer agreement (índice 0, el más reciente) debe estar expandido
-                                            // Los demás deben estar colapsados
-                                            if (index === 0) {
-                                                // Expandir el primer agreement (más reciente)
-                                                expandAgreement(uniqueId);
-                                            } else {
-                                                // Colapsar los demás agreements
-                                                collapseAgreement(uniqueId);
-                                            }
+                                            // Todos los agreements deben estar expandidos en la vista de edición
+                                            expandAgreement(uniqueId);
                                         } else {
                                             console.warn(`⚠️ No se pudo encontrar el agreement creado para el índice ${index}`);
                                         }
                                     }
                                 }
                                 
-                                // Después de cargar todos los agreements, asegurar que solo el primero esté expandido
+                                // Después de cargar todos los agreements, asegurar que todos estén expandidos
                                 // y colapsar el formulario base si existe
                                 setTimeout(() => {
-                                    const firstAgreement = contentContainer.querySelector('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
-                                    if (firstAgreement) {
-                                        const firstUniqueId = firstAgreement.id.replace('projectAgreementForm_', '');
-                                        // Colapsar todos excepto el primero
-                                        collapseAllAgreementsExcept(firstUniqueId);
-                                        // Asegurar que el primero esté expandido
-                                        expandAgreement(firstUniqueId);
-                                        
-                                        // Colapsar el formulario base si existe
-                                        const baseAgreementForm = document.getElementById('projectAgreementForm');
-                                        if (baseAgreementForm) {
-                                            collapseAgreement('base');
-                                        }
+                                    // Expandir todos los agreements dinámicos
+                                    const allDynamicAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]');
+                                    allDynamicAgreements.forEach(agreement => {
+                                        const uniqueId = agreement.id.replace('projectAgreementForm_', '');
+                                        expandAgreement(uniqueId);
+                                    });
+                                    
+                                    // Colapsar el formulario base si existe (solo se usa cuando no hay agreements dinámicos)
+                                    const baseAgreementForm = document.getElementById('projectAgreementForm');
+                                    if (baseAgreementForm && allDynamicAgreements.length > 0) {
+                                        collapseAgreement('base');
                                     }
                                 }, 300);
                                 
@@ -8558,14 +8549,12 @@
                         // Si hay agreements dinámicos, el base debe estar colapsado
                         // Si no hay agreements dinámicos, el base debe estar expandido
                         if (hasDynamicAgreements) {
-                            // Colapsar el base y expandir solo el primer agreement dinámico
+                            // Colapsar el base y expandir TODOS los agreements dinámicos
                             collapseAgreement('base');
-                            const firstDynamicAgreement = dynamicAgreements[0];
-                            if (firstDynamicAgreement) {
-                                const firstUniqueId = firstDynamicAgreement.id.replace('projectAgreementForm_', '');
-                                expandAgreement(firstUniqueId);
-                                collapseAllAgreementsExcept(firstUniqueId);
-                            }
+                            dynamicAgreements.forEach(agreement => {
+                                const uniqueId = agreement.id.replace('projectAgreementForm_', '');
+                                expandAgreement(uniqueId);
+                            });
                         } else {
                             // No hay agreements dinámicos, expandir el base
                             const existingMeta = document.getElementById('projectEmptyMeta');
@@ -8754,14 +8743,12 @@
                                     // Si hay agreements dinámicos, el base debe estar colapsado
                                     // Si no hay agreements dinámicos, el base debe estar expandido
                                     if (hasDynamicAgreements) {
-                                        // Colapsar el base y expandir solo el primer agreement dinámico
+                                        // Colapsar el base y expandir TODOS los agreements dinámicos
                                         collapseAgreement('base');
-                                        const firstDynamicAgreement = dynamicAgreements[0];
-                                        if (firstDynamicAgreement) {
-                                            const firstUniqueId = firstDynamicAgreement.id.replace('projectAgreementForm_', '');
-                                            expandAgreement(firstUniqueId);
-                                            collapseAllAgreementsExcept(firstUniqueId);
-                                        }
+                                        dynamicAgreements.forEach(agreement => {
+                                            const uniqueId = agreement.id.replace('projectAgreementForm_', '');
+                                            expandAgreement(uniqueId);
+                                        });
                                     } else {
                                         // No hay agreements dinámicos, expandir el base
                                         const recreatedMeta = document.getElementById('projectEmptyMeta');
@@ -9358,9 +9345,7 @@
             
             // Function to create a new agreement group (make it globally available)
             window.createNewAgreementGroup = function() {
-                // Colapsar todos los agreements existentes antes de crear uno nuevo
-                // Esto asegura que solo el nuevo agreement (el más reciente) esté expandido
-                collapseAllAgreementsExcept(null);
+                // No colapsar los agreements existentes - todos deben estar expandidos en la vista de edición
                 
                 window.agreementCounter = (window.agreementCounter || 0) + 1;
                 const uniqueId = window.agreementCounter;
@@ -9386,7 +9371,7 @@
                         </button>
                     </div>
                     
-                    <div class="dsu-agreements__agreement-meta" id="projectEmptyMeta_${uniqueId}">
+                    <div class="dsu-agreements__agreement-meta" id="projectEmptyMeta_${uniqueId}" style="display: flex;">
                         <div class="dsu-date-button-wrapper">
                             <button class="dsu-button dsu-button--secondary dsu-button--small" id="projectAgreementDateButton_${uniqueId}">
                                 <span class="dsu-agreements__date-button-icon">
@@ -9434,6 +9419,7 @@
                 const formDiv = document.createElement('div');
                 formDiv.className = 'dsu-agreements__agreement-form';
                 formDiv.id = `projectAgreementFormForm_${uniqueId}`;
+                formDiv.style.display = 'flex'; // Asegurar que el formulario esté visible desde el inicio
                 formDiv.innerHTML = `
                     <div class="dsu-input-group dsu-agreements__agreement-form-input">
                         <input type="text" class="dsu-input dsu-input--only" id="projectAgreementItem1_${uniqueId}" placeholder="Create and send an agreement">
@@ -9490,15 +9476,31 @@
                         contentContainer.appendChild(formDiv);
                     }
                     
+                    // Asegurar que el nuevo agreement esté expandido desde el inicio
+                    // El HTML ya tiene los estilos correctos (display: flex), pero nos aseguramos aquí
+                    const newMeta = document.getElementById(`projectEmptyMeta_${uniqueId}`);
+                    const newForm = document.getElementById(`projectAgreementFormForm_${uniqueId}`);
+                    const newToggleBtn = document.getElementById(`projectEmptyToggleBtn_${uniqueId}`);
+                    
+                    if (newMeta) {
+                        newMeta.style.display = 'flex';
+                    }
+                    if (newForm) {
+                        newForm.style.display = 'flex';
+                    }
+                    if (newToggleBtn) {
+                        newToggleBtn.style.display = 'block';
+                        const img = newToggleBtn.querySelector('img');
+                        if (img) img.src = 'images/minus.svg'; // Icono de menos (expandido)
+                    }
+                    
                     // Initialize functionality for the new group
                     initNewAgreementGroup(uniqueId);
                     
-                    // Asegurar que el nuevo agreement esté expandido (es el más reciente)
-                    // Usar setTimeout para asegurar que la inicialización esté completa
+                    // Asegurar que el nuevo agreement esté expandido
+                    // No colapsar los demás - todos deben estar expandidos en la vista de edición
                     setTimeout(() => {
                         expandAgreement(uniqueId);
-                        // Colapsar todos los demás agreements (incluyendo el base si existe)
-                        collapseAllAgreementsExcept(uniqueId);
                     }, 100);
                 }
                 
