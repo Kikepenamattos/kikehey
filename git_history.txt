@@ -1,3 +1,4 @@
+6551b792609293cbab64a1f45f51240f057909f3|Ubits|ubits@macbookpro.lan|2025-12-19 14:43:52 -0500|Update: Actualizar changelog con últimos cambios
 595569f5231e789a6c1f75ef0f8d6e75505138ec|Ubits|ubits@macbookpro.lan|2025-12-19 14:43:11 -0500|Update: Agregar icono de calendario y texto 'Created:' en agreement-item-date de project_view
 b0fe4e8c9ee2f32b8bd1ea9107e8f6845a42a0fd|Ubits|ubits@macbookpro.lan|2025-12-19 12:57:19 -0500|Update: Actualizar changelog con últimos cambios
 9ca7b0246ff0c3040f101527e6f490d87870c10f|Ubits|ubits@macbookpro.lan|2025-12-19 12:56:53 -0500|Fix: Corregir date picker en agreements para mostrar fecha seleccionada y replicar estilos de botón tertiary en project_view

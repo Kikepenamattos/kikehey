@@ -2344,6 +2344,9 @@
         /* Date Picker positioning for agreements */
         .dsu-agreements .dsu-date-button-wrapper {
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .dsu-agreements .dsu-date-picker {
@@ -2352,6 +2355,32 @@
             /* left: 10px; */
             right: 0;
             z-index: 10000;
+        }
+
+        /* Agreement date reset button */
+        .agreement-date-reset-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .agreement-date-reset-btn:hover {
+            opacity: 1;
+        }
+
+        .agreement-date-reset-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
         }
 
         /* Agreement name input with edit button */
@@ -3840,6 +3869,9 @@
                                                 <span id="projectAgreementDateButtonText">Select a date</span>
                                             </button>
                                             <div class="dsu-date-picker" id="projectAgreementDatePicker"></div>
+                                            <button class="agreement-date-reset-btn" id="projectAgreementDateResetBtn" style="display: none;" title="Clear date">
+                                                <img src="images/trash.svg" alt="Clear">
+                                            </button>
                                         </div>
                                         <div class="dsu-agreements__agreement-status">
                                             <div class="dsu-status-button-wrapper">
@@ -5732,6 +5764,13 @@
                                 const dateButtonText = document.getElementById(dateButtonTextId);
                                 if (dateButtonText) {
                                     dateButtonText.textContent = agreementData.date;
+                                    
+                                    // Mostrar botón de reset si existe
+                                    const resetBtnId = uniqueId === 'base' ? 'projectAgreementDateResetBtn' : `projectAgreementDateResetBtn_${uniqueId}`;
+                                    const resetBtn = document.getElementById(resetBtnId);
+                                    if (resetBtn) {
+                                        resetBtn.style.display = 'flex';
+                                    }
                                 }
                             }
                             
@@ -6443,6 +6482,41 @@
             });
         }
 
+        // Function to initialize agreement date reset button
+        function initAgreementDateReset(pickerId, buttonTextId, resetBtnId) {
+            const resetBtn = document.getElementById(resetBtnId);
+            const dateButtonText = document.getElementById(buttonTextId);
+
+            if (!resetBtn || !dateButtonText) return;
+
+            // Remover listeners anteriores clonando el botón
+            const newResetBtn = resetBtn.cloneNode(true);
+            resetBtn.parentNode.replaceChild(newResetBtn, resetBtn);
+            const actualResetBtn = document.getElementById(resetBtnId);
+
+            actualResetBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Reset button text
+                dateButtonText.textContent = 'Select a date';
+
+                // Reset stored date in global state
+                if (window.datePickerStates && window.datePickerStates[pickerId]) {
+                    window.datePickerStates[pickerId].selectedDate = null;
+                }
+
+                // Hide reset button
+                actualResetBtn.style.display = 'none';
+
+                // Close picker if open
+                const picker = document.getElementById(pickerId);
+                if (picker) {
+                    picker.classList.remove('dsu-date-picker--visible');
+                }
+            });
+        }
+
         // Function to update label visibility based on date selection
         function updateProjectDateLabelVisibility() {
             const dateButtonText = document.getElementById('projectDateButtonText');
@@ -6620,6 +6694,15 @@
                             if (resetBtn) resetBtn.style.display = 'flex';
                         }
                         
+                        // Show reset button for agreement date pickers
+                        if (pickerId.startsWith('projectAgreementDatePicker')) {
+                            const resetBtnId = pickerId.replace('Picker', 'ResetBtn');
+                            const resetBtn = document.getElementById(resetBtnId);
+                            if (resetBtn) {
+                                resetBtn.style.display = 'flex';
+                            }
+                        }
+                        
                         picker.classList.remove('dsu-date-picker--visible');
                     });
                 });
@@ -6677,6 +6760,15 @@
                         currentDate = new Date(selectedDate);
                     } else {
                         currentDate = new Date();
+                    }
+                    
+                    // Mostrar botón de reset si hay fecha seleccionada (para agreement date pickers)
+                    if (pickerId.startsWith('projectAgreementDatePicker') && selectedDate) {
+                        const resetBtnId = pickerId.replace('Picker', 'ResetBtn');
+                        const resetBtn = document.getElementById(resetBtnId);
+                        if (resetBtn) {
+                            resetBtn.style.display = 'flex';
+                        }
                     }
                     
                     renderDatePicker(currentDate);
@@ -8403,8 +8495,17 @@
                             const existingDateButton = document.getElementById('projectAgreementDateButton');
                             const existingDatePicker = document.getElementById('projectAgreementDatePicker');
                             const existingDateButtonText = document.getElementById('projectAgreementDateButtonText');
+                            const existingDateResetBtn = document.getElementById('projectAgreementDateResetBtn');
                             if (existingDateButton && existingDatePicker && existingDateButtonText) {
                                 initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                                // Initialize reset button
+                                if (existingDateResetBtn) {
+                                    initAgreementDateReset('projectAgreementDatePicker', 'projectAgreementDateButtonText', 'projectAgreementDateResetBtn');
+                                    // Show reset button if date is already selected
+                                    if (existingDateButtonText.textContent !== 'Select a date') {
+                                        existingDateResetBtn.style.display = 'flex';
+                                    }
+                                }
                             }
                             
                             const existingStatusButton = document.getElementById('projectAgreementStatusButton');
@@ -8445,6 +8546,9 @@
                                             <span id="projectAgreementDateButtonText">Select a date</span>
                                         </button>
                                         <div class="dsu-date-picker" id="projectAgreementDatePicker"></div>
+                                        <button class="agreement-date-reset-btn" id="projectAgreementDateResetBtn" style="display: none;" title="Clear date">
+                                            <img src="images/trash.svg" alt="Clear">
+                                        </button>
                                     </div>
                                     <div class="dsu-agreements__agreement-status">
                                         <div class="dsu-status-button-wrapper">
@@ -8622,8 +8726,17 @@
                                 const datePickerElement = document.getElementById('projectAgreementDatePicker');
                                 const dateButtonElement = document.getElementById('projectAgreementDateButton');
                                 const dateButtonTextElement = document.getElementById('projectAgreementDateButtonText');
+                                const dateResetBtn = document.getElementById('projectAgreementDateResetBtn');
                                 if (datePickerElement && dateButtonElement && dateButtonTextElement) {
                                     initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                                    // Initialize reset button
+                                    if (dateResetBtn) {
+                                        initAgreementDateReset('projectAgreementDatePicker', 'projectAgreementDateButtonText', 'projectAgreementDateResetBtn');
+                                        // Show reset button if date is already selected
+                                        if (dateButtonTextElement.textContent !== 'Select a date') {
+                                            dateResetBtn.style.display = 'flex';
+                                        }
+                                    }
                                 }
                             }, 100);
                             
@@ -8936,6 +9049,16 @@
             
             if (dateButton && isFormVisible) {
                 initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                // Initialize reset button
+                const dateResetBtn = document.getElementById('projectAgreementDateResetBtn');
+                const dateButtonText = document.getElementById('projectAgreementDateButtonText');
+                if (dateResetBtn) {
+                    initAgreementDateReset('projectAgreementDatePicker', 'projectAgreementDateButtonText', 'projectAgreementDateResetBtn');
+                    // Show reset button if date is already selected
+                    if (dateButtonText && dateButtonText.textContent !== 'Select a date') {
+                        dateResetBtn.style.display = 'flex';
+                    }
+                }
             }
             
             // Status Button Dropdown functionality - Solo inicializar si el formulario está visible
@@ -9118,6 +9241,9 @@
                                 <span id="projectAgreementDateButtonText_${uniqueId}">Select a date</span>
                             </button>
                             <div class="dsu-date-picker" id="projectAgreementDatePicker_${uniqueId}"></div>
+                            <button class="agreement-date-reset-btn" id="projectAgreementDateResetBtn_${uniqueId}" style="display: none;" title="Clear date">
+                                <img src="images/trash.svg" alt="Clear">
+                            </button>
                         </div>
                         <div class="dsu-agreements__agreement-status">
                             <div class="dsu-status-button-wrapper">
@@ -9358,6 +9484,11 @@
                 // Date picker functionality for group
                 if (dateButton) {
                     initDatePicker(`projectAgreementDatePicker_${uniqueId}`, `projectAgreementDateButton_${uniqueId}`, `projectAgreementDateButtonText_${uniqueId}`);
+                    // Initialize reset button for this group
+                    const dateResetBtn = document.getElementById(`projectAgreementDateResetBtn_${uniqueId}`);
+                    if (dateResetBtn) {
+                        initAgreementDateReset(`projectAgreementDatePicker_${uniqueId}`, `projectAgreementDateButtonText_${uniqueId}`, `projectAgreementDateResetBtn_${uniqueId}`);
+                    }
                 }
                 
                 // Status Button Dropdown functionality for group
