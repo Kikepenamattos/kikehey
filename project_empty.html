@@ -6564,7 +6564,12 @@
                 });
             }
             
-            button.addEventListener('click', function(e) {
+            // Remove any existing listeners by cloning the button
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            const actualButton = document.getElementById(buttonId);
+            
+            actualButton.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isVisible = picker.classList.contains('dsu-date-picker--visible');
                 
@@ -6590,12 +6595,24 @@
                 }
             });
             
-            // Close picker when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!picker.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-date-button-wrapper')) {
-                    picker.classList.remove('dsu-date-picker--visible');
-                }
-            }, true);
+            // Close picker when clicking outside - usar una función única para evitar múltiples listeners
+            if (!window.datePickerClickOutsideHandler) {
+                window.datePickerClickOutsideHandler = function(e) {
+                    document.querySelectorAll('.dsu-date-picker--visible').forEach(picker => {
+                        const pickerId = picker.id;
+                        const buttonId = pickerId.replace('Picker', 'Button');
+                        const button = document.getElementById(buttonId);
+                        const buttonWrapper = button ? button.closest('.dsu-date-button-wrapper') : null;
+                        
+                        if (!picker.contains(e.target) && 
+                            (!button || !button.contains(e.target)) && 
+                            (!buttonWrapper || !buttonWrapper.contains(e.target))) {
+                            picker.classList.remove('dsu-date-picker--visible');
+                        }
+                    });
+                };
+                document.addEventListener('click', window.datePickerClickOutsideHandler, true);
+            }
         }
 
         // Function to initialize status dropdown
@@ -8226,7 +8243,8 @@
                         setTimeout(() => {
                             const existingDateButton = document.getElementById('projectAgreementDateButton');
                             const existingDatePicker = document.getElementById('projectAgreementDatePicker');
-                            if (existingDateButton && existingDatePicker) {
+                            const existingDateButtonText = document.getElementById('projectAgreementDateButtonText');
+                            if (existingDateButton && existingDatePicker && existingDateButtonText) {
                                 initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
                             }
                             
@@ -8440,10 +8458,15 @@
                                 });
                             }
                             
-                            // Re-initialize date picker
-                            if (newDateButton) {
-                                initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
-                            }
+                            // Re-initialize date picker - usar setTimeout para asegurar que el DOM esté listo
+                            setTimeout(() => {
+                                const datePickerElement = document.getElementById('projectAgreementDatePicker');
+                                const dateButtonElement = document.getElementById('projectAgreementDateButton');
+                                const dateButtonTextElement = document.getElementById('projectAgreementDateButtonText');
+                                if (datePickerElement && dateButtonElement && dateButtonTextElement) {
+                                    initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                                }
+                            }, 100);
                             
                             // Re-initialize status dropdown
                             const newStatusButton = document.getElementById('projectAgreementStatusButton');
@@ -9172,26 +9195,6 @@
                 // Date picker functionality for group
                 if (dateButton) {
                     initDatePicker(`projectAgreementDatePicker_${uniqueId}`, `projectAgreementDateButton_${uniqueId}`, `projectAgreementDateButtonText_${uniqueId}`);
-                    
-                    // Agregar funcionalidad de toggle para date picker
-                    const datePicker = document.getElementById(`projectAgreementDatePicker_${uniqueId}`);
-                    if (datePicker) {
-                        dateButton.addEventListener('click', function(e) {
-                            // Si el date picker está visible, ocultarlo; si está oculto, mostrarlo
-                            const isVisible = datePicker.style.display !== 'none' && datePicker.style.display !== '';
-                            if (isVisible) {
-                                datePicker.style.display = 'none';
-                            } else {
-                                // Cerrar otros date pickers abiertos primero
-                                document.querySelectorAll('.dsu-date-picker').forEach(picker => {
-                                    if (picker.id !== `projectAgreementDatePicker_${uniqueId}`) {
-                                        picker.style.display = 'none';
-                                    }
-                                });
-                                datePicker.style.display = 'block';
-                            }
-                        });
-                    }
                 }
                 
                 // Status Button Dropdown functionality for group

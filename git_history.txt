@@ -1,3 +1,4 @@
+488e3c7f5f062c96bacaefca8058f976a3fed05f|Ubits|ubits@macbookpro.lan|2025-12-19 09:18:56 -0500|Update: Actualizar changelog con últimos cambios
 7fe8b66f1d989a1a5249439bf2cebd8c0a24098f|Ubits|ubits@macbookpro.lan|2025-12-19 09:18:40 -0500|Fix: Ajustar posición del dropdown de status en agreements a left: -70px
 0f9a5e0156b1572873624d2c4fd215f6c40115e0|Ubits|ubits@macbookpro.lan|2025-12-19 09:15:55 -0500|Update: Actualizar changelog con últimos cambios
 2d42f83ce6a448a723182e55d88487ee7dad547b|Ubits|ubits@macbookpro.lan|2025-12-19 09:15:37 -0500|Fix: Corregir inicialización de date picker y status dropdown en formulario base, ajustar estilos de agreement-meta e items, y eliminar icono del botón Send
