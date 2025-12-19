@@ -6619,12 +6619,19 @@
         function initStatusDropdown(buttonId, dropdownId, chevronId, textId) {
             const button = document.getElementById(buttonId);
             const dropdown = document.getElementById(dropdownId);
-            const chevron = document.getElementById(chevronId);
-            const text = document.getElementById(textId);
             
             if (!button || !dropdown) return;
             
-            button.addEventListener('click', function(e) {
+            // Remover cualquier listener anterior clonando el botón
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            const actualButton = document.getElementById(buttonId);
+            
+            // Obtener referencias actualizadas después de clonar
+            const actualChevron = document.getElementById(chevronId);
+            const actualText = document.getElementById(textId);
+            
+            actualButton.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const isExpanded = dropdown.classList.contains('dsu-status-dropdown--expanded');
                 
@@ -6653,12 +6660,15 @@
                     setTimeout(() => {
                         dropdown.classList.remove('dsu-status-dropdown--upward');
                     }, 250);
-                    if (chevron) {
-                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                    if (actualChevron) {
+                        const chevronImg = actualChevron.querySelector('img');
+                        if (chevronImg) {
+                            chevronImg.src = chevronImg.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
                     }
                 } else {
                     // Detectar si el dropdown está cerca del bottom y mostrarlo hacia arriba
-                    const buttonRect = button.getBoundingClientRect();
+                    const buttonRect = actualButton.getBoundingClientRect();
                     const dropdownHeight = dropdown.scrollHeight;
                     const spaceBelow = window.innerHeight - buttonRect.bottom;
                     const spaceAbove = buttonRect.top;
@@ -6673,26 +6683,33 @@
                     
                     dropdown.classList.add('dsu-status-dropdown--expanded');
                     dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
-                    if (chevron) {
-                        chevron.src = chevron.src.replace('down-chevron.svg', 'up-chevron.svg');
+                    if (actualChevron) {
+                        const chevronImg = actualChevron.querySelector('img');
+                        if (chevronImg) {
+                            chevronImg.src = chevronImg.src.replace('down-chevron.svg', 'up-chevron.svg');
+                        }
                     }
                 }
             });
             
-            // Handle option selection
+            // Handle option selection - remover listeners anteriores primero
             const dropdownItems = dropdown.querySelectorAll('.dsu-status-dropdown__item');
             dropdownItems.forEach(item => {
-                item.addEventListener('click', function(e) {
+                // Clonar el item para remover listeners anteriores
+                const newItem = item.cloneNode(true);
+                item.parentNode.replaceChild(newItem, item);
+                
+                newItem.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const newStatus = this.getAttribute('data-status');
                     const statusTextContent = this.querySelector('.dsu-status-dropdown__text').textContent;
                     
                     // Update button
-                    button.className = 'dsu-status-button dsu-status-button--' + newStatus;
-                    if (text) text.textContent = statusTextContent;
+                    actualButton.className = 'dsu-status-button dsu-status-button--' + newStatus;
+                    if (actualText) actualText.textContent = statusTextContent;
                     
                     // Remove active from all items and add to selected
-                    dropdownItems.forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
+                    dropdown.querySelectorAll('.dsu-status-dropdown__item').forEach(i => i.classList.remove('dsu-status-dropdown__item--active'));
                     this.classList.add('dsu-status-dropdown__item--active');
                     
                     // Close dropdown - mantener posición durante animación
@@ -6702,26 +6719,45 @@
                     setTimeout(() => {
                         dropdown.classList.remove('dsu-status-dropdown--upward');
                     }, 250);
-                    if (chevron) {
-                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
+                    if (actualChevron) {
+                        const chevronImg = actualChevron.querySelector('img');
+                        if (chevronImg) {
+                            chevronImg.src = chevronImg.src.replace('up-chevron.svg', 'down-chevron.svg');
+                        }
                     }
                 });
             });
             
-            // Close dropdown when clicking outside - mantener posición durante animación
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && !button.contains(e.target) && !e.target.closest('.dsu-status-button-wrapper')) {
-                    dropdown.style.maxHeight = '0px';
-                    dropdown.classList.remove('dsu-status-dropdown--expanded');
-                    // Remover clase --upward solo después de que termine la animación (250ms)
-                    setTimeout(() => {
-                        dropdown.classList.remove('dsu-status-dropdown--upward');
-                    }, 250);
-                    if (chevron) {
-                        chevron.src = chevron.src.replace('up-chevron.svg', 'down-chevron.svg');
-                    }
-                }
-            });
+            // Close dropdown when clicking outside - usar handler único para evitar múltiples listeners
+            if (!window.statusDropdownClickOutsideHandler) {
+                window.statusDropdownClickOutsideHandler = function(e) {
+                    document.querySelectorAll('.dsu-status-dropdown--expanded').forEach(dropdown => {
+                        const dropdownId = dropdown.id;
+                        const buttonId = dropdownId.replace('Dropdown', 'Button');
+                        const button = document.getElementById(buttonId);
+                        const buttonWrapper = button ? button.closest('.dsu-status-button-wrapper') : null;
+                        const chevronId = dropdownId.replace('Dropdown', 'Chevron');
+                        const chevron = document.getElementById(chevronId);
+                        
+                        if (!dropdown.contains(e.target) && 
+                            (!button || !button.contains(e.target)) && 
+                            (!buttonWrapper || !buttonWrapper.contains(e.target))) {
+                            dropdown.style.maxHeight = '0px';
+                            dropdown.classList.remove('dsu-status-dropdown--expanded');
+                            setTimeout(() => {
+                                dropdown.classList.remove('dsu-status-dropdown--upward');
+                            }, 250);
+                            if (chevron) {
+                                const chevronImg = chevron.querySelector('img');
+                                if (chevronImg) {
+                                    chevronImg.src = chevronImg.src.replace('up-chevron.svg', 'down-chevron.svg');
+                                }
+                            }
+                        }
+                    });
+                };
+                document.addEventListener('click', window.statusDropdownClickOutsideHandler, true);
+            }
         }
 
         // ============================================
@@ -8468,12 +8504,16 @@
                                 }
                             }, 100);
                             
-                            // Re-initialize status dropdown
-                            const newStatusButton = document.getElementById('projectAgreementStatusButton');
-                            const newStatusDropdown = document.getElementById('projectAgreementStatusDropdown');
-                            if (newStatusButton && newStatusDropdown) {
-                                initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
-                            }
+                            // Re-initialize status dropdown - usar setTimeout para asegurar que el DOM esté listo
+                            setTimeout(() => {
+                                const newStatusButton = document.getElementById('projectAgreementStatusButton');
+                                const newStatusDropdown = document.getElementById('projectAgreementStatusDropdown');
+                                const newStatusChevron = document.getElementById('projectAgreementStatusChevron');
+                                const newStatusText = document.getElementById('projectAgreementStatusButtonText');
+                                if (newStatusButton && newStatusDropdown && newStatusChevron && newStatusText) {
+                                    initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
+                                }
+                            }, 100);
                             
                             // Re-initialize item input
                             if (newItem1Input) {
