@@ -8341,8 +8341,7 @@
                                         agreementFormForm.remove();
                                     }
                                     
-                                    // Si no hay más agreements, mantener el estado empty (no volver al default)
-                                    // El usuario puede hacer clic en "add one" nuevamente para crear un nuevo formulario
+                                    // Si no hay más agreements, volver al estado default (vista inicial)
                                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
                                     const remainingDynamicAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length : 0;
                                     
@@ -8350,11 +8349,10 @@
                                     const baseAgreementForm = document.getElementById('projectAgreementForm');
                                     const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
                                     
-                                    // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty pero sin formularios
-                                    // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                                    // Si no hay agreements dinámicos y el formulario base no está visible, volver al estado default
                                     if (remainingDynamicAgreements === 0 && !baseFormVisible) {
-                                        // Mantener el estado empty, no volver al default
-                                        // El formulario base se recreará cuando el usuario haga clic en "add one"
+                                        emptyContainer.style.display = 'none';
+                                        defaultContainer.style.display = 'block';
                                     }
                                 });
                             }
@@ -8473,8 +8471,7 @@
                         agreementFormForm.remove();
                     }
                     
-                    // Si no hay más agreements, mantener el estado empty (no volver al default)
-                    // El usuario puede hacer clic en "add one" nuevamente para crear un nuevo formulario
+                    // Si no hay más agreements, volver al estado default (vista inicial)
                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
                     const remainingDynamicAgreements = contentContainer ? contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length : 0;
                     
@@ -8482,11 +8479,10 @@
                     const baseAgreementForm = document.getElementById('projectAgreementForm');
                     const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
                     
-                    // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty pero sin formularios
-                    // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                    // Si no hay agreements dinámicos y el formulario base no está visible, volver al estado default
                     if (remainingDynamicAgreements === 0 && !baseFormVisible) {
-                        // Mantener el estado empty, no volver al default
-                        // El formulario base se recreará cuando el usuario haga clic en "add one"
+                        emptyContainer.style.display = 'none';
+                        defaultContainer.style.display = 'block';
                     }
                 });
             }
@@ -8983,7 +8979,7 @@
                         }
                         
                         // Verificar si quedan agreements después de eliminar
-                        // Si no hay más agreements (ni dinámicos ni base visible), mantener el estado empty
+                        // Si no hay más agreements (ni dinámicos ni base visible), volver al estado default
                         const emptyContainer = document.getElementById('projectAgreementsEmpty');
                         const defaultContainer = document.getElementById('projectAgreementsDefault');
                         
@@ -8997,13 +8993,10 @@
                                 const baseAgreementForm = document.getElementById('projectAgreementForm');
                                 const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
                                 
-                                // Si no hay agreements dinámicos y el formulario base no está visible, mantener empty
-                                // El usuario puede hacer clic en "add one" para crear un nuevo formulario
+                                // Si no hay agreements dinámicos y el formulario base no está visible, volver al estado default
                                 if (remainingDynamicAgreements === 0 && !baseFormVisible) {
-                                    // Mantener el estado empty, no volver al default
-                                    // El formulario base se recreará cuando el usuario haga clic en "add one"
-                                    emptyContainer.style.display = 'block';
-                                    defaultContainer.style.display = 'none';
+                                    emptyContainer.style.display = 'none';
+                                    defaultContainer.style.display = 'block';
                                 }
                             }
                         }
