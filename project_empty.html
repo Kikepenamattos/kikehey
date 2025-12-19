@@ -938,9 +938,22 @@
             overflow-wrap: break-word;
             word-wrap: break-word;
         }
-            cursor: not-allowed;
-            opacity: 0.6;
-            color: var(--color-text-secondary);
+        
+        .dsu-agreements__agreement-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 98%;
+            margin-top: 16px;
+        }
+        
+        .dsu-agreements__agreement-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            padding-left: var(--spacing-24);
+            /* width: 100%; */
+            margin-top: 16px;
         }
 
         .project-agreements-section--disabled .dsu-agreements__empty-button {
@@ -1911,14 +1924,33 @@
         }
 
         .dsu-status-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             position: absolute;
-            z-index: 1000 !important;
-            overflow: hidden !important; /* Forzar que el contenido no se salga */
-            isolation: isolate; /* Crear un nuevo contexto de apilamiento */
+            top: calc(100% + var(--spacing-08));
+            left: -68px;
+            width: 192px;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-3);
+            overflow: hidden;
+            z-index: 1000;
+            margin-top: var(--spacing-04);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-4px);
+            pointer-events: none;
+            transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+            isolation: isolate;
         }
 
         /* Asegurar que el dropdown expandido esté por encima de todo */
         .dsu-status-dropdown--expanded {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
             z-index: 1000 !important;
             overflow: hidden !important;
         }
@@ -1946,6 +1978,11 @@
 
         .dsu-status-dropdown--upward.dsu-status-dropdown--expanded {
             transform: translateY(0) !important;
+        }
+        
+        /* Ajuste específico para dropdowns dentro de agreements */
+        .dsu-agreements__agreement-status .dsu-status-dropdown {
+            left: 0;
         }
 
         /* Mantener posición durante el cierre - evitar que aparezca abajo */
@@ -2357,6 +2394,39 @@
             flex: 1;
             order: 2;
         }
+        
+        /* Estilos del botón Send email - Copiados del design system */
+        .dsu-agreements__send-button {
+            background-color: var(--color-button-primary-bg-default);
+            border: none;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-08) var(--spacing-16);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            cursor: pointer;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-basics-dark-blue);
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+            width: 100%;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            justify-content: center;
+        }
+        
+        .dsu-agreements__send-button:hover {
+            background-color: var(--color-button-primary-bg-hover);
+        }
+        
+        .dsu-agreements__send-button:disabled {
+            background-color: var(--color-status-to-start);
+            color: var(--color-text-secondary);
+            cursor: not-allowed;
+        }
+        
 
         /* Floating "New Agreement" Button */
         #projectAgreementsEmpty #projectCreateAgreementBtn {
@@ -2978,7 +3048,7 @@
             color: var(--color-basics-dark-blue);
             width: 100%;
             /* margin-bottom: 16px; */
-            margin-top: 16px;
+            /* margin-top: 16px; */
         }
         
         /* Asegurar que el dropdown de status sea visible en el modal */
@@ -3797,10 +3867,7 @@
                                             Delete agreement
                                         </button>
                                         <button class="dsu-agreements__send-button" id="projectSendButton" disabled>
-                                            <span class="dsu-agreements__send-button-icon">
-                                                <img src="images/mail.svg" alt="Mail">
-                                            </span>
-                                            <span>Send email</span>
+                                            <span>Send</span>
                                         </button>
                                     </div>
                                     </div>
@@ -3862,10 +3929,7 @@
                                             Delete agreement
                                         </button>
                                         <button class="dsu-agreements__send-button" id="projectActiveSendBtn">
-                                            <span class="dsu-agreements__send-button-icon">
-                                                <img src="images/mail.svg" alt="Mail">
-                                            </span>
-                                            <span>Send email</span>
+                                            <span>Send</span>
                                         </button>
                                     </div>
                                 </div>
@@ -8092,25 +8156,88 @@
                     const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
                     const existingAgreementForm = document.getElementById('projectAgreementForm');
                     
-                    // Si el formulario ya existe, mostrarlo completamente
+                    // SIEMPRE mostrar la estructura completa cuando se hace clic en "add one"
                     if (existingAgreementForm) {
+                        // Asegurar que el formulario principal esté visible
                         existingAgreementForm.style.display = 'block';
+                        
+                        // Asegurar que el form asociado esté visible
                         const existingFormForm = existingAgreementForm.nextElementSibling;
                         if (existingFormForm && existingFormForm.classList.contains('dsu-agreements__agreement-form')) {
                             existingFormForm.style.display = 'flex';
                         }
-                        // Asegurar que el meta esté visible
+                        
+                        // Asegurar que el meta esté visible y expandido
                         const existingMeta = document.getElementById('projectEmptyMeta');
                         if (existingMeta) {
                             existingMeta.style.display = 'flex';
                         }
-                        // Asegurar que el toggle button esté visible
+                        
+                        // Asegurar que el toggle button esté visible con icono de menos (expandido)
                         const existingToggleBtn = document.getElementById('projectEmptyToggleBtn');
                         if (existingToggleBtn) {
                             existingToggleBtn.style.display = 'block';
                             const img = existingToggleBtn.querySelector('img');
                             if (img) img.src = 'images/minus.svg';
                         }
+                        
+                        // Asegurar que los items estén ocultos inicialmente
+                        const existingItems = document.getElementById('projectEmptyItems');
+                        if (existingItems) {
+                            existingItems.style.display = 'none';
+                        }
+                        
+                        // Asegurar que el input del nombre esté limpio y visible
+                        const existingNameInput = document.getElementById('projectAgreementName');
+                        if (existingNameInput) {
+                            existingNameInput.value = '';
+                            existingNameInput.style.display = 'block';
+                        }
+                        
+                        // Asegurar que el input del item esté limpio y visible
+                        const existingItemInput = document.getElementById('projectAgreementItem1');
+                        if (existingItemInput) {
+                            existingItemInput.value = '';
+                            existingItemInput.style.display = 'block';
+                        }
+                        
+                        // Asegurar que el botón Delete esté deshabilitado inicialmente
+                        const existingDeleteBtn = document.getElementById('projectDeleteAgreementBtn');
+                        if (existingDeleteBtn) {
+                            existingDeleteBtn.disabled = true;
+                            existingDeleteBtn.style.display = 'block';
+                        }
+                        
+                        // Asegurar que el botón Send esté deshabilitado inicialmente
+                        const existingSendBtn = document.getElementById('projectSendButton');
+                        if (existingSendBtn) {
+                            existingSendBtn.disabled = true;
+                            existingSendBtn.style.display = 'block';
+                        }
+                        
+                        // Asegurar que el botón Edit esté oculto inicialmente
+                        const existingEditBtn = document.getElementById('projectAgreementNameEditBtn');
+                        if (existingEditBtn) {
+                            existingEditBtn.style.display = 'none';
+                        }
+                        
+                        // Asegurar que los date picker y status dropdown estén inicializados
+                        // Usar setTimeout para asegurar que el DOM esté completamente renderizado y visible
+                        setTimeout(() => {
+                            const existingDateButton = document.getElementById('projectAgreementDateButton');
+                            const existingDatePicker = document.getElementById('projectAgreementDatePicker');
+                            if (existingDateButton && existingDatePicker) {
+                                initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                            }
+                            
+                            const existingStatusButton = document.getElementById('projectAgreementStatusButton');
+                            const existingStatusDropdown = document.getElementById('projectAgreementStatusDropdown');
+                            const existingStatusChevron = document.getElementById('projectAgreementStatusChevron');
+                            const existingStatusText = document.getElementById('projectAgreementStatusButtonText');
+                            if (existingStatusButton && existingStatusDropdown && existingStatusChevron && existingStatusText) {
+                                initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
+                            }
+                        }, 100);
                     }
                     
                     if (!existingAgreementForm && contentContainer) {
@@ -8182,43 +8309,82 @@
                                         Delete agreement
                                     </button>
                                     <button class="dsu-agreements__send-button" id="projectSendButton" disabled>
-                                        <span class="dsu-agreements__send-button-icon">
-                                            <img src="images/mail.svg" alt="Mail">
-                                        </span>
-                                        <span>Send email</span>
+                                        <span>Send</span>
                                     </button>
                                 </div>
                             </div>
                         `;
                         
-                        // Asegurar que el form asociado también esté visible cuando se recrea
-                        setTimeout(() => {
-                            const recreatedForm = document.getElementById('projectAgreementForm');
-                            if (recreatedForm) {
-                                recreatedForm.style.display = 'block';
-                                const recreatedFormForm = recreatedForm.nextElementSibling;
-                                if (recreatedFormForm && recreatedFormForm.classList.contains('dsu-agreements__agreement-form')) {
-                                    recreatedFormForm.style.display = 'flex';
-                                }
-                                // Asegurar que el meta esté visible
-                                const recreatedMeta = document.getElementById('projectEmptyMeta');
-                                if (recreatedMeta) {
-                                    recreatedMeta.style.display = 'flex';
-                                }
-                                // Asegurar que el toggle button esté visible
-                                const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
-                                if (recreatedToggleBtn) {
-                                    recreatedToggleBtn.style.display = 'block';
-                                    const img = recreatedToggleBtn.querySelector('img');
-                                    if (img) img.src = 'images/minus.svg';
-                                }
-                            }
-                        }, 0);
-                        
                         // Insert before the "New agreement" button
                         const newAgreementBtn = document.getElementById('projectCreateAgreementBtn');
                         if (newAgreementBtn) {
                             newAgreementBtn.insertAdjacentHTML('beforebegin', agreementFormHTML);
+                            
+                            // Asegurar que TODOS los elementos estén visibles y correctamente configurados después de insertar
+                            setTimeout(() => {
+                                const recreatedForm = document.getElementById('projectAgreementForm');
+                                if (recreatedForm) {
+                                    // Formulario principal visible
+                                    recreatedForm.style.display = 'block';
+                                    
+                                    // Form asociado visible
+                                    const recreatedFormForm = recreatedForm.nextElementSibling;
+                                    if (recreatedFormForm && recreatedFormForm.classList.contains('dsu-agreements__agreement-form')) {
+                                        recreatedFormForm.style.display = 'flex';
+                                    }
+                                    
+                                    // Meta visible y expandido
+                                    const recreatedMeta = document.getElementById('projectEmptyMeta');
+                                    if (recreatedMeta) {
+                                        recreatedMeta.style.display = 'flex';
+                                    }
+                                    
+                                    // Toggle button visible con icono de menos (expandido)
+                                    const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                                    if (recreatedToggleBtn) {
+                                        recreatedToggleBtn.style.display = 'block';
+                                        const img = recreatedToggleBtn.querySelector('img');
+                                        if (img) img.src = 'images/minus.svg';
+                                    }
+                                    
+                                    // Items ocultos inicialmente
+                                    const recreatedItems = document.getElementById('projectEmptyItems');
+                                    if (recreatedItems) {
+                                        recreatedItems.style.display = 'none';
+                                    }
+                                    
+                                    // Inputs limpios y visibles
+                                    const recreatedNameInput = document.getElementById('projectAgreementName');
+                                    if (recreatedNameInput) {
+                                        recreatedNameInput.value = '';
+                                        recreatedNameInput.style.display = 'block';
+                                    }
+                                    
+                                    const recreatedItemInput = document.getElementById('projectAgreementItem1');
+                                    if (recreatedItemInput) {
+                                        recreatedItemInput.value = '';
+                                        recreatedItemInput.style.display = 'block';
+                                    }
+                                    
+                                    // Botones en estado inicial
+                                    const recreatedDeleteBtn = document.getElementById('projectDeleteAgreementBtn');
+                                    if (recreatedDeleteBtn) {
+                                        recreatedDeleteBtn.disabled = true;
+                                        recreatedDeleteBtn.style.display = 'block';
+                                    }
+                                    
+                                    const recreatedSendBtn = document.getElementById('projectSendButton');
+                                    if (recreatedSendBtn) {
+                                        recreatedSendBtn.disabled = true;
+                                        recreatedSendBtn.style.display = 'block';
+                                    }
+                                    
+                                    const recreatedEditBtn = document.getElementById('projectAgreementNameEditBtn');
+                                    if (recreatedEditBtn) {
+                                        recreatedEditBtn.style.display = 'none';
+                                    }
+                                }
+                            }, 0);
                             
                             // Re-initialize the agreement functionality
                             const newAgreementNameInput = document.getElementById('projectAgreementName');
@@ -8578,16 +8744,19 @@
                 }
             }
             
-            // Date picker functionality
-            if (dateButton) {
+            // Date picker functionality - Solo inicializar si el formulario está visible
+            const agreementForm = document.getElementById('projectAgreementForm');
+            const isFormVisible = agreementForm && (agreementForm.style.display !== 'none' && window.getComputedStyle(agreementForm).display !== 'none');
+            
+            if (dateButton && isFormVisible) {
                 initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
             }
             
-            // Status Button Dropdown functionality
+            // Status Button Dropdown functionality - Solo inicializar si el formulario está visible
             const statusButton = document.getElementById('projectAgreementStatusButton');
             const statusDropdown = document.getElementById('projectAgreementStatusDropdown');
             
-            if (statusButton && statusDropdown) {
+            if (statusButton && statusDropdown && isFormVisible) {
                 initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
             }
             
@@ -8808,10 +8977,7 @@
                             Delete agreement
                         </button>
                         <button class="dsu-agreements__send-button" id="projectSendButton_${uniqueId}" disabled>
-                            <span class="dsu-agreements__send-button-icon">
-                                <img src="images/mail.svg" alt="Mail">
-                            </span>
-                            <span>Send email</span>
+                            <span>Send</span>
                         </button>
                     </div>
                 `;

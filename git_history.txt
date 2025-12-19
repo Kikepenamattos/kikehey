@@ -1,3 +1,4 @@
+9e4c43abb2e2609f0ecb70490234321fd2bf4190|Ubits|ubits@macbookpro.lan|2025-12-19 08:49:52 -0500|Update: Actualizar changelog con últimos cambios
 e03947232817e45e36397a456433d5cf4d03c201|Ubits|ubits@macbookpro.lan|2025-12-19 08:49:43 -0500|Fix: Volver al estado default (vista inicial) cuando se eliminan todos los agreements
 5a9522a0dde00f738202d97dc544383e7a194c5b|Ubits|ubits@macbookpro.lan|2025-12-19 08:46:24 -0500|Update: Actualizar changelog con últimos cambios
 f93067147d60c66fda785aa05fee483c57b55a52|Ubits|ubits@macbookpro.lan|2025-12-19 08:46:13 -0500|Fix: Mostrar formulario vacío al hacer clic en 'add one' y mantener estado empty al eliminar todos los agreements
