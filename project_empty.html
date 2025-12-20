@@ -6962,8 +6962,8 @@
                         if (!picker.contains(e.target) && 
                             (!button || !button.contains(e.target)) && 
                             (!buttonWrapper || !buttonWrapper.contains(e.target))) {
-                            picker.classList.remove('dsu-date-picker--visible');
-                        }
+                    picker.classList.remove('dsu-date-picker--visible');
+                }
                     });
                 };
                 document.addEventListener('click', window.datePickerClickOutsideHandler, true);
@@ -7110,19 +7110,19 @@
                         if (!dropdown.contains(e.target) && 
                             (!button || !button.contains(e.target)) && 
                             (!buttonWrapper || !buttonWrapper.contains(e.target))) {
-                            dropdown.style.maxHeight = '0px';
-                            dropdown.classList.remove('dsu-status-dropdown--expanded');
-                            setTimeout(() => {
-                                dropdown.classList.remove('dsu-status-dropdown--upward');
-                            }, 250);
-                            if (chevron) {
+                    dropdown.style.maxHeight = '0px';
+                    dropdown.classList.remove('dsu-status-dropdown--expanded');
+                    setTimeout(() => {
+                        dropdown.classList.remove('dsu-status-dropdown--upward');
+                    }, 250);
+                    if (chevron) {
                                 const chevronImg = chevron.querySelector('img');
                                 if (chevronImg) {
                                     chevronImg.src = chevronImg.src.replace('up-chevron.svg', 'down-chevron.svg');
                                 }
-                            }
-                        }
-                    });
+                    }
+                }
+            });
                 };
                 document.addEventListener('click', window.statusDropdownClickOutsideHandler, true);
             }
@@ -7999,8 +7999,8 @@
                     // Obtener imagen del miembro con manejo de errores
                     try {
                         if (typeof getMemberImage === 'function') {
-                            const imageSrc = await getMemberImage(member.image || member.avatar || '');
-                            avatarImg.src = imageSrc;
+                    const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                    avatarImg.src = imageSrc;
                         } else {
                             avatarImg.src = member.image || member.avatar || 'images/avatar_icon.svg';
                         }
@@ -8037,7 +8037,7 @@
                         console.log('✅ Contenedor de teams mostrado antes de agregar elemento');
                     }
                     
-                    teamsListContainer.appendChild(teamItem);
+                        teamsListContainer.appendChild(teamItem);
                     console.log('✅ Team agregado al DOM:', teamName, '(ID:', teamId, ')');
                     
                     // Verificar que el elemento se agregó correctamente
@@ -8723,15 +8723,15 @@
                             const existingMeta = document.getElementById('projectEmptyMeta');
                             if (existingMeta) {
                                 existingMeta.style.display = 'flex';
-                            }
+                        }
 
                             // Asegurar que el toggle button esté visible con icono de menos (expandido)
                             const existingToggleBtn = document.getElementById('projectEmptyToggleBtn');
                             if (existingToggleBtn) {
                                 existingToggleBtn.style.display = 'block';
                                 const img = existingToggleBtn.querySelector('img');
-                                if (img) img.src = 'images/minus.svg';
-                            }
+                            if (img) img.src = 'images/minus.svg';
+                        }
                         }
 
                         // Asegurar que los items estén ocultos inicialmente
@@ -8887,9 +8887,9 @@
                             newAgreementBtn.insertAdjacentHTML('beforebegin', agreementFormHTML);
                             
                             // Asegurar que TODOS los elementos estén visibles y correctamente configurados después de insertar
-                            setTimeout(() => {
-                                const recreatedForm = document.getElementById('projectAgreementForm');
-                                if (recreatedForm) {
+                        setTimeout(() => {
+                            const recreatedForm = document.getElementById('projectAgreementForm');
+                            if (recreatedForm) {
                                     // Formulario principal visible
                                     recreatedForm.style.display = 'block';
                                     
@@ -8914,18 +8914,18 @@
                                         });
                                     } else {
                                         // No hay agreements dinámicos, expandir el base
-                                        const recreatedMeta = document.getElementById('projectEmptyMeta');
-                                        if (recreatedMeta) {
-                                            recreatedMeta.style.display = 'flex';
-                                        }
+                                    const recreatedMeta = document.getElementById('projectEmptyMeta');
+                                    if (recreatedMeta) {
+                                        recreatedMeta.style.display = 'flex';
+                                    }
                                         
                                         // Toggle button visible con icono de menos (expandido)
-                                        const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
-                                        if (recreatedToggleBtn) {
-                                            recreatedToggleBtn.style.display = 'block';
-                                            const img = recreatedToggleBtn.querySelector('img');
-                                            if (img) img.src = 'images/minus.svg';
-                                        }
+                                    const recreatedToggleBtn = document.getElementById('projectEmptyToggleBtn');
+                                    if (recreatedToggleBtn) {
+                                        recreatedToggleBtn.style.display = 'block';
+                                        const img = recreatedToggleBtn.querySelector('img');
+                                        if (img) img.src = 'images/minus.svg';
+                                    }
                                     }
                                     
                                     // Items ocultos inicialmente
@@ -9028,7 +9028,7 @@
                                 const dateButtonTextElement = document.getElementById('projectAgreementDateButtonText');
                                 const dateResetBtn = document.getElementById('projectAgreementDateResetBtn');
                                 if (datePickerElement && dateButtonElement && dateButtonTextElement) {
-                                    initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
+                                initDatePicker('projectAgreementDatePicker', 'projectAgreementDateButton', 'projectAgreementDateButtonText');
                                     // Initialize reset button
                                     if (dateResetBtn) {
                                         initAgreementDateReset('projectAgreementDatePicker', 'projectAgreementDateButtonText', 'projectAgreementDateResetBtn');
@@ -9042,13 +9042,13 @@
                             
                             // Re-initialize status dropdown - usar setTimeout para asegurar que el DOM esté listo
                             setTimeout(() => {
-                                const newStatusButton = document.getElementById('projectAgreementStatusButton');
-                                const newStatusDropdown = document.getElementById('projectAgreementStatusDropdown');
+                            const newStatusButton = document.getElementById('projectAgreementStatusButton');
+                            const newStatusDropdown = document.getElementById('projectAgreementStatusDropdown');
                                 const newStatusChevron = document.getElementById('projectAgreementStatusChevron');
                                 const newStatusText = document.getElementById('projectAgreementStatusButtonText');
                                 if (newStatusButton && newStatusDropdown && newStatusChevron && newStatusText) {
-                                    initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
-                                }
+                                initStatusDropdown('projectAgreementStatusButton', 'projectAgreementStatusDropdown', 'projectAgreementStatusChevron', 'projectAgreementStatusButtonText');
+                            }
                             }, 100);
                             
                             // Re-initialize item input
@@ -9223,15 +9223,15 @@
                 deleteAgreementBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     // Find and remove the agreement form and its associated form
                     const agreementForm = document.getElementById('projectAgreementForm');
                     const agreementFormForm = agreementForm ? agreementForm.nextElementSibling : null;
-                    
+
                     if (agreementForm) {
                         agreementForm.remove();
                     }
-                    
+
                     if (agreementFormForm && agreementFormForm.classList.contains('dsu-agreements__agreement-form')) {
                         agreementFormForm.remove();
                     }
@@ -9784,10 +9784,10 @@
                         
                         if (emptyContainer && defaultContainer) {
                             const contentContainer = emptyContainer.querySelector('.dsu-agreements__content');
-                            if (contentContainer) {
+                        if (contentContainer) {
                                 // Contar solo agreements dinámicos (con ID que contiene _)
                                 const remainingDynamicAgreements = contentContainer.querySelectorAll('.dsu-agreements__agreement[id^="projectAgreementForm_"]').length;
-                                
+                            
                                 // Verificar si el formulario base está visible
                                 const baseAgreementForm = document.getElementById('projectAgreementForm');
                                 const baseFormVisible = baseAgreementForm && baseAgreementForm.style.display !== 'none' && window.getComputedStyle(baseAgreementForm).display !== 'none';
@@ -9882,14 +9882,14 @@
                     setTimeout(() => {
                         // Verificar si el meta está visible usando getComputedStyle
                         let isExpanded = true;
-                        if (emptyMeta) {
+                    if (emptyMeta) {
                             const computedStyle = window.getComputedStyle(emptyMeta);
                             isExpanded = computedStyle.display !== 'none';
-                        }
-                        const img = emptyToggleBtn.querySelector('img');
-                        if (img) {
+                    }
+                    const img = emptyToggleBtn.querySelector('img');
+                    if (img) {
                             img.src = isExpanded ? 'images/minus.svg' : 'images/plus.svg';
-                        }
+                    }
                     }, 100);
                     
                     // Remover el onclick inline y usar solo addEventListener para evitar conflictos
@@ -12357,9 +12357,23 @@
                                 let deliverableStatus = 'to-start';
                                 const statusButton = row.querySelector('.dsu-status-button');
                                 if (statusButton) {
+                                    // Intentar obtener desde la clase del botón
                                     const statusClass = Array.from(statusButton.classList).find(cls => cls.startsWith('dsu-status-button--'));
                                     if (statusClass) {
                                         deliverableStatus = statusClass.replace('dsu-status-button--', '');
+                                    } else {
+                                        // Fallback: obtener desde el texto del botón
+                                        const statusText = statusButton.querySelector('span');
+                                        if (statusText) {
+                                            const text = statusText.textContent.trim().toLowerCase();
+                                            const statusMap = {
+                                                'to start': 'to-start',
+                                                'in progress': 'in-progress',
+                                                'done': 'done',
+                                                'paused': 'paused'
+                                            };
+                                            deliverableStatus = statusMap[text] || 'to-start';
+                                        }
                                     }
                                 }
 

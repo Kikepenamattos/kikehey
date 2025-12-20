@@ -661,6 +661,13 @@
             margin-top: 24px;
         }
 
+        .deliverable-item-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: var(--spacing-12);
+        }
+
         .deliverable-item {
             display: flex;
             align-items: center;
@@ -669,6 +676,11 @@
             background-color: var(--color-surface-especial);
             border-radius: var(--radius-md);
             border: 1px solid var(--color-basics-gray);
+            flex: 1;
+        }
+
+        .deliverable-item-row .dsu-status-button-wrapper {
+            flex-shrink: 0;
         }
 
         .deliverable-item-preview {
@@ -3489,6 +3501,11 @@
                 deliverablesListDisplay.innerHTML = '';
                 
                 project.deliverables.forEach((deliverable) => {
+                    // Crear row wrapper (similar a project_empty.html)
+                    const rowWrapper = document.createElement('div');
+                    rowWrapper.className = 'deliverable-item-row';
+                    
+                    // Crear item container
                     const deliverableItem = document.createElement('div');
                     deliverableItem.className = 'deliverable-item';
                     
@@ -3538,7 +3555,34 @@
                     }
                     
                     deliverableItem.innerHTML = previewHtml + contentHtml;
-                    deliverablesListDisplay.appendChild(deliverableItem);
+                    
+                    // Crear status button wrapper (sin dropdown, solo visual)
+                    const statusWrapper = document.createElement('div');
+                    statusWrapper.className = 'dsu-status-button-wrapper';
+                    
+                    // Obtener status del deliverable o usar 'to-start' por defecto
+                    const deliverableStatus = deliverable.status || 'to-start';
+                    const statusTextMap = {
+                        'to-start': 'To start',
+                        'in-progress': 'In progress',
+                        'done': 'Done',
+                        'paused': 'Paused'
+                    };
+                    const statusText = statusTextMap[deliverableStatus] || 'To start';
+                    
+                    // Crear status button (solo visual, sin funcionalidad de dropdown)
+                    statusWrapper.innerHTML = `
+                        <div class="dsu-status-button dsu-status-button--${deliverableStatus}">
+                            <span>${statusText}</span>
+                        </div>
+                    `;
+                    
+                    // Agregar item y status wrapper al row
+                    rowWrapper.appendChild(deliverableItem);
+                    rowWrapper.appendChild(statusWrapper);
+                    
+                    // Agregar row al contenedor
+                    deliverablesListDisplay.appendChild(rowWrapper);
                 });
                 
                 if (deliverablesSection) {
