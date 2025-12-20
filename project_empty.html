@@ -7072,6 +7072,19 @@
                             chevronImg.src = chevronImg.src.replace('up-chevron.svg', 'down-chevron.svg');
                         }
                     }
+                    
+                    // Activar flujo de envío para status buttons de project-date-status-section y project-deliverables-section
+                    // Verificar si es projectStatusButton (project-date-status-section) o deliverableStatusButton (project-deliverables-section)
+                    if (buttonId === 'projectStatusButton' || (buttonId && buttonId.includes('deliverableStatusButton'))) {
+                        // Activar el modal de envío después de un pequeño delay para que el dropdown se cierre
+                        setTimeout(() => {
+                            if (typeof window.openSendAgreementModal === 'function') {
+                                // Para project status usar 'project' como ID, para deliverables usar el ID del deliverable
+                                const agreementId = buttonId === 'projectStatusButton' ? 'project' : buttonId.replace('deliverableStatusButton_', '');
+                                window.openSendAgreementModal(agreementId);
+                            }
+                        }, 300);
+                    }
                 });
             });
             

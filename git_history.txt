@@ -1,3 +1,4 @@
+496cd937cb7d8729bb50d309e7f4aee0817ee1bf|Ubits|ubits@macbookpro.lan|2025-12-19 16:38:59 -0500|Feature: Modal de envío de agreements con selección de teams y métodos de comunicación
 f4a870fa36fa553ac12bfb69d65587cd41c5e076|Ubits|ubits@macbookpro.lan|2025-12-19 16:01:11 -0500|Feature: Todos los agreements expandidos por defecto en vista de edición
 067b25840c62421bbc543fb9a40eece7a73fe389|Ubits|ubits@macbookpro.lan|2025-12-19 15:27:10 -0500|Feature: Solo el último agreement creado aparece expandido por defecto
 4f97a0602528ea29811a93b35da0da92d3a2df59|Ubits|ubits@macbookpro.lan|2025-12-19 15:03:51 -0500|Update: Actualizar changelog con últimos cambios
