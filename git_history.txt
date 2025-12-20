@@ -1,3 +1,4 @@
+3d05129861a58db62d7c53e9d01a18c75726543f|Ubits|ubits@macbookpro.lan|2025-12-20 10:46:29 -0500|Feature: Flujo de envío activado al cambiar estado en project-status y deliverables
 496cd937cb7d8729bb50d309e7f4aee0817ee1bf|Ubits|ubits@macbookpro.lan|2025-12-19 16:38:59 -0500|Feature: Modal de envío de agreements con selección de teams y métodos de comunicación
 f4a870fa36fa553ac12bfb69d65587cd41c5e076|Ubits|ubits@macbookpro.lan|2025-12-19 16:01:11 -0500|Feature: Todos los agreements expandidos por defecto en vista de edición
 067b25840c62421bbc543fb9a40eece7a73fe389|Ubits|ubits@macbookpro.lan|2025-12-19 15:27:10 -0500|Feature: Solo el último agreement creado aparece expandido por defecto

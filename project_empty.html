@@ -3180,6 +3180,7 @@
             width: 100%;
             /* margin-bottom: 16px; */
             /* margin-top: 16px; */
+            min-width: 144px;
         }
         
         /* Asegurar que el dropdown de status sea visible en el modal */
@@ -6858,6 +6859,13 @@
                             const resetBtn = document.getElementById('projectDateResetBtn');
                             if (label) label.style.display = '';
                             if (resetBtn) resetBtn.style.display = 'flex';
+                            
+                            // Activar flujo de envío al cambiar la fecha del proyecto
+                            setTimeout(() => {
+                                if (typeof window.openSendAgreementModal === 'function') {
+                                    window.openSendAgreementModal('project');
+                                }
+                            }, 300);
                         }
                         
                         // Show reset button for agreement date pickers
