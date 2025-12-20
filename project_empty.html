@@ -2967,6 +2967,118 @@
             cursor: pointer;
         }
 
+        /* Generate Report Modal Styles */
+        .report-loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-48) var(--spacing-24);
+            gap: var(--spacing-16);
+        }
+
+        .report-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--color-basics-gray);
+            border-top-color: var(--color-basics-dark-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .report-loading-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .report-content-state {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .report-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: var(--spacing-08);
+        }
+
+        .report-ai-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+        }
+
+        .report-ai-indicator img {
+            opacity: 0.8;
+        }
+
+        .report-text-content {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--color-text-primary);
+            white-space: pre-wrap;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: var(--spacing-16);
+            background-color: var(--color-surface-especial);
+            border-radius: var(--radius-md);
+        }
+
+        .report-text-content .report-paragraph {
+            margin-bottom: var(--spacing-16);
+        }
+
+        .report-text-content .report-bullet-list {
+            margin: var(--spacing-16) 0;
+            padding-left: var(--spacing-24);
+        }
+
+        .report-text-content .report-bullet-item {
+            margin-bottom: var(--spacing-08);
+            list-style-type: disc;
+        }
+
+        .report-text-content .report-alert {
+            color: #d32f2f;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .report-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-12);
+            padding-top: var(--spacing-16);
+            border-top: 1px solid var(--color-basics-gray);
+        }
+
+        .report-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: var(--color-text-primary);
+            animation: blink 1s infinite;
+            vertical-align: baseline;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
         .send-agreement-option input[type="radio"]:checked + span {
             font-weight: var(--font-weight-semibold);
             color: var(--color-basics-dark-blue);
@@ -4562,6 +4674,42 @@
                 </div>
             </div>
 
+            <!-- Modal para generar reporte de IA -->
+            <div class="modal-overlay" id="generateReportModal">
+                <div class="modal" style="width: 50%; max-width: 800px;">
+                    <div class="modal-headline">
+                        <div class="modal__title">Project Status Report</div>
+                        <button class="modal-close-btn" id="closeGenerateReportModalBtn" aria-label="Close modal">
+                            <img src="images/close.svg" alt="Close" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <!-- Loading state -->
+                        <div id="reportLoadingState" class="report-loading-state">
+                            <div class="report-loading-spinner"></div>
+                            <p class="report-loading-text">Analyzing project data...</p>
+                        </div>
+                        
+                        <!-- Report content -->
+                        <div id="reportContentState" class="report-content-state" style="display: none;">
+                            <div class="report-header">
+                                <div class="report-ai-indicator">
+                                    <img src="images/spark.svg" alt="AI" width="16" height="16">
+                                    <span>AI Generated Report</span>
+                                </div>
+                            </div>
+                            <div id="reportTextContent" class="report-text-content">
+                                <!-- El reporte se generará aquí con typewriting effect -->
+                            </div>
+                            <div id="reportActions" class="report-actions" style="display: none;">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" id="cancelReportBtn">Close</button>
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="sendReportBtn">Send Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Modal para preview de documentos/imágenes en pantalla completa -->
             <div class="preview-modal-overlay" id="previewModalOverlay">
                 <div class="preview-modal">
@@ -4752,6 +4900,9 @@
 
             // Inicializar send agreement modal
             initSendAgreementModal();
+
+            // Inicializar generate report modal
+            initGenerateReportModal();
 
             // Inicializar test section (componente de prueba)
             initTestSection();
@@ -12143,11 +12294,13 @@
                 if (generateReportAction) {
                     generateReportAction.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        // TODO: Implementar funcionalidad de generar reporte
-                        console.log('Generate report clicked');
                         // Close dropdown
                         projectActionsDropdown.style.maxHeight = '0px';
                         projectActionsDropdown.classList.remove('project-actions-dropdown--expanded');
+                        // Open generate report modal
+                        if (typeof window.openGenerateReportModal === 'function') {
+                            window.openGenerateReportModal();
+                        }
                     });
                 }
                 
@@ -13333,6 +13486,377 @@
             }
 
             console.log('✅ Send Agreement Modal inicializado');
+        }
+
+        // ============================================
+        // Generate Report Modal
+        // ============================================
+        function initGenerateReportModal() {
+            const generateReportModal = document.getElementById('generateReportModal');
+            const closeGenerateReportModalBtn = document.getElementById('closeGenerateReportModalBtn');
+            const reportLoadingState = document.getElementById('reportLoadingState');
+            const reportContentState = document.getElementById('reportContentState');
+            const reportTextContent = document.getElementById('reportTextContent');
+            const reportActions = document.getElementById('reportActions');
+            const cancelReportBtn = document.getElementById('cancelReportBtn');
+            const sendReportBtn = document.getElementById('sendReportBtn');
+
+            // Función para analizar el proyecto y generar el reporte
+            function analyzeProject() {
+                const analysis = {
+                    projectName: '',
+                    status: '',
+                    projectDate: null,
+                    totalGoals: 0,
+                    completedGoals: 0,
+                    totalKpis: 0,
+                    completedKpis: 0,
+                    totalStages: 0,
+                    completedStages: 0,
+                    totalDeliverables: 0,
+                    completedDeliverables: 0,
+                    totalAgreements: 0,
+                    pendingAgreements: 0,
+                    expiredAgreements: 0,
+                    alerts: []
+                };
+
+                // Obtener nombre del proyecto
+                const projectNameInput = document.getElementById('projectNameInput');
+                if (projectNameInput) {
+                    analysis.projectName = projectNameInput.value.trim() || 'Unnamed Project';
+                }
+
+                // Obtener status del proyecto
+                const projectStatusButton = document.getElementById('projectStatusButton');
+                if (projectStatusButton) {
+                    const statusClass = Array.from(projectStatusButton.classList).find(cls => cls.startsWith('dsu-status-button--'));
+                    if (statusClass) {
+                        analysis.status = statusClass.replace('dsu-status-button--', '');
+                    }
+                }
+
+                // Obtener fecha de entrega
+                const projectDateButtonText = document.getElementById('projectDateButtonText');
+                if (projectDateButtonText && projectDateButtonText.textContent !== 'Select a date to deliver the project') {
+                    const dateText = projectDateButtonText.textContent.trim();
+                    try {
+                        // Intentar parsear la fecha (formato: "May 5, 2024")
+                        const dateParts = dateText.split(',');
+                        if (dateParts.length === 2) {
+                            const monthDay = dateParts[0].trim().split(' ');
+                            const year = parseInt(dateParts[1].trim());
+                            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                            const month = months.indexOf(monthDay[0]);
+                            const day = parseInt(monthDay[1]);
+                            if (month !== -1 && !isNaN(day) && !isNaN(year)) {
+                                analysis.projectDate = new Date(year, month, day);
+                                
+                                // Verificar si la fecha está vencida
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                                if (analysis.projectDate < today) {
+                                    analysis.alerts.push(`⚠️ Project delivery date (${dateText}) has passed`);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Error parsing project date:', e);
+                    }
+                }
+
+                // Analizar Goals
+                const goalsItemsContainer = document.getElementById('goalsItemsContainer');
+                if (goalsItemsContainer) {
+                    const goalItems = goalsItemsContainer.querySelectorAll('.project-objective-item');
+                    analysis.totalGoals = goalItems.length;
+                    goalItems.forEach(item => {
+                        const checkbox = item.querySelector('.project-objective-item-checkbox');
+                        if (checkbox && checkbox.checked) {
+                            analysis.completedGoals++;
+                        }
+                    });
+                }
+
+                // Analizar KPIs
+                const kpisItemsContainer = document.getElementById('kpisItemsContainer');
+                if (kpisItemsContainer) {
+                    const kpiItems = kpisItemsContainer.querySelectorAll('.project-objective-item');
+                    analysis.totalKpis = kpiItems.length;
+                    kpiItems.forEach(item => {
+                        const checkbox = item.querySelector('.project-objective-item-checkbox');
+                        if (checkbox && checkbox.checked) {
+                            analysis.completedKpis++;
+                        }
+                    });
+                }
+
+                // Analizar Stages
+                const stagesList = document.getElementById('projectStagesList');
+                if (stagesList) {
+                    const stageItems = stagesList.querySelectorAll('.project-stage-item:not(:has(.project-stage-button--add))');
+                    analysis.totalStages = stageItems.length;
+                    stageItems.forEach(item => {
+                        const statusBadge = item.querySelector('.stage-status-badge');
+                        if (statusBadge && statusBadge.classList.contains('stage-status-badge--done')) {
+                            analysis.completedStages++;
+                        }
+                    });
+                }
+
+                // Analizar Deliverables
+                const deliverablesItemsContainer = document.getElementById('deliverablesItemsContainer');
+                if (deliverablesItemsContainer) {
+                    const deliverableRows = deliverablesItemsContainer.querySelectorAll('.project-deliverables-item-row');
+                    analysis.totalDeliverables = deliverableRows.length;
+                    deliverableRows.forEach(row => {
+                        const statusButton = row.querySelector('.dsu-status-button');
+                        if (statusButton) {
+                            const statusClass = Array.from(statusButton.classList).find(cls => cls.startsWith('dsu-status-button--'));
+                            if (statusClass && statusClass.includes('done')) {
+                                analysis.completedDeliverables++;
+                            } else if (statusClass && !statusClass.includes('done') && !statusClass.includes('to-start')) {
+                                analysis.pendingAgreements++;
+                            }
+                        }
+                    });
+                }
+
+                // Analizar Agreements
+                const agreementsContainer = document.querySelector('.dsu-agreements');
+                if (agreementsContainer) {
+                    const agreementItems = agreementsContainer.querySelectorAll('.dsu-agreements__agreement');
+                    analysis.totalAgreements = agreementItems.length;
+                    agreementItems.forEach(agreement => {
+                        const statusButton = agreement.querySelector('.dsu-status-button');
+                        if (statusButton) {
+                            const statusButtonText = statusButton.querySelector('.dsu-status-button__text');
+                            if (statusButtonText) {
+                                const statusText = statusButtonText.textContent.trim().toLowerCase();
+                                if (statusText !== 'done' && statusText !== 'to start') {
+                                    analysis.pendingAgreements++;
+                                    const agreementName = agreement.querySelector('.dsu-agreements__agreement-name input');
+                                    if (agreementName && agreementName.value.trim()) {
+                                        analysis.alerts.push(`⚠️ Agreement "${agreementName.value.trim()}" is pending approval`);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Verificar fechas vencidas en agreements
+                        const dateButton = agreement.querySelector('.dsu-agreements__date-button');
+                        if (dateButton) {
+                            const dateText = dateButton.textContent.trim();
+                            if (dateText && dateText !== 'Select a date') {
+                                try {
+                                    const dateParts = dateText.split(',');
+                                    if (dateParts.length === 2) {
+                                        const monthDay = dateParts[0].trim().split(' ');
+                                        const year = parseInt(dateParts[1].trim());
+                                        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                                        const month = months.indexOf(monthDay[0]);
+                                        const day = parseInt(monthDay[1]);
+                                        if (month !== -1 && !isNaN(day) && !isNaN(year)) {
+                                            const agreementDate = new Date(year, month, day);
+                                            const today = new Date();
+                                            today.setHours(0, 0, 0, 0);
+                                            if (agreementDate < today) {
+                                                analysis.expiredAgreements++;
+                                                const agreementName = agreement.querySelector('.dsu-agreements__agreement-name input');
+                                                if (agreementName && agreementName.value.trim()) {
+                                                    analysis.alerts.push(`⚠️ Agreement "${agreementName.value.trim()}" date (${dateText}) has passed`);
+                                                }
+                                            }
+                                        }
+                                    }
+                                } catch (e) {
+                                    console.warn('Error parsing agreement date:', e);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Generar alertas adicionales
+                if (analysis.totalGoals > 0 && analysis.completedGoals === 0) {
+                    analysis.alerts.push('⚠️ No goals have been completed yet');
+                }
+                if (analysis.totalKpis > 0 && analysis.completedKpis === 0) {
+                    analysis.alerts.push('⚠️ No KPIs have been completed yet');
+                }
+                if (analysis.totalStages > 0 && analysis.completedStages === 0) {
+                    analysis.alerts.push('⚠️ No project stages have been completed yet');
+                }
+                if (analysis.totalDeliverables > 0 && analysis.completedDeliverables === 0) {
+                    analysis.alerts.push('⚠️ No deliverables have been completed yet');
+                }
+
+                return analysis;
+            }
+
+            // Función para generar el texto del reporte
+            function generateReportText(analysis) {
+                let report = '';
+
+                // Párrafo inicial
+                report += `Project Status Report: ${analysis.projectName}\n\n`;
+                report += `This report provides an overview of the current status and progress of the project. `;
+                
+                const completionRate = ((analysis.completedGoals + analysis.completedKpis + analysis.completedStages + analysis.completedDeliverables) / 
+                    Math.max(1, analysis.totalGoals + analysis.totalKpis + analysis.totalStages + analysis.totalDeliverables) * 100).toFixed(0);
+                
+                if (completionRate >= 75) {
+                    report += `The project is progressing well with ${completionRate}% completion rate. `;
+                } else if (completionRate >= 50) {
+                    report += `The project is making steady progress with ${completionRate}% completion rate. `;
+                } else if (completionRate >= 25) {
+                    report += `The project is in early stages with ${completionRate}% completion rate. `;
+                } else {
+                    report += `The project is just getting started with ${completionRate}% completion rate. `;
+                }
+
+                if (analysis.status) {
+                    const statusLabels = {
+                        'to-start': 'To Start',
+                        'in-progress': 'In Progress',
+                        'done': 'Done',
+                        'paused': 'Paused'
+                    };
+                    report += `Current status: ${statusLabels[analysis.status] || analysis.status}.\n\n`;
+                } else {
+                    report += '\n\n';
+                }
+
+                // Progress bullets
+                report += 'Progress Summary:\n';
+                if (analysis.totalGoals > 0) {
+                    report += `• Goals: ${analysis.completedGoals}/${analysis.totalGoals} completed\n`;
+                }
+                if (analysis.totalKpis > 0) {
+                    report += `• KPIs: ${analysis.completedKpis}/${analysis.totalKpis} completed\n`;
+                }
+                if (analysis.totalStages > 0) {
+                    report += `• Stages: ${analysis.completedStages}/${analysis.totalStages} completed\n`;
+                }
+                if (analysis.totalDeliverables > 0) {
+                    report += `• Deliverables: ${analysis.completedDeliverables}/${analysis.totalDeliverables} completed\n`;
+                }
+                if (analysis.totalAgreements > 0) {
+                    report += `• Agreements: ${analysis.totalAgreements - analysis.pendingAgreements}/${analysis.totalAgreements} approved\n`;
+                }
+
+                // Alerts
+                if (analysis.alerts.length > 0) {
+                    report += '\nAlerts:\n';
+                    analysis.alerts.forEach(alert => {
+                        report += `${alert}\n`;
+                    });
+                } else {
+                    report += '\nNo critical alerts at this time.\n';
+                }
+
+                return report;
+            }
+
+            // Función para typewriting effect
+            function typeWriter(text, element, callback) {
+                element.innerHTML = '';
+                let i = 0;
+                const cursor = '<span class="report-cursor"></span>';
+                
+                function type() {
+                    if (i < text.length) {
+                        // Agregar carácter y cursor
+                        element.innerHTML = text.substring(0, i + 1) + cursor;
+                        i++;
+                        setTimeout(type, 15); // Velocidad de escritura similar a ChatGPT
+                    } else {
+                        // Remover cursor al finalizar
+                        element.innerHTML = text;
+                        if (callback) callback();
+                    }
+                }
+                type();
+            }
+
+            // Función para abrir el modal y generar el reporte
+            window.openGenerateReportModal = function() {
+                // Resetear estado
+                reportLoadingState.style.display = 'flex';
+                reportContentState.style.display = 'none';
+                reportActions.style.display = 'none';
+                reportTextContent.innerHTML = '';
+
+                // Mostrar modal
+                if (generateReportModal) {
+                    generateReportModal.classList.add('modal-overlay--visible');
+                }
+
+                // Simular análisis con delay
+                setTimeout(() => {
+                    // Analizar proyecto
+                    const analysis = analyzeProject();
+                    
+                    // Generar texto del reporte
+                    const reportText = generateReportText(analysis);
+
+                    // Ocultar loading, mostrar contenido
+                    reportLoadingState.style.display = 'none';
+                    reportContentState.style.display = 'flex';
+
+                    // Animar typewriting
+                    typeWriter(reportText, reportTextContent, () => {
+                        // Mostrar acciones después de completar el typewriting
+                        setTimeout(() => {
+                            reportActions.style.display = 'flex';
+                        }, 500);
+                    });
+                }, 1500); // Delay inicial para mostrar loading
+            };
+
+            // Event listeners
+            if (closeGenerateReportModalBtn) {
+                closeGenerateReportModalBtn.addEventListener('click', function() {
+                    if (generateReportModal) {
+                        generateReportModal.classList.remove('modal-overlay--visible');
+                    }
+                });
+            }
+
+            if (cancelReportBtn) {
+                cancelReportBtn.addEventListener('click', function() {
+                    if (generateReportModal) {
+                        generateReportModal.classList.remove('modal-overlay--visible');
+                    }
+                });
+            }
+
+            if (sendReportBtn) {
+                sendReportBtn.addEventListener('click', function() {
+                    // Cerrar modal de reporte
+                    if (generateReportModal) {
+                        generateReportModal.classList.remove('modal-overlay--visible');
+                    }
+
+                    // Abrir modal de envío usando el flujo existente
+                    setTimeout(() => {
+                        if (typeof window.openSendAgreementModal === 'function') {
+                            window.openSendAgreementModal('report');
+                        }
+                    }, 300);
+                });
+            }
+
+            // Cerrar modal al hacer clic fuera
+            if (generateReportModal) {
+                generateReportModal.addEventListener('click', function(e) {
+                    if (e.target === generateReportModal) {
+                        generateReportModal.classList.remove('modal-overlay--visible');
+                    }
+                });
+            }
+
+            console.log('✅ Generate Report Modal inicializado');
         }
 
         // ============================================
