@@ -1,3 +1,5 @@
+7daf174fb3090c9ae7f6085d31e39dc97c365882|Ubits|ubits@macbookpro.lan|2025-12-20 17:33:15 -0500|Update: Mejorar visualización de objetivos completados y aplicar estilos consistentes
+6092733416650dfdfdd70726215ecfb606fb5484|Ubits|ubits@macbookpro.lan|2025-12-20 17:21:54 -0500|Update: Actualizar changelog con últimos cambios
 c9d40368bb58972704183f98ec15e0c497d3c11b|Ubits|ubits@macbookpro.lan|2025-12-20 17:21:03 -0500|Update: Mejorar estilos del botón de acciones del proyecto y dropdown
 3ff35b5b068513746af8bb90ffe7153c9798d8ae|Ubits|ubits@macbookpro.lan|2025-12-20 12:26:39 -0500|Update: Reubicar botón Generate report y eliminar edit-close-button-container en project_view
 437230666a718c039b1879848f42b750a23c8d94|Ubits|ubits@macbookpro.lan|2025-12-20 11:18:27 -0500|Feature: Persistencia de status tags en deliverables y mejoras de estilos
