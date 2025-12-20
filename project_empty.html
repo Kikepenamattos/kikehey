@@ -2001,6 +2001,122 @@
             left: -70px;
         }
 
+        /* Botón de elipsis para acciones - Estilos de botón secundario */
+        .project-actions-ellipsis-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--color-basics-dark-blue);
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            position: relative;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: var(--button-secondary-elevation-default);
+            color: var(--color-text-primary);
+        }
+
+        .project-actions-ellipsis-btn:hover:not(:disabled) {
+            background-color: var(--color-surface-regular);
+            border-color: var(--color-button-secondary-bg-hover);
+            box-shadow: var(--button-secondary-elevation-hover);
+        }
+
+        .project-actions-ellipsis-btn:active:not(:disabled),
+        .project-actions-ellipsis-btn.is-pressed {
+            background-color: var(--color-surface-regular);
+            border-color: var(--color-button-secondary-bg-hover);
+            box-shadow: var(--button-secondary-elevation-pressed);
+        }
+
+        .project-actions-ellipsis-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--color-text-primary);
+        }
+
+        /* Dropdown de acciones */
+        .project-actions-dropdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: absolute;
+            top: calc(100% + var(--spacing-08));
+            right: 0;
+            width: 200px;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-3);
+            overflow: hidden;
+            z-index: 1000;
+            margin-top: var(--spacing-04);
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-4px);
+            pointer-events: none;
+            transition: max-height 0.25s ease, opacity 0.2s ease, transform 0.25s ease;
+        }
+
+        .project-actions-dropdown--expanded {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            pointer-events: auto !important;
+            z-index: 1000 !important;
+            overflow: hidden !important;
+            max-height: 200px !important;
+        }
+
+        .project-actions-dropdown__item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
+            color: var(--color-text-primary);
+        }
+
+        .project-actions-dropdown__item:hover:not(:disabled) {
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-actions-dropdown__item:active:not(:disabled) {
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-actions-dropdown__item:focus-visible {
+            outline: 2px solid var(--color-basics-dark-blue);
+            outline-offset: -2px;
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-actions-dropdown__item .dsu-button__icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-actions-dropdown__item .dsu-button__icon img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-actions-wrapper {
+            position: relative;
+        }
+
         /* Mantener posición durante el cierre - evitar que aparezca abajo */
         .dsu-status-dropdown--upward:not(.dsu-status-dropdown--expanded) {
             top: auto !important;
@@ -3653,18 +3769,29 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProjectBtn">
-                            <span class="dsu-button__icon">
-                                <img src="images/share.svg" alt="Share">
-                            </span>
-                            Share project
-                        </button>
-                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="generateReportBtn">
-                            <span class="dsu-button__icon">
-                                <img src="images/spark.svg" alt="Spark">
-                            </span>
-                            <span class="dsu-button__text">Generate report</span>
-                        </button>
+                        <div class="project-actions-wrapper">
+                            <button class="project-actions-ellipsis-btn" id="projectActionsBtn" aria-label="Project actions">
+                                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="4" cy="8" r="1.5"/>
+                                    <circle cx="8" cy="8" r="1.5"/>
+                                    <circle cx="12" cy="8" r="1.5"/>
+                                </svg>
+                            </button>
+                            <div class="project-actions-dropdown" id="projectActionsDropdown">
+                                <button class="project-actions-dropdown__item" id="shareProjectAction">
+                                    <span class="dsu-button__icon">
+                                        <img src="images/share.svg" alt="Share">
+                                    </span>
+                                    <span>Share project</span>
+                                </button>
+                                <button class="project-actions-dropdown__item" id="generateReportAction">
+                                    <span class="dsu-button__icon">
+                                        <img src="images/spark.svg" alt="Spark">
+                                    </span>
+                                    <span>Generate report</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -11963,19 +12090,72 @@
                 teamsObserver.observe(teamsListContainer, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
             }
             
-            // Share project button
-            const shareProjectBtn = document.getElementById('shareProjectBtn');
-            if (shareProjectBtn) {
-                shareProjectBtn.addEventListener('click', function() {
-                    const projectURL = window.location.href;
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(projectURL).then(function() {
-                            alert('URL del proyecto copiada al portapapeles: ' + projectURL);
-                        }).catch(function() {
-                            prompt('Copia esta URL:', projectURL);
-                        });
+            // Project actions ellipsis button and dropdown
+            const projectActionsBtn = document.getElementById('projectActionsBtn');
+            const projectActionsDropdown = document.getElementById('projectActionsDropdown');
+            
+            if (projectActionsBtn && projectActionsDropdown) {
+                // Toggle dropdown
+                projectActionsBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isExpanded = projectActionsDropdown.classList.contains('project-actions-dropdown--expanded');
+                    
+                    // Close all other dropdowns
+                    document.querySelectorAll('.dsu-status-dropdown--expanded, .project-actions-dropdown--expanded').forEach(d => {
+                        if (d !== projectActionsDropdown) {
+                            d.style.maxHeight = '0px';
+                            d.classList.remove('dsu-status-dropdown--expanded', 'project-actions-dropdown--expanded');
+                        }
+                    });
+                    
+                    if (isExpanded) {
+                        projectActionsDropdown.style.maxHeight = '0px';
+                        projectActionsDropdown.classList.remove('project-actions-dropdown--expanded');
                     } else {
-                        prompt('Copia esta URL:', projectURL);
+                        projectActionsDropdown.style.maxHeight = '200px';
+                        projectActionsDropdown.classList.add('project-actions-dropdown--expanded');
+                    }
+                });
+                
+                // Share project action
+                const shareProjectAction = document.getElementById('shareProjectAction');
+                if (shareProjectAction) {
+                    shareProjectAction.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const projectURL = window.location.href;
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(projectURL).then(function() {
+                                alert('URL del proyecto copiada al portapapeles: ' + projectURL);
+                            }).catch(function() {
+                                prompt('Copia esta URL:', projectURL);
+                            });
+                        } else {
+                            prompt('Copia esta URL:', projectURL);
+                        }
+                        // Close dropdown
+                        projectActionsDropdown.style.maxHeight = '0px';
+                        projectActionsDropdown.classList.remove('project-actions-dropdown--expanded');
+                    });
+                }
+                
+                // Generate report action
+                const generateReportAction = document.getElementById('generateReportAction');
+                if (generateReportAction) {
+                    generateReportAction.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // TODO: Implementar funcionalidad de generar reporte
+                        console.log('Generate report clicked');
+                        // Close dropdown
+                        projectActionsDropdown.style.maxHeight = '0px';
+                        projectActionsDropdown.classList.remove('project-actions-dropdown--expanded');
+                    });
+                }
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!projectActionsBtn.contains(e.target) && !projectActionsDropdown.contains(e.target)) {
+                        projectActionsDropdown.style.maxHeight = '0px';
+                        projectActionsDropdown.classList.remove('project-actions-dropdown--expanded');
                     }
                 });
             }
