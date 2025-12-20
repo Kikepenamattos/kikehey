@@ -417,6 +417,18 @@
         .project-objective-item-text {
             flex: 1;
             margin: 0;
+            transition: text-decoration 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .project-objective-item--completed .project-objective-item-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .project-objective-item--completed {
+            background-color: #D1FFEF;
+            border-color: #3BE4A9;
         }
 
         .project-objective-item-actions {
@@ -2486,7 +2498,7 @@
                         }
                     }
                     
-                    // Mostrar Goals
+                    // Mostrar Goals - Todos los objetivos con estilos de completado para los marcados
                     if (hasGoals && goalsItemsDisplay) {
                         goalsItemsDisplay.innerHTML = '';
                         goalsItemsDisplay.style.display = 'flex';
@@ -2497,10 +2509,7 @@
                             
                             if (goalText && goalText.trim()) {
                                 const goalItem = document.createElement('div');
-                                goalItem.className = 'project-objective-item';
-                                if (isCompleted) {
-                                    goalItem.classList.add('project-objective-item--completed');
-                                }
+                                goalItem.className = 'project-objective-item' + (isCompleted ? ' project-objective-item--completed' : '');
                                 goalItem.innerHTML = `
                                     <p class="project-objective-item-text">-${escapeHtml(goalText.trim())}</p>
                                 `;
@@ -2512,7 +2521,7 @@
                         goalsItemsDisplay.style.display = 'none';
                     }
                     
-                    // Mostrar KPIs
+                    // Mostrar KPIs - Todos los KPIs con estilos de completado para los marcados
                     if (hasKpis && kpisItemsDisplay) {
                         kpisItemsDisplay.innerHTML = '';
                         // Inicialmente oculto (se mostrará cuando se haga clic en el tab KPIs)
@@ -2524,10 +2533,7 @@
                             
                             if (kpiText && kpiText.trim()) {
                                 const kpiItem = document.createElement('div');
-                                kpiItem.className = 'project-objective-item';
-                                if (isCompleted) {
-                                    kpiItem.classList.add('project-objective-item--completed');
-                                }
+                                kpiItem.className = 'project-objective-item' + (isCompleted ? ' project-objective-item--completed' : '');
                                 kpiItem.innerHTML = `
                                     <p class="project-objective-item-text">-${escapeHtml(kpiText.trim())}</p>
                                 `;
