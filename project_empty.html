@@ -125,11 +125,12 @@
         .edit-close-button-container {
             display: flex;
             justify-content: flex-end;
+            align-items: center;
+            gap: var(--spacing-12);
             position: absolute;
             top: 0;
             right: 0;
             z-index: 10;
-            height: 32px;
         }
         
         .edit-close-button {
@@ -3657,6 +3658,12 @@
                                 <img src="images/share.svg" alt="Share">
                             </span>
                             Share project
+                        </button>
+                        <button class="dsu-button dsu-button--secondary dsu-button--small" id="generateReportBtn">
+                            <span class="dsu-button__icon">
+                                <img src="images/spark.svg" alt="Spark">
+                            </span>
+                            <span class="dsu-button__text">Generate report</span>
                         </button>
                     </div>
                 </div>
