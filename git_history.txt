@@ -1,3 +1,5 @@
+42ec7f8df390bc297f0472c31dca152bf96a93b9|Ubits|ubits@macbookpro.lan|2025-12-20 17:55:34 -0500|Add: Funcionalidad de generación de reporte de IA para proyectos
+3b0eb20812f937bcbf1af618f866a8f6570521a8|Ubits|ubits@macbookpro.lan|2025-12-20 17:33:24 -0500|Update: Actualizar changelog con últimos cambios
 7daf174fb3090c9ae7f6085d31e39dc97c365882|Ubits|ubits@macbookpro.lan|2025-12-20 17:33:15 -0500|Update: Mejorar visualización de objetivos completados y aplicar estilos consistentes
 6092733416650dfdfdd70726215ecfb606fb5484|Ubits|ubits@macbookpro.lan|2025-12-20 17:21:54 -0500|Update: Actualizar changelog con últimos cambios
 c9d40368bb58972704183f98ec15e0c497d3c11b|Ubits|ubits@macbookpro.lan|2025-12-20 17:21:03 -0500|Update: Mejorar estilos del botón de acciones del proyecto y dropdown
