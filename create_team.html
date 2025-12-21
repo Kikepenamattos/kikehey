@@ -592,12 +592,12 @@
             width: 100%;
             margin: 0;
             padding: 0;
-            gap: 0;
+            gap: 16px;
         }
 
         .modal-cancel-btn,
         .modal-add-btn {
-            width: 152px;
+            width: 100%;
             padding: 12px 24px;
             height: auto;
             min-height: 48px;
@@ -1305,9 +1305,12 @@
                                     <div class="dsu-input-label">
                                         <div class="dsu-input-label__text">
                                             <span>Email</span>
+                                            <span class="dsu-input-label__required">
+                                                <img src="images/asterisk.svg" alt="Required">
+                                            </span>
                                         </div>
                                     </div>
-                                    <input type="email" class="dsu-input" id="modalMemberEmail" placeholder="Placeholder">
+                                    <input type="email" class="dsu-input" id="modalMemberEmail" placeholder="Placeholder" required>
                                 </div>
 
                                 <!-- Contact -->
@@ -2522,24 +2525,10 @@
                 console.error('Add member button not found!');
             }
             
-            // Click en el profile-card-placeholder
+            // Click en el profile-card-placeholder - Toda la card es clickeable
             const addMemberCard = document.getElementById('addMemberCard');
             console.log('addMemberCard:', addMemberCard);
             if (addMemberCard) {
-                // Asegurar que toda la card tenga zona activa
-                // El CSS ya tiene cursor: pointer, pero agregamos funcionalidad adicional
-                const allElements = addMemberCard.querySelectorAll('*');
-                allElements.forEach(element => {
-                    // Prevenir que los elementos hijos capturen el click
-                    element.style.pointerEvents = 'none';
-                });
-                
-                // Restaurar pointer-events en elementos realmente interactivos si los hay
-                const interactiveElements = addMemberCard.querySelectorAll('a, button, input');
-                interactiveElements.forEach(element => {
-                    element.style.pointerEvents = 'auto';
-                });
-                
                 // Hacer toda la card clickeable - capturar clicks en cualquier parte
                 addMemberCard.addEventListener('click', function(e) {
                     console.log('Profile card placeholder clicked');
@@ -2547,15 +2536,12 @@
                     e.stopPropagation();
                     e.preventDefault();
                     
-                    // Si el click fue en un elemento interactivo, no hacer nada aquí
-                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') {
-                        console.log('Click on interactive element, ignoring');
-                        return;
-                    }
-                    
                     // Abrir modal para agregar miembro
                     openAddMemberModal();
                 });
+                
+                // Asegurar que toda la card tenga cursor pointer
+                addMemberCard.style.cursor = 'pointer';
             } else {
                 console.error('Profile card placeholder not found!');
             }
@@ -2952,11 +2938,17 @@
 
         function validateModalForm() {
             const modalMemberName = document.getElementById('modalMemberName');
+            const modalMemberEmail = document.getElementById('modalMemberEmail');
             const modalAddBtn = document.getElementById('modalAddBtn');
             
-            if (modalMemberName && modalAddBtn) {
+            if (modalMemberName && modalMemberEmail && modalAddBtn) {
                 const hasName = modalMemberName.value.trim().length > 0;
-                modalAddBtn.disabled = !hasName;
+                const email = modalMemberEmail.value.trim();
+                const hasEmail = email.length > 0;
+                const isValidEmailFormat = hasEmail ? isValidEmail(email) : false;
+                
+                // El botón se habilita solo si hay nombre y email válido
+                modalAddBtn.disabled = !(hasName && hasEmail && isValidEmailFormat);
             }
         }
 
@@ -3382,7 +3374,12 @@
                         return;
                     }
 
-                    if (memberData.email && !isValidEmail(memberData.email)) {
+                    if (!memberData.email) {
+                        alert('Please fill in the Email field.');
+                        return;
+                    }
+
+                    if (!isValidEmail(memberData.email)) {
                         alert('Please enter a valid email address.');
                         return;
                     }
@@ -4004,6 +4001,22 @@
                     e.preventDefault();
                     e.stopPropagation();
                     console.log('🖱️ Botón editar clickeado para miembro:', memberData.id);
+                    openEditMemberModal(memberData.id);
+                });
+            }
+            
+            // Agregar event listener a toda la zona de la imagen para abrir modal de edición
+            const imageWrapper = memberCard.querySelector('.dsu-profile-card__image-wrapper');
+            if (imageWrapper) {
+                imageWrapper.style.cursor = 'pointer';
+                imageWrapper.addEventListener('click', function(e) {
+                    // Si el click fue en el botón de editar, no hacer nada (ya tiene su propio handler)
+                    if (e.target.closest('.dsu-profile-card__edit-button')) {
+                        return;
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ Zona de imagen clickeada para miembro:', memberData.id);
                     openEditMemberModal(memberData.id);
                 });
             }
@@ -5317,6 +5330,7 @@
                     ensurePlaceholderFirst();
                     
                     // Re-inicializar el evento click del placeholder para abrir el modal
+                    placeholder.style.cursor = 'pointer';
                     placeholder.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -5382,6 +5396,7 @@
                         ensurePlaceholderFirst();
                     }
                     // Re-inicializar el evento click
+                    placeholder.style.cursor = 'pointer';
                     placeholder.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
@@ -5686,7 +5701,10 @@
                         </div>
                     `;
                     // Agregar evento click al placeholder
-                    placeholder.addEventListener('click', function() {
+                    placeholder.style.cursor = 'pointer';
+                    placeholder.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         if (typeof window.openAddMemberModal === 'function') {
                             window.openAddMemberModal();
                         }
