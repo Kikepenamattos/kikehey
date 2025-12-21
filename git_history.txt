@@ -1,3 +1,5 @@
+270ccd326be24187bd496b91df2e5de5cce80f1f|Ubits|ubits@macbookpro.lan|2025-12-21 08:55:52 -0500|Update: Mejorar funcionalidad del modal de agregar miembro en create_team.html
+e5db403b08a8814096ec133fbd441ebbb7e762dc|Ubits|ubits@macbookpro.lan|2025-12-20 17:55:42 -0500|Update: Actualizar changelog con últimos cambios
 42ec7f8df390bc297f0472c31dca152bf96a93b9|Ubits|ubits@macbookpro.lan|2025-12-20 17:55:34 -0500|Add: Funcionalidad de generación de reporte de IA para proyectos
 3b0eb20812f937bcbf1af618f866a8f6570521a8|Ubits|ubits@macbookpro.lan|2025-12-20 17:33:24 -0500|Update: Actualizar changelog con últimos cambios
 7daf174fb3090c9ae7f6085d31e39dc97c365882|Ubits|ubits@macbookpro.lan|2025-12-20 17:33:15 -0500|Update: Mejorar visualización de objetivos completados y aplicar estilos consistentes
