@@ -8128,6 +8128,204 @@
                 });
             }
 
+        // ============================================
+        // Sync Project Teams to Teams (when teams are added/removed from project)
+        // ============================================
+        async function syncProjectTeamsToTeams(projectName, newTeamIds, oldTeamIds = []) {
+            console.log('🔄 Sincronizando teams del proyecto a teams:', { projectName, newTeamIds, oldTeamIds });
+            
+            if (!projectName) {
+                console.warn('⚠️ No se puede sincronizar: falta projectName');
+                return false;
+            }
+
+            try {
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    return false;
+                }
+
+                // Obtener todos los teams
+                const projectDataObj = DocuProjectData.getProjectData();
+                if (!projectDataObj) {
+                    console.warn('⚠️ No se pudieron obtener los datos del proyecto');
+                    return false;
+                }
+
+                const allTeams = projectDataObj.teams || [];
+                let hasChanges = false;
+
+                // Normalizar oldTeamIds (pueden ser strings o objetos con id)
+                const normalizedOldTeamIds = (Array.isArray(oldTeamIds) ? oldTeamIds : []).map(t => {
+                    if (typeof t === 'string') return t;
+                    if (t && typeof t === 'object' && t.id) return String(t.id);
+                    return String(t);
+                }).filter(Boolean);
+                
+                // Normalizar newTeamIds (asegurar que sean strings)
+                const normalizedNewTeamIds = (Array.isArray(newTeamIds) ? newTeamIds : []).map(t => {
+                    if (typeof t === 'string') return t;
+                    if (t && typeof t === 'object' && t.id) return String(t.id);
+                    return String(t);
+                }).filter(Boolean);
+
+                // Encontrar teams que se agregaron (están en new pero no en old)
+                const addedTeams = normalizedNewTeamIds.filter(teamId => !normalizedOldTeamIds.includes(teamId));
+                // Encontrar teams que se removieron (están en old pero no en new)
+                const removedTeams = normalizedOldTeamIds.filter(teamId => !normalizedNewTeamIds.includes(teamId));
+
+                console.log('📊 Teams agregados:', addedTeams.length, addedTeams);
+                console.log('📊 Teams removidos:', removedTeams.length, removedTeams);
+
+                // Para cada team agregado, agregar el nombre del proyecto a team.projects
+                addedTeams.forEach(teamId => {
+                    // Buscar team comparando IDs como strings para evitar problemas de tipo
+                    const team = allTeams.find(t => {
+                        const tId = String(t.id || '');
+                        const searchId = String(teamId || '');
+                        return tId === searchId;
+                    });
+                    if (team) {
+                        // Asegurar que team.projects sea un array
+                        if (!team.projects || !Array.isArray(team.projects)) {
+                            team.projects = [];
+                            console.log('⚠️ Team.projects no era un array, inicializado como array vacío');
+                        }
+                        
+                        const teamProjects = team.projects;
+                        // Verificar si el proyecto ya está en la lista
+                        if (!teamProjects.includes(projectName)) {
+                            teamProjects.push(projectName);
+                            // IMPORTANTE: Asignar explícitamente para asegurar que se actualice la referencia
+                            team.projects = [...teamProjects]; // Crear nuevo array para asegurar mutación
+                            hasChanges = true;
+                            console.log('✅ Proyecto agregado al team:', {
+                                teamId: teamId,
+                                teamName: team.name,
+                                projectName: projectName,
+                                totalProyectos: team.projects.length,
+                                proyectos: team.projects
+                            });
+                        } else {
+                            console.log('ℹ️ Proyecto ya está en el team:', teamId, projectName);
+                        }
+                    } else {
+                        console.warn('⚠️ Team no encontrado para agregar proyecto:', teamId, 'Total teams:', allTeams.length);
+                        console.log('🔍 Teams disponibles:', allTeams.map(t => ({ id: t.id, name: t.name })));
+                    }
+                });
+
+                // Para cada team removido, remover el nombre del proyecto de team.projects
+                removedTeams.forEach(teamId => {
+                    // Buscar team comparando IDs como strings para evitar problemas de tipo
+                    const team = allTeams.find(t => {
+                        const tId = String(t.id || '');
+                        const searchId = String(teamId || '');
+                        return tId === searchId;
+                    });
+                    if (team) {
+                        // Asegurar que team.projects sea un array
+                        if (!team.projects || !Array.isArray(team.projects)) {
+                            team.projects = [];
+                            console.log('⚠️ Team.projects no era un array, inicializado como array vacío');
+                        }
+                        
+                        const teamProjects = team.projects;
+                        const projectIndex = teamProjects.indexOf(projectName);
+                        if (projectIndex > -1) {
+                            teamProjects.splice(projectIndex, 1);
+                            // IMPORTANTE: Asignar explícitamente para asegurar que se actualice la referencia
+                            team.projects = [...teamProjects]; // Crear nuevo array para asegurar mutación
+                            hasChanges = true;
+                            console.log('✅ Proyecto removido del team:', {
+                                teamId: teamId,
+                                teamName: team.name,
+                                projectName: projectName,
+                                totalProyectos: team.projects.length,
+                                proyectos: team.projects
+                            });
+                        } else {
+                            console.log('ℹ️ Proyecto no estaba en el team:', teamId, projectName);
+                        }
+                    } else {
+                        console.warn('⚠️ Team no encontrado para remover proyecto:', teamId);
+                    }
+                });
+
+                // Guardar solo una vez si hubo cambios
+                if (hasChanges) {
+                    console.log('💾 Guardando cambios en teams...');
+                    console.log('📦 projectDataObj antes de guardar:', {
+                        totalTeams: projectDataObj.teams.length,
+                        teamsConProjects: projectDataObj.teams.filter(t => t.projects && t.projects.length > 0).map(t => ({
+                            id: t.id,
+                            name: t.name,
+                            projectsCount: t.projects.length,
+                            projects: t.projects
+                        }))
+                    });
+                    
+                    const saved = DocuProjectData.saveProjectData(projectDataObj);
+                    if (saved) {
+                        console.log('✅ Teams actualizados con sincronización de proyectos guardados exitosamente');
+                        
+                        // Pequeño delay para asegurar que localStorage esté completamente escrito
+                        await new Promise(resolve => setTimeout(resolve, 50));
+                        
+                        // Verificar que los cambios se guardaron correctamente
+                        const verifyData = DocuProjectData.getProjectData();
+                        console.log('🔍 Verificación POST-GUARDADO:');
+                        addedTeams.forEach(teamId => {
+                            const verifyTeam = verifyData.teams?.find(t => String(t.id) === String(teamId));
+                            if (verifyTeam) {
+                                const hasProject = verifyTeam.projects && Array.isArray(verifyTeam.projects) && verifyTeam.projects.includes(projectName);
+                                console.log('✅ Verificación POST-GUARDADO:', {
+                                    teamId: teamId,
+                                    teamName: verifyTeam.name,
+                                    hasProject: hasProject,
+                                    projectsCount: verifyTeam.projects ? verifyTeam.projects.length : 0,
+                                    projects: verifyTeam.projects
+                                });
+                                if (!hasProject) {
+                                    console.error('❌ ERROR: El proyecto NO está en el team después de guardar!');
+                                }
+                            } else {
+                                console.warn('⚠️ Verificación fallida: Team', teamId, 'no encontrado después de guardar');
+                            }
+                        });
+                        
+                        // Mostrar alerta de éxito con información detallada
+                        const updatedTeamsCount = addedTeams.length + removedTeams.length;
+                        if (updatedTeamsCount > 0) {
+                            setTimeout(() => {
+                                const message = updatedTeamsCount === 1 
+                                    ? `✅ Se ha actualizado la información de los proyectos asociados para 1 team.`
+                                    : `✅ Se ha actualizado la información de los proyectos asociados para ${updatedTeamsCount} teams.`;
+                                alert(message);
+                            }, 800); // Delay para que no interfiera con otras alertas del sistema
+                        }
+                    } else {
+                        console.error('❌ Error al guardar cambios en teams');
+                    }
+                    
+                    return true; // Retornar true para indicar que hubo cambios
+                } else {
+                    console.log('ℹ️ No hubo cambios en teams para sincronizar');
+                }
+
+                console.log('✅ Sincronización de teams completada');
+                return false; // Retornar false si no hubo cambios
+            } catch (error) {
+                console.error('❌ Error al sincronizar teams del proyecto:', error);
+                console.error('Stack:', error.stack);
+                // No lanzar el error para que no interrumpa el guardado del proyecto
+                return false;
+            }
+        }
+        
+        // Hacer la función disponible globalmente como respaldo
+        window.syncProjectTeamsToTeams = syncProjectTeamsToTeams;
+
             // Función para agregar un team a la lista
             async function addTeamToList(teamId) {
                 if (!teamId) {
@@ -12324,7 +12522,7 @@
             
             if (publishBtn) {
                 // Event listener único que siempre funciona (botón nunca está realmente disabled)
-                publishBtn.addEventListener('click', function(e) {
+                publishBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -12410,8 +12608,13 @@
                     // Recopilar teams asociados
                     const teamsListContainer = document.getElementById('teamsListContainer');
                     const teams = [];
-                    if (teamsListContainer && teamsListContainer.style.display !== 'none') {
+                    const teamIds = []; // Array de IDs para sincronización
+                    
+                    // IMPORTANTE: Recopilar teams incluso si el contenedor está oculto
+                    // porque los teams pueden estar en el DOM aunque no visibles
+                    if (teamsListContainer) {
                         const teamItems = teamsListContainer.querySelectorAll('.team-item');
+                        console.log('📋 Teams encontrados en DOM:', teamItems.length);
                         teamItems.forEach(item => {
                             const teamId = item.getAttribute('data-team-id');
                             const teamName = item.querySelector('.team-name-title__text')?.textContent || '';
@@ -12420,8 +12623,15 @@
                                     id: teamId,
                                     name: teamName
                                 });
+                                teamIds.push(teamId); // Agregar ID al array para sincronización
+                                console.log('✅ Team recopilado:', teamId, teamName);
+                            } else {
+                                console.warn('⚠️ Team sin ID o nombre:', { teamId, teamName });
                             }
                         });
+                        console.log('📊 Total teams recopilados:', teams.length, 'IDs:', teamIds);
+                    } else {
+                        console.warn('⚠️ teamsListContainer no encontrado en el DOM');
                     }
                     
                     // Recopilar assets
@@ -12841,13 +13051,92 @@
                         // Agregar project status (siempre, con valor por defecto si no se seleccionó)
                         projectData.projectStatus = projectStatus;
                         
+                        // Sincronizar teams con proyectos (antes de guardar)
+                        // Usar teamIds (array de IDs) en lugar de teams (array de objetos)
+                        // Normalizar oldTeamIds para manejar tanto strings como objetos
+                        let oldTeamIds = [];
+                        if (existingProject && existingProject.teams && Array.isArray(existingProject.teams)) {
+                            oldTeamIds = existingProject.teams.map(t => {
+                                if (typeof t === 'string') return t;
+                                if (t && typeof t === 'object' && t.id) return t.id;
+                                return String(t);
+                            }).filter(Boolean);
+                        }
+                        
+                        // IMPORTANTE: Declarar validTeamIds fuera del try-catch para que esté disponible después
+                        const validTeamIds = Array.isArray(teamIds) ? teamIds : [];
+                        
+                        // IMPORTANTE: Sincronizar ANTES de guardar el proyecto, esperando a que complete
+                        try {
+                            console.log('🔄 Iniciando sincronización ANTES de guardar proyecto:', {
+                                projectName: projectName,
+                                teamIdsCount: validTeamIds.length,
+                                teamIds: validTeamIds,
+                                oldTeamIdsCount: oldTeamIds.length,
+                                oldTeamIds: oldTeamIds
+                            });
+                            
+                            if (validTeamIds.length > 0 || oldTeamIds.length > 0) {
+                                // IMPORTANTE: Esperar a que la sincronización complete antes de continuar
+                                // La función debería estar disponible en el scope, si no, intentar desde window
+                                if (typeof syncProjectTeamsToTeams === 'function') {
+                                    const syncResult = await syncProjectTeamsToTeams(projectName, validTeamIds, oldTeamIds);
+                                    console.log('✅ Sincronización completada, resultado:', syncResult, 'Procediendo a guardar proyecto...');
+                                } else if (typeof window.syncProjectTeamsToTeams === 'function') {
+                                    const syncResult = await window.syncProjectTeamsToTeams(projectName, validTeamIds, oldTeamIds);
+                                    console.log('✅ Sincronización completada (via window), resultado:', syncResult, 'Procediendo a guardar proyecto...');
+                                } else {
+                                    console.error('❌ syncProjectTeamsToTeams no está disponible!');
+                                }
+                            } else {
+                                console.log('ℹ️ No hay teams para sincronizar (ni nuevos ni antiguos)');
+                            }
+                        } catch (syncError) {
+                            console.error('⚠️ Error en sincronización (no crítico):', syncError);
+                            console.error('Stack:', syncError.stack);
+                            // Continuar con el guardado aunque haya error en sincronización
+                        }
+                        
+                        // Pequeño delay adicional para asegurar que los cambios de teams estén completamente guardados
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                        
                         let savedProject;
                         
                         if (existingProject && existingProjectId) {
                             // Actualizar proyecto existente
-                            console.log('🔄 Actualizando proyecto existente:', existingProjectId);
+                            console.log('🔄 Actualizando proyecto existente después de sincronización:', existingProjectId);
+                            
+                            // Verificar que los cambios de teams estén guardados antes de actualizar el proyecto
+                            const preUpdateData = DocuProjectData.getProjectData();
+                            if (validTeamIds && validTeamIds.length > 0) {
+                                console.log('🔍 Verificación PRE-UPDATE: Teams con proyectos asociados:');
+                                validTeamIds.forEach(teamId => {
+                                    const team = preUpdateData?.teams?.find(t => String(t.id) === String(teamId));
+                                    if (team) {
+                                        const hasProject = team.projects && Array.isArray(team.projects) && team.projects.includes(projectName);
+                                        console.log(`  Team ${teamId} (${team.name}): tiene proyecto "${projectName}": ${hasProject ? '✅' : '❌'}`);
+                                    }
+                                });
+                            }
+                            
                             savedProject = DocuProjectData.updateProject(existingProjectId, projectData);
                             console.log('✅ Proyecto actualizado exitosamente:', savedProject);
+                            
+                            // Verificar POST-UPDATE que los teams todavía tienen el proyecto asociado
+                            const postUpdateData = DocuProjectData.getProjectData();
+                            if (validTeamIds.length > 0) {
+                                console.log('🔍 Verificación POST-UPDATE: Teams con proyectos asociados:');
+                                validTeamIds.forEach(teamId => {
+                                    const team = postUpdateData?.teams?.find(t => String(t.id) === String(teamId));
+                                    if (team) {
+                                        const hasProject = team.projects && Array.isArray(team.projects) && team.projects.includes(projectName);
+                                        console.log(`  Team ${teamId} (${team.name}): tiene proyecto "${projectName}": ${hasProject ? '✅' : '❌'}`);
+                                        if (!hasProject) {
+                                            console.error(`❌ ERROR CRÍTICO: El proyecto "${projectName}" NO está en el team después de updateProject!`);
+                                        }
+                                    }
+                                });
+                            }
                         
                         // Generar HTML del proyecto publicado (los datos ya están en projectData)
                             generateProjectHTML(savedProject);

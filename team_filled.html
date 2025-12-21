@@ -1350,6 +1350,12 @@
             // Cargar proyectos en el sidebar
             console.log('📋 Cargando proyectos en sidebar...');
             loadProjectsInSidebar();
+            
+            // Refrescar datos cuando la ventana vuelve a tener foco (para reflejar cambios desde otras pestañas)
+            window.addEventListener('focus', function() {
+                console.log('🔄 Ventana recuperó el foco, refrescando datos del team...');
+                loadPublishedTeamData();
+            });
         }
 
         /**
@@ -1550,12 +1556,39 @@
                     return;
                 }
 
-                // Cargar el team específico
-                const projectData = DocuProjectData.getProjectData();
+                // Cargar el team específico (forzar recarga de datos para obtener la versión más reciente)
+                // Limpiar caché forzando una nueva lectura desde localStorage
+                console.log('🔍 Buscando team con ID:', teamId);
+                let projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos obtenidos, total teams:', projectData?.teams?.length || 0);
+                
                 if (projectData && projectData.teams && Array.isArray(projectData.teams)) {
-                    const team = projectData.teams.find(t => t.id === teamId && t.status === 'published');
+                    // Buscar el team con el ID exacto (comparar como strings para evitar problemas de tipo)
+                    const team = projectData.teams.find(t => {
+                        const tId = String(t.id || '');
+                        const searchId = String(teamId || '');
+                        const matches = tId === searchId;
+                        if (matches && t.status === 'published') {
+                            console.log('✅ Team encontrado:', { id: t.id, name: t.name, status: t.status });
+                        }
+                        return matches && t.status === 'published';
+                    });
                     if (team) {
-                        displayTeamData(team).catch(err => console.error('Error al mostrar team:', err));
+                        console.log('✅ Team encontrado, cargando datos actualizados:', {
+                            id: team.id,
+                            name: team.name,
+                            projectsCount: team.projects ? team.projects.length : 0,
+                            projects: team.projects,
+                            projectsArray: team.projects ? JSON.stringify(team.projects) : 'null/undefined'
+                        });
+                        // Usar una copia fresca de los datos del team para asegurar que tenemos la versión más reciente
+                        const freshTeamData = { ...team };
+                        // Asegurar que projects sea un array válido
+                        if (!freshTeamData.projects || !Array.isArray(freshTeamData.projects)) {
+                            freshTeamData.projects = [];
+                            console.warn('⚠️ Team.projects no es un array válido, inicializando como array vacío');
+                        }
+                        displayTeamData(freshTeamData).catch(err => console.error('Error al mostrar team:', err));
                         // Marcar el team como activo en el sidebar después de cargar la lista
                         setTimeout(() => {
                             const teamsList = document.getElementById('teamsList');
@@ -1633,14 +1666,50 @@
 
             // Mostrar associated projects (chips)
             const chipsContainer = document.getElementById('projectsChipsContainer');
-            if (chipsContainer && teamData.projects && Array.isArray(teamData.projects)) {
+            console.log('📋 Cargando proyectos asociados:', {
+                chipsContainer: !!chipsContainer,
+                hasProjects: !!(teamData.projects),
+                isArray: Array.isArray(teamData.projects),
+                projectsCount: teamData.projects ? teamData.projects.length : 0,
+                projects: teamData.projects
+            });
+            
+            if (chipsContainer) {
                 chipsContainer.innerHTML = '';
-                teamData.projects.forEach(project => {
-                    const chip = document.createElement('div');
-                    chip.className = 'project-chip';
-                    chip.innerHTML = `<span class="project-chip__text">${escapeHtml(project)}</span>`;
-                    chipsContainer.appendChild(chip);
-                });
+                
+                // Asegurar que teamData.projects sea un array válido
+                const projectsArray = teamData.projects && Array.isArray(teamData.projects) ? teamData.projects : [];
+                
+                if (projectsArray.length > 0) {
+                    console.log('📋 Procesando', projectsArray.length, 'proyectos asociados');
+                    let chipsAgregados = 0;
+                    
+                    projectsArray.forEach((project, index) => {
+                        // Manejar tanto strings como objetos con name
+                        let projectName = null;
+                        if (typeof project === 'string') {
+                            projectName = project.trim();
+                        } else if (project && typeof project === 'object' && project.name) {
+                            projectName = String(project.name).trim();
+                        }
+                        
+                        if (projectName && projectName.length > 0) {
+                            const chip = document.createElement('div');
+                            chip.className = 'project-chip';
+                            chip.innerHTML = `<span class="project-chip__text">${escapeHtml(projectName)}</span>`;
+                            chipsContainer.appendChild(chip);
+                            chipsAgregados++;
+                            console.log(`✅ Chip ${chipsAgregados} agregado: "${projectName}"`);
+                        } else {
+                            console.warn(`⚠️ Proyecto en índice ${index} no válido:`, project);
+                        }
+                    });
+                    console.log(`✅ Total de chips de proyectos mostrados: ${chipsAgregados}/${projectsArray.length}`);
+                } else {
+                    console.log('ℹ️ No hay proyectos asociados para mostrar (array vacío o no válido)');
+                }
+            } else {
+                console.warn('⚠️ chipsContainer no encontrado en el DOM');
             }
 
             // Mostrar miembros

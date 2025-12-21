@@ -2373,6 +2373,10 @@
             }
 
             console.log('✅ Proyecto encontrado:', project);
+            console.log('📋 Teams asociados al proyecto:', {
+                teamsCount: project.teams ? project.teams.length : 0,
+                teams: project.teams
+            });
 
             // Mostrar nombre del proyecto
             const projectNameDisplay = document.getElementById('projectNameDisplay');
@@ -2775,21 +2779,39 @@
                 const projectData = DocuProjectData.getProjectData();
                 
                 project.teams.forEach(async (projectTeam) => {
-                    // Buscar el team completo en projectData
-                    const fullTeam = projectData.teams?.find(t => t.id === projectTeam.id);
+                    // Normalizar projectTeam para manejar tanto objetos como strings (IDs)
+                    let teamId = null;
+                    let teamNameFromProject = null;
                     
-                    if (!fullTeam) {
-                        console.warn('⚠️ Team no encontrado:', projectTeam.id);
+                    if (typeof projectTeam === 'string') {
+                        // Es un ID string
+                        teamId = projectTeam;
+                    } else if (projectTeam && typeof projectTeam === 'object') {
+                        // Es un objeto con id y posiblemente name
+                        teamId = projectTeam.id;
+                        teamNameFromProject = projectTeam.name;
+                    }
+                    
+                    if (!teamId) {
+                        console.warn('⚠️ Team sin ID válido:', projectTeam);
                         return;
                     }
                     
-                    const teamName = fullTeam.name || projectTeam.name || 'Sin nombre';
+                    // Buscar el team completo en projectData
+                    const fullTeam = projectData.teams?.find(t => t.id === teamId || String(t.id) === String(teamId));
+                    
+                    if (!fullTeam) {
+                        console.warn('⚠️ Team no encontrado:', teamId);
+                        return;
+                    }
+                    
+                    const teamName = fullTeam.name || teamNameFromProject || 'Sin nombre';
                     const members = fullTeam.members || [];
                     
                     // Crear estructura del team-item (igual que en project_empty.html)
                     const teamItem = document.createElement('div');
                     teamItem.className = 'team-item';
-                    teamItem.setAttribute('data-team-id', projectTeam.id);
+                    teamItem.setAttribute('data-team-id', teamId);
                     
                     // Crear título del team
                     const teamTitle = document.createElement('div');
@@ -2807,7 +2829,7 @@
                     
                     const withMembersRowLeft = document.createElement('div');
                     withMembersRowLeft.className = 'with-members-row__left';
-                    withMembersRowLeft.setAttribute('data-team-id', projectTeam.id);
+                    withMembersRowLeft.setAttribute('data-team-id', teamId);
                     withMembersRowLeft.setAttribute('role', 'button');
                     withMembersRowLeft.setAttribute('tabindex', '0');
                     withMembersRowLeft.setAttribute('aria-label', `View details for ${teamName}`);
@@ -2815,20 +2837,20 @@
                     // Agregar event listener para abrir modal de detalles
                     withMembersRowLeft.addEventListener('click', function() {
                         if (typeof openTeamDetailsModal === 'function') {
-                            openTeamDetailsModal(projectTeam.id);
+                            openTeamDetailsModal(teamId);
                         }
                     });
                     
                     const avatarsRow = document.createElement('div');
                     avatarsRow.className = 'avatars-row';
-                    avatarsRow.setAttribute('data-team-id', projectTeam.id);
+                    avatarsRow.setAttribute('data-team-id', teamId);
                     avatarsRow.style.cursor = 'pointer';
                     
                     // Agregar event listener también en avatarsRow
                     avatarsRow.addEventListener('click', function(e) {
                         e.stopPropagation();
                         if (typeof openTeamDetailsModal === 'function') {
-                            openTeamDetailsModal(projectTeam.id);
+                            openTeamDetailsModal(teamId);
                         }
                     });
                     

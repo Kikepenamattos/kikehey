@@ -494,7 +494,8 @@
         }
 
         /* Select dropdown styling with chevron padding */
-        .modal-input-group select.dsu-input {
+        .modal-input-group select.dsu-input,
+        .associated-projects-group select.dsu-input {
             padding-right: calc(20px + 12px + var(--spacing-16)); /* Icono (20px) + padding del icono (12px) + padding derecho base */
             appearance: none;
             -webkit-appearance: none;
@@ -1054,12 +1055,13 @@
                                 <span>Associated projects:</span>
                             </div>
                         </div>
-                        <input 
-                            type="text" 
+                        <select 
                             id="associatedProjects" 
-                            class="dsu-input" 
-                            placeholder="Type project name and press Enter"
+                            class="dsu-input"
                         >
+                            <option value="">Select a project</option>
+                            <!-- Projects will be dynamically loaded here -->
+                        </select>
                     <div class="projects-chips-container" id="projectsChipsContainer">
                         <!-- Chips will be dynamically added here -->
                         </div>
@@ -1820,6 +1822,9 @@
             loadChipsIntoContainer('projectsChipsContainer', []);
             console.log('✅ Chips de Associated Projects limpiados');
             
+            // Recargar dropdown después de limpiar chips
+            loadPublishedProjectsInDropdown();
+            
             // Resetear el ID del proyecto actual
             currentProjectId = null;
             currentProjectData = null;
@@ -2062,6 +2067,19 @@
                 console.log('📦 projectData completo:', projectData);
             }
 
+            // Sincronizar team con proyectos ANTES de guardar
+            // Si el team tiene proyectos asociados, asegurar que cada proyecto tenga este team en su lista
+            if (projectData.projects && Array.isArray(projectData.projects) && projectData.projects.length > 0) {
+                console.log('🔄 Sincronizando team con proyectos asociados antes de guardar...');
+                projectData.projects.forEach(projectName => {
+                    if (projectName && typeof projectName === 'string' && projectName.trim().length > 0) {
+                        syncTeamToProject(projectName.trim(), currentProjectId);
+                    }
+                });
+            } else {
+                console.log('ℹ️ No hay proyectos asociados para sincronizar');
+            }
+
             // Guardar proyecto
             console.log('💾 Guardando proyecto...');
             const saved = await saveProjectToStorage(currentProjectId, projectData);
@@ -2242,11 +2260,26 @@
                     }
                     
                     // Hacer merge de datos en lugar de reemplazar completamente
+                    // IMPORTANTE: Siempre usar los projects del projectData si es un array válido
+                    // (incluso si está vacío, para permitir eliminar todos los proyectos)
+                    const finalProjects = (projectData.projects && Array.isArray(projectData.projects)) 
+                        ? projectData.projects 
+                        : (existingTeam.projects && Array.isArray(existingTeam.projects) ? existingTeam.projects : []);
+                    
+                    console.log('📋 Projects a guardar:', {
+                        fromFormData: projectData.projects,
+                        fromExisting: existingTeam.projects,
+                        final: finalProjects,
+                        finalCount: finalProjects.length
+                    });
+                    
                     projectDataObj.teams[existingIndex] = {
                         ...existingTeam, // Preservar datos existentes
                         ...projectData,  // Actualizar con nuevos datos
                         id: projectId,   // Asegurar que el ID se mantiene
-                        updatedAt: Date.now()
+                        updatedAt: Date.now(),
+                        // Siempre usar los projects del formData si es válido (permite eliminar todos)
+                        projects: finalProjects
                     };
                     console.log('✅ Team actualizado preservando datos importantes');
                 } else {
@@ -2507,9 +2540,9 @@
                 teamCostInput.value = 'USD 0.00';
             }
             
-            const associatedProjectsInput = document.getElementById('associatedProjects');
-            if (associatedProjectsInput) {
-                associatedProjectsInput.value = '';
+            const associatedProjectsSelect = document.getElementById('associatedProjects');
+            if (associatedProjectsSelect) {
+                associatedProjectsSelect.value = '';
             }
             
             const searchInput = document.getElementById('searchInput');
@@ -2533,6 +2566,9 @@
             
             // Limpiar chips de Associated Projects usando función helper del componente
             loadChipsIntoContainer('projectsChipsContainer', []);
+            
+            // Recargar dropdown después de limpiar chips
+            loadPublishedProjectsInDropdown();
             
             // Limpiar grid de miembros (excepto el placeholder)
             const teamMembersGrid = document.getElementById('teamMembersGrid');
@@ -4264,18 +4300,275 @@
             }
         }
         
-        // Inicializar funcionalidad de chips para Associated Projects
-        function initAssociatedProjectsChips() {
-            initInputChip('associatedProjects', 'projectsChipsContainer', 
-                function(chipText) {
-                    // Callback cuando se agrega un chip - auto-guardar
-                    autoSave().catch(err => console.error('Error en autoSave:', err));
-                },
-                function(chipText) {
-                    // Callback cuando se elimina un chip - auto-guardar
-                    autoSave().catch(err => console.error('Error en autoSave:', err));
+        // ============================================
+        // Load Published Projects in Dropdown
+        // ============================================
+        function loadPublishedProjectsInDropdown() {
+            console.log('=== loadPublishedProjectsInDropdown llamado ===');
+            
+            const associatedProjectsSelect = document.getElementById('associatedProjects');
+            if (!associatedProjectsSelect) {
+                console.error('❌ Elemento associatedProjects no encontrado');
+                return;
+            }
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                setTimeout(() => {
+                    loadPublishedProjectsInDropdown();
+                }, 200);
+                return;
+            }
+
+            // Obtener datos del proyecto
+            let projectData = null;
+            try {
+                projectData = DocuProjectData.getProjectData();
+            } catch (error) {
+                console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                return;
+            }
+
+            // Obtener proyectos del usuario
+            const allProjects = (projectData && projectData.projects && Array.isArray(projectData.projects)) ? projectData.projects : [];
+            console.log('📊 Total de proyectos encontrados:', allProjects.length);
+
+            // Filtrar solo proyectos publicados con nombre válido
+            const publishedProjects = allProjects.filter(project => {
+                if (!project) return false;
+                const isPublished = project.status === 'published';
+                const hasValidName = project.name && 
+                                   typeof project.name === 'string' &&
+                                   project.name.trim().length > 0;
+                return isPublished && hasValidName;
+            });
+
+            console.log('✅ Proyectos publicados:', publishedProjects.length);
+
+            // Obtener proyectos ya seleccionados (chips)
+            const selectedProjects = getChipsFromContainer('projectsChipsContainer');
+            console.log('📋 Proyectos ya seleccionados:', selectedProjects);
+
+            // Limpiar opciones existentes (excepto la opción por defecto)
+            const defaultOption = associatedProjectsSelect.querySelector('option[value=""]');
+            associatedProjectsSelect.innerHTML = '';
+            if (defaultOption) {
+                associatedProjectsSelect.appendChild(defaultOption);
+            } else {
+                // Crear opción por defecto si no existe
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.textContent = 'Select a project';
+                associatedProjectsSelect.appendChild(opt);
+            }
+
+            // Agregar proyectos publicados al dropdown, excluyendo los ya seleccionados
+            publishedProjects.forEach(project => {
+                const projectName = project.name.trim();
+                // Solo agregar si no está ya seleccionado
+                if (!selectedProjects.some(selected => selected.toLowerCase() === projectName.toLowerCase())) {
+                    const option = document.createElement('option');
+                    option.value = projectName;
+                    option.textContent = projectName;
+                    option.setAttribute('data-project-id', project.id || '');
+                    associatedProjectsSelect.appendChild(option);
                 }
-            );
+            });
+
+            console.log(`✅ Dropdown actualizado: ${publishedProjects.length - selectedProjects.length} proyectos disponibles`);
+        }
+
+        // ============================================
+        // Sync Team to Project (when project is associated from team)
+        // ============================================
+        function syncTeamToProject(projectName, teamId) {
+            console.log('🔄 Sincronizando team a proyecto:', { projectName, teamId });
+            
+            if (!projectName || !teamId) {
+                console.warn('⚠️ No se pueden sincronizar: falta projectName o teamId');
+                return;
+            }
+
+            try {
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    return;
+                }
+
+                // Buscar el proyecto por nombre
+                const allProjects = DocuProjectData.getProjects();
+                const project = allProjects.find(p => p.name && p.name.trim().toLowerCase() === projectName.trim().toLowerCase());
+
+                if (!project) {
+                    console.warn('⚠️ Proyecto no encontrado:', projectName);
+                    return;
+                }
+
+                console.log('✅ Proyecto encontrado para sincronización:', project.id, project.name);
+
+                // Obtener teams del proyecto (o inicializar array vacío)
+                const projectTeams = project.teams || [];
+                
+                // Normalizar projectTeams para comparar correctamente (pueden ser strings o objetos)
+                const normalizedProjectTeams = projectTeams.map(t => {
+                    if (typeof t === 'string') return t;
+                    if (t && typeof t === 'object' && t.id) return String(t.id);
+                    return String(t);
+                });
+                
+                const teamIdStr = String(teamId);
+                
+                // Verificar si el team ya está en el proyecto
+                if (!normalizedProjectTeams.includes(teamIdStr)) {
+                    // Agregar team ID al proyecto (como objeto para mantener consistencia con project_empty.html)
+                    projectTeams.push({
+                        id: teamIdStr,
+                        name: '' // El nombre se puede obtener del team si es necesario
+                    });
+                    project.teams = projectTeams;
+                    
+                    console.log('✅ Team agregado al proyecto:', teamId, 'Total teams en proyecto:', projectTeams.length);
+                    
+                    // Actualizar el proyecto
+                    DocuProjectData.updateProject(project.id, { teams: projectTeams });
+                    
+                    console.log('✅ Proyecto actualizado con team asociado');
+                } else {
+                    console.log('ℹ️ Team ya está asociado al proyecto');
+                }
+            } catch (error) {
+                console.error('❌ Error al sincronizar team a proyecto:', error);
+            }
+        }
+
+        // ============================================
+        // Remove Team from Project (when project chip is removed from team)
+        // ============================================
+        function removeTeamFromProject(projectName, teamId) {
+            console.log('🔄 Removiendo team de proyecto:', { projectName, teamId });
+            
+            if (!projectName || !teamId) {
+                console.warn('⚠️ No se puede remover: falta projectName o teamId');
+                return;
+            }
+
+            try {
+                if (typeof DocuProjectData === 'undefined') {
+                    console.error('❌ DocuProjectData no está disponible');
+                    return;
+                }
+
+                // Buscar el proyecto por nombre
+                const allProjects = DocuProjectData.getProjects();
+                const project = allProjects.find(p => p.name && p.name.trim().toLowerCase() === projectName.trim().toLowerCase());
+
+                if (!project) {
+                    console.warn('⚠️ Proyecto no encontrado:', projectName);
+                    return;
+                }
+
+                // Obtener teams del proyecto
+                const projectTeams = project.teams || [];
+                
+                // Normalizar projectTeams para comparar correctamente (pueden ser strings o objetos)
+                const teamIdStr = String(teamId);
+                let index = -1;
+                
+                // Buscar el team en el array (puede ser string o objeto)
+                for (let i = 0; i < projectTeams.length; i++) {
+                    const t = projectTeams[i];
+                    const tId = typeof t === 'string' ? t : (t && t.id ? String(t.id) : String(t));
+                    if (tId === teamIdStr) {
+                        index = i;
+                        break;
+                    }
+                }
+                
+                if (index > -1) {
+                    projectTeams.splice(index, 1);
+                    project.teams = projectTeams;
+                    
+                    console.log('✅ Team removido del proyecto:', teamId, 'Total teams restantes:', projectTeams.length);
+                    
+                    // Actualizar el proyecto
+                    DocuProjectData.updateProject(project.id, { teams: projectTeams });
+                    
+                    console.log('✅ Proyecto actualizado sin team asociado');
+                } else {
+                    console.log('ℹ️ Team no estaba asociado al proyecto');
+                }
+            } catch (error) {
+                console.error('❌ Error al remover team de proyecto:', error);
+            }
+        }
+
+        // Inicializar funcionalidad de chips para Associated Projects con select dropdown
+        function initAssociatedProjectsChips() {
+            const associatedProjectsSelect = document.getElementById('associatedProjects');
+            const chipsContainer = document.getElementById('projectsChipsContainer');
+            
+            if (!associatedProjectsSelect || !chipsContainer) {
+                console.error('❌ Elementos necesarios no encontrados');
+                return;
+            }
+
+            // Cargar proyectos publicados en el dropdown
+            loadPublishedProjectsInDropdown();
+
+            // Event listener para cuando se selecciona un proyecto
+            associatedProjectsSelect.addEventListener('change', function(e) {
+                const selectedValue = this.value.trim();
+                
+                if (!selectedValue) return; // Si selecciona la opción por defecto, no hacer nada
+
+                // Verificar si el chip ya existe
+                const existingChips = Array.from(chipsContainer.querySelectorAll('.project-chip'));
+                const exists = existingChips.some(chip => {
+                    const chipText = chip.querySelector('.project-chip__text');
+                    return chipText && chipText.textContent.trim().toLowerCase() === selectedValue.toLowerCase();
+                });
+
+                if (!exists) {
+                    // Obtener el ID del team actual
+                    const teamId = currentProjectId;
+                    
+                    if (!teamId) {
+                        console.warn('⚠️ No hay team ID actual, no se puede sincronizar con proyecto');
+                    } else {
+                        // Sincronizar: agregar team al proyecto
+                        syncTeamToProject(selectedValue, teamId);
+                    }
+
+                    // Crear chip con callback que incluye teamId en el closure
+                    const chip = createProjectChip(selectedValue, 'projectsChipsContainer', 
+                        (function(projectName, teamId) {
+                            return function(chipText) {
+                                // Callback cuando se elimina un chip - sincronizar y auto-guardar
+                                if (teamId) {
+                                    removeTeamFromProject(chipText, teamId);
+                                }
+                                autoSave().catch(err => console.error('Error en autoSave:', err));
+                                loadPublishedProjectsInDropdown(); // Recargar para que el proyecto eliminado vuelva a aparecer
+                            };
+                        })(selectedValue, teamId)
+                    );
+                    chipsContainer.appendChild(chip);
+                    
+                    // Resetear el select a la opción por defecto
+                    this.value = '';
+                    
+                    // Auto-guardar
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
+                    
+                    // Recargar dropdown para remover el proyecto seleccionado de las opciones
+                    loadPublishedProjectsInDropdown();
+                } else {
+                    // Si ya existe, resetear el select
+                    this.value = '';
+                    alert('Este proyecto ya está agregado');
+                }
+            });
         }
 
         // ============================================
@@ -5502,28 +5795,62 @@
             }
 
             // Cargar chips de Associated Projects usando función helper del componente
-            const associatedProjectsInput = document.getElementById('associatedProjects');
+            const associatedProjectsSelect = document.getElementById('associatedProjects');
             
-            if (associatedProjectsInput) {
-                // Limpiar el input
-                associatedProjectsInput.value = '';
+            if (associatedProjectsSelect) {
+                // Limpiar el select (resetear a opción por defecto)
+                associatedProjectsSelect.value = '';
             }
             
             // Cargar chips si hay proyectos guardados usando función helper
-            if (projectData.projects && Array.isArray(projectData.projects) && projectData.projects.length > 0) {
-                console.log('📋 Cargando chips de Associated Projects:', projectData.projects.length, 'chips');
-                loadChipsIntoContainer('projectsChipsContainer', projectData.projects, 
+            // IMPORTANTE: Leer los datos más recientes del storage antes de cargar
+            console.log('🔍 Cargando proyectos asociados - Leyendo datos más recientes del storage...');
+            const freshProjectData = DocuProjectData.getProjectData();
+            const freshTeam = freshProjectData?.teams?.find(t => String(t.id) === String(currentProjectId));
+            
+            // Usar los proyectos del team más reciente si están disponibles
+            const projectsToLoad = (freshTeam && freshTeam.projects && Array.isArray(freshTeam.projects) && freshTeam.projects.length > 0)
+                ? freshTeam.projects
+                : (projectData.projects && Array.isArray(projectData.projects) ? projectData.projects : []);
+            
+            console.log('📋 Proyectos a cargar:', {
+                fromFreshTeam: freshTeam ? (freshTeam.projects || []).length : 0,
+                fromProjectData: projectData.projects ? projectData.projects.length : 0,
+                finalProjectsToLoad: projectsToLoad.length,
+                projects: projectsToLoad
+            });
+            
+            if (projectsToLoad.length > 0) {
+                console.log('📋 Cargando chips de Associated Projects:', projectsToLoad.length, 'chips');
+                const teamId = currentProjectId; // Obtener teamId actual para el callback
+                
+                // Sincronizar con proyectos cuando se carga el team (por si acaso la sincronización falló antes)
+                console.log('🔄 Verificando sincronización con proyectos al cargar team...');
+                projectsToLoad.forEach(projectName => {
+                    if (projectName && typeof projectName === 'string' && projectName.trim().length > 0 && teamId) {
+                        syncTeamToProject(projectName.trim(), teamId);
+                    }
+                });
+                
+                loadChipsIntoContainer('projectsChipsContainer', projectsToLoad, 
                     function(chipText) {
-                        // Callback cuando se elimina un chip después de cargar - auto-guardar
+                        // Callback cuando se elimina un chip después de cargar - sincronizar y auto-guardar
+                        if (teamId) {
+                            removeTeamFromProject(chipText, teamId);
+                        }
                         autoSave().catch(err => console.error('Error en autoSave:', err));
+                        loadPublishedProjectsInDropdown(); // Recargar dropdown para que el proyecto eliminado vuelva a aparecer
                     }
                 );
-                console.log(`✅ Total de chips cargados: ${projectData.projects.length}`);
+                console.log(`✅ Total de chips cargados: ${projectsToLoad.length}`);
             } else {
                 console.log('ℹ️ No hay chips de Associated Projects para cargar');
                 // Limpiar contenedor si no hay chips
                 loadChipsIntoContainer('projectsChipsContainer', []);
             }
+            
+            // Recargar dropdown después de cargar los chips para filtrar los ya seleccionados
+            loadPublishedProjectsInDropdown();
 
             // Cargar búsqueda si existe
             if (projectData.searchQuery) {
