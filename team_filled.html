@@ -833,6 +833,39 @@
             /* justify-content: start; */
         }
 
+        /* Vista de lista */
+        .team-members-grid.list-view {
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .team-members-grid.list-view .dsu-profile-card {
+            flex-direction: row;
+            width: 100%;
+            gap: var(--spacing-24);
+            align-items: center;
+            padding: var(--spacing-12) var(--spacing-16);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__image-wrapper {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__content {
+            flex: 1;
+            gap: var(--spacing-08);
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__contact {
+            flex-direction: row;
+            gap: var(--spacing-24);
+        }
+
 
         /* Sticky Buttons - Usando design system, ajuste de centrado */
         .dsu-sticky-buttons {
@@ -1328,14 +1361,16 @@
             const membersGrid = document.getElementById('teamMembersGrid');
             
             if (gridViewBtn && listViewBtn && membersGrid) {
+                // Vista Grid
                 gridViewBtn.addEventListener('click', function() {
-                    membersGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+                    membersGrid.classList.remove('list-view');
                     gridViewBtn.classList.add('active');
                     listViewBtn.classList.remove('active');
                 });
 
+                // Vista Lista
                 listViewBtn.addEventListener('click', function() {
-                    membersGrid.style.gridTemplateColumns = '1fr';
+                    membersGrid.classList.add('list-view');
                     listViewBtn.classList.add('active');
                     gridViewBtn.classList.remove('active');
                 });

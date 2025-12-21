@@ -767,6 +767,71 @@
             /* justify-content: start; */
         }
 
+        /* Desactivar animaciones al cambiar entre vistas (grid y lista) */
+        .team-members-grid .dsu-profile-card,
+        .team-members-grid .dsu-profile-card-placeholder {
+            transition: none !important;
+        }
+
+        /* Vista de lista */
+        .team-members-grid.list-view {
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .team-members-grid.list-view .dsu-profile-card,
+        .team-members-grid.list-view .dsu-profile-card-placeholder {
+            flex-direction: row;
+            width: 100%;
+            gap: var(--spacing-24);
+            align-items: center;
+            padding: var(--spacing-12) var(--spacing-16);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+        }
+
+        /* Desactivar transiciones de imagen al cambiar entre vistas */
+        .team-members-grid .dsu-profile-card__image-wrapper,
+        .team-members-grid .dsu-profile-card-placeholder__image {
+            transition: none !important;
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__image-wrapper,
+        .team-members-grid.list-view .dsu-profile-card-placeholder__image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__image,
+        .team-members-grid.list-view .dsu-profile-card__image-wrapper:hover .dsu-profile-card__image {
+            transition: none !important;
+            transform: none !important;
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__content,
+        .team-members-grid.list-view .dsu-profile-card-placeholder__content {
+            flex: 1;
+            gap: var(--spacing-08);
+        }
+
+        .team-members-grid.list-view .dsu-profile-card__contact,
+        .team-members-grid.list-view .dsu-profile-card-placeholder__contact {
+            flex-direction: row;
+            gap: var(--spacing-24);
+        }
+
+        /* Desactivar transformaciones del placeholder al cambiar entre vistas */
+        .team-members-grid .dsu-profile-card-placeholder {
+            transition: none !important;
+        }
+
+        .team-members-grid.list-view .dsu-profile-card-placeholder:hover {
+            transform: none !important;
+            opacity: 1 !important;
+        }
+
 
         /* Sticky Buttons - Exactamente como design-system/components/button.css */
         .dsu-sticky-buttons {
@@ -2544,6 +2609,34 @@
                 addMemberCard.style.cursor = 'pointer';
             } else {
                 console.error('Profile card placeholder not found!');
+            }
+
+            // Inicializar controles de vista (Grid/List)
+            initViewControls();
+        }
+
+        // ============================================
+        // View Controls (Grid/List Toggle)
+        // ============================================
+        function initViewControls() {
+            const gridViewBtn = document.getElementById('gridViewBtn');
+            const listViewBtn = document.getElementById('listViewBtn');
+            const membersGrid = document.getElementById('teamMembersGrid');
+            
+            if (gridViewBtn && listViewBtn && membersGrid) {
+                // Vista Grid
+                gridViewBtn.addEventListener('click', function() {
+                    membersGrid.classList.remove('list-view');
+                    gridViewBtn.classList.add('active');
+                    listViewBtn.classList.remove('active');
+                });
+
+                // Vista Lista
+                listViewBtn.addEventListener('click', function() {
+                    membersGrid.classList.add('list-view');
+                    listViewBtn.classList.add('active');
+                    gridViewBtn.classList.remove('active');
+                });
             }
         }
         
