@@ -1526,6 +1526,42 @@
         window.cleanUnusedImages = cleanUnusedImages;
 
         // ============================================
+        // Initialize sidebar state immediately on page load (before any other initialization)
+        // ============================================
+        function initSidebarState() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
+            const sidebarLogo = sidebar ? sidebar.querySelector('.dsu-sidebar__logo img') : null;
+            
+            if (sidebar) {
+                // Apply state immediately without animation
+                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                if (isCollapsed) {
+                    sidebar.classList.add('dsu-sidebar--collapsed');
+                    if (sidebarToggleIcon) {
+                        sidebarToggleIcon.src = 'images/expand.svg';
+                        sidebarToggleIcon.alt = 'Expand';
+                    }
+                    if (sidebarLogo) {
+                        sidebarLogo.src = 'images/logo_icon.svg';
+                    }
+                }
+                
+                // Mark sidebar as initialized after a short delay to enable transitions for user interactions
+                setTimeout(function() {
+                    sidebar.classList.add('sidebar-initialized');
+                }, 100);
+            }
+        }
+
+        // Initialize sidebar state immediately when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSidebarState);
+        } else {
+            initSidebarState();
+        }
+
+        // ============================================
         // Verificación de Sesión
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1675,16 +1711,7 @@
             const sidebarLogo = sidebar ? sidebar.querySelector('.dsu-sidebar__logo img') : null;
             
             if (sidebar && sidebarToggle && sidebarToggleIcon) {
-                // Check localStorage for saved state
-                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-                if (isCollapsed) {
-                    sidebar.classList.add('dsu-sidebar--collapsed');
-                    sidebarToggleIcon.src = 'images/expand.svg';
-                    sidebarToggleIcon.alt = 'Expand';
-                    if (sidebarLogo) {
-                        sidebarLogo.src = 'images/logo_icon.svg';
-                    }
-                }
+                // State is already applied by initSidebarState(), just set up event listeners
                 
                 sidebarToggle.addEventListener('click', function(e) {
                     e.preventDefault();

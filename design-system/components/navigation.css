@@ -15,8 +15,13 @@
   position: relative;
   height: 100vh;
   min-height: 100vh;
-  transition: background-color 0.2s ease, border-right-color 0.2s ease, width 0.3s ease, padding 0.3s ease;
+  transition: background-color 0.2s ease, border-right-color 0.2s ease;
   width: 14%;
+}
+
+/* Transition only when toggling, not on initial load */
+.dsu-sidebar.sidebar-initialized {
+  transition: background-color 0.2s ease, border-right-color 0.2s ease, width 0.3s ease, padding 0.3s ease;
 }
 
 /* === SIDEBAR COLLAPSED STATE === */
@@ -215,7 +220,7 @@
 
 .dsu-teams-button--active,
 .dsu-teams-button.active {
-  background-color: var(--color-surface-especial);
+  /* background-color: var(--color-surface-especial); */
   text-decoration: underline;
 }
 
@@ -395,7 +400,7 @@
 }
 
 .dsu-projects-button__trigger--active {
-  background-color: var(--color-surface-especial);
+  /* background-color: var(--color-surface-especial); */
   text-decoration: underline;
 }
 

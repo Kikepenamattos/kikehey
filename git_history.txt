@@ -1,3 +1,4 @@
+b0d4db131c98848975650549a1abc500965fa9e4|Ubits|ubits@macbookpro.lan|2025-12-22 18:03:02 -0500|Update: Actualizar changelog con últimos cambios
 63b31c4daf7c24e0b9d895e5c3ff89d035776a11|Ubits|ubits@macbookpro.lan|2025-12-22 18:02:56 -0500|feat: Agregar funcionalidad de colapsar/expandir sidebar con toggle button y cambio de logo
 27ec4b2fba614b395e317f1631cbc170b579b87f|Ubits|ubits@macbookpro.lan|2025-12-22 17:39:36 -0500|Update: Actualizar changelog con últimos cambios
 d113eb35f0524ced96090c66a7c2a0e513ef6e10|Ubits|ubits@macbookpro.lan|2025-12-22 17:39:27 -0500|Update: Ajustar grid a 3 columnas y estilos de project cards en myprojects.html
