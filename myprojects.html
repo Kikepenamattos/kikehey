@@ -65,15 +65,37 @@
             margin: 0 auto;
         }
 
+        /* Headline Container */
+        .my-projects-headline-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            gap: 24px;
+        }
+
         /* Headline */
         .my-projects-headline {
-            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-family: var(--font-family-secondary);
             font-size: 32px;
             font-weight: 800;
             color: var(--color-text-primary, #0a243f);
             line-height: normal;
             margin: 0;
             padding: 0;
+            flex: 1;
+        }
+
+        /* Generate Report Button */
+        .generate-report-btn {
+            flex-shrink: 0;
+            width: auto;
+        }
+
+        .generate-report-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
         }
 
         /* Projects Grid */
@@ -585,8 +607,14 @@
         <!-- Main Content -->
         <div class="my-projects-content-wrapper">
             <div class="my-projects-content">
-                <!-- Headline -->
-                <h1 class="my-projects-headline">My Projects</h1>
+                <!-- Headline Container -->
+                <div class="my-projects-headline-container">
+                    <h1 class="my-projects-headline">My Projects</h1>
+                    <button class="dsu-button dsu-button--secondary dsu-button--x-small generate-report-btn" id="generateReportBtn">
+                        <img src="images/spark.svg" alt="Spark">
+                        <span>Generate report</span>
+                    </button>
+                </div>
                 
                 <!-- Secondary Action Levels -->
                 <div class="secondary-actions">
