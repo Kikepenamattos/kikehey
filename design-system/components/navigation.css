@@ -15,8 +15,49 @@
   position: relative;
   height: 100vh;
   min-height: 100vh;
-  transition: background-color 0.2s ease, border-right-color 0.2s ease;
+  transition: background-color 0.2s ease, border-right-color 0.2s ease, width 0.3s ease, padding 0.3s ease;
   width: 14%;
+}
+
+/* === SIDEBAR COLLAPSED STATE === */
+.dsu-sidebar--collapsed {
+  width: 80px;
+  padding: 64px 12px 24px 12px;
+}
+
+.dsu-sidebar--collapsed .dsu-sidebar__logo-container {
+  padding: 0;
+  align-items: center;
+}
+
+.dsu-sidebar--collapsed .dsu-sidebar__logo {
+  width: 30px;
+  height: 30px;
+}
+
+.dsu-sidebar--collapsed .dsu-nav-button__text,
+.dsu-sidebar--collapsed .dsu-teams-button__text,
+.dsu-sidebar--collapsed .dsu-projects-button__text,
+.dsu-sidebar--collapsed .dsu-team-item__text,
+.dsu-sidebar--collapsed .dsu-project-item__text,
+.dsu-sidebar--collapsed .dsu-teams-create span,
+.dsu-sidebar--collapsed .dsu-projects-create span {
+  display: none;
+}
+
+.dsu-sidebar--collapsed .dsu-teams-dropdown,
+.dsu-sidebar--collapsed .dsu-projects-dropdown {
+  display: none;
+}
+
+.dsu-sidebar--collapsed .dsu-teams-level,
+.dsu-sidebar--collapsed .dsu-projects-level {
+  justify-content: center;
+}
+
+.dsu-sidebar--collapsed .dsu-teams-chevron,
+.dsu-sidebar--collapsed .dsu-projects-chevron {
+  display: none;
 }
 
 [data-theme="dark"] .dsu-sidebar {
@@ -519,6 +560,39 @@
   width: 100%;
 }
 
+
+/* === SIDEBAR TOGGLE BUTTON === */
+.dsu-sidebar__toggle {
+  position: absolute;
+  top: 24px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  z-index: 10;
+}
+
+.dsu-sidebar__toggle:hover {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-sidebar__toggle img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.dsu-sidebar--collapsed .dsu-sidebar__toggle {
+  right: 24px;
+}
 
 /* === SIDEBAR FOOTER === */
 .dsu-sidebar__footer {

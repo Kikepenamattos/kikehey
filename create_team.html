@@ -897,7 +897,10 @@
 <body>
     <div class="create-team-container">
         <!-- Sidebar Navigation -->
-        <nav class="dsu-sidebar">
+        <nav class="dsu-sidebar" id="sidebar">
+            <button class="dsu-sidebar__toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <img src="images/collapse.svg" alt="Collapse" id="sidebarToggleIcon">
+            </button>
             <div class="dsu-sidebar__main">
                 <!-- Logo Container -->
                 <div class="dsu-sidebar__logo-container">
@@ -1665,6 +1668,50 @@
         // Sidebar Navigation
         // ============================================
         function initSidebarNavigation() {
+            // Sidebar Toggle Functionality
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
+            const sidebarLogo = sidebar ? sidebar.querySelector('.dsu-sidebar__logo img') : null;
+            
+            if (sidebar && sidebarToggle && sidebarToggleIcon) {
+                // Check localStorage for saved state
+                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                if (isCollapsed) {
+                    sidebar.classList.add('dsu-sidebar--collapsed');
+                    sidebarToggleIcon.src = 'images/expand.svg';
+                    sidebarToggleIcon.alt = 'Expand';
+                    if (sidebarLogo) {
+                        sidebarLogo.src = 'images/logo_icon.svg';
+                    }
+                }
+                
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    sidebar.classList.toggle('dsu-sidebar--collapsed');
+                    const isNowCollapsed = sidebar.classList.contains('dsu-sidebar--collapsed');
+                    
+                    // Update icon
+                    if (isNowCollapsed) {
+                        sidebarToggleIcon.src = 'images/expand.svg';
+                        sidebarToggleIcon.alt = 'Expand';
+                        if (sidebarLogo) {
+                            sidebarLogo.src = 'images/logo_icon.svg';
+                        }
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    } else {
+                        sidebarToggleIcon.src = 'images/collapse.svg';
+                        sidebarToggleIcon.alt = 'Collapse';
+                        if (sidebarLogo) {
+                            sidebarLogo.src = 'images/logo.svg';
+                        }
+                        localStorage.setItem('sidebarCollapsed', 'false');
+                    }
+                });
+            }
+            
             // Teams Dropdown - Asegurar que siempre esté expandido por defecto
             const teamsButtons = document.querySelectorAll('.dsu-teams-button');
             teamsButtons.forEach((button) => {
