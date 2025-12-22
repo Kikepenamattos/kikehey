@@ -1,3 +1,5 @@
+4f1f4894c4832df43f55afc902a58c7cba49eb05|Ubits|ubits@macbookpro.lan|2025-12-22 14:39:24 -0500|feat: agregar botón Generate report al headline en myprojects.html
+c7dd06133c616882364306e1f022cc448e266823|Ubits|ubits@macbookpro.lan|2025-12-22 14:32:00 -0500|Update: Actualizar changelog con últimos cambios
 beeb05649cf67e11bcdd4081413c78642977ef38|Ubits|ubits@macbookpro.lan|2025-12-22 14:31:51 -0500|style: centrar verticalmente el contenido en myprojects.html
 852b0c59cdb1138cb801706025ac7a278f0f77b9|Ubits|ubits@macbookpro.lan|2025-12-22 13:15:40 -0500|Update: Actualizar changelog con últimos cambios
 137279cd3b89ffeb9fa47bf447d311fb5a033859|Ubits|ubits@macbookpro.lan|2025-12-22 13:15:26 -0500|fix: corregir carga de imágenes de miembros del team en project cards de myprojects.html
