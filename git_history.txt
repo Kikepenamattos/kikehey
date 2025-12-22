@@ -1,3 +1,4 @@
+fca7f5d856797483169cbbd3986607c609bc4b13|Ubits|ubits@macbookpro.lan|2025-12-22 18:32:45 -0500|fix: Prevenir animación del sidebar al recargar página y comentar background-color en botones activos
 b0d4db131c98848975650549a1abc500965fa9e4|Ubits|ubits@macbookpro.lan|2025-12-22 18:03:02 -0500|Update: Actualizar changelog con últimos cambios
 63b31c4daf7c24e0b9d895e5c3ff89d035776a11|Ubits|ubits@macbookpro.lan|2025-12-22 18:02:56 -0500|feat: Agregar funcionalidad de colapsar/expandir sidebar con toggle button y cambio de logo
 27ec4b2fba614b395e317f1631cbc170b579b87f|Ubits|ubits@macbookpro.lan|2025-12-22 17:39:36 -0500|Update: Actualizar changelog con últimos cambios
