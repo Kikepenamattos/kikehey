@@ -16,6 +16,7 @@
   height: 100vh;
   min-height: 100vh;
   transition: background-color 0.2s ease, border-right-color 0.2s ease;
+  width: 14%;
 }
 
 [data-theme="dark"] .dsu-sidebar {

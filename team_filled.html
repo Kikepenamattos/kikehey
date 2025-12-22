@@ -827,10 +827,10 @@
 
         .team-members-grid {
             display: flex;
-            gap: 35px;
+            gap: 26px;
             flex-wrap: wrap;
             align-items: flex-start;
-            /* justify-content: start; */
+            /* justify-content: space-between; */
         }
 
         /* Vista de lista */
@@ -1904,23 +1904,24 @@
                 button.classList.add('dsu-teams-button--active');
                 if (chevron) chevron.src = 'images/up-chevron.svg';
                 
-                button.addEventListener('click', function() {
-                    const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
-                    
-                    if (isExpanded) {
-                        dropdown.classList.remove('dsu-teams-dropdown--expanded');
-                        button.classList.remove('dsu-teams-button--active');
-                        if (chevron) chevron.src = 'images/down-chevron.svg';
-                    } else {
-                        dropdown.classList.add('dsu-teams-dropdown--expanded');
-                        button.classList.add('dsu-teams-button--active');
-                        if (chevron) chevron.src = 'images/up-chevron.svg';
-                    }
-                });
-
-                if (chevron && chevron.closest('.dsu-teams-chevron')) {
-                    chevron.closest('.dsu-teams-chevron').addEventListener('click', function() {
-                        button.click();
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-teams-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                            button.classList.remove('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-teams-dropdown--expanded');
+                            button.classList.add('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
                     });
                 }
             });
@@ -1942,24 +1943,31 @@
                 trigger.classList.add('dsu-projects-button__trigger--active');
                 if (chevron) chevron.src = 'images/up-chevron.svg';
                 
-                // Permitir toggle normal
-                trigger.addEventListener('click', function() {
-                    const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
-                    
-                    if (isExpanded) {
-                        dropdown.classList.remove('dsu-projects-dropdown--expanded');
-                        trigger.classList.remove('dsu-projects-button__trigger--active');
-                        if (chevron) chevron.src = 'images/down-chevron.svg';
-                    } else {
-                        dropdown.classList.add('dsu-projects-dropdown--expanded');
-                        trigger.classList.add('dsu-projects-button__trigger--active');
-                        if (chevron) chevron.src = 'images/up-chevron.svg';
-                    }
+                // El botón navega a myprojects.html
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'myprojects.html';
                 });
-
-                if (chevron && chevron.closest('.dsu-projects-chevron')) {
-                    chevron.closest('.dsu-projects-chevron').addEventListener('click', function() {
-                        trigger.click();
+                
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-projects-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                            trigger.classList.remove('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-projects-dropdown--expanded');
+                            trigger.classList.add('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
                     });
                 }
             });

@@ -101,7 +101,7 @@
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             width: 100%;
         }
@@ -110,7 +110,7 @@
         .project-card {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 8px;
             width: 100%;
             padding: 16px;
             background-color: var(--color-surface-regular);
@@ -146,7 +146,7 @@
         .project-card__content {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 8px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -210,7 +210,7 @@
         /* Project Card Secondary Items */
         .project-card__secondary-items {
             display: flex;
-            gap: 24px;
+            gap: 8px;
             align-items: center;
             width: 100%;
             flex-wrap: wrap;
@@ -472,6 +472,12 @@
         }
 
         /* Responsive */
+        @media (max-width: 1600px) {
+            .projects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
         @media (max-width: 1400px) {
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1104,7 +1110,9 @@
                 trigger.classList.add('dsu-projects-button__trigger--active');
                 if (chevron) chevron.src = 'images/up-chevron.svg';
                 
-                // El botón navega a myprojects.html (ya estamos aquí, así que solo manejamos chevron)
+                // El botón ya está en myprojects.html, así que no necesita redirigir
+                // Pero podemos dejarlo sin acción o simplemente no agregar event listener
+                
                 // SOLO el chevron puede colapsar/expandir (no el botón completo)
                 const chevronElement = chevron ? chevron.closest('.dsu-projects-chevron') : null;
                 if (chevronElement) {
@@ -1358,6 +1366,12 @@
             loadProjects();
             initSearchProjects();
             initFiltersButton();
+            
+            // Recargar proyectos cuando la ventana recibe foco (para reflejar cambios de otras pestañas)
+            window.addEventListener('focus', function() {
+                console.log('🔄 Ventana recibió foco, recargando proyectos...');
+                loadProjects();
+            });
         });
     </script>
 </body>
