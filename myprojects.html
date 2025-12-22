@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
+    <link rel="stylesheet" href="design-system/components/card.css">
+    <link rel="stylesheet" href="design-system/components/date-picker.css">
+    <link rel="stylesheet" href="design-system/components/status-button.css">
+    <link rel="stylesheet" href="design-system/components/progress-bar.css">
+    
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .my-projects-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenido Principal */
+        .my-projects-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .my-projects-content {
+            flex: 1;
+            padding: 64px 173px 0 135px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 80%;
+            margin: 0 auto;
+            padding-bottom: 64px;
+        }
+
+        /* Headline */
+        .my-projects-headline {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            width: 100%;
+        }
+
+        /* Project Card */
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--color-surface-regular);
+            border: 1px solid #6B7B8A;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 36, 63, 0.1);
+        }
+
+        /* Project Card Image */
+        .project-card__image {
+            width: 100%;
+            aspect-ratio: 572/332;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Project Card Content */
+        .project-card__content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Project Card Header */
+        .project-card__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .project-card__title {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Status Badge */
+        .project-card__status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
+            font-weight: 400;
+            line-height: normal;
+            text-align: center;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .project-card__status-badge--in-progress {
+            background-color: var(--color-status-in-progress);
+            color: var(--color-basics-dark-blue);
+        }
+
+        .project-card__status-badge--done {
+            background-color: var(--color-status-done);
+            color: var(--color-basics-dark-blue);
+        }
+
+        .project-card__status-badge--paused {
+            background-color: var(--color-status-paused);
+            color: var(--color-basics-white);
+        }
+
+        .project-card__status-badge--to-start {
+            background-color: var(--color-status-to-start);
+            color: var(--color-basics-dark-blue);
+        }
+
+        /* Project Card Secondary Items */
+        .project-card__secondary-items {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .project-card__secondary-item {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .project-card__secondary-item-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-card__secondary-item-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .project-card__secondary-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+            white-space: nowrap;
+        }
+
+        /* Project Card Footer */
+        .project-card__footer {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+
+        /* Progress Bar Wrapper */
+        .project-card__progress-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .project-card__progress-text {
+            font-family: var(--font-family-secondary);
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--color-basics-dark-blue);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .project-card__progress-bar {
+            flex: 1;
+            background-color: var(--color-status-disabled);
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+            height: 10px;
+            min-width: 0;
+        }
+
+        .project-card__progress-fill {
+            background-color: var(--color-status-done);
+            height: 100%;
+            width: 0%;
+            border-radius: 50px;
+            transition: width 0.3s ease;
+        }
+
+        /* Team Members Section */
+        .project-card__team-members {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .project-card__team-members-label {
+            font-family: var(--font-family-secondary);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-primary, #0a243f);
+            line-height: 1.5;
+        }
+
+        .project-card__team-avatars {
+            display: flex;
+            gap: 0;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .project-card__team-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--color-surface-regular);
+            margin-left: -8px;
+            flex-shrink: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card__team-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .project-card__team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Empty State */
+        .projects-empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 64px 24px;
+            text-align: center;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .projects-empty-state__text {
+            font-family: var(--font-family-secondary);
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Secondary Action Levels */
+        .secondary-actions {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 16px;
+        }
+        
+        /* Estado deshabilitado de secondary-actions */
+        .secondary-actions.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .secondary-actions.disabled * {
+            cursor: not-allowed !important;
+        }
+        
+        .secondary-actions.disabled input,
+        .secondary-actions.disabled button {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .search-input-group {
+            flex: 1;
+        }
+        
+        /* Input Buscador */
+        .dsu-input-buscador {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .dsu-input-buscador .dsu-input {
+            padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+            box-sizing: border-box;
+        }
+        
+        .dsu-input-buscador__send-icon {
+            position: absolute;
+            right: var(--spacing-16);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dsu-input-buscador__send-icon--active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        .dsu-input-buscador__send-icon:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .dsu-input-buscador__send-icon img,
+        .dsu-input-buscador__send-icon svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Asegurar que el icono no se vea afectado por el estado disabled del contenedor */
+        .secondary-actions.disabled .dsu-input-buscador__send-icon--active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 0;
+            align-items: center;
+        }
+
+        .view-control-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--color-surface-regular, #ffffff);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .view-control-btn:hover {
+            opacity: 0.8;
+        }
+
+        .view-control-btn.active {
+            background-color: var(--color-surface-especial, #f4f7fb);
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .my-projects-content {
+                padding: 64px 80px 0 80px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .my-projects-content {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="my-projects-container">
+        <!-- Sidebar Navigation -->
+        <nav class="dsu-sidebar">
+            <div class="dsu-sidebar__main">
+                <!-- Logo Container -->
+                <div class="dsu-sidebar__logo-container">
+                    <a href="#" class="dsu-sidebar__logo">
+                        <img src="images/logo.svg" alt="Docu Logo">
+                    </a>
+                </div>
+                
+                <!-- Navigation Wrapper -->
+                <div class="dsu-sidebar__navigation-wrapper">
+                    <!-- Navigation Main -->
+                    <div class="dsu-sidebar__navigation">
+                        <!-- Teams Level -->
+                        <div class="dsu-teams-level">
+                            <button class="dsu-teams-button">
+                                <span class="dsu-teams-button__icon">
+                                    <img src="images/team.svg" alt="Teams">
+                                </span>
+                                <span class="dsu-nav-button__text">Teams</span>
+                            </button>
+                            <div class="dsu-teams-chevron">
+                                <img src="images/up-chevron.svg" alt="Chevron">
+                            </div>
+                        </div>
+                        
+                        <!-- Teams Dropdown -->
+                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                            <button class="dsu-teams-create" id="createTeamBtn">
+                                <span>Create new team</span>
+                                <span class="dsu-teams-create__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
+                            <div class="dsu-teams-list" id="teamsList">
+                                <!-- Teams list se poblará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Projects Level -->
+                        <div class="dsu-projects-button">
+                            <div class="dsu-projects-level">
+                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                                    <span class="dsu-projects-button__icon">
+                                        <img src="images/project.svg" alt="Projects">
+                                    </span>
+                                    <span class="dsu-projects-button__text">Projects</span>
+                                </button>
+                                <div class="dsu-projects-chevron">
+                                    <img src="images/up-chevron.svg" alt="Chevron">
+                                </div>
+                            </div>
+                            
+                            <!-- Projects Dropdown -->
+                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                <button class="dsu-projects-create" id="createProjectBtn">
+                                    <span>Create new project</span>
+                                    <span class="dsu-projects-create__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
+                                <div class="dsu-projects-list" id="projectsList">
+                                    <!-- Projects list se poblará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Profile Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/avatar.svg" alt="Profile">
+                            </span>
+                            <span class="dsu-nav-button__text">Profile</span>
+                        </button>
+                        
+                        <!-- Feedback Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/chat.svg" alt="Feedback">
+                            </span>
+                            <span class="dsu-nav-button__text">Give us feedback</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="dsu-sidebar__footer">
+                        <button class="dsu-nav-button" id="darkModeBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/moon.svg" alt="Dark Mode">
+                            </span>
+                            <span class="dsu-nav-button__text">Dark mode</span>
+                        </button>
+                        <button class="dsu-nav-button" id="logoutBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/exit.svg" alt="Logout">
+                            </span>
+                            <span class="dsu-nav-button__text">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="my-projects-content-wrapper">
+            <div class="my-projects-content">
+                <!-- Headline -->
+                <h1 class="my-projects-headline">My Projects</h1>
+                
+                <!-- Secondary Action Levels -->
+                <div class="secondary-actions">
+                    <div class="dsu-input-buscador search-input-group">
+                        <input 
+                            type="text" 
+                            id="searchProjectsInput" 
+                            class="dsu-input dsu-input--only" 
+                            placeholder="Search projects..."
+                        >
+                        <span class="dsu-input-buscador__send-icon" id="searchProjectsSendIcon">
+                            <img src="images/send.svg" alt="Send">
+                        </span>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-control-btn" id="filtersProjectsBtn">
+                            <span>Filters</span>
+                            <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Projects Grid -->
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Project cards will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            // Si ya está en formato legible (ej: "May 5, 2024"), retornar directamente
+            if (typeof dateString === 'string' && dateString.match(/^[A-Za-z]{3}\s+\d{1,2},\s+\d{4}$/)) {
+                return dateString;
+            }
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString; // Si falla, retornar el string original
+                
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                return `${month} ${day}, ${year}`;
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return dateString; // Si falla, retornar el string original
+            }
+        }
+
+        // Calculate overall progress based on goals and KPIs
+        function calculateOverallProgress(project) {
+            if (!project) return 0;
+            
+            let totalItems = 0;
+            let completedItems = 0;
+            
+            // Count goals
+            if (project.goals && Array.isArray(project.goals)) {
+                totalItems += project.goals.length;
+                completedItems += project.goals.filter(g => g.completed === true).length;
+            }
+            
+            // Count KPIs
+            if (project.kpis && Array.isArray(project.kpis)) {
+                totalItems += project.kpis.length;
+                completedItems += project.kpis.filter(k => k.completed === true).length;
+            }
+            
+            if (totalItems === 0) return 0;
+            
+            return Math.round((completedItems / totalItems) * 100);
+        }
+
+        // Get status badge class
+        function getStatusBadgeClass(status) {
+            if (!status) return 'project-card__status-badge--to-start';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower === 'in-progress' || statusLower === 'in progress') {
+                return 'project-card__status-badge--in-progress';
+            } else if (statusLower === 'done' || statusLower === 'completed') {
+                return 'project-card__status-badge--done';
+            } else if (statusLower === 'paused') {
+                return 'project-card__status-badge--paused';
+            }
+            return 'project-card__status-badge--to-start';
+        }
+
+        // Get status badge text
+        function getStatusBadgeText(status) {
+            if (!status) return 'To Start';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower === 'in-progress' || statusLower === 'in progress') {
+                return 'In progress';
+            } else if (statusLower === 'done' || statusLower === 'completed') {
+                return 'Done';
+            } else if (statusLower === 'paused') {
+                return 'Paused';
+            }
+            return 'To Start';
+        }
+
+        // Helper function para obtener imagen (IndexedDB o base64)
+        async function getMemberImage(memberImageRef) {
+            if (!memberImageRef || memberImageRef.trim() === '') {
+                return 'images/avatar_icon.svg';
+            }
+            
+            // Si es referencia de IndexedDB
+            if (memberImageRef.startsWith('indexeddb:')) {
+                const imageId = memberImageRef.replace('indexeddb:', '');
+                if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                    try {
+                        const imageData = await DocuImageStorage.getImage(imageId);
+                        return imageData || 'images/avatar_icon.svg';
+                    } catch (error) {
+                        console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                        return 'images/avatar_icon.svg';
+                    }
+                } else {
+                    console.warn('⚠️ IndexedDB no disponible');
+                    return 'images/avatar_icon.svg';
+                }
+            }
+            
+            // Si es base64, retornar directamente
+            if (memberImageRef.startsWith('data:')) {
+                return memberImageRef;
+            }
+            
+            // Fallback
+            return 'images/avatar_icon.svg';
+        }
+
+        // Get last team added to project (team member avatars and team name)
+        async function getTeamData(project) {
+            const result = {
+                avatars: [],
+                teamName: null
+            };
+            
+            if (!project.teams || !Array.isArray(project.teams) || project.teams.length === 0) {
+                console.log(`⚠️ Proyecto "${project.name}" no tiene teams asociados`);
+                return result;
+            }
+            
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData || !projectData.teams) {
+                console.log(`⚠️ No hay datos de teams disponibles`);
+                return result;
+            }
+            
+            // Obtener el ÚLTIMO team agregado (último elemento del array)
+            const lastTeamRef = project.teams[project.teams.length - 1];
+            console.log(`🔍 Último team ref:`, lastTeamRef);
+            
+            // Normalizar el teamId (puede ser string o objeto)
+            let teamId = null;
+            if (typeof lastTeamRef === 'string') {
+                teamId = lastTeamRef;
+            } else if (lastTeamRef && typeof lastTeamRef === 'object') {
+                teamId = lastTeamRef.id;
+            }
+            
+            if (!teamId) {
+                console.log(`⚠️ Team ref sin ID válido:`, lastTeamRef);
+                return result;
+            }
+            
+            console.log(`🔍 Buscando team con ID:`, teamId);
+            const team = projectData.teams.find(t => {
+                const tId = String(t.id || '');
+                const searchId = String(teamId || '');
+                return tId === searchId;
+            });
+            
+            if (!team) {
+                console.log(`⚠️ Team con ID "${teamId}" no encontrado en projectData.teams`);
+                console.log(`📋 Teams disponibles:`, projectData.teams.map(t => ({ id: t.id, name: t.name })));
+                return result;
+            }
+            
+            console.log(`✅ Team encontrado:`, { id: team.id, name: team.name });
+            
+            // Obtener nombre del team
+            if (team.name && typeof team.name === 'string' && team.name.trim().length > 0) {
+                result.teamName = team.name;
+            }
+            
+            // Obtener avatares de miembros del team (máximo 5) - cargar imágenes reales
+            if (team.members && Array.isArray(team.members)) {
+                console.log(`📋 Team tiene ${team.members.length} miembros`);
+                const avatarPromises = [];
+                
+                for (let i = 0; i < Math.min(team.members.length, 5); i++) {
+                    const member = team.members[i];
+                    console.log(`👤 Miembro ${i + 1}:`, { 
+                        name: member.name, 
+                        image: member.image, 
+                        avatar: member.avatar, 
+                        photo: member.photo 
+                    });
+                    
+                    // Intentar obtener imagen (puede ser image, avatar o photo)
+                    const memberImageRef = member.image || member.avatar || member.photo || null;
+                    
+                    if (memberImageRef) {
+                        console.log(`📷 Cargando imagen para miembro ${i + 1}:`, memberImageRef);
+                        avatarPromises.push(getMemberImage(memberImageRef));
+                    } else {
+                        console.log(`⚠️ Miembro ${i + 1} no tiene imagen`);
+                        avatarPromises.push(Promise.resolve('images/avatar_icon.svg'));
+                    }
+                }
+                
+                // Esperar a que todas las imágenes se carguen
+                result.avatars = await Promise.all(avatarPromises);
+                console.log(`✅ ${result.avatars.length} avatares cargados para el team "${result.teamName}"`);
+                console.log(`🖼️ URLs de avatares:`, result.avatars);
+            } else {
+                console.log(`⚠️ Team no tiene miembros o members no es un array`);
+            }
+            
+            return result;
+        }
+
+        // Store all projects for filtering
+        let allPublishedProjects = [];
+
+        // Load and display projects
+        function loadProjects(searchQuery = '') {
+            console.log('=== loadProjects llamado ===');
+            
+            const projectsGrid = document.getElementById('projectsGrid');
+            if (!projectsGrid) {
+                console.error('❌ Elemento projectsGrid no encontrado');
+                return;
+            }
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                setTimeout(() => loadProjects(searchQuery), 100);
+                return;
+            }
+
+            // Obtener todos los proyectos
+            const allProjects = DocuProjectData.getProjects();
+            console.log('📊 Total de proyectos encontrados:', allProjects.length);
+
+            // Filtrar solo proyectos publicados
+            let publishedProjects = allProjects.filter(project => {
+                if (!project) return false;
+                const isPublished = project.status === 'published';
+                const hasValidName = project.name && typeof project.name === 'string' && project.name.trim().length > 0;
+                return isPublished && hasValidName;
+            });
+
+            // Guardar todos los proyectos publicados para filtrado
+            allPublishedProjects = [...publishedProjects];
+
+            // Aplicar búsqueda si hay query
+            if (searchQuery && searchQuery.trim().length > 0) {
+                const query = searchQuery.toLowerCase().trim();
+                publishedProjects = publishedProjects.filter(project => {
+                    const projectName = (project.name || '').toLowerCase();
+                    return projectName.includes(query);
+                });
+                console.log(`🔍 Proyectos filtrados por búsqueda "${searchQuery}":`, publishedProjects.length);
+            }
+
+            console.log('✅ Proyectos publicados válidos:', publishedProjects.length);
+
+            // Ordenar por fecha de publicación (más reciente primero)
+            publishedProjects.sort((a, b) => {
+                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                return dateB - dateA;
+            });
+
+            // Limpiar grid
+            projectsGrid.innerHTML = '';
+
+            // Si no hay proyectos, mostrar estado vacío
+            if (publishedProjects.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'projects-empty-state';
+                const message = searchQuery 
+                    ? `No se encontraron proyectos que coincidan con "${searchQuery}".`
+                    : 'No hay proyectos publicados aún. Crea tu primer proyecto para comenzar.';
+                emptyState.innerHTML = `<p class="projects-empty-state__text">${message}</p>`;
+                projectsGrid.appendChild(emptyState);
+                return;
+            }
+
+            // Crear cards para cada proyecto (ahora es async)
+            (async () => {
+                for (let index = 0; index < publishedProjects.length; index++) {
+                    const project = publishedProjects[index];
+                    try {
+                        const card = await createProjectCard(project);
+                        projectsGrid.appendChild(card);
+                        console.log(`✅ Card creada para proyecto: "${project.name}" (${index + 1}/${publishedProjects.length})`);
+                    } catch (error) {
+                        console.error(`❌ Error al crear card para proyecto "${project.name}":`, error);
+                    }
+                }
+                console.log(`=== loadProjects completado: ${publishedProjects.length} proyectos mostrados ===`);
+            })();
+        }
+
+        // Create project card element
+        async function createProjectCard(project) {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.setAttribute('data-project-id', project.id || '');
+            
+            // Click handler to navigate to project view
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (project.id) {
+                    try {
+                        sessionStorage.setItem('docu_selected_project_id', project.id);
+                        window.location.href = `project_view.html?id=${project.id}`;
+                    } catch (error) {
+                        console.warn('⚠️ Error al redirigir:', error);
+                    }
+                }
+            });
+
+            // Calculate progress
+            const progress = calculateOverallProgress(project);
+
+            // Get status
+            const status = project.projectStatus || project.status || 'to-start';
+            const statusBadgeClass = getStatusBadgeClass(status);
+            const statusBadgeText = getStatusBadgeText(status);
+
+            // Get ETA
+            const eta = project.projectDate ? formatDate(project.projectDate) : '';
+
+            // Get agreements count
+            const agreementsCount = project.agreements && Array.isArray(project.agreements) ? project.agreements.length : 0;
+
+            // Get last team data (avatars and name) - ahora es async
+            const teamData = await getTeamData(project);
+            const teamAvatars = teamData.avatars || [];
+            const teamName = teamData.teamName;
+            const hasTeam = teamName !== null && teamName !== undefined;
+
+            console.log(`📊 Team data para proyecto "${project.name}":`, {
+                teamName: teamName,
+                avatarsCount: teamAvatars.length,
+                hasTeam: hasTeam,
+                projectTeams: project.teams
+            });
+
+            // Build card HTML
+            card.innerHTML = `
+                <div class="project-card__image">
+                    <img src="images/Portada_Sales 1.png" alt="${escapeHtml(project.name || 'Project')}">
+                </div>
+                <div class="project-card__content">
+                    <div class="project-card__header">
+                        <h3 class="project-card__title">${escapeHtml(project.name || 'Untitled Project')}</h3>
+                        <div class="project-card__status-badge ${statusBadgeClass}">
+                            ${escapeHtml(statusBadgeText)}
+                        </div>
+                    </div>
+                    <div class="project-card__secondary-items">
+                        ${eta ? `
+                        <div class="project-card__secondary-item">
+                            <div class="project-card__secondary-item-icon">
+                                <img src="images/calendar.svg" alt="Calendar">
+                            </div>
+                            <span class="project-card__secondary-item-text">ETA: ${escapeHtml(eta)}</span>
+                        </div>
+                        ` : ''}
+                        <div class="project-card__secondary-item">
+                            <div class="project-card__secondary-item-icon">
+                                <img src="images/project.svg" alt="Agreements">
+                            </div>
+                            <span class="project-card__secondary-item-text">Agreements: ${agreementsCount}</span>
+                        </div>
+                    </div>
+                    <div class="project-card__footer">
+                        <div class="project-card__progress-wrapper">
+                            <span class="project-card__progress-text">Overall progress ${progress}%</span>
+                            <div class="project-card__progress-bar">
+                                <div class="project-card__progress-fill" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                        ${hasTeam ? `
+                        <div class="project-card__team-members">
+                            <p class="project-card__team-members-label">${escapeHtml(teamName)}</p>
+                            ${teamAvatars.length > 0 ? `
+                            <div class="project-card__team-avatars">
+                                ${teamAvatars.map((avatar, index) => {
+                                    // No usar escapeHtml en URLs de imágenes (pueden contener caracteres especiales válidos)
+                                    // Usar comillas simples para evitar problemas con comillas dobles en base64
+                                    const safeAvatar = avatar.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                                    return `
+                                    <div class="project-card__team-avatar">
+                                        <img src="${safeAvatar}" alt="Team member ${index + 1}" onerror="this.src='images/avatar_icon.svg'">
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            ` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Sidebar Navigation
+        function initSidebarNavigation() {
+            // Teams Dropdown - Asegurar que siempre esté expandido por defecto
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-teams-dropdown--expanded');
+                button.classList.add('dsu-teams-button--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-teams-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                            button.classList.remove('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-teams-dropdown--expanded');
+                            button.classList.add('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
+                    });
+                }
+            });
+
+            // Projects Dropdown - Asegurar que siempre esté expandido por defecto
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-projects-dropdown--expanded');
+                trigger.classList.add('dsu-projects-button__trigger--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // El botón navega a myprojects.html (ya estamos aquí, así que solo manejamos chevron)
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-projects-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                            trigger.classList.remove('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-projects-dropdown--expanded');
+                            trigger.classList.add('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
+                    });
+                }
+            });
+
+            // Create New Team Button
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            if (createTeamBtn) {
+                createTeamBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'create_team.html';
+                });
+            }
+
+            // Create New Project Button
+            const createProjectBtn = document.getElementById('createProjectBtn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.setItem('docu_create_new_project', 'true');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'project_empty.html';
+                });
+            }
+
+            // Load Teams in Sidebar (similar to project_view.html)
+            loadTeamsInSidebar();
+            
+            // Load Projects in Sidebar (similar to project_view.html)
+            loadProjectsInSidebar();
+
+            // Dark Mode Button
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function() {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    try {
+                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
+                    }
+                });
+            }
+
+            // Logout Button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        DocuAuth.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // Load Teams in Sidebar
+        function loadTeamsInSidebar() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            if (typeof DocuProjectData === 'undefined' || typeof DocuAuth === 'undefined') {
+                setTimeout(loadTeamsInSidebar, 200);
+                return;
+            }
+
+            const session = DocuAuth.getCurrentSession();
+            if (!session) return;
+
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData) return;
+
+            const teams = projectData.teams || [];
+            const publishedTeams = teams.filter(team => {
+                return team && team.status === 'published' && team.name && typeof team.name === 'string' && team.name.trim().length > 0;
+            });
+
+            publishedTeams.sort((a, b) => {
+                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                return dateB - dateA;
+            });
+
+            teamsList.innerHTML = '';
+
+            publishedTeams.forEach((team) => {
+                const teamItem = document.createElement('button');
+                teamItem.className = 'dsu-team-item';
+                teamItem.setAttribute('data-team-id', team.id || '');
+                teamItem.setAttribute('data-team-name', escapeHtml(team.name || 'Sin nombre'));
+                
+                const teamText = document.createElement('span');
+                teamText.className = 'dsu-team-item__text';
+                teamText.textContent = team.name || 'Sin nombre';
+                teamItem.appendChild(teamText);
+                
+                teamItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (team.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_team_id', team.id);
+                            window.location.href = `team_filled.html?id=${team.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    }
+                });
+                
+                teamsList.appendChild(teamItem);
+            });
+        }
+
+        // Load Projects in Sidebar
+        function loadProjectsInSidebar() {
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) return;
+
+            if (typeof DocuProjectData === 'undefined' || typeof DocuAuth === 'undefined') {
+                setTimeout(loadProjectsInSidebar, 200);
+                return;
+            }
+
+            const session = DocuAuth.getCurrentSession();
+            if (!session) return;
+
+            const projects = DocuProjectData.getProjects() || [];
+            const publishedProjects = projects.filter(project => {
+                return project && project.status === 'published' && project.name && typeof project.name === 'string' && project.name.trim().length > 0;
+            });
+
+            publishedProjects.sort((a, b) => {
+                const dateA = a.createdAt || a.updatedAt || 0;
+                const dateB = b.createdAt || b.updatedAt || 0;
+                return dateB - dateA;
+            });
+
+            projectsList.innerHTML = '';
+
+            publishedProjects.forEach((project) => {
+                const projectItem = document.createElement('button');
+                projectItem.className = 'dsu-project-item';
+                projectItem.setAttribute('data-project-id', project.id || '');
+                projectItem.setAttribute('data-project-name', escapeHtml(project.name || 'Sin nombre'));
+                
+                const projectText = document.createElement('span');
+                projectText.className = 'dsu-project-item__text';
+                projectText.textContent = project.name || 'Sin nombre';
+                projectItem.appendChild(projectText);
+                
+                projectItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (project.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_project_id', project.id);
+                            window.location.href = `project_view.html?id=${project.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    }
+                });
+                
+                projectsList.appendChild(projectItem);
+            });
+        }
+
+        // Initialize search functionality
+        function initSearchProjects() {
+            const searchInput = document.getElementById('searchProjectsInput');
+            const searchSendIcon = document.getElementById('searchProjectsSendIcon');
+            
+            if (!searchInput || !searchSendIcon) return;
+
+            // Función para realizar búsqueda
+            const performSearch = () => {
+                const query = searchInput.value.trim();
+                loadProjects(query);
+            };
+
+            // Event listener para el icono de envío
+            searchSendIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                performSearch();
+            });
+
+            // Event listener para Enter en el input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+
+            // Event listener para limpiar búsqueda cuando el input esté vacío
+            searchInput.addEventListener('input', function() {
+                if (this.value.trim().length === 0) {
+                    loadProjects('');
+                }
+            });
+        }
+
+        // Initialize filters button
+        function initFiltersButton() {
+            const filtersBtn = document.getElementById('filtersProjectsBtn');
+            if (!filtersBtn) return;
+
+            filtersBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // TODO: Implementar modal de filtros si es necesario
+                console.log('🔍 Filters button clicked');
+                // Por ahora solo muestra un mensaje
+                alert('Funcionalidad de filtros próximamente');
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            initSidebarNavigation();
+            loadProjects();
+            initSearchProjects();
+            initFiltersButton();
+        });
+    </script>
+</body>
+</html>
+
