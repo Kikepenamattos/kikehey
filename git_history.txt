@@ -1,3 +1,4 @@
+0d2b9c403b2494507dc4dbabf6c957d2ab26d7bd|Ubits|ubits@macbookpro.lan|2025-12-22 17:25:35 -0500|Update: Actualizar changelog con últimos cambios
 6a6df3c0b1f8d3a70b7ac6b75348c67afd3670a8|Ubits|ubits@macbookpro.lan|2025-12-22 17:24:52 -0500|Update: Agregar navegación a myprojects.html desde sidebar, ajustar estilos de project cards y team-members-grid
 4f1f4894c4832df43f55afc902a58c7cba49eb05|Ubits|ubits@macbookpro.lan|2025-12-22 14:39:24 -0500|feat: agregar botón Generate report al headline en myprojects.html
 c7dd06133c616882364306e1f022cc448e266823|Ubits|ubits@macbookpro.lan|2025-12-22 14:32:00 -0500|Update: Actualizar changelog con últimos cambios
