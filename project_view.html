@@ -2205,23 +2205,138 @@
             }
         }
 
-        // Load Teams in Sidebar (simplificada)
+        // Load Teams in Sidebar
+        // ============================================
         function loadTeamsInSidebar() {
-            const teamsList = document.getElementById('teamsList');
-            if (!teamsList) return;
-
-            const projectData = DocuProjectData.getProjectData();
-            const teams = (projectData && projectData.teams) ? projectData.teams.filter(t => t.status === 'published') : [];
+            console.log('=== loadTeamsInSidebar llamado ===');
             
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) {
+                console.error('❌ Elemento teamsList no encontrado en el DOM');
+                return;
+            }
+
+            console.log('✅ Elemento teamsList encontrado');
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar que DocuAuth esté disponible
+            if (typeof DocuAuth === 'undefined') {
+                console.error('❌ DocuAuth no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadTeamsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar sesión activa
+            const session = DocuAuth.getCurrentSession();
+            if (!session) {
+                console.warn('⚠️ No hay sesión activa, no se pueden cargar teams');
+                return;
+            }
+            
+            console.log('✅ Sesión activa encontrada:', session.email);
+
+            // Obtener datos del proyecto
+            let projectData = null;
+            try {
+                projectData = DocuProjectData.getProjectData();
+            } catch (error) {
+                console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                return;
+            }
+
+            // Obtener teams del usuario
+            const teams = (projectData && projectData.teams && Array.isArray(projectData.teams)) ? projectData.teams : [];
+            console.log('📊 Total de teams encontrados:', teams.length);
+
+            // Filtrar solo equipos publicados con nombre válido
+            const publishedTeams = teams.filter(team => {
+                if (!team) {
+                    console.warn('⚠️ Team nulo encontrado');
+                    return false;
+                }
+                
+                // Verificar que el team esté publicado
+                const isPublished = team.status === 'published';
+                
+                // Verificar que tenga nombre válido
+                const hasValidName = team.name && 
+                                   typeof team.name === 'string' &&
+                                   team.name.trim().length > 0;
+                
+                const isValid = isPublished && hasValidName;
+                
+                if (!isValid) {
+                    if (team.status === 'published' && !hasValidName) {
+                        console.warn('⚠️ Team publicado sin nombre válido:', team);
+                    } else if (!isPublished) {
+                        console.log('ℹ️ Team no publicado, omitiendo:', team.name || team.id);
+                    }
+                } else {
+                    console.log('✅ Team válido:', team.name, '(ID:', team.id, ')');
+                }
+                
+                return isValid;
+            });
+
+            console.log('✅ Teams publicados válidos:', publishedTeams.length);
+
+            // Ordenar por fecha de publicación (más reciente primero, más antiguo al final)
+            publishedTeams.sort((a, b) => {
+                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                return dateB - dateA; // Orden descendente (más reciente primero)
+            });
+
+            console.log('📋 Teams ordenados (más reciente primero)');
+
+            // Limpiar lista
             teamsList.innerHTML = '';
-            teams.forEach(team => {
+
+            // Si no hay teams, mostrar mensaje vacío (opcional) o simplemente lista vacía
+            if (publishedTeams.length === 0) {
+                console.log('ℹ️ No hay teams publicados para mostrar');
+                return;
+            }
+
+            // Asegurar que el dropdown esté expandido
+            const teamsDropdown = teamsList.closest('.dsu-teams-dropdown');
+            if (teamsDropdown) {
+                teamsDropdown.classList.add('dsu-teams-dropdown--expanded');
+                console.log('✅ Dropdown de teams expandido');
+            } else {
+                console.warn('⚠️ Dropdown de teams no encontrado');
+            }
+
+            // Agregar teams a la lista
+            publishedTeams.forEach((team, index) => {
                 const teamItem = document.createElement('button');
                 teamItem.className = 'dsu-team-item';
                 teamItem.setAttribute('data-team-id', team.id || '');
-                teamItem.innerHTML = `<span class="dsu-team-item__text">${team.name || 'Sin nombre'}</span>`;
+                teamItem.setAttribute('data-team-name', escapeHtml(team.name || 'Sin nombre'));
+                
+                // Crear el texto del team
+                const teamText = document.createElement('span');
+                teamText.className = 'dsu-team-item__text';
+                teamText.textContent = team.name || 'Sin nombre';
+                teamItem.appendChild(teamText);
+                
+                // Event listener para cargar el team al hacer clic
                 teamItem.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('🖱️ Team clicked:', team.name, '(ID:', team.id, ')');
                     
                     // Remover clase active de todos los items
                     teamsList.querySelectorAll('.dsu-team-item').forEach(item => {
@@ -2231,20 +2346,28 @@
                     // Agregar clase active al item clickeado
                     teamItem.classList.add('dsu-team-item--active', 'active');
                     
-                    // Guardar en sessionStorage
-                    try {
-                        sessionStorage.setItem('docu_selected_team_id', team.id);
-                    } catch (error) {
-                        console.warn('⚠️ Error al guardar en sessionStorage:', error);
+                    // Redirigir a team_filled.html con el ID del team
+                    if (team.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_team_id', team.id);
+                            console.log('✅ Team seleccionado, redirigiendo a team_filled.html');
+                            window.location.href = `team_filled.html?id=${team.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    } else {
+                        console.error('❌ Team sin ID, no se puede cargar');
                     }
-                    
-                    window.location.href = `team_filled.html?id=${team.id}`;
                 });
+                
                 teamsList.appendChild(teamItem);
+                console.log(`✅ Team agregado a la lista: "${team.name}" (${index + 1}/${publishedTeams.length})`);
             });
             
             // Marcar team activo si hay uno seleccionado
             markActiveTeam();
+
+            console.log(`=== loadTeamsInSidebar completado: ${publishedTeams.length} teams mostrados ===`);
         }
 
         // Función para marcar el team activo
@@ -2280,23 +2403,115 @@
             }
         }
 
-        // Load Projects in Sidebar (simplificada)
+        // Load Projects in Sidebar
+        // ============================================
         function loadProjectsInSidebar() {
-            const projectsList = document.getElementById('projectsList');
-            if (!projectsList) return;
-
-            const projectData = DocuProjectData.getProjectData();
-            const projects = (projectData && projectData.projects) ? projectData.projects : [];
+            console.log('=== loadProjectsInSidebar llamado ===');
             
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) {
+                console.error('❌ Elemento projectsList no encontrado en el DOM');
+                return;
+            }
+
+            console.log('✅ Elemento projectsList encontrado');
+
+            // Verificar que DocuProjectData esté disponible
+            if (typeof DocuProjectData === 'undefined') {
+                console.error('❌ DocuProjectData no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadProjectsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar que DocuAuth esté disponible
+            if (typeof DocuAuth === 'undefined') {
+                console.error('❌ DocuAuth no está disponible');
+                console.log('🔄 Reintentando en 200ms...');
+                setTimeout(() => {
+                    loadProjectsInSidebar();
+                }, 200);
+                return;
+            }
+            
+            // Verificar sesión activa
+            const session = DocuAuth.getCurrentSession();
+            if (!session) {
+                console.warn('⚠️ No hay sesión activa');
+                return;
+            }
+
+            // Obtener datos del proyecto
+            let projectData = null;
+            try {
+                projectData = DocuProjectData.getProjectData();
+            } catch (error) {
+                console.error('❌ Error al obtener datos de DocuProjectData:', error);
+                return;
+            }
+
+            // Obtener proyectos del usuario
+            const projects = (projectData && projectData.projects && Array.isArray(projectData.projects)) ? projectData.projects : [];
+            console.log('📊 Total de proyectos encontrados:', projects.length);
+
+            // Filtrar solo proyectos con nombre válido
+            const validProjects = projects.filter(project => {
+                if (!project) return false;
+                const hasValidName = project.name && 
+                                   typeof project.name === 'string' &&
+                                   project.name.trim().length > 0;
+                return hasValidName;
+            });
+
+            console.log('✅ Proyectos válidos:', validProjects.length);
+
+            // Ordenar por fecha de creación (más reciente primero)
+            validProjects.sort((a, b) => {
+                const dateA = a.createdAt || a.updatedAt || 0;
+                const dateB = b.createdAt || b.updatedAt || 0;
+                return dateB - dateA; // Orden descendente (más reciente primero)
+            });
+
+            console.log('📋 Proyectos ordenados (más reciente primero)');
+
+            // Limpiar lista
             projectsList.innerHTML = '';
-            projects.forEach(project => {
+
+            // Si no hay proyectos, mostrar mensaje vacío (opcional) o simplemente lista vacía
+            if (validProjects.length === 0) {
+                console.log('ℹ️ No hay proyectos para mostrar');
+                return;
+            }
+
+            // Asegurar que el dropdown esté expandido
+            const projectsDropdown = projectsList.closest('.dsu-projects-dropdown');
+            if (projectsDropdown) {
+                projectsDropdown.classList.add('dsu-projects-dropdown--expanded');
+                console.log('✅ Dropdown de proyectos expandido');
+            } else {
+                console.warn('⚠️ Dropdown de proyectos no encontrado');
+            }
+
+            // Agregar proyectos a la lista
+            validProjects.forEach((project, index) => {
                 const projectItem = document.createElement('button');
                 projectItem.className = 'dsu-project-item';
                 projectItem.setAttribute('data-project-id', project.id || '');
-                projectItem.innerHTML = `<span class="dsu-project-item__text">${project.name || 'Sin nombre'}</span>`;
+                projectItem.setAttribute('data-project-name', escapeHtml(project.name || 'Sin nombre'));
+                
+                // Crear el texto del proyecto
+                const projectText = document.createElement('span');
+                projectText.className = 'dsu-project-item__text';
+                projectText.textContent = project.name || 'Sin nombre';
+                projectItem.appendChild(projectText);
+                
+                // Event listener para cargar el proyecto al hacer clic
                 projectItem.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('🖱️ Proyecto clicked:', project.name, '(ID:', project.id, ')');
                     
                     // Remover clase active de todos los items
                     projectsList.querySelectorAll('.dsu-project-item').forEach(item => {
@@ -2306,20 +2521,28 @@
                     // Agregar clase active al item clickeado
                     projectItem.classList.add('dsu-project-item--active', 'active');
                     
-                    // Guardar en sessionStorage
-                    try {
-                        sessionStorage.setItem('docu_selected_project_id', project.id);
-                    } catch (error) {
-                        console.warn('⚠️ Error al guardar en sessionStorage:', error);
+                    // Redirigir a project_view.html con el ID del proyecto
+                    if (project.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_project_id', project.id);
+                            console.log('✅ Proyecto seleccionado, redirigiendo a project_view.html');
+                            window.location.href = `project_view.html?id=${project.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    } else {
+                        console.error('❌ Proyecto sin ID, no se puede cargar');
                     }
-                    
-                    window.location.href = `project_view.html?id=${project.id}`;
                 });
+                
                 projectsList.appendChild(projectItem);
+                console.log(`✅ Proyecto agregado a la lista: "${project.name}" (${index + 1}/${validProjects.length})`);
             });
-            
+
             // Marcar proyecto activo si hay uno seleccionado
             markActiveProject();
+
+            console.log(`=== loadProjectsInSidebar completado: ${validProjects.length} proyectos mostrados ===`);
         }
 
         // Función para marcar el proyecto activo
@@ -3642,6 +3865,7 @@
         
         // Helper function para escapar HTML
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;

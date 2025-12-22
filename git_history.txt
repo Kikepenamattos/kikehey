@@ -1,3 +1,4 @@
+edaf46b72cbbb4e41f028c8b3380e286f8cd90e2|Ubits|ubits@macbookpro.lan|2025-12-21 18:25:19 -0500|Fix: Corregir sincronización bidireccional entre proyectos y teams
 737d5415819be6b5540fa07de406217d1fd8c966|Ubits|ubits@macbookpro.lan|2025-12-21 10:34:53 -0500|Update: Actualizar changelog con últimos cambios
 35e96103dbd7f996d2e33536d54061773280e984|Ubits|ubits@macbookpro.lan|2025-12-21 10:34:44 -0500|feat: Agregar vista de lista para cards de miembros con border tipo modal y desactivar animaciones al cambiar entre vistas
 9445cd78fb2b805038e98255d78e9bbde1a34c25|Ubits|ubits@macbookpro.lan|2025-12-21 10:34:35 -0500|Update: Actualizar changelog con últimos cambios
