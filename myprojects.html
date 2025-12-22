@@ -101,7 +101,7 @@
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 24px;
             width: 100%;
         }
@@ -146,7 +146,7 @@
         .project-card__content {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 16px;
             width: 100%;
             box-sizing: border-box;
         }
@@ -210,7 +210,7 @@
         /* Project Card Secondary Items */
         .project-card__secondary-items {
             display: flex;
-            gap: 8px;
+            gap: 24px;
             align-items: center;
             width: 100%;
             flex-wrap: wrap;
@@ -257,7 +257,7 @@
         /* Progress Bar Wrapper */
         .project-card__progress-wrapper {
             display: flex;
-            gap: 8px;
+            gap: 16px;
             align-items: center;
             justify-content: center;
             width: 100%;
@@ -472,12 +472,6 @@
         }
 
         /* Responsive */
-        @media (max-width: 1600px) {
-            .projects-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
         @media (max-width: 1400px) {
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1022,7 +1016,7 @@
                     </div>
                     <div class="project-card__footer">
                         <div class="project-card__progress-wrapper">
-                            <span class="project-card__progress-text">Overall progress ${progress}%</span>
+                            <span class="project-card__progress-text">Progress</span>
                             <div class="project-card__progress-bar">
                                 <div class="project-card__progress-fill" style="width: ${progress}%"></div>
                             </div>
