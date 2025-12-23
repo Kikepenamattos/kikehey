@@ -1,3 +1,5 @@
+055849569ef971fe680b35e56eb825924586b02e|Ubits|ubits@macbookpro.lan|2025-12-23 11:56:29 -0500|Update: Ajustes de modo dark para inputs, modales y member_profile - bordes visibles y transiciones
+41eec3c5bfc40fac5c25a5fe28202f0abff7fd06|Ubits|ubits@macbookpro.lan|2025-12-23 11:33:04 -0500|Update: Actualizar changelog con últimos cambios
 22ef5c9fafd2584b99bf23e2bbd195fd471f8293|Ubits|ubits@macbookpro.lan|2025-12-23 11:31:59 -0500|Update: Ajustes de modo dark para modal Edit member, view-controls y iconos de perfil
 c1f9efbe6a15cdd43bd4fcf5febaee8fc5275b42|Ubits|ubits@macbookpro.lan|2025-12-23 11:16:28 -0500|Update: Actualizar changelog con últimos cambios
 0841f4a7e7aed5186ae764c5a971c04bb8c912d5|Ubits|ubits@macbookpro.lan|2025-12-23 11:16:16 -0500|feat: Ajustar estilos de modo dark para status tags, chips, modales, inputs y send-agreement-option

@@ -244,7 +244,12 @@
 
         .filter-input:focus {
             outline: none;
-            border-color: #9dff00;
+            border: 1px solid #9dff00;
+        }
+
+        /* Dark mode - ensure border is visible when focused */
+        [data-theme="dark"] .filter-input:focus {
+            border: 1px solid #9dff00;
         }
 
         .back-link {
@@ -1445,6 +1450,22 @@
             return div.innerHTML;
         }        // Datos reales del historial de git (fallback si no se puede cargar git_history.txt)
         const realCommits = [
+            {
+                hash: '0558495',
+                fullHash: '055849569ef971fe680b35e56eb825924586b02e',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-23 11:56:29 -0500',
+                message: 'Update: Ajustes de modo dark para inputs, modales y member_profile - bordes visibles y transiciones'
+            },
+            {
+                hash: '41eec3c',
+                fullHash: '41eec3c5bfc40fac5c25a5fe28202f0abff7fd06',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-23 11:33:04 -0500',
+                message: 'Update: Actualizar changelog con últimos cambios'
+            },
             {
                 hash: '22ef5c9',
                 fullHash: '22ef5c9fafd2584b99bf23e2bbd195fd471f8293',
@@ -4668,6 +4689,14 @@
                 email: 'ubits@MacBook-Pro-de-Ubits.local',
                 date: '2025-08-25 10:02:03 -0500',
                 message: '🚀 Initial commit: Docu - Sistema de Gestión de Proyectos con Loginc24deb11f38c4ca4f9ec1c2d87c9c3c36a272c27|Ubits|ubits@macbookpro.lan|2025-12-14 18:10:56 -0500|Feat: Agregar label \'Estimated delivery date\' y botón trash para resetear fecha - Agregar label \'Estimated delivery date\' con estilo project-status-label al lado del botón de fecha - Label solo visible cuando hay fecha seleccionada - Agregar botón trash para resetear la fecha seleccionada - Alinear horizontalmente label, botón de fecha y botón trash con gap de 24px - Implementar funcionalidad de reset que limpia fecha y oculta label y botón trash - Agregar override de estilos para dsu-button--tertiary con background-color #f4f7fb'
+            },
+            {
+                hash: '22ef5c9',
+                fullHash: '22ef5c9fafd2584b99bf23e2bbd195fd471f8293',
+                author: 'Ubits',
+                email: 'ubits@macbookpro.lan',
+                date: '2025-12-23 11:31:59 -0500',
+                message: 'Update: Ajustes de modo dark para modal Edit member, view-controls y iconos de perfil'
             }
         ];
     </script>
