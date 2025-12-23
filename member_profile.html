@@ -130,6 +130,12 @@
             box-shadow: var(--elevation-modal);
         }
 
+        /* Dark mode modal adjustments */
+        [data-theme="dark"] .add-member-modal {
+            background: var(--color-surface-regular);
+            border-color: var(--color-basics-mid-blue);
+        }
+
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -179,6 +185,11 @@
             line-height: normal;
         }
 
+        /* Dark mode title adjustment */
+        [data-theme="dark"] .modal-title {
+            color: var(--color-basics-white);
+        }
+
         .modal-close-btn {
             background: transparent;
             border: none;
@@ -217,6 +228,11 @@
             color: var(--color-basics-dark-blue);
             margin: 0;
             padding: 0;
+        }
+
+        /* Dark mode description adjustment */
+        [data-theme="dark"] .modal-description {
+            color: var(--color-basics-white);
         }
 
         /* Modal Content */
@@ -429,6 +445,13 @@
             gap: var(--spacing-16);
             margin: 0;
             padding: 0;
+        }
+
+        /* Dark mode modal button icons */
+        [data-theme="dark"] .modal-delete-btn .dsu-button__icon img,
+        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img,
+        [data-theme="dark"] .modal-add-btn .dsu-button__icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .profile-page-edit-btn {

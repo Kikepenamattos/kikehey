@@ -290,6 +290,12 @@
             box-shadow: var(--elevation-4);
         }
 
+        /* Dark mode modal adjustments */
+        [data-theme="dark"] .add-member-modal {
+            background: var(--color-surface-regular);
+            border-color: var(--color-basics-mid-blue);
+        }
+
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -339,6 +345,11 @@
             line-height: normal;
         }
 
+        /* Dark mode title adjustment */
+        [data-theme="dark"] .modal-title {
+            color: var(--color-basics-white);
+        }
+
         .modal-close-btn {
             background: transparent;
             border: none;
@@ -377,6 +388,11 @@
             color: var(--color-basics-dark-blue);
             margin: 0;
             padding: 0;
+        }
+
+        /* Dark mode description adjustment */
+        [data-theme="dark"] .modal-description {
+            color: var(--color-basics-white);
         }
 
         /* Modal Content */
@@ -483,6 +499,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        /* Dark mode modal button icons */
+        [data-theme="dark"] .modal-delete-btn .dsu-button__icon img,
+        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img,
+        [data-theme="dark"] .modal-add-btn .dsu-button__icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         /* Avatar Preview in Modal */
@@ -805,6 +828,19 @@
 
         .view-control-btn.active {
             background-color: var(--color-surface-especial, #f4f7fb);
+        }
+
+        .view-control-btn img,
+        .view-control-btn .btn-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment for view controls */
+        [data-theme="dark"] .view-controls .view-control-btn img,
+        [data-theme="dark"] .view-controls .view-control-btn .btn-icon {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         /* Associated Projects */
