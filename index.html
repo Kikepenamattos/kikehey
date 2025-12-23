@@ -182,10 +182,11 @@
                         // Guardar email para futuras sesiones
                         DocuAuth.saveLoginEmail(email);
                         
-                        // Obtener el último team creado y redirigir
+                        // Redirigir según la lógica: proyectos → teams → create_team.html
+                        // Aumentar el tiempo de espera para asegurar que los datos estén disponibles
                         setTimeout(() => {
-                            redirectToLastTeam();
-                        }, 500);
+                            redirectAfterLogin();
+                        }, 800);
                     } else {
                         alert('Credenciales inválidas. Por favor verifica tu email y contraseña.');
                         this.form.querySelector('.login-button').disabled = false;
@@ -229,52 +230,132 @@
             }
         }
 
-        // Función helper para redirigir al último team creado
-        function redirectToLastTeam() {
+        // Función helper para redirigir después del login según la lógica:
+        // 1. Si tiene proyectos → último proyecto creado
+        // 2. Si NO tiene proyectos pero tiene teams → último team creado
+        // 3. Si NO tiene ni teams ni proyectos → create_team.html
+        function redirectAfterLogin() {
             if (typeof window.DocuProjectData === 'undefined') {
-                setTimeout(redirectToLastTeam, 100);
+                console.log('⏳ Esperando DocuProjectData...');
+                setTimeout(redirectAfterLogin, 100);
+                return;
+            }
+            
+            if (typeof window.DocuAuth === 'undefined') {
+                console.log('⏳ Esperando DocuAuth...');
+                setTimeout(redirectAfterLogin, 100);
                 return;
             }
             
             try {
-                const projectData = DocuProjectData.getProjectData();
-                
-                // VALIDACIÓN: Si no hay teams creados, redirigir a create_team.html
-                if (!projectData || !projectData.teams || !Array.isArray(projectData.teams) || projectData.teams.length === 0) {
-                    console.log('ℹ️ Usuario no tiene teams creados, redirigiendo a create_team.html');
+                // Obtener sesión actual
+                const session = DocuAuth.getCurrentSession();
+                if (!session) {
+                    console.error('❌ No hay sesión activa');
                     window.location.href = 'create_team.html';
                     return;
                 }
                 
-                // Si hay teams, obtener el último team creado
-                const teams = projectData.teams;
-                const sortedTeams = teams.sort((a, b) => {
-                    // Usar createdAt, updatedAt o publishedAt según disponibilidad
-                    const dateA = a.createdAt || a.updatedAt || a.publishedAt || 0;
-                    const dateB = b.createdAt || b.updatedAt || b.publishedAt || 0;
-                    return dateB - dateA; // Más reciente primero
-                });
+                console.log('🔍 Obteniendo datos del usuario para redirección...');
+                console.log('📧 Email de sesión:', session.email);
                 
-                const lastTeam = sortedTeams[0];
-                let redirectUrl = 'create_team.html'; // Por defecto (fallback)
+                // Obtener datos del proyecto
+                const projectData = DocuProjectData.getProjectData();
+                console.log('📦 Datos obtenidos de DocuProjectData:', projectData);
                 
-                if (lastTeam && lastTeam.id) {
-                    // Si el team está publicado, redirigir a team_filled.html
-                    if (lastTeam.status === 'published') {
-                        redirectUrl = `team_filled.html?id=${lastTeam.id}`;
-                        console.log(`✅ Redirigiendo al último team publicado: ${lastTeam.name} (ID: ${lastTeam.id})`);
-                    } else {
-                        // Si no está publicado, redirigir a create_team.html para editarlo
-                        redirectUrl = `create_team.html?edit=true&id=${lastTeam.id}`;
-                        console.log(`✅ Redirigiendo al último team (draft): ${lastTeam.name} (ID: ${lastTeam.id})`);
-                    }
-                } else {
-                    console.warn('⚠️ Último team no tiene ID válido, redirigiendo a create_team.html');
+                // Verificación adicional: leer directamente de localStorage
+                const directData = DocuAuth.loadProjectData(session.email);
+                console.log('📦 Datos leídos directamente de localStorage:', directData);
+                
+                // Usar los datos más completos disponibles
+                const finalData = projectData || directData;
+                
+                if (!finalData) {
+                    console.warn('⚠️ No se encontraron datos del usuario, redirigiendo a create_team.html');
+                    window.location.href = 'create_team.html';
+                    return;
                 }
                 
-                window.location.href = redirectUrl;
+                // Verificar si hay proyectos creados
+                const projects = finalData.projects && Array.isArray(finalData.projects) ? finalData.projects : [];
+                console.log(`📊 Total de proyectos encontrados: ${projects.length}`);
+                if (projects.length > 0) {
+                    console.log('📋 Lista de proyectos:', projects.map(p => ({ id: p.id, name: p.name, createdAt: p.createdAt, updatedAt: p.updatedAt })));
+                }
+                
+                if (projects.length > 0) {
+                    // Si tiene proyectos, obtener el último proyecto creado
+                    const sortedProjects = [...projects].sort((a, b) => {
+                        // Usar createdAt, updatedAt según disponibilidad
+                        const dateA = a.createdAt || a.updatedAt || 0;
+                        const dateB = b.createdAt || b.updatedAt || 0;
+                        return dateB - dateA; // Más reciente primero
+                    });
+                    
+                    const lastProject = sortedProjects[0];
+                    console.log('🎯 Último proyecto encontrado:', lastProject);
+                    
+                    if (lastProject && lastProject.id) {
+                        const redirectUrl = `project_view.html?id=${lastProject.id}`;
+                        console.log(`✅ Redirigiendo al último proyecto creado: ${lastProject.name} (ID: ${lastProject.id})`);
+                        window.location.href = redirectUrl;
+                        return;
+                    } else {
+                        console.warn('⚠️ Último proyecto no tiene ID válido, verificando teams...');
+                        console.warn('⚠️ Datos del proyecto:', lastProject);
+                    }
+                } else {
+                    console.log('ℹ️ Usuario no tiene proyectos creados, verificando teams...');
+                }
+                
+                // Si no hay proyectos, verificar teams
+                const teams = finalData.teams && Array.isArray(finalData.teams) ? finalData.teams : [];
+                console.log(`👥 Total de teams encontrados: ${teams.length}`);
+                if (teams.length > 0) {
+                    console.log('👥 Lista de teams:', teams.map(t => ({ id: t.id, name: t.name, status: t.status, createdAt: t.createdAt, updatedAt: t.updatedAt })));
+                }
+                
+                if (teams.length > 0) {
+                    // Si tiene teams, obtener el último team creado
+                    const sortedTeams = [...teams].sort((a, b) => {
+                        // Usar createdAt, updatedAt o publishedAt según disponibilidad
+                        const dateA = a.createdAt || a.updatedAt || a.publishedAt || 0;
+                        const dateB = b.createdAt || b.updatedAt || b.publishedAt || 0;
+                        return dateB - dateA; // Más reciente primero
+                    });
+                    
+                    const lastTeam = sortedTeams[0];
+                    console.log('🎯 Último team encontrado:', lastTeam);
+                    
+                    if (lastTeam && lastTeam.id) {
+                        let redirectUrl = 'create_team.html'; // Por defecto (fallback)
+                        
+                        // Si el team está publicado, redirigir a team_filled.html
+                        if (lastTeam.status === 'published') {
+                            redirectUrl = `team_filled.html?id=${lastTeam.id}`;
+                            console.log(`✅ Redirigiendo al último team publicado: ${lastTeam.name} (ID: ${lastTeam.id})`);
+                        } else {
+                            // Si no está publicado, redirigir a create_team.html para editarlo
+                            redirectUrl = `create_team.html?edit=true&id=${lastTeam.id}`;
+                            console.log(`✅ Redirigiendo al último team (draft): ${lastTeam.name} (ID: ${lastTeam.id})`);
+                        }
+                        
+                        window.location.href = redirectUrl;
+                        return;
+                    } else {
+                        console.warn('⚠️ Último team no tiene ID válido, redirigiendo a create_team.html');
+                        console.warn('⚠️ Datos del team:', lastTeam);
+                    }
+                } else {
+                    console.log('ℹ️ Usuario no tiene teams creados, redirigiendo a create_team.html');
+                }
+                
+                // Si no hay ni proyectos ni teams, redirigir a create_team.html
+                console.log('🔄 Redirigiendo a create_team.html (sin proyectos ni teams)');
+                window.location.href = 'create_team.html';
             } catch (error) {
-                console.error('❌ Error al obtener último team:', error);
+                console.error('❌ Error al obtener datos del usuario:', error);
+                console.error('❌ Stack trace:', error.stack);
                 // En caso de error, redirigir a create_team.html
                 window.location.href = 'create_team.html';
             }
@@ -286,8 +367,8 @@
             const checkSession = () => {
                 if (typeof window.DocuAuth !== 'undefined') {
                     if (DocuAuth.isAuthenticated()) {
-                        // Redirigir al último team creado
-                        redirectToLastTeam();
+                        // Redirigir según la lógica: proyectos → teams → create_team.html
+                        redirectAfterLogin();
                         return;
                     }
                 } else {
