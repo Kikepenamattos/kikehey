@@ -209,8 +209,14 @@ body {
 
 .form-input:focus {
     outline: none;
-    border-color: #0a243f;
+    border: 1px solid #0a243f;
     color: #0a243f;
+}
+
+/* Dark mode - ensure border is visible when focused */
+[data-theme="dark"] .form-input:focus {
+    border: 1px solid var(--color-basics-white);
+    color: var(--color-basics-white);
 }
 
 .form-input::placeholder {

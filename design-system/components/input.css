@@ -101,13 +101,14 @@
 
 .dsu-input:focus {
   outline: none;
-  border-color: var(--color-basics-dark-blue);
+  border: 1px solid var(--color-basics-dark-blue);
   color: var(--color-text-primary);
 }
 
-/* Dark mode - ensure input text stays white when focused */
+/* Dark mode - ensure input text stays white when focused and border is visible */
 [data-theme="dark"] .dsu-input:focus {
   color: var(--color-basics-white);
+  border: 1px solid var(--color-basics-white);
 }
 
 .dsu-input:disabled {
@@ -181,7 +182,12 @@
 
 /* === ERROR STATE === */
 .dsu-input-group--error .dsu-input {
-  border-color: var(--color-status-strong-red);
+  border: 1px solid var(--color-status-strong-red);
+}
+
+/* Ensure error state border is visible in dark mode */
+[data-theme="dark"] .dsu-input-group--error .dsu-input {
+  border: 1px solid var(--color-status-strong-red);
 }
 
 .dsu-input-error {
@@ -370,7 +376,12 @@
 }
 
 .dsu-rich-text-input:focus-within {
-  border-color: var(--color-basics-dark-blue);
+  border: 1px solid var(--color-basics-dark-blue);
+}
+
+/* Dark mode - ensure border is visible when focused */
+[data-theme="dark"] .dsu-rich-text-input:focus-within {
+  border: 1px solid var(--color-basics-white);
 }
 
 .dsu-rich-text-input__footer {
@@ -415,7 +426,7 @@
 /* Dark mode */
 [data-theme="dark"] .dsu-rich-text-input {
   background-color: var(--color-surface-regular);
-  border-color: var(--color-basics-mid-blue);
+  border: 1px solid var(--color-basics-mid-blue);
 }
 
 [data-theme="dark"] .dsu-rich-text-input__toolbar-button:hover {

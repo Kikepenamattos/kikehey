@@ -30,6 +30,13 @@
             background-color: var(--color-surface-regular, #ffffff);
             color: var(--color-text-primary, #0a243f);
             min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark mode body adjustments */
+        [data-theme="dark"] body {
+            background-color: var(--color-surface-regular);
+            color: var(--color-text-primary);
         }
 
         /* Profile Page Container - Matching modal structure */
@@ -41,6 +48,7 @@
             min-height: 100vh;
             position: relative;
             padding-top: 64px;
+            transition: background-color 0.3s ease;
         }
 
         .profile-page-header {
@@ -69,6 +77,16 @@
 
         .profile-page-close-btn:hover {
             opacity: 0.7;
+        }
+
+        /* Dark mode icon adjustment for close button */
+        [data-theme="dark"] .profile-page-close-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .profile-page-close-btn img {
+            transition: filter 0.3s ease;
         }
 
         /* Modal Styles */
@@ -449,9 +467,13 @@
 
         /* Dark mode modal button icons */
         [data-theme="dark"] .modal-delete-btn .dsu-button__icon img,
-        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img,
-        [data-theme="dark"] .modal-add-btn .dsu-button__icon img {
+        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img {
             filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Dark mode modal-add-btn (primary button) - keep icon dark for contrast on green background */
+        [data-theme="dark"] .modal-add-btn.dsu-button--primary .dsu-button__icon img {
+            filter: none; /* Keep icon dark for contrast on green background */
         }
 
         .profile-page-edit-btn {
@@ -535,6 +557,13 @@
             width: 100%;
             margin-bottom: 32px;
             border-bottom: 1px solid var(--color-status-disabled);
+            transition: border-color 0.3s ease;
+        }
+
+        /* Dark mode border adjustments */
+        [data-theme="dark"] .profile-personal-info-wrapper,
+        [data-theme="dark"] .profile-work-info-wrapper {
+            border-bottom-color: var(--color-border-default);
         }
 
         .profile-input-row {
@@ -584,6 +613,7 @@
             min-height: 48px;
             border: none;
             background-color: transparent;
+            transition: color 0.3s ease;
         }
 
         .profile-page-field:empty::before {
@@ -591,16 +621,27 @@
             color: var(--color-text-secondary, #666);
         }
 
+        /* Dark mode empty field adjustments */
+        [data-theme="dark"] .profile-page-field:empty::before {
+            color: var(--color-text-secondary);
+        }
+
         .profile-page-rich-text {
             min-height: 120px;
             padding: var(--spacing-16);
             border: none;
             background-color: transparent;
+            transition: color 0.3s ease;
         }
 
         .profile-page-rich-text:empty::before {
             content: '-';
             color: var(--color-text-secondary, #666);
+        }
+
+        /* Dark mode empty rich text adjustments */
+        [data-theme="dark"] .profile-page-rich-text:empty::before {
+            color: var(--color-text-secondary);
         }
 
         .profile-page-chips-container {
@@ -618,6 +659,11 @@
             color: var(--color-text-secondary, #666);
         }
 
+        /* Dark mode empty chips container adjustments */
+        [data-theme="dark"] .profile-page-chips-container:empty::before {
+            color: var(--color-text-secondary);
+        }
+
         .profile-page-chip {
             display: inline-flex;
             align-items: center;
@@ -626,6 +672,13 @@
             border-radius: var(--radius-sm, 4px);
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark mode chip adjustments */
+        [data-theme="dark"] .profile-page-chip {
+            background-color: var(--color-surface-light);
             color: var(--color-text-primary);
         }
 
@@ -642,6 +695,11 @@
         .profile-page-portfolio-container:empty::before {
             content: '-';
             color: var(--color-text-secondary, #666);
+        }
+
+        /* Dark mode empty portfolio container adjustments */
+        [data-theme="dark"] .profile-page-portfolio-container:empty::before {
+            color: var(--color-text-secondary);
         }
 
         .profile-page-portfolio-item {
@@ -669,6 +727,21 @@
             border: 1px solid var(--color-basics-dark-blue) !important;
             box-shadow: var(--button-secondary-elevation-default) !important;
             width: 100%;
+        }
+
+        /* Dark mode secondary button adjustments */
+        [data-theme="dark"] .dsu-button--secondary {
+            border-color: var(--color-basics-white) !important;
+        }
+
+        /* Dark mode icon adjustments for secondary buttons */
+        [data-theme="dark"] .dsu-button--secondary .dsu-button__icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+            transition: filter 0.3s ease;
+        }
+
+        .dsu-button--secondary .dsu-button__icon img {
+            transition: filter 0.3s ease;
         }
 
         .dsu-button--medium {
@@ -2282,6 +2355,24 @@
                 });
             }
         }
+
+        // ============================================
+        // DARK MODE FUNCTIONS
+        // ============================================
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {

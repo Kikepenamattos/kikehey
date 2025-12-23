@@ -503,9 +503,13 @@
 
         /* Dark mode modal button icons */
         [data-theme="dark"] .modal-delete-btn .dsu-button__icon img,
-        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img,
-        [data-theme="dark"] .modal-add-btn .dsu-button__icon img {
+        [data-theme="dark"] .modal-cancel-btn .dsu-button__icon img {
             filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Dark mode modal-add-btn (primary button) - keep icon dark for contrast on green background */
+        [data-theme="dark"] .modal-add-btn.dsu-button--primary .dsu-button__icon img {
+            filter: none; /* Keep icon dark for contrast on green background */
         }
 
         /* Avatar Preview in Modal */
