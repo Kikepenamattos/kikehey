@@ -61,7 +61,7 @@
             align-items: center;
             width: 100%;
             /* margin-bottom: 48px; */
-            gap: 100%;
+            gap: 83%;
         }
 
         .profile-page-close-btn {
@@ -497,7 +497,7 @@
             display: flex;
             gap: 24px;
             align-items: flex-start;
-            width: 80%;
+            width: 100%;
             margin: 0 auto;
         }
 
@@ -514,6 +514,7 @@
 
         .profile-page-edit-btn {
             width: 100%;
+            margin-bottom: 24px;
         }
 
         .profile-page-edit-btn .dsu-button {
@@ -568,15 +569,15 @@
 
         .profile-input-row {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 16px;
             width: 100%;
-            margin: 0;
+            margin-bottom: 16px;
             padding: 0;
         }
 
         .profile-input-row .profile-input-group {
-            width: 100%;
+            flex: 1;
             margin: 0;
             padding: 0;
         }
@@ -669,7 +670,7 @@
             align-items: center;
             padding: var(--spacing-08) var(--spacing-12);
             background-color: var(--color-surface-light, #f5f5f5);
-            border-radius: var(--radius-sm, 4px);
+            border-radius: 20px;
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
             color: var(--color-text-primary);
@@ -760,7 +761,7 @@
             }
 
             .profile-input-row {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
         }
     </style>
@@ -774,12 +775,14 @@
                 <button class="profile-page-close-btn" id="profilePageCloseBtn" aria-label="Go back" onclick="window.history.back()">
                     <img src="images/left-chevron.svg" alt="Go back" width="20" height="20">
                 </button>
-                <button class="dsu-button dsu-button--secondary dsu-button--small" id="shareProfileBtn">
-                    <span class="dsu-button__icon">
-                        <img src="images/share.svg" alt="Share">
-                    </span>
-                    Share profile
-                </button>
+                <div class="profile-page-edit-btn">
+                    <button class="dsu-button dsu-button--secondary dsu-button--small" id="editProfileBtn">
+                        <span class="dsu-button__icon">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </span>
+                        <span>Edit profile</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Main Content -->
@@ -791,12 +794,42 @@
                     <img class="profile-page-avatar-preview" id="profilePageAvatarPreview" style="display: none;" alt="Avatar Preview">
                 </div>
                 <div class="profile-page-edit-btn">
-                    <button class="dsu-button dsu-button--secondary dsu-button--x-small" id="editProfileBtn">
+                    <button class="dsu-button dsu-button--secondary dsu-button--x-small" id="shareProfileBtn">
                         <span class="dsu-button__icon">
-                            <img src="images/Edit.svg" alt="Edit">
+                            <img src="images/share.svg" alt="Share">
                         </span>
-                        <span>Edit profile</span>
+                        <span>Share profile</span>
                     </button>
+                </div>
+
+                <!-- Email -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Email</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageEmail">-</div>
+                </div>
+
+                <!-- Contact -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Contact</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePagePhone">-</div>
+                </div>
+
+                <!-- Individual Cost -->
+                <div class="dsu-input-group profile-input-group">
+                    <div class="dsu-input-label">
+                        <div class="dsu-input-label__text">
+                            <span>Individual cost</span>
+                        </div>
+                    </div>
+                    <div class="profile-page-field" id="profilePageCost">-</div>
                 </div>
             </div>
 
@@ -900,36 +933,6 @@
                         </div>
                         <div class="profile-page-field" id="profilePageTeam">-</div>
                     </div>
-                </div>
-
-                <!-- Email -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Email</span>
-                        </div>
-                    </div>
-                    <div class="profile-page-field" id="profilePageEmail">-</div>
-                </div>
-
-                <!-- Contact -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Contact</span>
-                        </div>
-                    </div>
-                    <div class="profile-page-field" id="profilePagePhone">-</div>
-                </div>
-
-                <!-- Individual Cost -->
-                <div class="dsu-input-group profile-input-group">
-                    <div class="dsu-input-label">
-                        <div class="dsu-input-label__text">
-                            <span>Individual cost</span>
-                        </div>
-                    </div>
-                    <div class="profile-page-field" id="profilePageCost">-</div>
                 </div>
             </div>
             </div>
