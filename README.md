@@ -81,8 +81,22 @@ El proyecto incluye un sistema de diseño completo con:
 - **Design Tokens**: Colores, tipografía, espaciado, radios, elevación
 - **Componentes**: Botones, inputs, cards, navigation, modals, chips
 - **Utilidades**: Grid system, helpers
+- **🌙 Modo Dark**: Sistema completo de modo oscuro con transiciones suaves
 
 Documentación completa en: `design-system/docs/index.html`
+
+### 🌙 Modo Dark
+
+El proyecto incluye soporte completo para modo dark. **Consulta la guía completa antes de crear nuevos elementos:**
+
+📖 **Ver guía**: [DARK_MODE_GUIDE.md](./DARK_MODE_GUIDE.md)
+
+**Principios clave:**
+- Usar siempre variables CSS del design system
+- Iconos oscuros deben volverse blancos en modo dark
+- Bordes de inputs deben ser visibles (blanco en dark mode cuando están en focus)
+- Siempre agregar transiciones suaves (0.3s ease)
+- Inicializar el tema antes de DOMContentLoaded
 
 ## 🔐 Sistema de Autenticación
 

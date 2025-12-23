@@ -89,6 +89,14 @@ Ver la documentación visual completa en: `docs/index.html`
 
 Cada componente tiene su propia página de documentación que muestra todas sus variaciones visuales.
 
+## 🌙 Modo Dark
+
+El design system incluye soporte completo para modo dark. Todos los tokens de color tienen equivalentes para modo dark y se actualizan automáticamente.
+
+**📖 Guía completa de implementación**: Ver [DARK_MODE_GUIDE.md](../DARK_MODE_GUIDE.md)
+
+**Importante**: Al crear nuevos componentes, consulta la guía de modo dark para asegurar compatibilidad y consistencia visual.
+
 ## 🔄 Actualización desde Figma
 
 Los componentes están basados en el archivo Figma:
