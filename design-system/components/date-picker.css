@@ -56,6 +56,11 @@
   height: 12px;
 }
 
+/* Dark mode icon adjustment for date picker navigation */
+[data-theme="dark"] .dsu-date-picker__nav-button img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-date-picker__month-year {
   font-family: var(--font-family-secondary);
   font-size: 12px;

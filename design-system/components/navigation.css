@@ -107,6 +107,12 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: filter 0.3s ease;
+}
+
+/* Logo color adjustment for dark mode */
+[data-theme="dark"] .dsu-sidebar__logo img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* === NAVIGATION WRAPPER === */
@@ -180,6 +186,11 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-nav-button__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === NAVIGATION BUTTON TEXT === */
 .dsu-nav-button__text {
   flex: 1;
@@ -239,6 +250,11 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-teams-button__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-teams-chevron {
   width: 20px;
   height: 20px;
@@ -261,6 +277,11 @@
   display: block;
   object-fit: contain;
   transition: transform 0.3s ease;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-teams-chevron img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* === TEAMS DROPDOWN === */
@@ -314,6 +335,11 @@
   height: 20px;
   display: block;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-teams-create__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 .dsu-teams-list {
@@ -426,6 +452,11 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-projects-button__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-projects-button__text {
   flex: 1;
   white-space: nowrap;
@@ -454,6 +485,11 @@
   display: block;
   object-fit: contain;
   transition: transform 0.3s ease;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-projects-chevron img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* El chevron se rota automáticamente cuando cambia la imagen a up-chevron.svg */
@@ -521,6 +557,11 @@
   height: 20px;
   display: block;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-projects-create__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 .dsu-projects-list {
@@ -593,6 +634,11 @@
   height: 20px;
   object-fit: contain;
   transition: transform 0.3s ease;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-sidebar__toggle img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 .dsu-sidebar--collapsed .dsu-sidebar__toggle {

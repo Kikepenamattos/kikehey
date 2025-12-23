@@ -236,6 +236,11 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-stage-status__badge-icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === STAGE STATUS BADGE TEXT === */
 .dsu-stage-status__badge-text {
   flex-shrink: 0;

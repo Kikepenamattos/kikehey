@@ -98,6 +98,12 @@
             object-fit: contain;
         }
 
+        /* Dark mode icon adjustments */
+        [data-theme="dark"] .generate-report-btn img,
+        [data-theme="dark"] .project-card__secondary-item-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         /* Projects Grid */
         .projects-grid {
             display: grid;
@@ -114,7 +120,7 @@
             width: 100%;
             padding: 16px;
             background-color: var(--color-surface-regular);
-            border: 1px solid #6B7B8A;
+            border: 1px solid var(--color-border-default, var(--color-basics-gray));
             border-radius: 10px;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -124,7 +130,7 @@
 
         .project-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(10, 36, 63, 0.1);
+            box-shadow: var(--elevation-2);
         }
 
         /* Project Card Image */
@@ -1199,19 +1205,6 @@
             // Load Projects in Sidebar (similar to project_view.html)
             loadProjectsInSidebar();
 
-            // Dark Mode Button
-            const darkModeBtn = document.getElementById('darkModeBtn');
-            if (darkModeBtn) {
-                darkModeBtn.addEventListener('click', function() {
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    try {
-                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-                    } catch (error) {
-                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
-                    }
-                });
-            }
 
             // Logout Button
             const logoutBtn = document.getElementById('logoutBtn');
@@ -1414,6 +1407,61 @@
             }
         }
 
+        // ============================================
+        // Theme Management (Light/Dark Mode)
+        // ============================================
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo guardar el tema:', error);
+            }
+            
+            // Update dark mode button icon and text
+            updateThemeButton(newTheme);
+        }
+        
+        // Function to update theme button icon and text
+        function updateThemeButton(theme) {
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (!darkModeBtn) return;
+            
+            const icon = darkModeBtn.querySelector('.dsu-nav-button__icon img');
+            const text = darkModeBtn.querySelector('.dsu-nav-button__text');
+            
+            if (icon) {
+                icon.src = theme === 'dark' ? 'images/sun.svg' : 'images/moon.svg';
+                icon.alt = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            }
+            
+            if (text) {
+                text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            }
+        }
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeButton(savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
+
         // Initialize sidebar state immediately when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initSidebarState);
@@ -1432,6 +1480,16 @@
             loadProjects();
             initSearchProjects();
             initFiltersButton();
+            
+            // Dark Mode Button
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTheme();
+                });
+            }
             
             // Recargar proyectos cuando la ventana recibe foco (para reflejar cambios de otras pestañas)
             window.addEventListener('focus', function() {

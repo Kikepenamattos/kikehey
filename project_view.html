@@ -291,6 +291,11 @@
             object-fit: contain;
         }
 
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .project-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .project-section-title--collapsed .project-section-title__chevron {
             transform: rotate(0deg);
         }
@@ -451,6 +456,11 @@
             height: 16px;
         }
 
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .project-objective-item-action img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         /* With Members Component Styles */
         .with-members-row {
             display: flex;
@@ -474,8 +484,8 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: #fff;
-            border: 1px solid #ffffff;
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-white);
             box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
             cursor: pointer;
             flex-shrink: 0;
@@ -499,7 +509,7 @@
             height: 48px;
             border-radius: 50%;
             background: var(--color-surface-especial);
-            border: 1px solid #ffffff;
+            border: 1px solid var(--color-basics-white);
             box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
             display: inline-flex;
             align-items: center;
@@ -900,6 +910,16 @@
             text-decoration: underline;
         }
 
+        /* Dark mode link color adjustment */
+        [data-theme="dark"] .communication-channel-item-link a {
+            color: var(--color-basics-white);
+        }
+
+        [data-theme="dark"] .communication-channel-item-link a:hover {
+            color: var(--color-basics-white);
+            opacity: 0.8;
+        }
+
         /* Agreements Section Styles */
         .agreements-section-header {
             display: flex;
@@ -937,6 +957,11 @@
             object-fit: contain;
         }
 
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .agreements-section-header-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .agreements-section-info-label {
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
@@ -968,6 +993,11 @@
             user-select: none;
             /* transition: background-color 0.2s ease; */
             background-color: #F4F7FB;
+        }
+
+        /* Dark mode background adjustment */
+        [data-theme="dark"] .agreement-item-header {
+            background-color: var(--color-surface-especial);
         }
 
         .agreement-item-header:hover {
@@ -1024,6 +1054,11 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .agreement-item-date-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .agreement-item-status {
@@ -1110,6 +1145,11 @@
             background-color: #F4F7FB;
         }
 
+        /* Dark mode background adjustment */
+        [data-theme="dark"] .agreement-item-content--expanded {
+            background-color: var(--color-surface-especial);
+        }
+
         .agreement-item-items {
             display: flex;
             flex-direction: column;
@@ -1140,7 +1180,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
+            background: var(--color-overlay-dark);
             display: none;
             align-items: center;
             justify-content: center;
@@ -1158,7 +1198,7 @@
             border: 1px solid var(--color-basics-mid-blue);
             width: 28%;
             padding: var(--spacing-24);
-            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+            box-shadow: var(--elevation-modal);
             max-height: 45%;
             overflow-y: auto;
             animation: modalFadeIn 0.2s ease;
@@ -1445,6 +1485,13 @@
         .preview-modal-close-btn img {
             width: 24px;
             height: 24px;
+        }
+
+        /* Dark mode icon adjustments */
+        [data-theme="dark"] .preview-modal-close-btn img,
+        [data-theme="dark"] .edit-project-icon img,
+        [data-theme="dark"] .agreement-item-toggle img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .preview-modal-content {
@@ -1952,6 +1999,61 @@
             }
         }
 
+        // ============================================
+        // Theme Management (Light/Dark Mode)
+        // ============================================
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo guardar el tema:', error);
+            }
+            
+            // Update dark mode button icon and text
+            updateThemeButton(newTheme);
+        }
+        
+        // Function to update theme button icon and text
+        function updateThemeButton(theme) {
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (!darkModeBtn) return;
+            
+            const icon = darkModeBtn.querySelector('.dsu-nav-button__icon img');
+            const text = darkModeBtn.querySelector('.dsu-nav-button__text');
+            
+            if (icon) {
+                icon.src = theme === 'dark' ? 'images/sun.svg' : 'images/moon.svg';
+                icon.alt = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            }
+            
+            if (text) {
+                text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            }
+        }
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeButton(savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
+
         // Initialize sidebar state immediately when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initSidebarState);
@@ -2261,15 +2363,10 @@
             // Dark Mode Button
             const darkModeBtn = document.getElementById('darkModeBtn');
             if (darkModeBtn) {
-                darkModeBtn.addEventListener('click', function() {
-                    // Toggle dark mode functionality
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    try {
-                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-                    } catch (error) {
-                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
-                    }
+                darkModeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTheme();
                 });
             }
 

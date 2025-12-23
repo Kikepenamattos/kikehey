@@ -28,6 +28,11 @@
   outline-offset: 2px;
 }
 
+/* Dark mode focus outline */
+[data-theme="dark"] .dsu-button:focus-visible {
+  outline-color: var(--color-basics-white); /* White outline in dark mode */
+}
+
 .dsu-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
@@ -128,6 +133,26 @@
   box-shadow: none;
 }
 
+/* Dark mode adjustments for secondary buttons */
+[data-theme="dark"] .dsu-button--secondary {
+  border-color: var(--color-basics-white); /* White border in dark mode */
+}
+
+[data-theme="dark"] .dsu-button--secondary:hover:not(:disabled) {
+  background-color: var(--color-surface-especial); /* Darker background on hover */
+  border-color: var(--color-basics-white); /* Keep white border */
+}
+
+[data-theme="dark"] .dsu-button--secondary:active:not(:disabled),
+[data-theme="dark"] .dsu-button--secondary.is-pressed {
+  background-color: var(--color-surface-light); /* Even darker on press */
+  border-color: var(--color-basics-white); /* Keep white border */
+}
+
+[data-theme="dark"] .dsu-button--secondary:disabled {
+  border-color: var(--color-basics-gray); /* Gray border when disabled */
+}
+
 /* === TERTIARY TYPE === */
 .dsu-button--tertiary {
   background-color: transparent;
@@ -151,6 +176,16 @@
   color: var(--color-text-secondary);
   opacity: 1;
   box-shadow: none;
+}
+
+/* Dark mode adjustments for tertiary buttons */
+[data-theme="dark"] .dsu-button--tertiary:hover:not(:disabled) {
+  background-color: var(--color-surface-light); /* Darker background on hover */
+}
+
+[data-theme="dark"] .dsu-button--tertiary:active:not(:disabled),
+[data-theme="dark"] .dsu-button--tertiary.is-pressed {
+  background-color: var(--color-basics-gray); /* Gray background on press */
 }
 
 /* === ACCESS TYPE === */
@@ -187,6 +222,20 @@
   box-shadow: none;
 }
 
+/* Dark mode adjustments for access buttons */
+[data-theme="dark"] .dsu-button--access {
+  border-color: var(--color-basics-mid-blue); /* Mid blue border in dark mode */
+}
+
+[data-theme="dark"] .dsu-button--access:hover:not(:disabled) {
+  border-color: var(--color-basics-white); /* White border on hover */
+}
+
+[data-theme="dark"] .dsu-button--access:active:not(:disabled),
+[data-theme="dark"] .dsu-button--access.is-pressed {
+  border-color: var(--color-basics-white); /* White border on press */
+}
+
 /* === ICON SUPPORT === */
 .dsu-button__icon {
   width: 20px;
@@ -203,6 +252,12 @@
   width: 16px;
   height: 16px;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-button__icon img,
+[data-theme="dark"] .dsu-button__icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* Icon only button - ajustado según tamaños */

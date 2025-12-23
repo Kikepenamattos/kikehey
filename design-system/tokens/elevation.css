@@ -21,7 +21,10 @@
 
   /* Elevation 4 - Sombra fuerte (Tooltips, dropdowns) */
   --elevation-4: 0px 8px 16px 0px rgba(10, 36, 63, 0.25);
-
+  
+  /* Elevation 5 - Sombra para modales */
+  --elevation-modal: 0px 8px 32px 0px rgba(10, 36, 63, 0.15);
+  
   /* === BUTTON SPECIFIC ELEVATIONS === */
 
   /* Button Primary - Default */
@@ -56,5 +59,44 @@
 
   /* Button Access - Hover */
   --button-access-elevation-hover: 0px 2px 4px 0px rgba(10, 36, 63, 0.15);
+}
+
+/* ==========================================
+   DARK MODE ELEVATION TOKENS
+   Sombras ajustadas para dark mode
+   ========================================== */
+
+[data-theme="dark"] {
+  /* === ELEVATION LEVELS === */
+  /* Elevation 1 - Sombra suave ajustada para dark mode */
+  --elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  
+  /* Elevation 2 - Sombra media ajustada para dark mode */
+  --elevation-2: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
+  
+  /* Elevation 3 - Sombra pronunciada ajustada para dark mode */
+  --elevation-3: 0px 4px 8px 0px rgba(0, 0, 0, 0.5);
+  
+  /* Elevation 4 - Sombra fuerte ajustada para dark mode */
+  --elevation-4: 0px 8px 16px 0px rgba(0, 0, 0, 0.6);
+  
+  /* Elevation 5 - Sombra para modales ajustada para dark mode */
+  --elevation-modal: 0px 8px 32px 0px rgba(0, 0, 0, 0.5);
+  
+  /* === BUTTON SPECIFIC ELEVATIONS === */
+  /* Button Primary - Default */
+  --button-primary-elevation-default: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  
+  /* Button Primary - Hover */
+  --button-primary-elevation-hover: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
+  
+  /* Button Secondary - Hover */
+  --button-secondary-elevation-hover: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
+  
+  /* Button Access - Default */
+  --button-access-elevation-default: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  
+  /* Button Access - Hover */
+  --button-access-elevation-hover: 0px 2px 4px 0px rgba(0, 0, 0, 0.4);
 }
 

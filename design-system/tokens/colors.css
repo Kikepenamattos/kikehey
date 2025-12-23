@@ -52,6 +52,19 @@
   /* === SURFACE === */
   --color-surface-regular: #ffffff;
   --color-surface-especial: #f4f7fb;
+  --color-surface-light: #e8ecf1;
+  
+  /* === BORDER === */
+  --color-border-light: #e0e0e0;
+  --color-border-default: #efefef;
+  
+  /* === OVERLAY === */
+  --color-overlay-light: rgba(255, 255, 255, 0.7);
+  --color-overlay-dark: rgba(0, 0, 0, 0.35);
+  
+  /* === STATUS EXTENDED === */
+  /* Done status with light background */
+  --color-status-done-light-bg: #d1ffef;
 }
 
 /* ==========================================
@@ -108,5 +121,26 @@
   /* === SURFACE === */
   --color-surface-regular: #0a243f; /* Dark Blue como fondo base */
   --color-surface-especial: #1a3e64; /* Un tono más claro para destacar */
+  --color-surface-light: #2a4e74; /* Más oscuro que especial para dark mode */
+  
+  /* === BORDER === */
+  --color-border-light: #4a5563; /* Más oscuro para contraste en dark mode */
+  --color-border-default: #4a5563; /* Más oscuro para contraste en dark mode */
+  
+  /* === OVERLAY === */
+  --color-overlay-light: rgba(10, 36, 63, 0.8); /* Overlay oscuro para dark mode */
+  --color-overlay-dark: rgba(0, 0, 0, 0.5); /* Overlay más oscuro para dark mode */
+  
+  /* === STATUS EXTENDED === */
+  /* Done status with light background - Versión oscura más sutil */
+  --color-status-done-light-bg: rgba(59, 228, 169, 0.15); /* Verde con transparencia para dark mode */
+  
+  /* === ICONS === */
+  --color-icon: #0a243f; /* Color por defecto para iconos */
+}
+
+/* Icon color adjustments for dark mode */
+[data-theme="dark"] {
+  --color-icon: #ffffff; /* Iconos blancos en modo dark */
 }
 

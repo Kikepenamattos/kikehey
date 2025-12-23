@@ -386,6 +386,11 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-profile-card-placeholder__edit-icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === PROFILE CARD PLACEHOLDER CONTENT === */
 .dsu-profile-card-placeholder__content {
   display: flex;
@@ -459,6 +464,6 @@
 }
 
 [data-theme="dark"] .dsu-profile-card-placeholder__image:hover {
-  background-color: #e8ecf1;
+  background-color: var(--color-surface-light);
 }
 

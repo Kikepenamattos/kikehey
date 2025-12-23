@@ -91,6 +91,11 @@
             object-fit: contain;
         }
 
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .edit-close-button__icon {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         /* Data Level - Formulario principal */
         .data-level {
             display: flex;
@@ -271,7 +276,7 @@
         }
 
         .btn-add-member:hover {
-            background-color: #98f501;
+            background-color: var(--color-button-primary-bg-hover);
         }
 
         /* Modal Styles */
@@ -281,7 +286,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--color-overlay-light);
             display: none;
             align-items: center;
             justify-content: center;
@@ -330,7 +335,7 @@
             overflow-y: auto;
             position: relative;
             animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+            box-shadow: var(--elevation-4);
         }
 
         @keyframes modalSlideIn {
@@ -1526,6 +1531,61 @@
         window.cleanUnusedImages = cleanUnusedImages;
 
         // ============================================
+        // Theme Management (Light/Dark Mode)
+        // ============================================
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo guardar el tema:', error);
+            }
+            
+            // Update dark mode button icon and text
+            updateThemeButton(newTheme);
+        }
+        
+        // Function to update theme button icon and text
+        function updateThemeButton(theme) {
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (!darkModeBtn) return;
+            
+            const icon = darkModeBtn.querySelector('.dsu-nav-button__icon img');
+            const text = darkModeBtn.querySelector('.dsu-nav-button__text');
+            
+            if (icon) {
+                icon.src = theme === 'dark' ? 'images/sun.svg' : 'images/moon.svg';
+                icon.alt = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            }
+            
+            if (text) {
+                text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            }
+        }
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeButton(savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
+
+        // ============================================
         // Initialize sidebar state immediately on page load (before any other initialization)
         // ============================================
         function initSidebarState() {
@@ -1858,15 +1918,10 @@
             // Dark Mode Button
             const darkModeBtn = document.getElementById('darkModeBtn');
             if (darkModeBtn) {
-                darkModeBtn.addEventListener('click', function() {
-                    // Toggle dark mode functionality
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    try {
-                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-                    } catch (error) {
-                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
-                    }
+                darkModeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTheme();
                 });
             }
 

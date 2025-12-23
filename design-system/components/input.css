@@ -73,6 +73,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-input-label__hide-icon img,
+[data-theme="dark"] .dsu-input-label__hide-icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === INPUT FIELD === */
 .dsu-input {
   width: 100%;
@@ -157,6 +163,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-input__icon img,
+[data-theme="dark"] .dsu-input__icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === INPUT ONLY (without label) === */
 .dsu-input--only {
   margin-top: 0;
@@ -207,6 +219,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-input-container__icon img,
+[data-theme="dark"] .dsu-input-container__icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === INPUT BUSCADOR (Search Input with Send Icon) === */
 .dsu-input-buscador {
   position: relative;
@@ -251,6 +269,12 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-input-buscador__send-icon img,
+[data-theme="dark"] .dsu-input-buscador__send-icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* Asegurar que el input tenga el padding correcto cuando el icono está activo */
@@ -306,6 +330,12 @@
   width: 20px;
   height: 20px;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-rich-text-input__toolbar-button img,
+[data-theme="dark"] .dsu-rich-text-input__toolbar-button svg {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 .dsu-rich-text-input__toolbar-separator {
@@ -448,6 +478,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-agreements__headline-icon img,
+[data-theme="dark"] .dsu-agreements__headline-icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-agreements__headline-text {
   font-family: var(--font-family-secondary);
   /* font-size: var(--font-size-2xl); */
@@ -531,6 +567,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-agreements__agreement-toggle img,
+[data-theme="dark"] .dsu-agreements__agreement-toggle svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-agreements__agreement-meta {
   display: flex;
   align-items: center;
@@ -611,6 +653,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-agreements__agreement-item-action img,
+[data-theme="dark"] .dsu-agreements__agreement-item-action svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-agreements__agreement-form {
   display: flex;
   flex-direction: column;
@@ -670,6 +718,12 @@
   object-fit: contain;
 }
 
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-agreements__date-button-icon img,
+[data-theme="dark"] .dsu-agreements__date-button-icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 .dsu-agreements__send-button {
   background-color: var(--color-button-primary-bg-default);
   border: none;
@@ -714,6 +768,12 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-agreements__send-button-icon img,
+[data-theme="dark"] .dsu-agreements__send-button-icon svg {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* .dsu-agreements__new-agreement-button - Reemplazado por botón secondary de la librería */

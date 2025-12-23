@@ -156,6 +156,11 @@
             object-fit: contain;
         }
 
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .edit-close-button__icon {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         /* Name Section */
         .project-name-section {
             display: flex;
@@ -702,7 +707,7 @@
             background-color: var(--color-surface-regular);
             border: 1px solid var(--color-basics-gray);
             border-radius: var(--radius-md);
-            box-shadow: 0 4px 16px rgba(10, 36, 63, 0.15);
+            box-shadow: var(--elevation-3);
             z-index: 1000;
             max-height: 500px;
             overflow-y: auto;
@@ -1015,6 +1020,11 @@
         .dsu-agreements__close-btn img {
             width: 20px;
             height: 20px;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .dsu-agreements__close-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         /* Agreement Header Styles */
@@ -1387,6 +1397,11 @@
         .project-assets-action-btn img {
             width: 20px;
             height: 20px;
+        }
+
+        /* Dark mode icon adjustment for assets action buttons */
+        [data-theme="dark"] .project-assets-action-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .project-assets-item {
@@ -2032,6 +2047,24 @@
             box-shadow: var(--button-secondary-elevation-pressed);
         }
 
+        /* Dark mode adjustments for project actions ellipsis button */
+        [data-theme="dark"] .project-actions-ellipsis-btn {
+            border-color: var(--color-basics-white);
+        }
+
+        [data-theme="dark"] .project-actions-ellipsis-btn:hover:not(:disabled) {
+            border-color: var(--color-basics-white);
+        }
+
+        [data-theme="dark"] .project-actions-ellipsis-btn:active:not(:disabled),
+        [data-theme="dark"] .project-actions-ellipsis-btn.is-pressed {
+            border-color: var(--color-basics-white);
+        }
+
+        [data-theme="dark"] .project-actions-ellipsis-btn svg {
+            fill: var(--color-basics-white);
+        }
+
         .project-actions-ellipsis-btn svg {
             width: 16px;
             height: 16px;
@@ -2384,7 +2417,7 @@
         }
 
         .project-objective-item-checkbox:checked {
-            accent-color: #3be4a9;
+            accent-color: var(--color-status-done);
         }
 
         .project-objective-item-text {
@@ -2400,8 +2433,8 @@
         }
 
         .project-objective-item--completed {
-            background-color: #D1FFEF;
-            border-color: #3BE4A9;
+            background-color: var(--color-status-done-light-bg);
+            border-color: var(--color-status-done);
         }
 
         .project-objective-item-actions {
@@ -2499,6 +2532,11 @@
             width: 16px;
             height: 16px;
             object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .agreement-date-reset-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         /* Agreement name input with edit button */
@@ -2661,8 +2699,8 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: #fff;
-            border: 1px solid #ffffff;
+            background: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-white);
             box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
             cursor: pointer;
             flex-shrink: 0;
@@ -2694,12 +2732,12 @@
             height: 48px;
             border-radius: 50%;
             background: var(--color-surface-especial);
-            border: 1px solid #ffffff;
+            border: 1px solid var(--color-basics-white);
             box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #0A243F;
+            color: var(--color-text-primary);
             font-family: var(--font-family-secondary);
             font-weight: var(--font-weight-bold);
             font-size: 14px;
@@ -2792,7 +2830,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
+            background: var(--color-overlay-dark);
             display: none;
             align-items: center;
             justify-content: center;
@@ -2810,7 +2848,7 @@
             border: 1px solid var(--color-basics-mid-blue);
             width: 28%;
             padding: var(--spacing-24);
-            box-shadow: 0 8px 32px rgba(10, 36, 63, 0.15);
+            box-shadow: var(--elevation-modal);
             max-height: 45%;
             overflow-y: auto;
             animation: modalFadeIn 0.2s ease;
@@ -3052,7 +3090,7 @@
         }
 
         .report-text-content .report-alert {
-            color: #d32f2f;
+            color: var(--color-status-strong-red);
             font-weight: var(--font-weight-medium);
         }
 
@@ -3484,7 +3522,7 @@
 
 
         .stage-status-badge {
-            background-color: #ffc048;
+            background-color: var(--color-status-in-progress);
             border-radius: var(--radius-md);
             padding: var(--spacing-16);
             text-align: center;
@@ -3645,6 +3683,50 @@
             .dsu-sticky-buttons__wrapper {
                 max-width: 90%; /* Más espacio en tablet */
             }
+        }
+
+        /* ============================================
+           DARK MODE STYLES - Icon and Border Adjustments
+           ============================================ */
+        
+        /* Project Date Reset Button Icon */
+        [data-theme="dark"] .project-date-reset-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Project Actions Dropdown Border (if needed, already using CSS variables) */
+        [data-theme="dark"] .project-actions-dropdown {
+            border-color: var(--color-border-default);
+        }
+
+        /* Project Stage Button Add Icon */
+        [data-theme="dark"] .project-stage-button--add img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Team Name Title Delete Icon */
+        [data-theme="dark"] .team-name-title__delete img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Collapsible Section Chevron Icons */
+        [data-theme="dark"] .project-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Project Communication Channels Item Actions Icons */
+        [data-theme="dark"] .project-communication-channels-item-action img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Project Objective Item Actions Icons */
+        [data-theme="dark"] .project-objective-item-action img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Project Assets Item Icon */
+        [data-theme="dark"] .project-assets-item-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
     </style>
 </head>
@@ -4834,6 +4916,61 @@
         }
 
         // ============================================
+        // Theme Management (Light/Dark Mode)
+        // ============================================
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo guardar el tema:', error);
+            }
+            
+            // Update dark mode button icon and text
+            updateThemeButton(newTheme);
+        }
+        
+        // Function to update theme button icon and text
+        function updateThemeButton(theme) {
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (!darkModeBtn) return;
+            
+            const icon = darkModeBtn.querySelector('.dsu-nav-button__icon img');
+            const text = darkModeBtn.querySelector('.dsu-nav-button__text');
+            
+            if (icon) {
+                icon.src = theme === 'dark' ? 'images/sun.svg' : 'images/moon.svg';
+                icon.alt = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            }
+            
+            if (text) {
+                text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            }
+        }
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeButton(savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
+
+        // ============================================
         // Initialize sidebar state immediately on page load (before any other initialization)
         // ============================================
         function initSidebarState() {
@@ -5154,15 +5291,10 @@
             // Dark Mode Button
             const darkModeBtn = document.getElementById('darkModeBtn');
             if (darkModeBtn) {
-                darkModeBtn.addEventListener('click', function() {
-                    // Toggle dark mode functionality
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    try {
-                        localStorage.setItem('darkMode', isDarkMode ? 'enabled' : 'disabled');
-                    } catch (error) {
-                        console.warn('⚠️ No se pudo guardar el estado de dark mode:', error);
-                    }
+                darkModeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTheme();
                 });
             }
 
