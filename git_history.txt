@@ -1,3 +1,5 @@
+4d7da0aaa38063364db7adcd3b63cc91630b9954|Ubits|ubits@macbookpro.lan|2025-12-23 12:01:28 -0500|Add: Guía completa de modo dark para futuros desarrollos
+c8391feea624cb1622fd40f82f22dc2f7587ae56|Ubits|ubits@macbookpro.lan|2025-12-23 11:57:43 -0500|Update: Actualizar changelog con últimos cambios
 055849569ef971fe680b35e56eb825924586b02e|Ubits|ubits@macbookpro.lan|2025-12-23 11:56:29 -0500|Update: Ajustes de modo dark para inputs, modales y member_profile - bordes visibles y transiciones
 41eec3c5bfc40fac5c25a5fe28202f0abff7fd06|Ubits|ubits@macbookpro.lan|2025-12-23 11:33:04 -0500|Update: Actualizar changelog con últimos cambios
 22ef5c9fafd2584b99bf23e2bbd195fd471f8293|Ubits|ubits@macbookpro.lan|2025-12-23 11:31:59 -0500|Update: Ajustes de modo dark para modal Edit member, view-controls y iconos de perfil
