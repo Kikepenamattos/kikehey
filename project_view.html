@@ -4120,6 +4120,20 @@
                 teamCostElement.textContent = teamCostValue;
             }
             
+            // Actualizar texto del botón "Edit group" a "View team" y cambiar icono
+            const manageTeamBtn = document.getElementById('manageTeamBtn');
+            if (manageTeamBtn) {
+                const buttonText = manageTeamBtn.querySelector('.dsu-button__text');
+                if (buttonText) {
+                    buttonText.textContent = 'View team';
+                }
+                const buttonIcon = manageTeamBtn.querySelector('.dsu-button__icon img');
+                if (buttonIcon) {
+                    buttonIcon.src = 'images/eye.svg';
+                    buttonIcon.alt = 'View';
+                }
+            }
+            
             // Actualizar lista de miembros
             const membersList = document.getElementById('teamDetailsMembersList');
             if (membersList && teamData.members && Array.isArray(teamData.members)) {
