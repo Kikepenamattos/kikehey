@@ -1,3 +1,4 @@
+22248163a91670b763d7b6350514f31ce619a74c|Ubits|ubits@macbookpro.lan|2025-12-23 10:55:47 -0500|Update: Actualizar changelog con últimos cambios
 bd42e579483aab5f4afa21994f58458ce935f90a|Ubits|ubits@macbookpro.lan|2025-12-23 10:55:25 -0500|feat: Aplicar ajustes de modo dark a iconos y elementos de agreements en project_view
 ad409351cb8f89b09cf80d78532985998425d12a|Ubits|ubits@macbookpro.lan|2025-12-23 09:39:56 -0500|Update: Actualizar changelog con últimos cambios
 25766cfacc32514526cf21064f2df41fb2391766|Ubits|ubits@macbookpro.lan|2025-12-23 09:39:50 -0500|fix: Cambiar texto e icono del botón en modal de team de 'Edit group' a 'View team' con icono eye.svg

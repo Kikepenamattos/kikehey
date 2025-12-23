@@ -2919,6 +2919,17 @@
             opacity: 0.7;
         }
 
+        .modal-close-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .modal-close-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .modal__body {
             font-size: var(--font-size-base);
             color: var(--color-text-secondary);
@@ -3126,6 +3137,18 @@
             background: var(--color-surface-especial);
             border-color: var(--color-basics-dark-blue);
             /* border-width: 2px; */
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .send-agreement-option input[type="radio"]:checked + span,
+        [data-theme="dark"] .send-agreement-option input[type="checkbox"]:checked + span {
+            color: var(--color-basics-white);
+        }
+
+        [data-theme="dark"] .send-agreement-option:has(input[type="radio"]:checked),
+        [data-theme="dark"] .send-agreement-option:has(input[type="checkbox"]:checked) {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-white);
         }
 
         .send-agreement-teams-list {

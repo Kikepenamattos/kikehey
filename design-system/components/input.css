@@ -105,6 +105,11 @@
   color: var(--color-text-primary);
 }
 
+/* Dark mode - ensure input text stays white when focused */
+[data-theme="dark"] .dsu-input:focus {
+  color: var(--color-basics-white);
+}
+
 .dsu-input:disabled {
   background-color: var(--color-status-disabled);
   cursor: not-allowed;

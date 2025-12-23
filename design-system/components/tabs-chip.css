@@ -52,8 +52,13 @@
 
 /* === DARK MODE SUPPORT === */
 [data-theme="dark"] .dsu-chip--active {
-  background-color: var(--color-basics-dark-blue);
-  color: var(--color-surface-regular);
+  background-color: var(--color-basics-white);
+  color: var(--color-basics-dark-blue);
+}
+
+[data-theme="dark"] .dsu-chip--active:hover {
+  background-color: var(--color-basics-white);
+  opacity: 0.9;
 }
 
 [data-theme="dark"] .dsu-chip--inactive {

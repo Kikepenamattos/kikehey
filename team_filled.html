@@ -358,6 +358,17 @@
             opacity: 0.7;
         }
 
+        .modal-close-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .modal-close-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .modal-description {
             font-family: var(--font-family-secondary);
             font-size: 16px;

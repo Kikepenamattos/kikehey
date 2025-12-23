@@ -63,6 +63,16 @@
   background-color: var(--color-status-paused-hover);
 }
 
+/* Dark mode for paused status - text color stays white but may need adjustment */
+[data-theme="dark"] .dsu-status-button--paused {
+  color: var(--color-basics-white);
+  opacity: 0.9; /* Slight adjustment for better contrast in dark mode */
+}
+
+[data-theme="dark"] .dsu-status-button--paused .dsu-status-button__chevron img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
 /* === TO START === */
 .dsu-status-button--to-start {
   background-color: var(--color-status-to-start);
@@ -72,6 +82,15 @@
 .dsu-status-button--to-start:hover,
 .dsu-status-button--to-start.dsu-status-button--hover {
   background-color: var(--color-status-to-start-hover);
+}
+
+/* Dark mode for to-start status */
+[data-theme="dark"] .dsu-status-button--to-start {
+  color: var(--color-basics-white);
+}
+
+[data-theme="dark"] .dsu-status-button--to-start .dsu-status-button__chevron img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* === STATUS BUTTON TEXT === */
@@ -257,6 +276,15 @@
 .dsu-stage-status--to-start .dsu-stage-status__badge {
   background-color: var(--color-status-disabled);
   color: var(--color-basics-dark-blue);
+}
+
+/* Dark mode for to-start stage status */
+[data-theme="dark"] .dsu-stage-status--to-start .dsu-stage-status__badge {
+  color: var(--color-basics-white);
+}
+
+[data-theme="dark"] .dsu-stage-status--to-start .dsu-stage-status__badge-text {
+  color: var(--color-basics-white);
 }
 
 /* === COMPLETED STATE === */
