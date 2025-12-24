@@ -41,25 +41,31 @@
 }
 
 .dsu-sidebar--collapsed .dsu-nav-button__text,
+.dsu-sidebar--collapsed .dsu-spaces-button__text,
 .dsu-sidebar--collapsed .dsu-teams-button__text,
 .dsu-sidebar--collapsed .dsu-projects-button__text,
+.dsu-sidebar--collapsed .dsu-space-item__text,
 .dsu-sidebar--collapsed .dsu-team-item__text,
 .dsu-sidebar--collapsed .dsu-project-item__text,
+.dsu-sidebar--collapsed .dsu-spaces-create span,
 .dsu-sidebar--collapsed .dsu-teams-create span,
 .dsu-sidebar--collapsed .dsu-projects-create span {
   display: none;
 }
 
+.dsu-sidebar--collapsed .dsu-spaces-dropdown,
 .dsu-sidebar--collapsed .dsu-teams-dropdown,
 .dsu-sidebar--collapsed .dsu-projects-dropdown {
   display: none;
 }
 
+.dsu-sidebar--collapsed .dsu-spaces-level,
 .dsu-sidebar--collapsed .dsu-teams-level,
 .dsu-sidebar--collapsed .dsu-projects-level {
   justify-content: center;
 }
 
+.dsu-sidebar--collapsed .dsu-spaces-chevron,
 .dsu-sidebar--collapsed .dsu-teams-chevron,
 .dsu-sidebar--collapsed .dsu-projects-chevron {
   display: none;
@@ -195,6 +201,7 @@
 .dsu-nav-button__text {
   flex: 1;
   white-space: nowrap;
+  font-weight: bold;
 }
 
 /* === TEAMS BUTTON WITH CHEVRON === */
@@ -316,9 +323,10 @@
   margin-bottom: var(--spacing-08);
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-sm);
-  font-weight: 600; /* SemiBold */
+  font-weight: 600;
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
+  margin-left: 14px;
 }
 
 .dsu-teams-create__icon {
@@ -340,6 +348,180 @@
 /* Icon color adjustment for dark mode */
 [data-theme="dark"] .dsu-teams-create__icon img {
   filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* === SPACES LEVEL === */
+.dsu-spaces-level {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--spacing-08);
+}
+
+.dsu-spaces-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-08);
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semi-bold); /* SemiBold 600 */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  margin: 0;
+  border-radius: 0;
+}
+
+.dsu-spaces-button:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-spaces-button--active,
+.dsu-spaces-button.active {
+  /* background-color: var(--color-surface-especial); */
+  text-decoration: underline;
+}
+
+.dsu-spaces-button__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dsu-spaces-button__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-spaces-button__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+.dsu-spaces-chevron {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dsu-spaces-chevron img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-spaces-chevron img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* === SPACES DROPDOWN === */
+.dsu-spaces-dropdown {
+  display: flex;
+  flex-direction: column;
+  padding-left: 29px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dsu-spaces-dropdown--expanded {
+  max-height: 1000px;
+  opacity: 1;
+  padding-top: var(--spacing-08);
+  padding-bottom: 0;
+  transition: max-height 0.4s ease-in, opacity 0.3s ease-in 0.1s, padding 0.3s ease-in;
+}
+
+.dsu-spaces-create {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-bottom: var(--spacing-08);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  margin-left: 14px;
+}
+
+.dsu-spaces-create__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dsu-spaces-create__icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-spaces-create__icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+.dsu-spaces-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-08);
+  width: 100%;
+  max-width: 100%;
+}
+
+.dsu-space-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-08) var(--spacing-16);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular); /* Regular 400 */
+  color: var(--color-text-primary);
+  line-height: var(--line-height-normal);
+  margin: 0;
+  border-radius: 0;
+}
+
+.dsu-space-item:hover:not(:disabled) {
+  background-color: var(--color-surface-especial);
+}
+
+.dsu-space-item--active,
+.dsu-space-item.active {
+  text-decoration: underline;
 }
 
 .dsu-teams-list {
@@ -531,6 +713,7 @@
   color: var(--color-text-primary);
   line-height: var(--line-height-normal);
   gap: 24px;
+  margin-left: 14px;
 }
 
 /* Create Project Button - Always Visible (outside dropdown) */

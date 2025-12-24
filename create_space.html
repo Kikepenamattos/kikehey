@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Team - Docu</title>
+    <title>Create Space - Docu</title>
     
     <!-- Design System CSS -->
     <link rel="stylesheet" href="design-system/tokens/index.css">
@@ -1729,7 +1729,7 @@
                 return;
             }
 
-            console.log('Inicializando create_team.html');
+            console.log('Inicializando create_space.html');
 
             // Limpieza automática deshabilitada - se ejecuta solo después de guardar
 
@@ -5614,6 +5614,18 @@
         function loadCurrentProjectData() {
             console.log('=== loadCurrentProjectData llamado ===');
             
+            // create_space.html siempre debe empezar limpio, sin cargar datos automáticamente
+            const isCreateSpace = window.location.pathname.includes('create_space.html');
+            if (isCreateSpace) {
+                console.log('ℹ️ create_space.html: iniciando con vista limpia (sin cargar datos automáticos)');
+                // Ocultar botón de cerrar si existe
+                const closeEditBtn = document.getElementById('closeEditBtn');
+                if (closeEditBtn) {
+                    closeEditBtn.style.display = 'none';
+                }
+                return; // No cargar ningún dato automáticamente en create_space.html
+            }
+            
             // Verificar si estamos en modo de edición desde team_filled.html
             const urlParams = new URLSearchParams(window.location.search);
             const isEditMode = urlParams.get('edit') === 'true';
@@ -5847,11 +5859,12 @@
                 window.updateDuplicateButtonState();
             }
 
-            // create_team.html siempre debe estar en modo editable
-            // Si se intenta cargar un team publicado aquí, redirigir a team_filled.html
-            // EXCEPTO si allowEditPublished es true (cuando viene desde "Edit group")
-            if (projectData.status === 'published' && !allowEditPublished) {
-                console.log('📋 Team publicado detectado en create_team.html, redirigiendo a team_filled.html');
+            // create_space.html siempre debe estar en modo editable
+            // NO redirigir desde create_space.html - permitir editar cualquier team aquí
+            // (La lógica de redirección solo aplica para create_team.html)
+            const isCreateSpace = window.location.pathname.includes('create_space.html');
+            if (projectData.status === 'published' && !allowEditPublished && !isCreateSpace) {
+                console.log('📋 Team publicado detectado, redirigiendo a team_filled.html');
                 if (projectData.id) {
                     sessionStorage.setItem('docu_selected_team_id', projectData.id);
                     window.location.href = `team_filled.html?id=${projectData.id}`;
