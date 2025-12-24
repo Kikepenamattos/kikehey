@@ -1,3 +1,5 @@
+78c8e344d54a2971ef43c91d8b81c2dcdf9b9916|Ubits|ubits@macbookpro.lan|2025-12-24 17:49:44 -0500|Feature: Agregar funcionalidad de rich text input para assets y deliverables con persistencia de texto y links asociados
+ceafada2d6cc8bd7ff4f76559926d2b61bc38148|Ubits|ubits@macbookpro.lan|2025-12-24 16:27:01 -0500|Chore: Actualizar changelog y git_history
 c9ba3e76c09a4533a3494fe7966dba06848d1917|Ubits|ubits@macbookpro.lan|2025-12-24 16:26:30 -0500|Feature: Mejorar flujo de selección de teams con opción de agregar team completo o miembros específicos, incluyendo avatares y eliminación de duplicados
 49dbd16ba77ae14c67188ed4f155eae7d0c16f64|Ubits|ubits@macbookpro.lan|2025-12-24 15:50:38 -0500|Feature: Persistencia de datos y funcionalidad Enter para rich text inputs en assets y deliverables
 0e67ee6d765dfcc08013ca0278fe7d234c5aea27|Ubits|ubits@macbookpro.lan|2025-12-24 13:55:45 -0500|Update: Finalizar sincronización de changelog
