@@ -1,3 +1,5 @@
+67d7379f38f22254e5f280880882f82c586e6e69|Ubits|ubits@macbookpro.lan|2025-12-24 13:54:43 -0500|Update: Actualizar changelog con nuevo commit
+4d2986fa7f30bf8a17bdf960f2a83d7b29ca10da|Ubits|ubits@macbookpro.lan|2025-12-24 13:54:04 -0500|Update: Eliminar funcionalidad de spaces del sidebar y mejorar estilos de hover y border-radius
 36a66521f115a644672121f9c3b0f719ccb8c5d5|Ubits|ubits@macbookpro.lan|2025-12-24 12:21:21 -0500|Update: Sincronizar changelog después del push
 8c993ac5eff663f869c4188c2ff36cd649d746f1|Ubits|ubits@macbookpro.lan|2025-12-24 12:21:03 -0500|Update: Actualizar changelog con nueva feature Deliverables (Links of interest)
 58c635c822a44ac4cbe80c58227155a507424866|Ubits|ubits@macbookpro.lan|2025-12-24 12:20:43 -0500|Feature: Agregar sección Deliverables (Links of interest) en create_space.html
