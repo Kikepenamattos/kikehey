@@ -975,32 +975,6 @@
                 <div class="dsu-sidebar__navigation-wrapper">
                     <!-- Navigation Main -->
                     <div class="dsu-sidebar__navigation">
-                        <!-- Spaces Level -->
-                        <div class="dsu-spaces-level">
-                            <button class="dsu-spaces-button">
-                                <span class="dsu-spaces-button__icon">
-                                    <img src="images/space.svg" alt="Spaces">
-                                </span>
-                                <span class="dsu-nav-button__text">Spaces</span>
-                            </button>
-                            <div class="dsu-spaces-chevron">
-                                <img src="images/up-chevron.svg" alt="Chevron">
-                            </div>
-                        </div>
-                        
-                        <!-- Spaces Dropdown -->
-                        <div class="dsu-spaces-dropdown dsu-spaces-dropdown--expanded">
-                            <button class="dsu-spaces-create" id="createSpaceBtn">
-                                <span>Create new space</span>
-                                <span class="dsu-spaces-create__icon">
-                                    <img src="images/plus.svg" alt="Plus">
-                                </span>
-                            </button>
-                            <div class="dsu-spaces-list" id="spacesList">
-                                <!-- Spaces list se poblará dinámicamente -->
-                            </div>
-                        </div>
-                        
                         <!-- Teams Level -->
                         <div class="dsu-teams-level">
                             <button class="dsu-teams-button dsu-teams-button--active">
@@ -1879,54 +1853,6 @@
                         }
                         localStorage.setItem('sidebarCollapsed', 'false');
                     }
-                });
-            }
-            
-            // Spaces Dropdown - Asegurar que siempre esté expandido por defecto
-            const spacesButtons = document.querySelectorAll('.dsu-spaces-button');
-            spacesButtons.forEach((button) => {
-                const spacesLevel = button.closest('.dsu-spaces-level');
-                if (!spacesLevel) return;
-                
-                const chevron = spacesLevel.querySelector('.dsu-spaces-chevron img');
-                const dropdown = spacesLevel.parentElement.querySelector('.dsu-spaces-dropdown');
-                
-                if (!dropdown) return;
-                
-                // Asegurar que siempre esté expandido por defecto
-                dropdown.classList.add('dsu-spaces-dropdown--expanded');
-                button.classList.add('dsu-spaces-button--active');
-                if (chevron) chevron.src = 'images/up-chevron.svg';
-                
-                // SOLO el chevron puede colapsar/expandir (no el botón completo)
-                const chevronElement = chevron ? chevron.closest('.dsu-spaces-chevron') : null;
-                if (chevronElement) {
-                    chevronElement.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const isExpanded = dropdown.classList.contains('dsu-spaces-dropdown--expanded');
-                        
-                        if (isExpanded) {
-                            dropdown.classList.remove('dsu-spaces-dropdown--expanded');
-                            button.classList.remove('dsu-spaces-button--active');
-                            if (chevron) chevron.src = 'images/down-chevron.svg';
-                        } else {
-                            dropdown.classList.add('dsu-spaces-dropdown--expanded');
-                            button.classList.add('dsu-spaces-button--active');
-                            if (chevron) chevron.src = 'images/up-chevron.svg';
-                        }
-                    });
-                }
-            });
-
-            // Create Space Button
-            const createSpaceBtn = document.getElementById('createSpaceBtn');
-            if (createSpaceBtn) {
-                createSpaceBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.location.href = 'create_space.html';
                 });
             }
             
