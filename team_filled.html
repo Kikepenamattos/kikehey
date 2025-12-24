@@ -54,7 +54,7 @@
 
         .dsu-status-button-wrapper {
             position: relative;
-            /* z-index: 50; */dal
+            /* z-index: 50; */
             /* width: 100%; */
         }
 
@@ -1478,6 +1478,9 @@
 
             // Inicializar Input Buscador (solo para búsqueda, sin guardar)
             initInputBuscador();
+
+            // Inicializar funcionalidad de link para inputs
+            initInputLinkFunctionality();
 
             // Inicializar vista grid/list
             initViewControls();
@@ -3209,6 +3212,157 @@
                 const isVisible = name.includes(searchLower) || job.includes(searchLower) || email.includes(searchLower);
                 member.style.display = isVisible ? '' : 'none';
             });
+        }
+
+        // ============================================
+        // Input Rich Text Functionality
+        // Convierte inputs dsu-input--only en rich text inputs simplificados
+        // ============================================
+        function initInputLinkFunctionality() {
+            // Encontrar todos los inputs con clase dsu-input dsu-input--only
+            const inputs = document.querySelectorAll('.dsu-input.dsu-input--only');
+            
+            inputs.forEach(input => {
+                // Verificar si ya fue convertido (evitar duplicados)
+                if (input.dataset.richTextConverted === 'true') {
+                    return;
+                }
+
+                // Obtener el contenedor del input
+                let container = input.closest('.dsu-input-container') || input.closest('.dsu-input-buscador') || input.parentElement;
+                const originalContainer = container;
+                
+                // Guardar valores originales
+                const originalValue = input.value || '';
+                const originalPlaceholder = input.placeholder || '';
+                const originalId = input.id || '';
+                const originalName = input.name || '';
+                
+                // Crear rich text input wrapper
+                const richTextWrapper = document.createElement('div');
+                richTextWrapper.className = 'dsu-rich-text-input dsu-rich-text-input--compact';
+                richTextWrapper.dataset.inputId = originalId;
+                
+                // Crear toolbar simplificada (solo link)
+                const toolbar = document.createElement('div');
+                toolbar.className = 'dsu-rich-text-input__toolbar dsu-rich-text-input__toolbar--compact';
+                toolbar.innerHTML = `
+                    <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                        <img src="images/link.svg" alt="Link">
+                    </button>
+                `;
+                
+                // Crear editor
+                const editor = document.createElement('div');
+                editor.className = 'dsu-rich-text-input__editor dsu-rich-text-input__editor--compact';
+                editor.contentEditable = true;
+                editor.setAttribute('data-placeholder', originalPlaceholder);
+                if (originalValue) {
+                    editor.textContent = originalValue;
+                }
+                
+                // Agregar elementos al wrapper
+                richTextWrapper.appendChild(toolbar);
+                richTextWrapper.appendChild(editor);
+                
+                // Reemplazar input con rich text input
+                input.parentNode.insertBefore(richTextWrapper, input);
+                input.style.display = 'none';
+                input.dataset.richTextConverted = 'true';
+                
+                // Sincronizar valores entre input oculto y editor
+                function syncToInput() {
+                    input.value = editor.textContent;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                
+                // Sincronizar desde input oculto al editor
+                function syncFromInput() {
+                    if (input.value !== editor.textContent) {
+                        editor.textContent = input.value;
+                    }
+                }
+                
+                // Event listeners para sincronización
+                editor.addEventListener('input', syncToInput);
+                editor.addEventListener('blur', syncToInput);
+                
+                // Manejar placeholder
+                function checkPlaceholder() {
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                    } else {
+                        editor.classList.remove('dsu-rich-text-input__editor--empty');
+                    }
+                }
+                
+                editor.addEventListener('input', checkPlaceholder);
+                editor.addEventListener('blur', checkPlaceholder);
+                checkPlaceholder();
+                
+                // Inicializar toolbar usando la función existente
+                const toolbarButtons = toolbar.querySelectorAll('.dsu-rich-text-input__toolbar-button[data-command]');
+                
+                toolbarButtons.forEach(function(button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const command = this.getAttribute('data-command');
+                        const value = this.getAttribute('data-value') || null;
+                        
+                        // Focus on editor before executing command
+                        editor.focus();
+                        
+                        if (command === 'createLink') {
+                            // Verificar si hay texto seleccionado
+                            const selection = window.getSelection();
+                            const selectedText = selection.toString().trim();
+                            
+                            if (!selectedText) {
+                                alert('Por favor, selecciona el texto al que deseas agregar un link');
+                                return;
+                            }
+                            
+                            const url = prompt('Ingresa la URL del link:', value || 'https://');
+                            if (url && url.trim()) {
+                                let validUrl = url.trim();
+                                if (!validUrl.startsWith('http://') && !validUrl.startsWith('https://')) {
+                                    validUrl = 'https://' + validUrl;
+                                }
+                                document.execCommand('createLink', false, validUrl);
+                                syncToInput();
+                            }
+                        } else {
+                            document.execCommand(command, false, value);
+                            syncToInput();
+                        }
+                    });
+                });
+                
+                // Si el input original tenía un evento de búsqueda, mantenerlo
+                if (originalId === 'searchInput') {
+                    // Mantener funcionalidad de búsqueda
+                    editor.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const searchValue = editor.textContent.trim();
+                            if (searchValue && typeof performSearch === 'function') {
+                                performSearch(searchValue);
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Inicializar rich text inputs convertidos
+            const convertedRichTexts = document.querySelectorAll('.dsu-rich-text-input--compact');
+            if (convertedRichTexts.length > 0 && typeof initRichTextToolbar === 'function') {
+                // Los botones ya están inicializados arriba, pero podemos llamar a initRichTextToolbar
+                // para asegurar que todo esté correcto
+                setTimeout(() => {
+                    initRichTextToolbar();
+                }, 100);
+            }
         }
 
         // ============================================

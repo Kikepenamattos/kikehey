@@ -293,6 +293,95 @@
   padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
 }
 
+/* === LINK BUTTON FOR INPUTS === */
+.dsu-input-link-button {
+  position: absolute;
+  right: var(--spacing-16);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.dsu-input-link-button--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dsu-input-link-button:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.dsu-input-link-button img,
+.dsu-input-link-button svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-input-link-button img,
+[data-theme="dark"] .dsu-input-link-button svg {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Ajustar padding del input cuando hay botón de link */
+.dsu-input-container--with-link-button .dsu-input {
+  padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+}
+
+.dsu-input-buscador--with-link-button .dsu-input {
+  padding-right: calc(var(--spacing-16) + 40px + var(--spacing-08));
+}
+
+/* Contenteditable input style (when converted to allow links) */
+.dsu-input-contenteditable {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--spacing-12) var(--spacing-16);
+  border: 1px solid var(--color-basics-mid-blue);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-regular);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.dsu-input-contenteditable:focus {
+  outline: none;
+  border: 1px solid var(--color-basics-dark-blue);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .dsu-input-contenteditable:focus {
+  color: var(--color-basics-white);
+  border: 1px solid var(--color-basics-white);
+}
+
+.dsu-input-contenteditable a {
+  color: var(--color-basics-dark-blue);
+  text-decoration: underline;
+}
+
+[data-theme="dark"] .dsu-input-contenteditable a {
+  color: var(--color-basics-light-blue);
+}
+
 /* === RICH TEXT INPUT === */
 .dsu-rich-text-input {
   display: flex;
@@ -304,6 +393,110 @@
   background-color: var(--color-surface-regular);
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Compact version for inputs converted to rich text */
+.dsu-rich-text-input--compact {
+  padding: 0;
+  border: 1px solid var(--color-basics-mid-blue);
+  border-radius: var(--radius-md);
+  gap: 0;
+  min-height: 48px;
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__toolbar--compact {
+  display: flex; /* Mostrar toolbar siempre */
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-12);
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  z-index: 2;
+  gap: 0;
+}
+
+/* Asegurar que el toolbar sea visible incluso cuando hay acciones en el contenedor */
+.dsu-input-container.project-assets-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__toolbar--compact {
+  right: calc(var(--spacing-12) + 80px); /* Ajustar posición cuando hay acciones */
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact {
+  min-height: 48px;
+  padding: var(--spacing-12) calc(var(--spacing-16) + 32px + var(--spacing-08)) var(--spacing-12) var(--spacing-16); /* Padding derecho para el botón de link */
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: transparent;
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact:focus {
+  outline: none;
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  position: absolute;
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__editor--empty::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-secondary);
+}
+
+.dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact:not(.dsu-rich-text-input__editor--empty)::before {
+  display: none;
+}
+
+.dsu-rich-text-input--compact {
+  position: relative;
+}
+
+/* Ajustes para contenedores con acciones (como project-assets-input-wrapper) */
+.dsu-input-container.project-assets-input-wrapper .dsu-rich-text-input--compact {
+  flex: 1;
+  min-width: 0;
+}
+
+.dsu-input-container.project-assets-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact {
+  padding-right: calc(80px + 32px + var(--spacing-08)); /* Espacio para acciones + botón de link */
+}
+
+/* Ajustes para contenedores de deliverables (project-deliverables-input-wrapper) */
+.dsu-input-container.project-deliverables-input-wrapper .dsu-rich-text-input--compact {
+  flex: 1;
+  min-width: 0;
+}
+
+.dsu-input-container.project-deliverables-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact {
+  padding-right: calc(80px + 32px + var(--spacing-08)); /* Espacio para acciones + botón de link */
+}
+
+.dsu-input-container.project-deliverables-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__toolbar--compact {
+  right: calc(var(--spacing-12) + 80px); /* Ajustar posición cuando hay acciones */
+}
+
+/* Ajustes para contenedores de deliverables en create_space (cs-project-deliverables-input-wrapper) */
+.dsu-input-container.cs-project-deliverables-input-wrapper .dsu-rich-text-input--compact {
+  flex: 1;
+  min-width: 0;
+}
+
+.dsu-input-container.cs-project-deliverables-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact {
+  padding-right: calc(80px + 32px + var(--spacing-08)); /* Espacio para acciones + botón de link */
+}
+
+.dsu-input-container.cs-project-deliverables-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__toolbar--compact {
+  right: calc(var(--spacing-12) + 80px); /* Ajustar posición cuando hay acciones */
 }
 
 .dsu-rich-text-input__toolbar {
@@ -334,6 +527,23 @@
 
 .dsu-rich-text-input__toolbar-button--active {
   background-color: var(--color-basics-gray);
+}
+
+/* Estilos específicos para botón de link en toolbar compacta */
+.dsu-rich-text-input__toolbar--compact .dsu-rich-text-input__toolbar-button {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.dsu-rich-text-input__toolbar--compact .dsu-rich-text-input__toolbar-button:hover {
+  opacity: 1;
+  background-color: transparent;
+}
+
+.dsu-rich-text-input--compact:focus-within .dsu-rich-text-input__toolbar--compact .dsu-rich-text-input__toolbar-button {
+  opacity: 1;
 }
 
 .dsu-rich-text-input__toolbar-button img,
