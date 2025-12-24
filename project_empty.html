@@ -2852,6 +2852,13 @@
             max-height: 45%;
             overflow-y: auto;
             animation: modalFadeIn 0.2s ease;
+            box-sizing: border-box;
+        }
+        
+        /* Asegurar que el modal body tenga el ancho correcto */
+        .modal__body {
+            width: 100%;
+            box-sizing: border-box;
         }
         
         /* Asegurar espacio para date picker en modal de stage */
@@ -2933,6 +2940,8 @@
         .modal__body {
             font-size: var(--font-size-base);
             color: var(--color-text-secondary);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .modal-teams-list {
@@ -2967,6 +2976,163 @@
             background: var(--color-surface-especial);
             border-color: var(--color-basics-dark-blue);
             border-width: 2px;
+        }
+
+        /* Modal Steps Styles */
+        .modal-step {
+            display: none;
+        }
+
+        .modal-step--active {
+            display: block;
+        }
+
+        .modal-step-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+        }
+
+        .modal-step-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-12);
+        }
+
+        .modal-step-option {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+        }
+
+        .modal-step-option:hover {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+        }
+
+        .modal-step-option input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .modal-members-selection {
+            margin-top: var(--spacing-16);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .modal-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .modal-member-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-08) var(--spacing-12);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+            transition: all 0.2s ease;
+        }
+
+        .modal-member-item:hover {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+        }
+
+        .modal-member-item input[type="checkbox"] {
+            margin: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .modal-member-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .modal-member-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .modal-member-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .modal-member-label {
+            flex: 1;
+            cursor: pointer;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .modal-step-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-24);
+            gap: var(--spacing-12);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-step-actions .dsu-button {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: none;
+        }
+        
+        /* Asegurar que los botones no excedan el ancho del modal */
+        #selectTeamModal .modal-step-actions {
+            padding: 0;
+        }
+        
+        #selectTeamModal .modal-step-actions .dsu-button {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .modal-step-option,
+        [data-theme="dark"] .modal-member-item {
+            background: var(--color-surface-regular-dark, #1a1a1a);
+            border-color: var(--color-basics-gray-dark, #404040);
+        }
+
+        [data-theme="dark"] .modal-step-option:hover,
+        [data-theme="dark"] .modal-member-item:hover {
+            background: var(--color-surface-especial-dark, #2a2a2a);
+            border-color: var(--color-basics-dark-blue-dark, #0066cc);
         }
 
         /* Send Agreement Modal Styles */
@@ -4715,14 +4881,43 @@
             <div class="modal-overlay" id="selectTeamModal">
                 <div class="modal">
                     <div class="modal-headline">
-                        <div class="modal__title">Select a team</div>
+                        <div class="modal__title" id="modalTitle">Select a team</div>
                         <button class="modal-close-btn" id="closeTeamModalBtn" aria-label="Close modal">
                             <img src="images/close.svg" alt="Close" width="20" height="20">
                         </button>
                     </div>
                     <div class="modal__body">
-                        <div class="modal-teams-list" id="modalTeamsList">
-                            <!-- Teams se cargarán aquí dinámicamente -->
+                        <!-- Paso 1: Selección de team -->
+                        <div class="modal-step modal-step--active" id="modalStep1" data-step="1">
+                            <div class="modal-teams-list" id="modalTeamsList">
+                                <!-- Teams se cargarán aquí dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Paso 2: Opción de agregar team completo o seleccionar miembros -->
+                        <div class="modal-step" id="modalStep2" data-step="2" style="display: none;">
+                            <div class="modal-step-content">
+                                <div class="modal-step-options" id="modalStep2Options">
+                                    <!-- Opciones: Agregar team completo o Seleccionar miembros -->
+                                </div>
+                                
+                                <!-- Lista de miembros con checkboxes (se muestra cuando se selecciona "Seleccionar miembros") -->
+                                <div class="modal-members-selection" id="modalMembersSelection" style="display: none;">
+                                    <div class="modal-members-list" id="modalMembersList">
+                                        <!-- Miembros con checkboxes se cargarán aquí -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Botones de acción del paso 2 -->
+                            <div class="modal-step-actions">
+                                <button class="dsu-button dsu-button--secondary dsu-button--small" id="modalBackBtn">
+                                    <span>Back</span>
+                                </button>
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="modalConfirmBtn" style="display: none;">
+                                    <span>Confirm</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -8350,11 +8545,11 @@
                                 teamItem.classList.add('modal-team-item--selected');
                                 console.log('✅ Team seleccionado:', team.name, '(ID:', team.id, ')');
                                 
-                                // Cerrar modal
-                                selectTeamModal.classList.remove('modal-overlay--visible');
+                                // Guardar el team seleccionado para el paso 2
+                                window.selectedTeamForModal = team;
                                 
-                                // Agregar team a la lista (no reemplazar)
-                                await addTeamToList(team.id);
+                                // Mostrar paso 2
+                                showModalStep2(team);
                             } else {
                                 console.log('❌ Selección removida');
                             }
@@ -8564,7 +8759,7 @@
         window.syncProjectTeamsToTeams = syncProjectTeamsToTeams;
 
             // Función para agregar un team a la lista
-            async function addTeamToList(teamId) {
+            async function addTeamToList(teamId, selectedMembers = null) {
                 if (!teamId) {
                     console.warn('⚠️ No se proporcionó teamId');
                     return;
@@ -8593,9 +8788,12 @@
                     return;
                 }
 
-                const members = selectedTeam.members || [];
+                // Si se proporcionan miembros seleccionados, usar esos; si no, usar todos los miembros del team
+                const members = selectedMembers && Array.isArray(selectedMembers) && selectedMembers.length > 0 
+                    ? selectedMembers 
+                    : (selectedTeam.members || []);
                 const teamName = selectedTeam.name || 'Team';
-                console.log('👥 Agregando team:', teamName, 'con', members.length, 'miembros');
+                console.log('👥 Agregando team:', teamName, 'con', members.length, 'miembros', selectedMembers ? '(miembros seleccionados)' : '(team completo)');
 
                 // Agregar team al array de teams seleccionados
                 selectedTeams.push(teamId);
@@ -8780,6 +8978,452 @@
                 }
             }
 
+            // Función para mostrar el paso 2 del modal
+            async function showModalStep2(team) {
+                const modalStep1 = document.getElementById('modalStep1');
+                const modalStep2 = document.getElementById('modalStep2');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalStep2Options = document.getElementById('modalStep2Options');
+                const modalBackBtn = document.getElementById('modalBackBtn');
+                const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+                
+                if (!modalStep1 || !modalStep2 || !modalStep2Options) {
+                    console.error('❌ Elementos del modal no encontrados');
+                    return;
+                }
+                
+                // Ocultar paso 1 y mostrar paso 2
+                modalStep1.classList.remove('modal-step--active');
+                modalStep1.style.display = 'none';
+                modalStep2.classList.add('modal-step--active');
+                modalStep2.style.display = 'block';
+                
+                // Actualizar título
+                if (modalTitle) {
+                    modalTitle.textContent = team.name || 'Select option';
+                }
+                
+                // Limpiar opciones anteriores
+                modalStep2Options.innerHTML = '';
+                
+                // Crear opción 1: Agregar team completo
+                const option1 = document.createElement('label');
+                option1.className = 'modal-step-option';
+                option1.innerHTML = `
+                    <input type="radio" name="teamAddOption" value="full" id="addFullTeamOption">
+                    <span>Add full team</span>
+                `;
+                option1.addEventListener('click', function() {
+                    // Seleccionar el radio button
+                    const radio = option1.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Ocultar selección de miembros
+                    const membersSelection = document.getElementById('modalMembersSelection');
+                    if (membersSelection) {
+                        membersSelection.style.display = 'none';
+                    }
+                    
+                    // Mostrar botón de confirmar
+                    if (modalConfirmBtn) {
+                        modalConfirmBtn.style.display = 'inline-flex';
+                    }
+                });
+                
+                // Crear opción 2: Seleccionar miembros específicos
+                const option2 = document.createElement('label');
+                option2.className = 'modal-step-option';
+                option2.innerHTML = `
+                    <input type="radio" name="teamAddOption" value="members" id="selectMembersOption">
+                    <span>Select specific members</span>
+                `;
+                option2.addEventListener('click', async function() {
+                    // Seleccionar el radio button
+                    const radio = option2.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Mostrar selección de miembros
+                    await showMembersSelection(team);
+                    
+                    // Mostrar botón de confirmar
+                    if (modalConfirmBtn) {
+                        modalConfirmBtn.style.display = 'inline-flex';
+                    }
+                });
+                
+                modalStep2Options.appendChild(option1);
+                modalStep2Options.appendChild(option2);
+                
+                // Ocultar botón de confirmar inicialmente
+                if (modalConfirmBtn) {
+                    modalConfirmBtn.style.display = 'none';
+                }
+                
+                // Event listener para botón "Back"
+                if (modalBackBtn) {
+                    modalBackBtn.onclick = function() {
+                        // Volver al paso 1
+                        modalStep1.classList.add('modal-step--active');
+                        modalStep1.style.display = 'block';
+                        modalStep2.classList.remove('modal-step--active');
+                        modalStep2.style.display = 'none';
+                        
+                        // Restaurar título
+                        if (modalTitle) {
+                            modalTitle.textContent = 'Select a team';
+                        }
+                        
+                        // Limpiar selección de team
+                        modalTeamsList.querySelectorAll('.modal-team-item--selected').forEach(item => {
+                            item.classList.remove('modal-team-item--selected');
+                        });
+                        
+                        // Limpiar selección de miembros
+                        const membersSelection = document.getElementById('modalMembersSelection');
+                        if (membersSelection) {
+                            membersSelection.style.display = 'none';
+                        }
+                        
+                        // Ocultar botón de confirmar
+                        if (modalConfirmBtn) {
+                            modalConfirmBtn.style.display = 'none';
+                        }
+                    };
+                }
+                
+                // Event listener para botón "Confirm"
+                if (modalConfirmBtn) {
+                    modalConfirmBtn.onclick = async function() {
+                        const selectedOption = document.querySelector('input[name="teamAddOption"]:checked');
+                        
+                        if (!selectedOption) {
+                            alert('Please select an option');
+                            return;
+                        }
+                        
+                        if (selectedOption.value === 'full') {
+                            // Agregar team completo
+                            selectTeamModal.classList.remove('modal-overlay--visible');
+                            await addTeamToList(team.id);
+                        } else if (selectedOption.value === 'members') {
+                            // Agregar solo miembros seleccionados
+                            const selectedMembers = getSelectedMembers();
+                            if (selectedMembers.length === 0) {
+                                alert('Please select at least one member');
+                                return;
+                            }
+                            selectTeamModal.classList.remove('modal-overlay--visible');
+                            await addTeamToList(team.id, selectedMembers);
+                        }
+                        
+                        // Resetear modal
+                        resetModal();
+                    };
+                }
+            }
+            
+            // Función para mostrar la selección de miembros
+            async function showMembersSelection(team) {
+                const membersSelection = document.getElementById('modalMembersSelection');
+                const membersList = document.getElementById('modalMembersList');
+                
+                if (!membersSelection || !membersList) {
+                    console.error('❌ Elementos de selección de miembros no encontrados');
+                    return;
+                }
+                
+                // Prevenir ejecuciones múltiples simultáneas
+                if (membersList.dataset.loading === 'true') {
+                    console.log('⏳ Ya se está cargando la lista de miembros, esperando...');
+                    return;
+                }
+                
+                // Marcar como cargando
+                membersList.dataset.loading = 'true';
+                
+                try {
+                    // Mostrar contenedor
+                    membersSelection.style.display = 'block';
+                    
+                    // Limpiar lista anterior completamente
+                    membersList.innerHTML = '';
+                    
+                    // Obtener el team más reciente desde DocuProjectData para asegurar datos actualizados
+                    let currentTeam = team;
+                    if (team && team.id && typeof DocuProjectData !== 'undefined') {
+                        try {
+                            const projectData = DocuProjectData.getProjectData();
+                            const teams = (projectData && projectData.teams && Array.isArray(projectData.teams)) ? projectData.teams : [];
+                            const freshTeam = teams.find(t => t && t.id === team.id);
+                            if (freshTeam) {
+                                currentTeam = freshTeam;
+                                console.log('✅ Team actualizado desde DocuProjectData');
+                            }
+                        } catch (error) {
+                            console.warn('⚠️ No se pudo obtener team actualizado, usando team proporcionado:', error);
+                        }
+                    }
+                    
+                    const members = (currentTeam && currentTeam.members && Array.isArray(currentTeam.members)) ? currentTeam.members : [];
+                    
+                    console.log('📋 Miembros obtenidos del team (ANTES de eliminar duplicados):', {
+                        teamId: currentTeam?.id,
+                        teamName: currentTeam?.name,
+                        totalMembers: members.length,
+                        members: members.map((m, idx) => ({
+                            index: idx,
+                            id: m?.id,
+                            name: `${m?.name || ''} ${m?.lastName || ''}`.trim(),
+                            email: m?.email,
+                            phone: m?.phone
+                        }))
+                    });
+                    
+                    if (members.length === 0) {
+                        const emptyMessage = document.createElement('div');
+                        emptyMessage.className = 'modal-member-item';
+                        emptyMessage.style.cursor = 'default';
+                        emptyMessage.style.opacity = '0.6';
+                        emptyMessage.textContent = 'No members in this team';
+                        membersList.appendChild(emptyMessage);
+                        return;
+                    }
+                    
+                    // Eliminar duplicados con lógica mejorada
+                    const uniqueMembers = [];
+                    const seenMembers = new Map();
+                    const duplicateCounts = new Map();
+                    
+                    // Función para normalizar strings
+                    const normalize = (str) => {
+                        if (!str) return '';
+                        return String(str).trim().toLowerCase().replace(/\s+/g, ' ');
+                    };
+                    
+                    // Función para crear una clave única de un miembro
+                    const createMemberKey = (member) => {
+                        if (!member) return null;
+                        
+                        // Prioridad 1: ID único (más confiable)
+                        if (member.id) {
+                            return `id:${normalize(member.id)}`;
+                        }
+                        
+                        // Prioridad 2: Email (muy confiable)
+                        if (member.email) {
+                            return `email:${normalize(member.email)}`;
+                        }
+                        
+                        // Prioridad 3: Combinación de name + lastName (normalizado)
+                        const name = normalize(member.name || '');
+                        const lastName = normalize(member.lastName || '');
+                        const fullName = `${name} ${lastName}`.trim();
+                        
+                        if (fullName) {
+                            // Si tenemos nombre completo, usarlo como clave
+                            let key = `name:${fullName}`;
+                            
+                            // Agregar phone si existe para mayor precisión
+                            if (member.phone) {
+                                const phone = normalize(member.phone);
+                                if (phone) key += `_phone:${phone}`;
+                            }
+                            
+                            return key;
+                        }
+                        
+                        // Prioridad 4: Solo nombre
+                        if (name) {
+                            return `name:${name}`;
+                        }
+                        
+                        // Último recurso: usar JSON normalizado (sin imagen)
+                        const memberCopy = { ...member };
+                        delete memberCopy.image;
+                        delete memberCopy.avatar;
+                        return `json:${JSON.stringify(memberCopy)}`;
+                    };
+                    
+                    // Procesar cada miembro
+                    for (const member of members) {
+                        if (!member) continue; // Saltar miembros nulos o undefined
+                        
+                        const memberKey = createMemberKey(member);
+                        
+                        if (!memberKey) {
+                            console.warn('⚠️ No se pudo crear clave para miembro:', member);
+                            continue;
+                        }
+                        
+                        // Verificar si ya vimos este miembro
+                        if (!seenMembers.has(memberKey)) {
+                            seenMembers.set(memberKey, member);
+                            uniqueMembers.push(member);
+                            duplicateCounts.set(memberKey, 1);
+                        } else {
+                            // Duplicado detectado
+                            const count = duplicateCounts.get(memberKey) || 1;
+                            duplicateCounts.set(memberKey, count + 1);
+                            
+                            console.log('⚠️ Miembro duplicado detectado y eliminado:', {
+                                key: memberKey,
+                                name: `${member.name || ''} ${member.lastName || ''}`.trim(),
+                                id: member.id,
+                                email: member.email,
+                                ocurrencias: count + 1
+                            });
+                        }
+                    }
+                    
+                    console.log(`📊 RESULTADO: ${uniqueMembers.length} miembros únicos de ${members.length} totales`);
+                    if (uniqueMembers.length !== members.length) {
+                        const duplicatesRemoved = members.length - uniqueMembers.length;
+                        console.log(`✅ Se eliminaron ${duplicatesRemoved} miembros duplicados`);
+                        
+                        // Mostrar resumen de duplicados
+                        duplicateCounts.forEach((count, key) => {
+                            if (count > 1) {
+                                const member = seenMembers.get(key);
+                                const memberName = `${member?.name || ''} ${member?.lastName || ''}`.trim();
+                                console.log(`  - "${memberName}": ${count} ocurrencias`);
+                            }
+                        });
+                    }
+                    
+                    // Crear checkbox para cada miembro único con avatar
+                    for (let index = 0; index < uniqueMembers.length; index++) {
+                        const member = uniqueMembers[index];
+                        
+                        // Validar que el miembro tenga al menos un nombre
+                        const memberName = `${member.name || ''} ${member.lastName || ''}`.trim();
+                        if (!memberName && !member.email) {
+                            console.warn('⚠️ Miembro sin nombre ni email, saltando:', member);
+                            continue;
+                        }
+                        
+                        const memberItem = document.createElement('div');
+                        memberItem.className = 'modal-member-item';
+                        memberItem.setAttribute('data-member-index', index);
+                        memberItem.setAttribute('data-member-key', createMemberKey(member));
+                        
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `member-${currentTeam.id}-${index}`;
+                        checkbox.value = JSON.stringify(member);
+                        checkbox.checked = true; // Por defecto todos seleccionados
+                        
+                        // Crear contenedor para avatar y nombre
+                        const memberContent = document.createElement('div');
+                        memberContent.className = 'modal-member-content';
+                        
+                        // Avatar
+                        const avatarContainer = document.createElement('span');
+                        avatarContainer.className = 'modal-member-avatar';
+                        
+                        const avatarImg = document.createElement('img');
+                        avatarImg.className = 'avatar__img';
+                        avatarImg.alt = memberName || 'member';
+                        
+                        // Cargar imagen del miembro
+                        try {
+                            if (typeof getMemberImage === 'function') {
+                                const imageSrc = await getMemberImage(member.image || member.avatar || '');
+                                avatarImg.src = imageSrc;
+                            } else {
+                                avatarImg.src = member.image || member.avatar || 'images/avatar_icon.svg';
+                            }
+                        } catch (error) {
+                            console.error('❌ Error al cargar imagen del miembro:', error);
+                            avatarImg.src = 'images/avatar_icon.svg';
+                        }
+                        
+                        avatarContainer.appendChild(avatarImg);
+                        
+                        // Label con nombre
+                        const label = document.createElement('label');
+                        label.htmlFor = `member-${currentTeam.id}-${index}`;
+                        label.className = 'modal-member-label';
+                        label.textContent = memberName || 'Member';
+                        
+                        memberContent.appendChild(avatarContainer);
+                        memberContent.appendChild(label);
+                        
+                        memberItem.appendChild(checkbox);
+                        memberItem.appendChild(memberContent);
+                        membersList.appendChild(memberItem);
+                    }
+                    
+                    console.log(`✅ Lista de miembros renderizada: ${membersList.children.length} elementos en el DOM`);
+                    
+                } catch (error) {
+                    console.error('❌ Error al mostrar selección de miembros:', error);
+                } finally {
+                    // Remover flag de carga
+                    membersList.dataset.loading = 'false';
+                }
+            }
+            
+            // Función para obtener miembros seleccionados
+            function getSelectedMembers() {
+                const membersList = document.getElementById('modalMembersList');
+                if (!membersList) return [];
+                
+                const selectedMembers = [];
+                const checkboxes = membersList.querySelectorAll('input[type="checkbox"]:checked');
+                
+                checkboxes.forEach(checkbox => {
+                    try {
+                        const member = JSON.parse(checkbox.value);
+                        selectedMembers.push(member);
+                    } catch (e) {
+                        console.error('Error parsing member data:', e);
+                    }
+                });
+                
+                return selectedMembers;
+            }
+            
+            // Función para resetear el modal
+            function resetModal() {
+                const modalStep1 = document.getElementById('modalStep1');
+                const modalStep2 = document.getElementById('modalStep2');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+                const membersSelection = document.getElementById('modalMembersSelection');
+                
+                // Volver al paso 1
+                if (modalStep1) {
+                    modalStep1.classList.add('modal-step--active');
+                    modalStep1.style.display = 'block';
+                }
+                if (modalStep2) {
+                    modalStep2.classList.remove('modal-step--active');
+                    modalStep2.style.display = 'none';
+                }
+                
+                // Restaurar título
+                if (modalTitle) {
+                    modalTitle.textContent = 'Select a team';
+                }
+                
+                // Ocultar botón de confirmar
+                if (modalConfirmBtn) {
+                    modalConfirmBtn.style.display = 'none';
+                }
+                
+                // Ocultar selección de miembros
+                if (membersSelection) {
+                    membersSelection.style.display = 'none';
+                }
+                
+                // Limpiar selección de opciones
+                const radios = document.querySelectorAll('input[name="teamAddOption"]');
+                radios.forEach(radio => radio.checked = false);
+                
+                // Limpiar variable global
+                window.selectedTeamForModal = null;
+            }
+
             // Funcionalidad de abrir modal al hacer clic en add member (empty state)
             addMemberBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -8790,6 +9434,9 @@
                     return;
                 }
 
+                // Resetear modal antes de abrirlo
+                resetModal();
+                
                 // Cargar teams en el modal
                 loadTeamsInModal();
                 
@@ -8801,6 +9448,7 @@
             // Funcionalidad de cerrar modal
             if (closeTeamModalBtn) {
                 closeTeamModalBtn.addEventListener('click', function() {
+                    resetModal();
                     selectTeamModal.classList.remove('modal-overlay--visible');
                     console.log('❌ Modal cerrado');
                 });
@@ -8809,6 +9457,7 @@
             // Cerrar modal al hacer clic fuera
             selectTeamModal.addEventListener('click', function(e) {
                 if (e.target === selectTeamModal) {
+                    resetModal();
                     selectTeamModal.classList.remove('modal-overlay--visible');
                     console.log('❌ Modal cerrado (click fuera)');
                 }
