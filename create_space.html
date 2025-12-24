@@ -2220,16 +2220,37 @@
             const closeEditBtn = document.getElementById('closeEditBtn');
             if (closeEditBtn) {
                 closeEditBtn.addEventListener('click', function() {
-                    // Obtener el ID del team que se está editando
+                    // Obtener el ID del space/team que se está editando
                     const urlParams = new URLSearchParams(window.location.search);
-                    const teamId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id') || sessionStorage.getItem('docu_selected_team_id');
+                    let spaceId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id') || sessionStorage.getItem('docu_selected_team_id');
                     
-                    if (teamId) {
-                        // Redirigir de vuelta a team_filled.html con el ID del team
-                        window.location.href = `team_filled.html?id=${teamId}`;
+                    // Si no hay spaceId, intentar obtener el último space/team publicado
+                    if (!spaceId) {
+                        const projectDataObj = DocuProjectData.getProjectData();
+                        if (projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams) && projectDataObj.teams.length > 0) {
+                            // Buscar el último space/team publicado
+                            const publishedSpaces = projectDataObj.teams.filter(t => t.status === 'published');
+                            if (publishedSpaces.length > 0) {
+                                // Ordenar por fecha de publicación (más reciente primero)
+                                publishedSpaces.sort((a, b) => {
+                                    const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                                    const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                                    return dateB - dateA;
+                                });
+                                spaceId = publishedSpaces[0].id;
+                                console.log('✅ Usando último space/team publicado:', spaceId);
+                            }
+                        }
+                    }
+                    
+                    if (spaceId) {
+                        // Redirigir de vuelta a team_filled.html con el ID del space/team
+                        console.log('🔄 Redirigiendo a team_filled.html con ID:', spaceId);
+                        window.location.href = `team_filled.html?id=${spaceId}`;
                     } else {
-                        // Si no hay ID, redirigir a create_space.html
-                        window.location.href = 'create_space.html';
+                        // Si no hay ID ni spaces, redirigir a myprojects.html (lista de proyectos/teams)
+                        console.log('🔄 No hay spaceId disponible, redirigiendo a myprojects.html');
+                        window.location.href = 'myprojects.html';
                     }
                 });
             }
@@ -5625,11 +5646,27 @@
             const isCreateSpace = window.location.pathname.includes('create_space.html');
             if (isCreateSpace) {
                 console.log('ℹ️ create_space.html: iniciando con vista limpia (sin cargar datos automáticos)');
-                // Ocultar botón de cerrar si existe
+                
+                // Verificar si hay spaces/teams publicados para mostrar el botón de cerrar
+                const projectDataObj = DocuProjectData.getProjectData();
+                const hasPublishedSpaces = projectDataObj && 
+                    projectDataObj.teams && 
+                    Array.isArray(projectDataObj.teams) && 
+                    projectDataObj.teams.some(team => team.status === 'published');
+                
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
-                    closeEditBtn.style.display = 'none';
+                    if (hasPublishedSpaces) {
+                        // Mostrar botón si hay spaces/teams publicados
+                        closeEditBtn.style.display = 'flex';
+                        console.log('✅ Botón cerrar mostrado: hay spaces/teams publicados');
+                    } else {
+                        // Ocultar botón si no hay spaces/teams publicados
+                        closeEditBtn.style.display = 'none';
+                        console.log('ℹ️ Botón cerrar oculto: no hay spaces/teams publicados');
+                    }
                 }
+                
                 return; // No cargar ningún dato automáticamente en create_space.html
             }
             
@@ -5694,10 +5731,24 @@
                     }
                 }
             } else {
-                // Ocultar botón de cerrar si no estamos en modo edición
+                // Verificar si hay spaces/teams publicados para mostrar el botón de cerrar
+                const projectDataObj = DocuProjectData.getProjectData();
+                const hasPublishedSpaces = projectDataObj && 
+                    projectDataObj.teams && 
+                    Array.isArray(projectDataObj.teams) && 
+                    projectDataObj.teams.some(team => team.status === 'published');
+                
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
-                    closeEditBtn.style.display = 'none';
+                    if (hasPublishedSpaces) {
+                        // Mostrar botón si hay spaces/teams publicados
+                        closeEditBtn.style.display = 'flex';
+                        console.log('✅ Botón cerrar mostrado: hay spaces/teams publicados');
+                    } else {
+                        // Ocultar botón si no hay spaces/teams publicados
+                        closeEditBtn.style.display = 'none';
+                        console.log('ℹ️ Botón cerrar oculto: no hay spaces/teams publicados');
+                    }
                 }
             }
             
@@ -5891,10 +5942,24 @@
                     console.warn('⚠️ Botón cerrar no encontrado en el DOM');
                 }
             } else {
-                // Ocultar botón de cerrar si no estamos en modo edición
+                // Verificar si hay spaces/teams publicados para mostrar el botón de cerrar
+                const projectDataObj = DocuProjectData.getProjectData();
+                const hasPublishedSpaces = projectDataObj && 
+                    projectDataObj.teams && 
+                    Array.isArray(projectDataObj.teams) && 
+                    projectDataObj.teams.some(team => team.status === 'published');
+                
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
-                    closeEditBtn.style.display = 'none';
+                    if (hasPublishedSpaces) {
+                        // Mostrar botón si hay spaces/teams publicados
+                        closeEditBtn.style.display = 'flex';
+                        console.log('✅ Botón cerrar mostrado: hay spaces/teams publicados');
+                    } else {
+                        // Ocultar botón si no hay spaces/teams publicados
+                        closeEditBtn.style.display = 'none';
+                        console.log('ℹ️ Botón cerrar oculto: no hay spaces/teams publicados');
+                    }
                 }
             }
             

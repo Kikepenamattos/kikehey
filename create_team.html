@@ -2215,14 +2215,35 @@
                 closeEditBtn.addEventListener('click', function() {
                     // Obtener el ID del team que se está editando
                     const urlParams = new URLSearchParams(window.location.search);
-                    const teamId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id') || sessionStorage.getItem('docu_selected_team_id');
+                    let teamId = urlParams.get('id') || sessionStorage.getItem('docu_edit_team_id') || sessionStorage.getItem('docu_selected_team_id');
+                    
+                    // Si no hay teamId, intentar obtener el último team publicado
+                    if (!teamId) {
+                        const projectDataObj = DocuProjectData.getProjectData();
+                        if (projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams) && projectDataObj.teams.length > 0) {
+                            // Buscar el último team publicado
+                            const publishedTeams = projectDataObj.teams.filter(t => t.status === 'published');
+                            if (publishedTeams.length > 0) {
+                                // Ordenar por fecha de publicación (más reciente primero)
+                                publishedTeams.sort((a, b) => {
+                                    const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                                    const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                                    return dateB - dateA;
+                                });
+                                teamId = publishedTeams[0].id;
+                                console.log('✅ Usando último team publicado:', teamId);
+                            }
+                        }
+                    }
                     
                     if (teamId) {
                         // Redirigir de vuelta a team_filled.html con el ID del team
+                        console.log('🔄 Redirigiendo a team_filled.html con ID:', teamId);
                         window.location.href = `team_filled.html?id=${teamId}`;
                     } else {
-                        // Si no hay ID, redirigir a la lista de teams publicados o al inicio
-                        window.location.href = 'create_team.html';
+                        // Si no hay ID ni teams, redirigir a myprojects.html (lista de proyectos/teams)
+                        console.log('🔄 No hay teamId disponible, redirigiendo a myprojects.html');
+                        window.location.href = 'myprojects.html';
                     }
                 });
             }
@@ -5675,10 +5696,21 @@
                     }
                 }
             } else {
-                // Ocultar botón de cerrar si no estamos en modo edición
+                // Verificar si hay teams creados para mostrar el botón de cerrar
+                const projectDataObj = DocuProjectData.getProjectData();
+                const hasTeams = projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams) && projectDataObj.teams.length > 0;
+                
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
-                    closeEditBtn.style.display = 'none';
+                    if (hasTeams) {
+                        // Mostrar botón si hay teams creados
+                        closeEditBtn.style.display = 'flex';
+                        console.log('✅ Botón cerrar mostrado: hay teams creados');
+                    } else {
+                        // Ocultar botón si no hay teams
+                        closeEditBtn.style.display = 'none';
+                        console.log('ℹ️ Botón cerrar oculto: no hay teams creados');
+                    }
                 }
             }
             
@@ -5871,10 +5903,21 @@
                     console.warn('⚠️ Botón cerrar no encontrado en el DOM');
                 }
             } else {
-                // Ocultar botón de cerrar si no estamos en modo edición
+                // Verificar si hay teams creados para mostrar el botón de cerrar
+                const projectDataObj = DocuProjectData.getProjectData();
+                const hasTeams = projectDataObj && projectDataObj.teams && Array.isArray(projectDataObj.teams) && projectDataObj.teams.length > 0;
+                
                 const closeEditBtn = document.getElementById('closeEditBtn');
                 if (closeEditBtn) {
-                    closeEditBtn.style.display = 'none';
+                    if (hasTeams) {
+                        // Mostrar botón si hay teams creados
+                        closeEditBtn.style.display = 'flex';
+                        console.log('✅ Botón cerrar mostrado: hay teams creados');
+                    } else {
+                        // Ocultar botón si no hay teams
+                        closeEditBtn.style.display = 'none';
+                        console.log('ℹ️ Botón cerrar oculto: no hay teams creados');
+                    }
                 }
             }
             
