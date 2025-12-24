@@ -2020,8 +2020,15 @@
                 createTeamBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('🆕 Botón "Create new team" clickeado');
-                    createNewTeam();
+                    console.log('🆕 Botón "Create new team" clickeado, redirigiendo a create_team.html');
+                    // Limpiar sessionStorage para crear un team nuevo
+                    try {
+                        sessionStorage.removeItem('docu_selected_team_id');
+                        sessionStorage.setItem('docu_create_new_team', 'true'); // Marcar que se está creando un nuevo team
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'create_team.html';
                 });
             } else {
                 console.error('❌ Botón "Create new team" no encontrado');
@@ -2221,8 +2228,8 @@
                         // Redirigir de vuelta a team_filled.html con el ID del team
                         window.location.href = `team_filled.html?id=${teamId}`;
                     } else {
-                        // Si no hay ID, redirigir a la lista de teams publicados o al inicio
-                        window.location.href = 'create_team.html';
+                        // Si no hay ID, redirigir a create_space.html
+                        window.location.href = 'create_space.html';
                     }
                 });
             }
