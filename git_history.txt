@@ -1,3 +1,5 @@
+58c635c822a44ac4cbe80c58227155a507424866|Ubits|ubits@macbookpro.lan|2025-12-24 12:20:43 -0500|Feature: Agregar sección Deliverables (Links of interest) en create_space.html
+7ab0d8079c4adbfab7dfe7684520a67c6a9a1a82|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:54 -0500|Update: Finalizar sincronización de changelog
 01930b10f0b9a0b00f2740a2975bc566e3a12a69|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:46 -0500|Update: Sincronizar changelog después del push
 a1fac05e5b80e9f2bc32eccd6aa26a51ecfceacf|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:32 -0500|Update: Actualizar changelog con nueva feature Space Description y Mission
 d287c180f80ef253a39903daee22b851f198b2f5|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:15 -0500|Feature: Agregar secciones Space Description y Mission en create_space.html
