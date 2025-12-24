@@ -1082,6 +1082,10 @@
             transition: all 0.3s ease;
         }
 
+        .team-description-section-title:hover {
+            opacity: 0.8;
+        }
+
         .team-description-section-title__text {
             font-family: var(--font-family-secondary);
             font-size: 24px;
@@ -1142,7 +1146,30 @@
             font-size: var(--font-size-md);
             color: var(--color-text-primary);
             line-height: var(--line-height-lg);
-            padding: var(--spacing-08) 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        /* Aplicar estilo de team-assets-item a las secciones de descripción y misión */
+        .team-description-content .team-assets-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .team-description-content .team-assets-item .team-description-display {
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .team-description-content .team-assets-item {
+            background-color: var(--color-surface-regular-dark);
+            border-color: var(--color-status-disabled-dark);
         }
 
         /* Team Assets Section */
@@ -1461,13 +1488,18 @@
                 <!-- Team Description Section -->
                 <div class="team-description-section" id="teamDescriptionSection">
                     <div class="team-description-header">
-                        <div class="team-description-section-title team-description-section-title--expanded">
+                        <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
                             <span class="team-description-section-title__text">Description</span>
+                            <span class="team-description-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
                         </div>
                     </div>
-                    <div class="team-description-section-content team-description-section-content--expanded">
+                    <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
                         <div class="team-description-content">
-                            <div class="team-description-display" id="teamDescriptionDisplay"></div>
+                            <div class="team-assets-item">
+                                <div class="team-description-display" id="teamDescriptionDisplay"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1476,13 +1508,18 @@
                 <!-- Team Mission Section -->
                 <div class="team-description-section" id="teamMissionSection">
                     <div class="team-description-header">
-                        <div class="team-description-section-title team-description-section-title--expanded">
+                        <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
                             <span class="team-description-section-title__text">Mission</span>
+                            <span class="team-description-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
                         </div>
                     </div>
-                    <div class="team-description-section-content team-description-section-content--expanded">
+                    <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
                         <div class="team-description-content">
-                            <div class="team-description-display" id="teamMissionDisplay"></div>
+                            <div class="team-assets-item">
+                                <div class="team-description-display" id="teamMissionDisplay"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1847,9 +1884,6 @@
 
             // Inicializar navegación del sidebar (usando la misma función de create_team.html)
             initSidebarNavigation();
-            
-            // Inicializar funcionalidad de colapsar/expandir para las secciones
-            initTeamDescriptionSections();
 
             // Inicializar Input Buscador (solo para búsqueda, sin guardar)
             initInputBuscador();
@@ -1863,7 +1897,7 @@
             // Inicializar botones de acción
             initActionButtons();
 
-            // Inicializar secciones colapsables (Description y Mission)
+            // Inicializar funcionalidad de colapsar/expandir para las secciones (Description, Mission y Assets)
             initTeamDescriptionSections();
 
             // Cargar datos del team publicado PRIMERO (antes del sidebar para mostrar info real inmediatamente)
@@ -1884,58 +1918,6 @@
             });
         }
 
-        /**
-         * Inicializa las secciones colapsables (Description y Mission)
-         */
-        function initTeamDescriptionSections() {
-            // Inicializar sección de Description
-            const descriptionSectionTitle = document.querySelector('#teamDescriptionSection .team-description-section-title');
-            const descriptionSectionContent = document.querySelector('#teamDescriptionSection .team-description-section-content');
-            
-            if (descriptionSectionTitle && descriptionSectionContent) {
-                descriptionSectionTitle.addEventListener('click', function() {
-                    const isExpanded = descriptionSectionTitle.classList.contains('team-description-section-title--expanded');
-                    
-                    if (isExpanded) {
-                        // Colapsar
-                        descriptionSectionTitle.classList.remove('team-description-section-title--expanded');
-                        descriptionSectionContent.classList.remove('team-description-section-content--expanded');
-                    } else {
-                        // Expandir
-                        descriptionSectionTitle.classList.add('team-description-section-title--expanded');
-                        descriptionSectionContent.classList.add('team-description-section-content--expanded');
-                    }
-                    
-                    // Guardar estado
-                    saveSectionsState();
-                });
-                console.log('✅ Team Description Section inicializado en vista publicada');
-            }
-
-            // Inicializar sección de Mission
-            const missionSectionTitle = document.querySelector('#teamMissionSection .team-description-section-title');
-            const missionSectionContent = document.querySelector('#teamMissionSection .team-description-section-content');
-            
-            if (missionSectionTitle && missionSectionContent) {
-                missionSectionTitle.addEventListener('click', function() {
-                    const isExpanded = missionSectionTitle.classList.contains('team-description-section-title--expanded');
-                    
-                    if (isExpanded) {
-                        // Colapsar
-                        missionSectionTitle.classList.remove('team-description-section-title--expanded');
-                        missionSectionContent.classList.remove('team-description-section-content--expanded');
-                    } else {
-                        // Expandir
-                        missionSectionTitle.classList.add('team-description-section-title--expanded');
-                        missionSectionContent.classList.add('team-description-section-content--expanded');
-                    }
-                    
-                    // Guardar estado
-                    saveSectionsState();
-                });
-                console.log('✅ Team Mission Section inicializado en vista publicada');
-            }
-        }
 
         /**
          * Guarda el estado de las secciones colapsables
@@ -2603,6 +2585,9 @@
                 const sectionContent = document.querySelector(`.team-description-section-content[data-content="${sectionConfig.dataContent}"]`);
 
                 if (sectionTitle && sectionContent) {
+                    // Hacer el título clickeable
+                    sectionTitle.style.cursor = 'pointer';
+                    
                     sectionTitle.addEventListener('click', function() {
                         const isExpanded = sectionTitle.classList.contains('team-description-section-title--expanded');
 
@@ -2614,7 +2599,7 @@
                             sectionContent.classList.add('team-description-section-content--expanded');
                         }
                     });
-                    console.log(`✅ Team ${sectionConfig.dataSection} Section inicializado`);
+                    console.log(`✅ Team ${sectionConfig.dataSection} Section inicializado en vista publicada`);
                 } else {
                     console.warn(`⚠️ Elementos de team ${sectionConfig.dataSection} section no encontrados`);
                 }
