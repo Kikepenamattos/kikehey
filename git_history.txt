@@ -1,3 +1,5 @@
+c9ba3e76c09a4533a3494fe7966dba06848d1917|Ubits|ubits@macbookpro.lan|2025-12-24 16:26:30 -0500|Feature: Mejorar flujo de selección de teams con opción de agregar team completo o miembros específicos, incluyendo avatares y eliminación de duplicados
+49dbd16ba77ae14c67188ed4f155eae7d0c16f64|Ubits|ubits@macbookpro.lan|2025-12-24 15:50:38 -0500|Feature: Persistencia de datos y funcionalidad Enter para rich text inputs en assets y deliverables
 0e67ee6d765dfcc08013ca0278fe7d234c5aea27|Ubits|ubits@macbookpro.lan|2025-12-24 13:55:45 -0500|Update: Finalizar sincronización de changelog
 22bcc722e573e19d1c7ff91a3e752669d6b20c57|Ubits|ubits@macbookpro.lan|2025-12-24 13:55:35 -0500|Update: Finalizar sincronización de changelog
 9c171db3e690345f4bb1c2ac896b44ecb0173513|Ubits|ubits@macbookpro.lan|2025-12-24 13:55:26 -0500|Update: Sincronizar changelog y git_history después del push
