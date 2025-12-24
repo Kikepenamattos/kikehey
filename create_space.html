@@ -954,6 +954,156 @@
                 flex-direction: column;
             }
         }
+
+        /* ============================================
+           Create Space - Project Test Section
+           Prefijo: cs- para evitar conflictos
+           ============================================ */
+
+        /* Test Section (Componente de Prueba) */
+        .cs-project-test-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .cs-project-test-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .cs-project-test-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .cs-project-test-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        /* Estilos para secciones colapsables */
+        .cs-project-section-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        /* Solo para secciones colapsables */
+        .cs-project-section-title[data-section] {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            width: 100%;
+        }
+
+        .cs-project-section-title__text {
+            flex: 1;
+        }
+
+        .cs-project-section-title__chevron {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .cs-project-section-title__chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: filter 0.3s ease;
+        }
+
+        /* Dark mode icon adjustment para chevron */
+        [data-theme="dark"] .cs-project-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .cs-project-section-title--collapsed .cs-project-section-title__chevron {
+            transform: rotate(0deg);
+        }
+
+        .cs-project-section-title--expanded .cs-project-section-title__chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido colapsable de la sección */
+        .cs-project-section-content {
+            overflow: visible;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cs-project-section-content--collapsed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cs-project-section-content--expanded {
+            max-height: 10000px;
+            opacity: 1;
+            overflow: visible;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cs-project-test-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .cs-project-test-content {
+            width: 100%;
+        }
+
+        .cs-project-test-section--disabled .dsu-rich-text-input {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .cs-project-test-section--disabled .dsu-input {
+            background-color: var(--color-status-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: var(--color-text-secondary);
+        }
+
+        .cs-project-test-section--disabled .cs-project-test-hide {
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .cs-project-test-section--disabled .dsu-rich-text-input__editor {
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -1120,44 +1270,113 @@
                             >
                         </div>
                     </div>
+                </div>
 
-                    <!-- Cost Edit Level -->
-                    <div class="cost-edit-level">
-                        <div class="dsu-input-group team-cost-group">
-                            <div class="dsu-input-label">
-                                <div class="dsu-input-label__text">
-                                    <span>Team cost:</span>
+                <!-- Space Description Section (Rich Text Input) -->
+                <div class="cs-project-test-section" id="csProjectTestSection">
+                    <div class="cs-project-test-header">
+                        <div class="cs-project-section-title cs-project-section-title--expanded" data-section="spaceContext">
+                            <span class="cs-project-section-title__text">Space description</span>
+                            <span class="cs-project-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
+                        </div>
+                        <p class="cs-project-test-description">Provide all the available information to start solid.</p>
+                    </div>
+                    <div class="cs-project-section-content cs-project-section-content--expanded" data-content="spaceContext">
+                        <div class="cs-project-test-content">
+                            <div class="dsu-rich-text-input" id="csProjectTestRichTextInput">
+                                <div class="dsu-rich-text-input__toolbar">
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                        <img src="images/bold.svg" alt="Bold">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                        <img src="images/italic.svg" alt="Italic">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                        <img src="images/underline.svg" alt="Underline">
+                                    </button>
+                                    <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                        <img src="images/list-bullet.svg" alt="Bullet List">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                        <img src="images/number_list.svg" alt="Numbered List">
+                                    </button>
+                                    <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                        <img src="images/link.svg" alt="Link">
+                                    </button>
+                                </div>
+                                <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your space description..."></div>
+                                <div class="dsu-rich-text-input__footer">
+                                    <div class="dsu-rich-text-input__footer-left">
+                                        <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                            <img src="images/attachment.svg" alt="Attachment">
+                                        </button>
+                                        <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                            <img src="images/trash.svg" alt="Delete">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <input 
-                                type="text" 
-                                id="teamCost" 
-                                class="dsu-input" 
-                                placeholder="Automatically calculated from teammates income in USD"
-                                readonly
-                            >
-                        </div>
-                    </div>
-
-                    <!-- Associated Projects -->
-                    <div class="dsu-input-group associated-projects-group">
-                        <div class="dsu-input-label">
-                            <div class="dsu-input-label__text">
-                                <span>Associated projects:</span>
-                            </div>
-                        </div>
-                        <select 
-                            id="associatedProjects" 
-                            class="dsu-input"
-                        >
-                            <option value="">Select a project</option>
-                            <!-- Projects will be dynamically loaded here -->
-                        </select>
-                    <div class="projects-chips-container" id="projectsChipsContainer">
-                        <!-- Chips will be dynamically added here -->
                         </div>
                     </div>
                 </div>
+                <!-- END: Space Description Section -->
+
+                <!-- Mission Section (Rich Text Input) -->
+                <div class="cs-project-test-section" id="csProjectMissionSection">
+                    <div class="cs-project-test-header">
+                        <div class="cs-project-section-title cs-project-section-title--expanded" data-section="spaceMission">
+                            <span class="cs-project-section-title__text">Mission</span>
+                            <span class="cs-project-section-title__chevron">
+                                <img src="images/down-chevron.svg" alt="Toggle">
+                            </span>
+                        </div>
+                        <p class="cs-project-test-description">Provide all the available information to start solid.</p>
+                    </div>
+                    <div class="cs-project-section-content cs-project-section-content--expanded" data-content="spaceMission">
+                        <div class="cs-project-test-content">
+                            <div class="dsu-rich-text-input" id="csProjectMissionRichTextInput">
+                                <div class="dsu-rich-text-input__toolbar">
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                        <img src="images/bold.svg" alt="Bold">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                        <img src="images/italic.svg" alt="Italic">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                        <img src="images/underline.svg" alt="Underline">
+                                    </button>
+                                    <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                        <img src="images/list-bullet.svg" alt="Bullet List">
+                                    </button>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                        <img src="images/number_list.svg" alt="Numbered List">
+                                    </button>
+                                    <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                    <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                        <img src="images/link.svg" alt="Link">
+                                    </button>
+                                </div>
+                                <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add your mission..."></div>
+                                <div class="dsu-rich-text-input__footer">
+                                    <div class="dsu-rich-text-input__footer-left">
+                                        <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                            <img src="images/attachment.svg" alt="Attachment">
+                                        </button>
+                                        <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                            <img src="images/trash.svg" alt="Delete">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Mission Section -->
 
                 <!-- Team Members Section -->
                 <div class="team-members-section">
@@ -1789,6 +2008,10 @@
                 console.log('📋 Recargando teams en sidebar...');
                 loadTeamsInSidebar();
             }, 300);
+
+            // Inicializar Space Description Section (Test Section)
+            initCsTestSection();
+            initCsCollapsibleSections();
         }
 
         // ============================================
@@ -4233,6 +4456,81 @@
                 } else {
                     button.classList.remove('dsu-rich-text-input__toolbar-button--active');
                 }
+            });
+        }
+
+        // ============================================
+        // Create Space - Test Section Functions
+        // Prefijo: cs- para evitar conflictos
+        // ============================================
+
+        // Inicializar Test Section (Space Description y Mission)
+        function initCsTestSection() {
+            // Inicializar Space Description Section
+            const testSection = document.getElementById('csProjectTestSection');
+            const richTextInput = document.getElementById('csProjectTestRichTextInput');
+            
+            if (testSection && richTextInput) {
+                // Asegurar que se inicialice con initRichTextToolbar
+                richTextInput.dataset.initialized = 'false';
+                initRichTextToolbar();
+                console.log('✅ Rich Text Input inicializado en CS Space Description Section');
+            }
+
+            // Inicializar Mission Section
+            const missionSection = document.getElementById('csProjectMissionSection');
+            const missionRichTextInput = document.getElementById('csProjectMissionRichTextInput');
+            
+            if (missionSection && missionRichTextInput) {
+                // Asegurar que se inicialice con initRichTextToolbar
+                missionRichTextInput.dataset.initialized = 'false';
+                initRichTextToolbar();
+                console.log('✅ Rich Text Input inicializado en CS Mission Section');
+            }
+
+            if (!testSection && !missionSection) {
+                console.warn('⚠️ Elementos de CS Test Sections no encontrados');
+                return;
+            }
+
+            console.log('✅ CS Test Sections inicializados correctamente');
+        }
+
+        // Inicializar secciones colapsables para Create Space
+        function initCsCollapsibleSections() {
+            // Secciones con funcionalidad de colapsar/plegar
+            const collapsibleSections = ['spaceContext', 'spaceMission'];
+            
+            collapsibleSections.forEach(function(sectionName) {
+                const title = document.querySelector(`.cs-project-section-title[data-section="${sectionName}"]`);
+                const content = document.querySelector(`.cs-project-section-content[data-content="${sectionName}"]`);
+                
+                if (!title || !content) {
+                    console.warn(`⚠️ Elementos de CS Collapsible Section "${sectionName}" no encontrados`);
+                    return;
+                }
+                
+                title.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Toggle estado
+                    const isExpanded = this.classList.contains('cs-project-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        this.classList.remove('cs-project-section-title--expanded');
+                        this.classList.add('cs-project-section-title--collapsed');
+                        content.classList.remove('cs-project-section-content--expanded');
+                        content.classList.add('cs-project-section-content--collapsed');
+                    } else {
+                        // Expandir
+                        this.classList.remove('cs-project-section-title--collapsed');
+                        this.classList.add('cs-project-section-title--expanded');
+                        content.classList.remove('cs-project-section-content--collapsed');
+                        content.classList.add('cs-project-section-content--expanded');
+                    }
+                });
             });
         }
         

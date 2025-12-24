@@ -1,0 +1,1057 @@
+/* ============================================
+   Create Space - Estilos Específicos
+   Prefijo: cs- (create-space) para evitar conflictos
+   ============================================ */
+
+/* Reset y Base */
+.cs-reset {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.cs-body {
+    font-family: var(--font-family-secondary, 'Lato', sans-serif);
+    background-color: var(--color-surface-regular, #ffffff);
+    color: var(--color-text-primary, #0a243f);
+    min-height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Layout Principal */
+.cs-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Contenido Principal */
+.cs-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.cs-content {
+    flex: 1;
+    padding: 64px 173px 0 135px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 80%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.cs-edit-close-button-container {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    height: 32px;
+}
+
+.cs-edit-close-button {
+    width: 32px;
+    height: 32px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.cs-edit-close-button:hover {
+    opacity: 0.7;
+}
+
+.cs-edit-close-button__icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Dark mode icon adjustment */
+[data-theme="dark"] .cs-edit-close-button__icon {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Data Level - Formulario principal */
+.cs-data-level {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+}
+
+/* Agregar padding-top cuando el botón cerrar está presente */
+.cs-data-level:has(.cs-edit-close-button-container) {
+    padding-top: 48px;
+}
+
+/* Name Level */
+.cs-name-level {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.cs-project-name-group {
+    flex: 1;
+}
+
+/* Project name display para teams publicados */
+.cs-project-name-display {
+    font-family: 'Crimson Pro', serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: normal;
+    color: var(--color-text-primary, #0a243f);
+    margin: 0;
+    padding: 0;
+}
+
+.cs-project-name-group.published .dsu-input-label {
+    display: none;
+}
+
+/* Team cost display para teams publicados */
+.cs-team-cost-display {
+    font-family: var(--font-family-secondary, 'Lato', sans-serif);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-text-primary, #0a243f);
+    line-height: 1.5;
+}
+
+.cs-team-cost-display span {
+    font-weight: 400;
+}
+
+.cs-team-cost-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cs-search-input-group {
+    flex: 1;
+}
+
+/* Input width override para create_space */
+.cs-input-buscador {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.cs-input-buscador .dsu-input {
+    padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+    box-sizing: border-box;
+}
+
+.cs-input-buscador__send-icon {
+    position: absolute;
+    right: var(--spacing-16);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-input-buscador__send-icon--active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.cs-input-buscador__send-icon:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.cs-input-buscador__send-icon img,
+.cs-input-buscador__send-icon svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Asegurar que el icono no se vea afectado por el estado disabled del contenedor */
+.cs-secondary-actions.disabled .cs-input-buscador__send-icon--active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Primary Actions Level */
+.cs-primary-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.cs-btn-share-team {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--color-text-primary, #0a243f);
+    border-radius: 40px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-family-secondary, 'Lato');
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary, #0a243f);
+}
+
+.cs-btn-share-team:hover:not(:disabled) {
+    opacity: 0.8;
+}
+
+.cs-btn-share-team:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--color-status-disabled, #efefef);
+    color: var(--color-text-secondary, #6b7b8a);
+    border-color: var(--color-status-disabled, #efefef);
+}
+
+.cs-btn-add-member {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--color-buttons-primary-bg-default, #9dff00);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-family-secondary, 'Lato');
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-primary, #0a243f);
+}
+
+.cs-btn-add-member:hover {
+    background-color: var(--color-button-primary-bg-hover);
+}
+
+/* Modal Styles */
+.cs-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-overlay-light);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+    visibility: hidden;
+}
+
+.cs-modal-overlay.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.cs-modal-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    animation: cs-modalContainerFadeIn 0.3s ease;
+}
+
+@keyframes cs-modalContainerFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.cs-add-member-modal {
+    background: var(--color-basics-white);
+    border: 1px solid var(--color-basics-mid-blue);
+    border-radius: 10px;
+    padding: 32px;
+    max-width: 856px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: cs-modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--elevation-4);
+}
+
+/* Dark mode modal adjustments */
+[data-theme="dark"] .cs-add-member-modal {
+    background: var(--color-surface-regular);
+    border-color: var(--color-basics-mid-blue);
+}
+
+@keyframes cs-modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cs-modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Modal Header */
+.cs-modal-header-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.cs-modal-headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-modal-title {
+    font-family: 'Lato', sans-serif;
+    font-size: 24px;
+    font-weight: var(--font-weight-black);
+    color: var(--color-basics-dark-blue);
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    line-height: normal;
+}
+
+/* Dark mode title adjustment */
+[data-theme="dark"] .cs-modal-title {
+    color: var(--color-basics-white);
+}
+
+.cs-modal-close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    transition: opacity 0.2s ease;
+    margin: 0;
+    margin-left: auto;
+}
+
+.cs-modal-close-btn:hover {
+    opacity: 0.7;
+}
+
+.cs-modal-close-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Dark mode icon adjustment */
+[data-theme="dark"] .cs-modal-close-btn img {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+.cs-modal-description {
+    font-family: var(--font-family-secondary);
+    font-size: 16px;
+    font-weight: var(--font-weight-regular);
+    line-height: 1.5;
+    color: var(--color-basics-dark-blue);
+    margin: 0;
+    padding: 0;
+}
+
+/* Dark mode description adjustment */
+[data-theme="dark"] .cs-modal-description {
+    color: var(--color-basics-white);
+}
+
+/* Modal Content */
+.cs-modal-content-wrapper {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.cs-modal-profile-avatar {
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-modal-inputs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    flex: 1;
+    min-width: 0;
+    width: 424px;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-personal_info_wrapper,
+.cs-work_info_wrapper,
+.cs-work_contact_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.cs-modal-input-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-modal-input-row .cs-modal-input-group {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-modal-input-group {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-04);
+    width: 100%;
+}
+
+.cs-modal-input-group .dsu-input-label {
+    font-weight: var(--font-weight-black);
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 4px;
+}
+
+.cs-modal-input-group .dsu-input-label span::after {
+    content: none;
+}
+
+.cs-modal-input-group .dsu-input {
+    margin: 0;
+    padding: var(--spacing-12) var(--spacing-16);
+    width: 100%;
+    min-height: 48px;
+}
+
+/* Select dropdown styling with chevron padding */
+.cs-modal-input-group select.dsu-input,
+.cs-associated-projects-group select.dsu-input {
+    padding-right: calc(20px + 12px + var(--spacing-16));
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('images/down-chevron.svg');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px 20px;
+}
+
+/* Rich Text Input in Modal */
+.cs-modal-input-group .dsu-rich-text-input {
+    margin: 0;
+    padding: var(--spacing-16);
+    width: 100%;
+}
+
+.cs-modal-input-group .dsu-rich-text-input__editor {
+    min-height: 120px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Portfolio Items Container */
+.cs-portfolio-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-08);
+    margin-top: var(--spacing-12);
+    min-height: 24px;
+}
+
+.cs-portfolio-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--spacing-08) 0;
+}
+
+.cs-portfolio-item__text {
+    font-family: var(--font-family-secondary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    flex: 1;
+    margin: 0;
+    text-decoration: none;
+    color: var(--color-primary, #007AFF);
+    transition: opacity 0.2s ease;
+}
+
+.cs-portfolio-item__text:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.cs-portfolio-item__actions {
+    display: flex;
+    gap: var(--spacing-24);
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.cs-portfolio-item__action {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+}
+
+.cs-portfolio-item__action:hover {
+    opacity: 0.7;
+}
+
+.cs-portfolio-item__action img,
+.cs-portfolio-item__action svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Dark mode icon adjustment */
+[data-theme="dark"] .cs-portfolio-item__action img,
+[data-theme="dark"] .cs-portfolio-item__action svg {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Modal Buttons */
+.cs-modal-buttons-level {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 16px;
+}
+
+.cs-modal-cancel-btn,
+.cs-modal-add-btn {
+    width: 100%;
+    padding: 12px 24px;
+    height: auto;
+    min-height: 48px;
+    margin: 0;
+}
+
+.cs-modal-cancel-btn .dsu-button__icon,
+.cs-modal-add-btn .dsu-button__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.cs-modal-cancel-btn .dsu-button__icon img,
+.cs-modal-add-btn .dsu-button__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Dark mode modal button icons */
+[data-theme="dark"] .cs-modal-delete-btn .dsu-button__icon img,
+[data-theme="dark"] .cs-modal-cancel-btn .dsu-button__icon img {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Dark mode modal-add-btn (primary button) - keep icon dark for contrast on green background */
+[data-theme="dark"] .cs-modal-add-btn.dsu-button--primary .dsu-button__icon img {
+    filter: none;
+}
+
+/* Avatar Preview in Modal */
+.cs-modal-avatar-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    z-index: 0;
+}
+
+.cs-modal-profile-avatar .dsu-profile-avatar {
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+/* Ensure avatar icon and preview are positioned correctly */
+.cs-modal-profile-avatar .dsu-profile-avatar__icon {
+    position: absolute;
+    top: var(--spacing-08);
+    left: var(--spacing-08);
+    z-index: 0;
+}
+
+.cs-btn-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Cost Edit Level */
+.cs-cost-edit-level {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.cs-team-cost-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Secondary Action Levels */
+.cs-secondary-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 16px;
+}
+
+/* Estado deshabilitado de secondary-actions */
+.cs-secondary-actions.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cs-secondary-actions.disabled * {
+    cursor: not-allowed !important;
+}
+
+.cs-secondary-actions.disabled input,
+.cs-secondary-actions.disabled button {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cs-search-input-group {
+    flex: 1;
+}
+
+.cs-view-controls {
+    display: flex;
+    gap: 0;
+    align-items: center;
+}
+
+.cs-view-control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--color-surface-regular, #ffffff);
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--font-family-secondary, 'Lato');
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary, #0a243f);
+}
+
+.cs-view-control-btn:hover {
+    opacity: 0.8;
+}
+
+.cs-view-control-btn.active {
+    background-color: var(--color-surface-especial, #f4f7fb);
+}
+
+.cs-view-control-btn img,
+.cs-view-control-btn .cs-btn-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Dark mode icon adjustment for view controls */
+[data-theme="dark"] .cs-view-controls .cs-view-control-btn img,
+[data-theme="dark"] .cs-view-controls .cs-view-control-btn .cs-btn-icon {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Associated Projects */
+.cs-associated-projects-group {
+    /* max-width: 73%; */
+}
+
+/* Team Members Section */
+.cs-team-members-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cs-team-members-title {
+    font-family: var(--font-family-secondary, 'Lato');
+    font-size: 24px;
+    font-weight: var(--font-weight-black, 800);
+    color: var(--color-text-primary, #0a243f);
+    line-height: normal;
+}
+
+/* Test Section (Rich Text Input) */
+.cs-project-test-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+    width: 100%;
+    /* margin-top: var(--spacing-48); */
+}
+
+.cs-project-test-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-08);
+    width: 100%;
+}
+
+.cs-project-test-headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cs-project-test-title {
+    font-family: var(--font-family-secondary);
+    font-size: 24px;
+    font-weight: var(--font-weight-black);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+/* Estilos para secciones colapsables */
+.cs-project-section-title {
+    font-family: var(--font-family-secondary);
+    font-size: 24px;
+    font-weight: var(--font-weight-black);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+/* Solo para secciones colapsables */
+.cs-project-section-title[data-section] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+}
+
+.cs-project-section-title__text {
+    flex: 1;
+}
+
+.cs-project-section-title__chevron {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: var(--spacing-12);
+    transition: transform 0.2s ease;
+}
+
+.cs-project-section-title__chevron img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cs-project-section-title--collapsed .cs-project-section-title__chevron {
+    transform: rotate(0deg);
+}
+
+.cs-project-section-title--expanded .cs-project-section-title__chevron {
+    transform: rotate(180deg);
+}
+
+/* Dark mode icon adjustment for project section chevron */
+[data-theme="dark"] .cs-project-section-title__chevron img {
+    filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Contenido colapsable de la sección */
+.cs-project-section-content {
+    overflow: visible;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-project-section-content--collapsed {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-project-section-content--expanded {
+    max-height: 10000px;
+    opacity: 1;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-project-test-description {
+    font-family: var(--font-family-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.cs-project-test-content {
+    width: 100%;
+}
+
+.cs-project-test-section--disabled .dsu-rich-text-input {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.cs-project-test-section--disabled .dsu-input {
+    background-color: var(--color-status-disabled);
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: var(--color-text-secondary);
+}
+
+.cs-project-test-section--disabled .dsu-rich-text-input__editor {
+    cursor: not-allowed;
+}
+
+.cs-team-members-grid {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+/* Desactivar animaciones al cambiar entre vistas (grid y lista) */
+.cs-team-members-grid .dsu-profile-card,
+.cs-team-members-grid .dsu-profile-card-placeholder {
+    transition: none !important;
+}
+
+/* Vista de lista */
+.cs-team-members-grid.list-view {
+    flex-direction: column;
+    gap: var(--spacing-16);
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card,
+.cs-team-members-grid.list-view .dsu-profile-card-placeholder {
+    flex-direction: row;
+    width: 100%;
+    gap: var(--spacing-24);
+    align-items: center;
+    padding: var(--spacing-12) var(--spacing-16);
+    border: 1px solid var(--color-basics-gray);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-regular);
+}
+
+/* Desactivar transiciones de imagen al cambiar entre vistas */
+.cs-team-members-grid .dsu-profile-card__image-wrapper,
+.cs-team-members-grid .dsu-profile-card-placeholder__image {
+    transition: none !important;
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card__image-wrapper,
+.cs-team-members-grid.list-view .dsu-profile-card-placeholder__image {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card__image,
+.cs-team-members-grid.list-view .dsu-profile-card__image-wrapper:hover .dsu-profile-card__image {
+    transition: none !important;
+    transform: none !important;
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card__content,
+.cs-team-members-grid.list-view .dsu-profile-card-placeholder__content {
+    flex: 1;
+    gap: var(--spacing-08);
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card__contact,
+.cs-team-members-grid.list-view .dsu-profile-card-placeholder__contact {
+    flex-direction: row;
+    gap: var(--spacing-24);
+}
+
+/* Desactivar transformaciones del placeholder al cambiar entre vistas */
+.cs-team-members-grid .dsu-profile-card-placeholder {
+    transition: none !important;
+}
+
+.cs-team-members-grid.list-view .dsu-profile-card-placeholder:hover {
+    transform: none !important;
+    opacity: 1 !important;
+}
+
+/* Sticky Buttons */
+.cs-sticky-buttons {
+    display: flex;
+    gap: var(--spacing-24);
+    align-items: flex-start;
+    padding: var(--spacing-24) 173px var(--spacing-24) 136px;
+    border-top: 1px solid var(--color-status-disabled);
+    background-color: var(--color-surface-regular);
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    justify-content: space-between;
+}
+
+.cs-sticky-buttons__wrapper {
+    display: flex;
+    gap: var(--spacing-24);
+    align-items: flex-start;
+    flex: 1;
+    justify-content: center;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.cs-sticky-buttons__button {
+    flex: 1;
+    min-width: 0;
+}
+
+/* El botón Delete team no debe tener flex: 1 para que no se estire */
+#cs-deleteTeamBtn {
+    display: none;
+    flex: 0 0 auto;
+    min-width: auto;
+}
+
+/* Cuando el botón Delete está visible, ajustar el orden para que esté primero */
+.cs-sticky-buttons__wrapper #cs-deleteTeamBtn[style*="block"] {
+    order: -1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cs-content-wrapper {
+        margin-left: 0;
+    }
+
+    .cs-content {
+        padding: 24px 16px;
+    }
+
+    .cs-sticky-buttons {
+        padding: var(--spacing-16);
+        flex-direction: column;
+    }
+}
+
