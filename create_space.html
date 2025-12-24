@@ -52,7 +52,7 @@
             padding: 64px 173px 0 135px;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 48px;
             width: 80%;
             margin: 0 auto;
             position: relative;
@@ -966,7 +966,7 @@
             flex-direction: column;
             gap: var(--spacing-16);
             width: 100%;
-            margin-top: var(--spacing-48);
+            /* margin-top: var(--spacing-48); */
         }
 
         .cs-project-test-header {
@@ -1103,6 +1103,304 @@
 
         .cs-project-test-section--disabled .dsu-rich-text-input__editor {
             cursor: not-allowed;
+        }
+
+        /* ============================================
+           Create Space - Deliverables Section
+           Prefijo: cs- para evitar conflictos
+           ============================================ */
+
+        /* Deliverables Section */
+        .cs-project-deliverables-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            /* margin-top: var(--spacing-48); */
+        }
+
+        .cs-project-deliverables-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .cs-project-deliverables-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .cs-project-deliverables-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .cs-project-deliverables-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+        .cs-project-deliverables-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .cs-project-deliverables-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .cs-project-deliverables-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .cs-project-deliverables-input-wrapper .dsu-input {
+            padding-right: 80px;
+        }
+
+        .cs-project-deliverables-input-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .cs-project-deliverables-input-row .dsu-input-group {
+            flex: 1;
+        }
+
+        .cs-project-deliverables-input-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            position: absolute;
+            right: var(--spacing-12);
+            align-items: center;
+            z-index: 1;
+        }
+
+        .cs-project-deliverables-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .cs-project-deliverables-action-btn:hover {
+            opacity: 0.7;
+        }
+
+        .cs-project-deliverables-action-btn img {
+            width: 20px;
+            height: 20px;
+            transition: filter 0.3s ease;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .cs-project-deliverables-action-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .cs-project-deliverables-item-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .cs-project-deliverables-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex: 1;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .cs-project-deliverables-item-main {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cs-project-deliverables-item-row .dsu-status-button-wrapper {
+            flex-shrink: 0;
+        }
+
+        .cs-project-deliverables-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .cs-project-deliverables-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .cs-project-deliverables-item-icon img {
+            width: 24px;
+            height: 24px;
+            transition: filter 0.3s ease;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .cs-project-deliverables-item-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .cs-project-deliverables-item-preview-wrapper {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .cs-project-deliverables-item-preview--pdf {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        .cs-project-deliverables-item-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cs-project-deliverables-item-preview-label {
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cs-project-deliverables-item-icon-extension {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 7px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1px 3px;
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .cs-project-deliverables-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+            min-width: 0;
+        }
+
+        .cs-project-deliverables-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+            transition: color 0.3s ease;
+        }
+
+        .cs-project-deliverables-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+            transition: color 0.3s ease;
+        }
+
+        .cs-project-deliverables-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            flex-shrink: 0;
+        }
+
+        .cs-project-deliverables-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .cs-project-deliverables-item-action:hover {
+            opacity: 0.7;
+        }
+
+        .cs-project-deliverables-item-action img {
+            width: 16px;
+            height: 16px;
+            transition: filter 0.3s ease;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .cs-project-deliverables-item-action img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .cs-project-deliverables-section--disabled .dsu-input {
+            background-color: var(--color-status-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+
+        .cs-project-deliverables-section--disabled .cs-project-deliverables-items-container {
+            opacity: 0.6;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -1377,6 +1675,43 @@
                     </div>
                 </div>
                 <!-- END: Mission Section -->
+
+                <!-- Deliverables Section -->
+                <div class="cs-project-deliverables-section" id="csProjectDeliverablesSection">
+                    <div class="cs-project-deliverables-header">
+                        <div class="cs-project-deliverables-headline">
+                            <h2 class="cs-project-deliverables-title">Links of interest</h2>
+                        </div>
+                        <p class="cs-project-deliverables-description">Provide all the available information to start solid.</p>
+                    </div>
+                    <div class="cs-project-deliverables-content">
+                        <div class="cs-project-deliverables-items-container" id="csDeliverablesItemsContainer">
+                            <!-- Items se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="cs-project-deliverables-input-row">
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container cs-project-deliverables-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="csDeliverablesInput" 
+                                        placeholder="Choose an unique name"
+                                    >
+                                    <div class="cs-project-deliverables-input-actions">
+                                        <button class="cs-project-deliverables-action-btn" id="csAddLinkBtn" title="Add link to text">
+                                            <img src="images/link.svg" alt="Add Link">
+                                        </button>
+                                        <button class="cs-project-deliverables-action-btn" id="csUploadDeliverableFileBtn" title="Upload file">
+                                            <img src="images/attachment.svg" alt="Upload">
+                                        </button>
+                                        <input type="file" id="csDeliverablesFileInput" accept="*/*" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Deliverables Section -->
 
                 <!-- Team Members Section -->
                 <div class="team-members-section">
@@ -2012,6 +2347,9 @@
             // Inicializar Space Description Section (Test Section)
             initCsTestSection();
             initCsCollapsibleSections();
+            
+            // Inicializar Deliverables Section
+            initCsDeliverablesSection();
         }
 
         // ============================================
@@ -2050,7 +2388,10 @@
                         currentData.name !== (currentProjectData.name || '') ||
                         currentData.teamCost !== (currentProjectData.teamCost || '') ||
                         JSON.stringify(currentData.projects) !== JSON.stringify(currentProjectData.projects || []) ||
-                        JSON.stringify(currentData.members) !== JSON.stringify(currentProjectData.members || []);
+                        JSON.stringify(currentData.members) !== JSON.stringify(currentProjectData.members || []) ||
+                        (currentData.spaceDescription || '') !== (currentProjectData.spaceDescription || '') ||
+                        (currentData.mission || '') !== (currentProjectData.mission || '') ||
+                        JSON.stringify(currentData.deliverables || []) !== JSON.stringify(currentProjectData.deliverables || []);
                     
                     if (hasChanges) {
                         currentData.status = 'draft';
@@ -2707,6 +3048,74 @@
                 }
             }
 
+            // Obtener Space Description (rich text input)
+            let spaceDescription = '';
+            const spaceDescriptionEditor = document.querySelector('#csProjectTestRichTextInput .dsu-rich-text-input__editor');
+            if (spaceDescriptionEditor) {
+                spaceDescription = spaceDescriptionEditor.innerHTML.trim();
+                console.log('📝 Space Description recopilado:', spaceDescription ? 'contenido presente' : 'vacío');
+            }
+
+            // Obtener Mission (rich text input)
+            let mission = '';
+            const missionEditor = document.querySelector('#csProjectMissionRichTextInput .dsu-rich-text-input__editor');
+            if (missionEditor) {
+                mission = missionEditor.innerHTML.trim();
+                console.log('📝 Mission recopilado:', mission ? 'contenido presente' : 'vacío');
+            }
+
+            // Obtener Deliverables items
+            const deliverablesItems = [];
+            const deliverablesContainer = document.getElementById('csDeliverablesItemsContainer');
+            if (deliverablesContainer) {
+                const itemRows = deliverablesContainer.querySelectorAll('.cs-project-deliverables-item-row');
+                itemRows.forEach(row => {
+                    const item = row.querySelector('.cs-project-deliverables-item');
+                    if (!item) return;
+                    
+                    const itemData = {
+                        type: 'text',
+                        text: ''
+                    };
+                    
+                    // Check for image
+                    const imgPreview = item.querySelector('.cs-project-deliverables-item-preview[src]');
+                    if (imgPreview && imgPreview.tagName === 'IMG') {
+                        itemData.type = 'image';
+                        itemData.name = imgPreview.alt || '';
+                        itemData.preview = imgPreview.src || imgPreview.dataset.previewSrc || '';
+                        const sizeText = item.querySelector('.cs-project-deliverables-item-link')?.textContent || '';
+                        itemData.size = sizeText;
+                    }
+                    // Check for file
+                    else if (item.querySelector('.cs-project-deliverables-item-icon')) {
+                        itemData.type = 'file';
+                        const textElement = item.querySelector('.cs-project-deliverables-item-text');
+                        const linkElement = item.querySelector('.cs-project-deliverables-item-link');
+                        itemData.name = textElement?.textContent || '';
+                        itemData.size = linkElement?.textContent || '';
+                    }
+                    // Check for link
+                    else if (item.querySelector('a.cs-project-deliverables-item-link')) {
+                        itemData.type = 'link';
+                        const linkElement = item.querySelector('a.cs-project-deliverables-item-link');
+                        itemData.url = linkElement.href || '';
+                        itemData.name = item.querySelector('.cs-project-deliverables-item-text')?.textContent || '';
+                    }
+                    // Text item
+                    else {
+                        itemData.type = 'text';
+                        const textElement = item.querySelector('.cs-project-deliverables-item-text');
+                        if (textElement) {
+                            itemData.text = textElement.textContent.replace(/^-\s*/, '');
+                        }
+                    }
+                    
+                    deliverablesItems.push(itemData);
+                });
+                console.log('📝 Deliverables recopilados:', deliverablesItems.length, 'items');
+            }
+
             return {
                 name: document.getElementById('projectName').value.trim(),
                 teamCost: teamCost,
@@ -2714,6 +3123,9 @@
                 projects: projectsChips, // Chips de proyectos asociados
                 members: membersList, // Lista completa de miembros con sus datos
                 searchQuery: document.getElementById('searchInput').value,
+                spaceDescription: spaceDescription, // Contenido de Space Description
+                mission: mission, // Contenido de Mission
+                deliverables: deliverablesItems, // Items de Deliverables
                 createdAt: currentProjectId || Date.now(),
                 updatedAt: Date.now()
             };
@@ -4475,6 +4887,18 @@
                 richTextInput.dataset.initialized = 'false';
                 initRichTextToolbar();
                 console.log('✅ Rich Text Input inicializado en CS Space Description Section');
+                
+                // Agregar listener para auto-guardar cuando cambie el contenido
+                const spaceDescriptionEditor = richTextInput.querySelector('.dsu-rich-text-input__editor');
+                if (spaceDescriptionEditor) {
+                    let autoSaveTimeout;
+                    spaceDescriptionEditor.addEventListener('input', function() {
+                        clearTimeout(autoSaveTimeout);
+                        autoSaveTimeout = setTimeout(function() {
+                            autoSave().catch(err => console.error('Error en autoSave:', err));
+                        }, 2000); // Debounce de 2 segundos
+                    });
+                }
             }
 
             // Inicializar Mission Section
@@ -4486,6 +4910,18 @@
                 missionRichTextInput.dataset.initialized = 'false';
                 initRichTextToolbar();
                 console.log('✅ Rich Text Input inicializado en CS Mission Section');
+                
+                // Agregar listener para auto-guardar cuando cambie el contenido
+                const missionEditor = missionRichTextInput.querySelector('.dsu-rich-text-input__editor');
+                if (missionEditor) {
+                    let autoSaveTimeout;
+                    missionEditor.addEventListener('input', function() {
+                        clearTimeout(autoSaveTimeout);
+                        autoSaveTimeout = setTimeout(function() {
+                            autoSave().catch(err => console.error('Error en autoSave:', err));
+                        }, 2000); // Debounce de 2 segundos
+                    });
+                }
             }
 
             if (!testSection && !missionSection) {
@@ -4532,6 +4968,290 @@
                     }
                 });
             });
+        }
+
+        // ============================================
+        // Create Space - Deliverables Section Functions
+        // Prefijo: cs- para evitar conflictos
+        // ============================================
+
+        // Inicializar Deliverables Section
+        function initCsDeliverablesSection() {
+            const deliverablesSection = document.getElementById('csProjectDeliverablesSection');
+            const deliverablesInput = document.getElementById('csDeliverablesInput');
+            const deliverablesItemsContainer = document.getElementById('csDeliverablesItemsContainer');
+            const uploadDeliverableFileBtn = document.getElementById('csUploadDeliverableFileBtn');
+            const deliverablesFileInput = document.getElementById('csDeliverablesFileInput');
+            
+            if (!deliverablesSection) {
+                console.warn('⚠️ Elementos de CS Deliverables Section no encontrados');
+                return;
+            }
+
+            // Function to check if string is a URL
+            function isValidUrl(string) {
+                try {
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+
+            // Function to add deliverable item
+            function addCsDeliverableItem(data) {
+                if (!deliverablesItemsContainer) return;
+                
+                const uniqueId = 'cs_deliverable_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
+                const rowWrapper = document.createElement('div');
+                rowWrapper.className = 'cs-project-deliverables-item-row';
+                
+                const item = document.createElement('div');
+                item.className = 'cs-project-deliverables-item';
+                
+                let previewHtml = '';
+                let contentHtml = '';
+                
+                if (data.type === 'image' && data.preview) {
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="cs-project-deliverables-item-preview" data-preview-src="${data.preview}" data-preview-name="${data.name}" style="cursor: pointer;">`;
+                    contentHtml = `
+                        <div class="cs-project-deliverables-item-content">
+                            <p class="cs-project-deliverables-item-text">${data.name}</p>
+                            <p class="cs-project-deliverables-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file' && data.file) {
+                    const fileExtension = data.file.name.split('.').pop().toLowerCase();
+                    const isPdf = fileExtension === 'pdf';
+                    
+                    if (isPdf && data.preview) {
+                        previewHtml = `
+                            <div class="cs-project-deliverables-item-preview-wrapper">
+                                <iframe src="${data.preview}" class="cs-project-deliverables-item-preview cs-project-deliverables-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="cs-project-deliverables-item-preview-overlay">
+                                    <span class="cs-project-deliverables-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        previewHtml = `
+                            <div class="cs-project-deliverables-item-icon">
+                                <img src="images/attachment.svg" alt="File">
+                                <span class="cs-project-deliverables-item-icon-extension">${fileExtension.toUpperCase()}</span>
+                            </div>
+                        `;
+                    }
+                    
+                    contentHtml = `
+                        <div class="cs-project-deliverables-item-content">
+                            <p class="cs-project-deliverables-item-text">${data.name}</p>
+                            <p class="cs-project-deliverables-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'link') {
+                    previewHtml = `
+                        <div class="cs-project-deliverables-item-icon">
+                            <img src="images/link.svg" alt="Link">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="cs-project-deliverables-item-content">
+                            <p class="cs-project-deliverables-item-text">${data.name || data.url}</p>
+                            <a href="${data.url}" target="_blank" class="cs-project-deliverables-item-link">${data.url}</a>
+                        </div>
+                    `;
+                } else {
+                    contentHtml = `
+                        <div class="cs-project-deliverables-item-content">
+                            <p class="cs-project-deliverables-item-text">-${data.text}</p>
+                        </div>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    <div class="cs-project-deliverables-item-main">
+                        ${previewHtml}
+                        ${contentHtml}
+                    </div>
+                    <div class="cs-project-deliverables-item-actions">
+                        <button class="cs-project-deliverables-item-action" onclick="this.closest('.cs-project-deliverables-item-row').remove(); autoSave().catch(err => console.error('Error en autoSave:', err));">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="cs-project-deliverables-item-action" onclick="window.editCsDeliverableItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                
+                rowWrapper.appendChild(item);
+                deliverablesItemsContainer.appendChild(rowWrapper);
+            }
+
+            // Edit item functionality
+            window.editCsDeliverableItem = function(button) {
+                const row = button.closest('.cs-project-deliverables-item-row');
+                if (!row) return;
+                const item = row.querySelector('.cs-project-deliverables-item');
+                if (!item) return;
+                const textElement = item.querySelector('.cs-project-deliverables-item-text');
+                if (!textElement) return;
+                
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                    autoSave().catch(err => console.error('Error en autoSave:', err));
+                }
+            };
+
+            // File upload functionality
+            if (uploadDeliverableFileBtn && deliverablesFileInput) {
+                uploadDeliverableFileBtn.addEventListener('click', function() {
+                    deliverablesFileInput.click();
+                });
+                
+                deliverablesFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        const mimeType = file.type || '';
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        
+                        if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addCsDeliverableItem({
+                                    type: 'file',
+                                    name: file.name,
+                                    size: fileSize,
+                                    file: file,
+                                    preview: event.target.result
+                                });
+                                autoSave().catch(err => console.error('Error en autoSave:', err));
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        } else if (mimeType.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addCsDeliverableItem({
+                                    type: 'image',
+                                    name: file.name,
+                                    size: fileSize,
+                                    preview: event.target.result,
+                                    file: file
+                                });
+                                autoSave().catch(err => console.error('Error en autoSave:', err));
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        }
+                        
+                        addCsDeliverableItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
+                            file: file
+                        });
+                        autoSave().catch(err => console.error('Error en autoSave:', err));
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Add Link button functionality
+            const addLinkBtn = document.getElementById('csAddLinkBtn');
+            if (addLinkBtn && deliverablesInput) {
+                addLinkBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const textValue = deliverablesInput.value.trim();
+                    
+                    if (!textValue) {
+                        alert('Por favor, escribe un texto primero');
+                        deliverablesInput.focus();
+                        return;
+                    }
+                    
+                    // Prompt para el link
+                    const url = prompt('Ingresa la URL del link:', 'https://');
+                    
+                    if (url && url.trim() && isValidUrl(url.trim())) {
+                        addCsDeliverableItem({
+                            type: 'link',
+                            url: url.trim(),
+                            name: textValue
+                        });
+                        deliverablesInput.value = '';
+                        autoSave().catch(err => console.error('Error en autoSave:', err));
+                    } else if (url && url.trim()) {
+                        alert('Por favor, ingresa una URL válida (debe comenzar con http:// o https://)');
+                    }
+                });
+            }
+
+            // Input functionality - Add item on Enter (text or link)
+            if (deliverablesInput) {
+                deliverablesInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        const value = this.value.trim();
+                        
+                        if (isValidUrl(value)) {
+                            // Si es una URL, agregar como link con el mismo texto
+                            addCsDeliverableItem({
+                                type: 'link',
+                                url: value,
+                                name: value
+                            });
+                        } else {
+                            // Si no es URL, preguntar si quiere agregar un link
+                            const addLink = confirm('¿Deseas agregar un link a este texto?');
+                            
+                            if (addLink) {
+                                const url = prompt('Ingresa la URL del link:', 'https://');
+                                
+                                if (url && url.trim() && isValidUrl(url.trim())) {
+                                    addCsDeliverableItem({
+                                        type: 'link',
+                                        url: url.trim(),
+                                        name: value
+                                    });
+                                } else if (url && url.trim()) {
+                                    alert('URL inválida. Se agregará solo como texto.');
+                                    addCsDeliverableItem({
+                                        type: 'text',
+                                        text: value
+                                    });
+                                } else {
+                                    // Si cancela, agregar solo como texto
+                                    addCsDeliverableItem({
+                                        type: 'text',
+                                        text: value
+                                    });
+                                }
+                            } else {
+                                // Si no quiere link, agregar solo como texto
+                                addCsDeliverableItem({
+                                    type: 'text',
+                                    text: value
+                                });
+                            }
+                        }
+                        
+                        this.value = '';
+                        autoSave().catch(err => console.error('Error en autoSave:', err));
+                    }
+                });
+            }
+
+            // Make addCsDeliverableItem available globally
+            window.addCsDeliverableItem = addCsDeliverableItem;
+
+            console.log('✅ CS Deliverables Section inicializado correctamente');
         }
         
         function createMember(memberData) {
@@ -6506,6 +7226,57 @@
             // Cargar búsqueda si existe
             if (projectData.searchQuery) {
                 document.getElementById('searchInput').value = projectData.searchQuery;
+            }
+
+            // Cargar Space Description si existe
+            if (projectData.spaceDescription) {
+                const spaceDescriptionEditor = document.querySelector('#csProjectTestRichTextInput .dsu-rich-text-input__editor');
+                if (spaceDescriptionEditor) {
+                    spaceDescriptionEditor.innerHTML = projectData.spaceDescription;
+                    // Remover clase de placeholder si tiene contenido
+                    if (spaceDescriptionEditor.textContent.trim() !== '') {
+                        spaceDescriptionEditor.classList.remove('dsu-rich-text-input__editor--empty');
+                    }
+                    console.log('✅ Space Description cargado');
+                }
+            }
+
+            // Cargar Mission si existe
+            if (projectData.mission) {
+                const missionEditor = document.querySelector('#csProjectMissionRichTextInput .dsu-rich-text-input__editor');
+                if (missionEditor) {
+                    missionEditor.innerHTML = projectData.mission;
+                    // Remover clase de placeholder si tiene contenido
+                    if (missionEditor.textContent.trim() !== '') {
+                        missionEditor.classList.remove('dsu-rich-text-input__editor--empty');
+                    }
+                    console.log('✅ Mission cargado');
+                }
+            }
+
+            // Re-inicializar rich text toolbars después de cargar contenido
+            setTimeout(function() {
+                const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
+                richTextInputs.forEach(function(input) {
+                    input.dataset.initialized = 'false';
+                });
+                initRichTextToolbar();
+            }, 100);
+
+            // Cargar Deliverables si existen
+            if (projectData.deliverables && Array.isArray(projectData.deliverables) && projectData.deliverables.length > 0) {
+                const deliverablesContainer = document.getElementById('csDeliverablesItemsContainer');
+                if (deliverablesContainer && typeof window.addCsDeliverableItem === 'function') {
+                    // Limpiar contenedor
+                    deliverablesContainer.innerHTML = '';
+                    
+                    // Cargar cada deliverable
+                    projectData.deliverables.forEach(deliverable => {
+                        window.addCsDeliverableItem(deliverable);
+                    });
+                    
+                    console.log('✅ Deliverables cargados:', projectData.deliverables.length, 'items');
+                }
             }
         }
 
