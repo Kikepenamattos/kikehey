@@ -716,6 +716,330 @@
             gap: 4px;
         }
 
+        /* Team Description Section */
+        .team-description-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-24);
+        }
+
+        .team-description-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .team-description-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: var(--spacing-08) 0;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .team-description-section-title__text {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-description-section-title__chevron {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .team-description-section-title__chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .team-description-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .team-description-section-title:not(.team-description-section-title--expanded) .team-description-section-title__chevron {
+            transform: rotate(0deg);
+        }
+
+        .team-description-section-title--expanded .team-description-section-title__chevron {
+            transform: rotate(180deg);
+        }
+
+        .team-description-section-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .team-description-section-content:not(.team-description-section-content--expanded) {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .team-description-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .team-description-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Team Assets Section */
+        .team-assets-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-24);
+        }
+
+        .team-assets-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .team-assets-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .team-assets-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-assets-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .team-assets-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .team-assets-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .team-assets-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .team-assets-input-wrapper .dsu-input {
+            padding-right: 80px;
+        }
+
+        /* Ajustes para rich text compact en team-assets-input-wrapper */
+        .dsu-input-container.team-assets-input-wrapper .dsu-rich-text-input--compact {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .dsu-input-container.team-assets-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__editor--compact {
+            padding-right: calc(80px + 32px + var(--spacing-08)); /* Espacio para acciones + botón de link */
+        }
+
+        .dsu-input-container.team-assets-input-wrapper .dsu-rich-text-input--compact .dsu-rich-text-input__toolbar--compact {
+            right: calc(var(--spacing-12) + 80px); /* Ajustar posición cuando hay acciones */
+        }
+
+        .team-assets-input-actions {
+            display: flex;
+            gap: var(--spacing-08);
+            position: absolute;
+            right: var(--spacing-12);
+            align-items: center;
+            z-index: 1;
+        }
+
+        .team-assets-action-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-assets-action-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Dark mode icon adjustment for assets action buttons */
+        [data-theme="dark"] .team-assets-action-btn img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .team-assets-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+        }
+
+        .team-assets-item-preview {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .team-assets-item-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .team-assets-item-icon img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* PDF Preview Styles */
+        .team-assets-item-preview-wrapper {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .team-assets-item-preview--pdf {
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: cover;
+        }
+
+        .team-assets-item-preview-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-assets-item-preview-label {
+            color: white;
+            font-size: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Document icon with extension */
+        .team-assets-item-icon-extension {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            font-size: 7px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 1px 3px;
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .team-assets-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-04);
+        }
+
+        .team-assets-item-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .team-assets-item-link {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+            margin: 0;
+            word-break: break-all;
+        }
+
+        .team-assets-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .team-assets-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-assets-item-action img {
+            width: 16px;
+            height: 16px;
+        }
 
         /* Secondary Action Levels */
         .secondary-actions {
@@ -1112,6 +1436,151 @@
                             >
                         </div>
                     </div>
+
+                    <!-- Team Description Section (Rich Text Input) -->
+                    <div class="team-description-section" id="teamDescriptionSection">
+                        <div class="team-description-header">
+                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
+                                <span class="team-description-section-title__text">Description</span>
+                                <span class="team-description-section-title__chevron">
+                                    <img src="images/down-chevron.svg" alt="Toggle">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
+                            <div class="team-description-content">
+                                <div class="dsu-rich-text-input" id="teamDescriptionRichTextInput">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team description..."></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Team Description Section -->
+
+                    <!-- Team Mission Section (Rich Text Input) -->
+                    <div class="team-description-section" id="teamMissionSection">
+                        <div class="team-description-header">
+                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
+                                <span class="team-description-section-title__text">Mission</span>
+                                <span class="team-description-section-title__chevron">
+                                    <img src="images/down-chevron.svg" alt="Toggle">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
+                            <div class="team-description-content">
+                                <div class="dsu-rich-text-input" id="teamMissionRichTextInput">
+                                    <div class="dsu-rich-text-input__toolbar">
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                            <img src="images/bold.svg" alt="Bold">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                            <img src="images/italic.svg" alt="Italic">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                            <img src="images/underline.svg" alt="Underline">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                            <img src="images/list-bullet.svg" alt="Bullet List">
+                                        </button>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                            <img src="images/number_list.svg" alt="Numbered List">
+                                        </button>
+                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                            <img src="images/link.svg" alt="Link">
+                                        </button>
+                                    </div>
+                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team mission..."></div>
+                                    <div class="dsu-rich-text-input__footer">
+                                        <div class="dsu-rich-text-input__footer-left">
+                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                <img src="images/attachment.svg" alt="Attachment">
+                                            </button>
+                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                <img src="images/trash.svg" alt="Delete">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END: Team Mission Section -->
+
+                    <!-- Team Assets Section -->
+                    <div class="team-assets-section" id="teamAssetsSection">
+                        <div class="team-assets-header">
+                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamAssets">
+                                <span class="team-description-section-title__text">Links of interest</span>
+                                <span class="team-description-section-title__chevron">
+                                    <img src="images/down-chevron.svg" alt="Toggle">
+                                </span>
+                            </div>
+                            <p class="team-assets-description">Provide all the available information to star solid.</p>
+                        </div>
+                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamAssets">
+                            <div class="team-assets-content">
+                            <div class="team-assets-items-container" id="teamAssetsItemsContainer">
+                                <!-- Items se agregarán aquí dinámicamente -->
+                            </div>
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container team-assets-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="teamAssetsInput" 
+                                        placeholder="Choose an unique name"
+                                    >
+                                    <div class="team-assets-input-actions">
+                                        <button class="team-assets-action-btn" id="teamUploadFileBtn" title="Upload file">
+                                            <img src="images/attachment.svg" alt="Upload">
+                                        </button>
+                                        <button class="team-assets-action-btn" id="teamUploadImageBtn" title="Upload image">
+                                            <img src="images/project.svg" alt="Image">
+                                        </button>
+                                        <input type="file" id="teamAssetsFileInput" accept="*/*" style="display: none;">
+                                        <input type="file" id="teamAssetsImageInput" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- END: Team Assets Section -->
 
                     <!-- Associated Projects -->
                     <div class="dsu-input-group associated-projects-group">
@@ -1709,6 +2178,15 @@
 
             // Inicializar navegación del sidebar
             initSidebarNavigation();
+            
+            // Inicializar sección de descripción del team
+            initTeamDescriptionSection();
+            
+            // Inicializar sección de assets del team
+            initTeamAssetsSection();
+            
+            // Inicializar rich text toolbar (incluye el nuevo campo de descripción)
+            initRichTextToolbar();
 
             // Inicializar funcionalidad del formulario
             initFormFunctionality();
@@ -1797,9 +2275,15 @@
                 if (projectName || membersList.length > 0) {
                     // Verificar si hay cambios antes de guardar
                     const currentData = getFormData();
+                    const sectionsStateChanged = 
+                        JSON.stringify(currentData.sectionsState || {}) !== JSON.stringify(currentProjectData.sectionsState || {});
                     const hasChanges = 
                         currentData.name !== (currentProjectData.name || '') ||
                         currentData.teamCost !== (currentProjectData.teamCost || '') ||
+                        currentData.description !== (currentProjectData.description || '') ||
+                        currentData.mission !== (currentProjectData.mission || '') ||
+                        JSON.stringify(currentData.assets || []) !== JSON.stringify(currentProjectData.assets || []) ||
+                        sectionsStateChanged ||
                         JSON.stringify(currentData.projects) !== JSON.stringify(currentProjectData.projects || []) ||
                         JSON.stringify(currentData.members) !== JSON.stringify(currentProjectData.members || []);
                     
@@ -2248,6 +2732,20 @@
         async function publishProject() {
             console.log('=== INICIO publishProject ===');
             
+            // Sincronizar todos los rich text inputs convertidos antes de obtener los datos
+            const convertedInputs = document.querySelectorAll('input[data-rich-text-converted="true"]');
+            convertedInputs.forEach(input => {
+                const richTextWrapper = input.nextElementSibling;
+                if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                    const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                    if (editor) {
+                        const htmlContent = editor.innerHTML;
+                        input.dataset.richTextHtml = htmlContent;
+                        input.value = editor.textContent.trim();
+                    }
+                }
+            });
+            
             const projectName = document.getElementById('projectName').value.trim();
             
             if (!projectName) {
@@ -2379,6 +2877,20 @@
         }
 
         function getFormData() {
+            // Sincronizar todos los rich text inputs convertidos antes de obtener los datos
+            const convertedInputs = document.querySelectorAll('input[data-rich-text-converted="true"]');
+            convertedInputs.forEach(input => {
+                const richTextWrapper = input.nextElementSibling;
+                if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                    const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                    if (editor) {
+                        const htmlContent = editor.innerHTML;
+                        input.dataset.richTextHtml = htmlContent;
+                        input.value = editor.textContent.trim();
+                    }
+                }
+            });
+            
             // Obtener chips de Associated Projects usando función helper del componente
             const projectsChips = getChipsFromContainer('projectsChipsContainer');
             console.log('📋 Chips encontrados en el DOM:', projectsChips.length);
@@ -2403,9 +2915,157 @@
                 }
             }
 
+            // Obtener descripción del team desde el rich text input
+            const teamDescriptionEditor = document.querySelector('#teamDescriptionRichTextInput .dsu-rich-text-input__editor');
+            const teamDescription = teamDescriptionEditor ? teamDescriptionEditor.innerHTML.trim() : '';
+
+            // Obtener misión del team desde el rich text input
+            const teamMissionEditor = document.querySelector('#teamMissionRichTextInput .dsu-rich-text-input__editor');
+            const teamMission = teamMissionEditor ? teamMissionEditor.innerHTML.trim() : '';
+
+            // Obtener assets del team
+            const assets = [];
+            const assetsItemsContainer = document.getElementById('teamAssetsItemsContainer');
+            
+            // Verificar si hay contenido pendiente en el input de rich text de assets
+            const teamAssetsInput = document.getElementById('teamAssetsInput');
+            if (teamAssetsInput && teamAssetsInput.dataset.richTextConverted === 'true') {
+                const richTextWrapper = teamAssetsInput.nextElementSibling;
+                if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                    const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                    if (editor) {
+                        const htmlContent = editor.innerHTML.trim();
+                        const text = editor.textContent.trim();
+                        const links = editor.querySelectorAll('a');
+                        
+                        // Si hay contenido en el editor, agregarlo como asset antes de guardar
+                        if (text || links.length > 0) {
+                            if (links.length > 0) {
+                                // Si hay links, capturar el texto completo y el link
+                                // El texto puede contener el link como parte del contenido
+                                const firstLink = links[0];
+                                const linkText = firstLink.textContent.trim();
+                                const linkUrl = firstLink.href;
+                                
+                                // Si el texto completo es solo el link, guardar como link simple
+                                if (text === linkText || text === linkUrl) {
+                                    assets.push({
+                                        type: 'link',
+                                        url: linkUrl,
+                                        name: linkText || linkUrl
+                                    });
+                                } else {
+                                    // Si hay texto adicional además del link, guardar el texto completo y el link
+                                    // Usar el texto completo como nombre y el link como URL
+                                    assets.push({
+                                        type: 'link',
+                                        url: linkUrl,
+                                        name: text // Guardar el texto completo que incluye el link
+                                    });
+                                }
+                            } else if (text) {
+                                // Verificar si el texto es una URL
+                                function isValidUrl(string) {
+                                    try {
+                                        const url = new URL(string);
+                                        return url.protocol === 'http:' || url.protocol === 'https:';
+                                    } catch (_) {
+                                        return false;
+                                    }
+                                }
+                                
+                                if (isValidUrl(text)) {
+                                    assets.push({
+                                        type: 'link',
+                                        url: text,
+                                        name: text
+                                    });
+                                } else {
+                                    assets.push({
+                                        type: 'text',
+                                        text: text
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if (assetsItemsContainer) {
+                const assetItems = assetsItemsContainer.querySelectorAll('.team-assets-item');
+                assetItems.forEach(item => {
+                    const assetText = item.querySelector('.team-assets-item-text')?.textContent || '';
+                    const assetLink = item.querySelector('.team-assets-item-link')?.textContent || '';
+                    
+                    // Verificar si es una imagen
+                    const imgPreview = item.querySelector('.team-assets-item-preview[src]');
+                    if (imgPreview && imgPreview.tagName === 'IMG') {
+                        assets.push({
+                            type: 'image',
+                            name: assetText,
+                            size: assetLink,
+                            preview: imgPreview.src || imgPreview.dataset.previewSrc || ''
+                        });
+                    }
+                    // Verificar si es un PDF
+                    else if (item.querySelector('.team-assets-item-preview-wrapper iframe')) {
+                        const pdfWrapper = item.querySelector('.team-assets-item-preview-wrapper');
+                        const iframe = pdfWrapper?.querySelector('iframe');
+                        assets.push({
+                            type: 'file',
+                            name: assetText,
+                            size: assetLink,
+                            preview: pdfWrapper?.dataset.pdfSrc || iframe?.src || '',
+                            fileExtension: 'pdf'
+                        });
+                    }
+                    // Verificar si es un link
+                    else if (assetLink && (assetLink.startsWith('http://') || assetLink.startsWith('https://'))) {
+                        assets.push({
+                            type: 'link',
+                            name: assetText || assetLink,
+                            url: assetLink
+                        });
+                    }
+                    // Verificar si es un archivo (documento)
+                    else if (item.querySelector('.team-assets-item-icon')) {
+                        const icon = item.querySelector('.team-assets-item-icon');
+                        const fileExtension = icon.dataset.fileExtension || assetText.split('.').pop().toLowerCase();
+                        assets.push({
+                            type: 'file',
+                            name: assetText,
+                            size: assetLink,
+                            fileExtension: fileExtension
+                        });
+                    }
+                    // Es texto (bullet)
+                    else if (assetText) {
+                        assets.push({
+                            type: 'text',
+                            text: assetText.replace(/^-\s*/, '')
+                        });
+                    }
+                });
+            }
+
+            // Obtener estado de secciones colapsables
+            const descriptionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamDescription"]');
+            const missionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamMission"]');
+            const assetsSectionTitle = document.querySelector('.team-description-section-title[data-section="teamAssets"]');
+            const sectionsState = {
+                descriptionExpanded: descriptionSectionTitle ? descriptionSectionTitle.classList.contains('team-description-section-title--expanded') : true,
+                missionExpanded: missionSectionTitle ? missionSectionTitle.classList.contains('team-description-section-title--expanded') : true,
+                assetsExpanded: assetsSectionTitle ? assetsSectionTitle.classList.contains('team-description-section-title--expanded') : true
+            };
+
             return {
                 name: document.getElementById('projectName').value.trim(),
                 teamCost: teamCost,
+                description: teamDescription, // Descripción del team (rich text)
+                mission: teamMission, // Misión del team (rich text)
+                assets: assets, // Assets del team
+                sectionsState: sectionsState, // Estado de secciones colapsables
                 associatedProjects: document.getElementById('associatedProjects').value,
                 projects: projectsChips, // Chips de proyectos asociados
                 members: membersList, // Lista completa de miembros con sus datos
@@ -4050,7 +4710,635 @@
         }
         
         // ============================================
+        // Team Assets Section
+        // ============================================
+        function initTeamAssetsSection() {
+            const assetsSection = document.getElementById('teamAssetsSection');
+            const assetsInput = document.getElementById('teamAssetsInput');
+            const assetsItemsContainer = document.getElementById('teamAssetsItemsContainer');
+            const uploadFileBtn = document.getElementById('teamUploadFileBtn');
+            const uploadImageBtn = document.getElementById('teamUploadImageBtn');
+            const assetsFileInput = document.getElementById('teamAssetsFileInput');
+            const assetsImageInput = document.getElementById('teamAssetsImageInput');
+            
+            if (!assetsSection) {
+                console.warn('⚠️ Elementos de Team Assets Section no encontrados');
+                return;
+            }
+
+            // Function to check if string is a URL
+            function isValidUrl(string) {
+                try {
+                    const url = new URL(string);
+                    return url.protocol === 'http:' || url.protocol === 'https:';
+                } catch (_) {
+                    return false;
+                }
+            }
+
+            // Helper function to generate file preview based on file type (accessible globally)
+            window.generateTeamFilePreview = function(file, dataUrl) {
+                if (!file) return null;
+                
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                const mimeType = file.type || '';
+                
+                // PDF preview
+                if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                    return {
+                        type: 'pdf',
+                        preview: dataUrl || URL.createObjectURL(file),
+                        icon: 'pdf'
+                    };
+                }
+                
+                // Image preview
+                if (mimeType.startsWith('image/')) {
+                    return {
+                        type: 'image',
+                        preview: dataUrl || URL.createObjectURL(file),
+                        icon: null
+                    };
+                }
+                
+                // Document types
+                const documentIcons = {
+                    'doc': 'doc',
+                    'docx': 'doc',
+                    'xls': 'xls',
+                    'xlsx': 'xls',
+                    'ppt': 'ppt',
+                    'pptx': 'ppt',
+                    'txt': 'txt',
+                    'csv': 'csv'
+                };
+                
+                const iconType = documentIcons[fileExtension] || 'file';
+                
+                return {
+                    type: 'document',
+                    preview: null,
+                    icon: iconType,
+                    mimeType: mimeType,
+                    extension: fileExtension
+                };
+            }
+            
+            // Hacer addTeamAssetItem accesible globalmente
+            window.addTeamAssetItem = function(data) {
+                if (!assetsItemsContainer) return;
+                
+                const item = document.createElement('div');
+                item.className = 'team-assets-item';
+                
+                let previewHtml = '';
+                let contentHtml = '';
+                
+                if (data.type === 'image' && data.preview) {
+                    previewHtml = `<img src="${data.preview}" alt="${data.name}" class="team-assets-item-preview" data-preview-src="${data.preview}" data-preview-name="${data.name}" style="cursor: pointer;">`;
+                    contentHtml = `
+                        <div class="team-assets-item-content">
+                            <p class="team-assets-item-text">${data.name}</p>
+                            <p class="team-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file' && data.file) {
+                    const filePreview = window.generateTeamFilePreview ? window.generateTeamFilePreview(data.file, data.preview) : null;
+                    
+                    if (filePreview && filePreview.type === 'pdf' && filePreview.preview) {
+                        previewHtml = `
+                            <div class="team-assets-item-preview-wrapper" data-pdf-src="${filePreview.preview}" data-file-name="${data.name}" style="cursor: pointer;">
+                                <iframe src="${filePreview.preview}" class="team-assets-item-preview team-assets-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="team-assets-item-preview-overlay">
+                                    <span class="team-assets-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else if (filePreview && filePreview.type === 'document') {
+                        const iconClass = `team-assets-item-icon--${filePreview.icon}`;
+                        previewHtml = `
+                            <div class="team-assets-item-icon ${iconClass}" data-file-name="${data.name}" data-file-size="${data.size || ''}" data-file-extension="${filePreview.extension}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="${filePreview.icon.toUpperCase()}" title="${filePreview.extension.toUpperCase()}">
+                                <span class="team-assets-item-icon-extension">${filePreview.extension.toUpperCase()}</span>
+                            </div>
+                        `;
+                    } else {
+                        previewHtml = `
+                            <div class="team-assets-item-icon" data-file-name="${data.name}" data-file-size="${data.size || ''}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="File">
+                            </div>
+                        `;
+                    }
+                    
+                    contentHtml = `
+                        <div class="team-assets-item-content">
+                            <p class="team-assets-item-text">${data.name}</p>
+                            <p class="team-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'file') {
+                    const fileExtension = data.fileExtension || data.name.split('.').pop().toLowerCase();
+                    const isPDF = fileExtension === 'pdf' || data.preview?.includes('data:application/pdf');
+                    
+                    if (isPDF && data.preview) {
+                        previewHtml = `
+                            <div class="team-assets-item-preview-wrapper" data-pdf-src="${data.preview}" data-file-name="${data.name}" style="cursor: pointer;">
+                                <iframe src="${data.preview}" class="team-assets-item-preview team-assets-item-preview--pdf" title="${data.name}"></iframe>
+                                <div class="team-assets-item-preview-overlay">
+                                    <span class="team-assets-item-preview-label">PDF</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const documentIcons = {
+                            'doc': 'doc',
+                            'docx': 'doc',
+                            'xls': 'xls',
+                            'xlsx': 'xls',
+                            'ppt': 'ppt',
+                            'pptx': 'ppt',
+                            'txt': 'txt',
+                            'csv': 'csv'
+                        };
+                        const iconType = documentIcons[fileExtension] || 'file';
+                        const iconClass = iconType !== 'file' ? `team-assets-item-icon--${iconType}` : '';
+                        
+                        previewHtml = `
+                            <div class="team-assets-item-icon ${iconClass}" data-file-name="${data.name}" data-file-size="${data.size || ''}" data-file-extension="${fileExtension}" style="cursor: pointer;">
+                                <img src="images/attachment.svg" alt="${iconType.toUpperCase()}" title="${fileExtension.toUpperCase()}">
+                                ${iconType !== 'file' ? `<span class="team-assets-item-icon-extension">${fileExtension.toUpperCase()}</span>` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    contentHtml = `
+                        <div class="team-assets-item-content">
+                            <p class="team-assets-item-text">${data.name}</p>
+                            <p class="team-assets-item-link">${data.size || ''}</p>
+                        </div>
+                    `;
+                } else if (data.type === 'link') {
+                    previewHtml = `
+                        <div class="team-assets-item-icon">
+                            <img src="images/link.svg" alt="Link">
+                        </div>
+                    `;
+                    contentHtml = `
+                        <div class="team-assets-item-content">
+                            <p class="team-assets-item-text">${data.name || data.url}</p>
+                            <a href="${data.url}" target="_blank" class="team-assets-item-link">${data.url}</a>
+                        </div>
+                    `;
+                } else {
+                    previewHtml = '';
+                    contentHtml = `
+                        <div class="team-assets-item-content">
+                            <p class="team-assets-item-text">-${data.text}</p>
+                        </div>
+                    `;
+                }
+                
+                item.innerHTML = `
+                    ${previewHtml}
+                    ${contentHtml}
+                    <div class="team-assets-item-actions">
+                        <button class="team-assets-item-action" onclick="this.closest('.team-assets-item').remove(); if(typeof autoSave === 'function') setTimeout(autoSave, 100);">
+                            <img src="images/trash.svg" alt="Delete">
+                        </button>
+                        <button class="team-assets-item-action" onclick="editTeamAssetItem(this)">
+                            <img src="images/Edit.svg" alt="Edit">
+                        </button>
+                    </div>
+                `;
+                assetsItemsContainer.appendChild(item);
+                
+                // Trigger autoSave
+                if (typeof autoSave === 'function') {
+                    setTimeout(autoSave, 100);
+                }
+            }
+
+            // Edit item functionality
+            window.editTeamAssetItem = function(button) {
+                const item = button.closest('.team-assets-item');
+                const textElement = item.querySelector('.team-assets-item-text');
+                if (!textElement) return;
+                
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                    if (typeof autoSave === 'function') {
+                        setTimeout(autoSave, 100);
+                    }
+                }
+            };
+
+            // File upload functionality
+            if (uploadFileBtn && assetsFileInput) {
+                uploadFileBtn.addEventListener('click', function() {
+                    assetsFileInput.click();
+                });
+                
+                assetsFileInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                        const mimeType = file.type || '';
+                        const fileExtension = file.name.split('.').pop().toLowerCase();
+                        
+                        if (mimeType === 'application/pdf' || fileExtension === 'pdf') {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addTeamAssetItem({
+                                    type: 'file',
+                                    name: file.name,
+                                    size: fileSize,
+                                    file: file,
+                                    preview: event.target.result
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        } else if (mimeType.startsWith('image/')) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                addTeamAssetItem({
+                                    type: 'image',
+                                    name: file.name,
+                                    size: fileSize,
+                                    preview: event.target.result,
+                                    file: file
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                            e.target.value = '';
+                            return;
+                        }
+                        
+                        addTeamAssetItem({
+                            type: 'file',
+                            name: file.name,
+                            size: fileSize,
+                            file: file
+                        });
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Image upload functionality
+            if (uploadImageBtn && assetsImageInput) {
+                uploadImageBtn.addEventListener('click', function() {
+                    assetsImageInput.click();
+                });
+                
+                assetsImageInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                            addTeamAssetItem({
+                                type: 'image',
+                                name: file.name,
+                                size: fileSize,
+                                preview: event.target.result,
+                                file: file
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                        e.target.value = '';
+                    }
+                });
+            }
+
+            // Convert input to rich text compact
+            if (assetsInput && assetsInput.classList.contains('dsu-input--only')) {
+                // Store isValidUrl function reference
+                const isValidUrlRef = isValidUrl;
+                convertInputToRichTextCompact(assetsInput, isValidUrlRef);
+            }
+
+            console.log('✅ Team Assets Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Convert Input to Rich Text Compact
+        // ============================================
+        function convertInputToRichTextCompact(input, isValidUrlFunction) {
+            if (!input || input.dataset.richTextConverted === 'true') return;
+            
+            const inputContainer = input.closest('.dsu-input-container');
+            if (!inputContainer) return;
+
+            // Guardar placeholder y valor original
+            const placeholder = input.placeholder || '';
+            const originalValue = input.value || '';
+
+            // Crear wrapper de rich text compact
+            const richTextWrapper = document.createElement('div');
+            richTextWrapper.className = 'dsu-rich-text-input dsu-rich-text-input--compact';
+            
+            // Crear toolbar compacto con solo el botón de link
+            const toolbar = document.createElement('div');
+            toolbar.className = 'dsu-rich-text-input__toolbar dsu-rich-text-input__toolbar--compact';
+            
+            const linkButton = document.createElement('button');
+            linkButton.className = 'dsu-rich-text-input__toolbar-button';
+            linkButton.setAttribute('data-command', 'createLink');
+            linkButton.setAttribute('data-value', 'https://');
+            linkButton.setAttribute('title', 'Insertar enlace');
+            linkButton.innerHTML = '<img src="images/link.svg" alt="Link">';
+            
+            toolbar.appendChild(linkButton);
+            
+            // Crear editor compacto
+            const editor = document.createElement('div');
+            editor.className = 'dsu-rich-text-input__editor dsu-rich-text-input__editor--compact';
+            if (originalValue.trim() === '') {
+                editor.classList.add('dsu-rich-text-input__editor--empty');
+            }
+            editor.setAttribute('contenteditable', 'true');
+            editor.setAttribute('data-placeholder', placeholder);
+            if (originalValue) {
+                editor.textContent = originalValue;
+            }
+            
+            // Agregar elementos al wrapper
+            richTextWrapper.appendChild(toolbar);
+            richTextWrapper.appendChild(editor);
+            
+            // Ocultar input original y agregar el wrapper
+            input.style.display = 'none';
+            input.dataset.richTextConverted = 'true';
+            inputContainer.insertBefore(richTextWrapper, input);
+            
+            // Función para sincronizar editor con input
+            function syncToInput() {
+                const htmlContent = editor.innerHTML;
+                input.dataset.richTextHtml = htmlContent;
+                input.value = editor.textContent.trim();
+            }
+            
+            // Función para sincronizar input con editor
+            function syncFromInput() {
+                const htmlContent = input.dataset.richTextHtml || '';
+                if (htmlContent) {
+                    editor.innerHTML = htmlContent;
+                    editor.classList.remove('dsu-rich-text-input__editor--empty');
+                } else {
+                    editor.textContent = input.value || '';
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                    }
+                }
+            }
+            
+            // Manejar placeholder
+            function checkPlaceholder() {
+                if (editor.textContent.trim() === '' && !editor.querySelector('a')) {
+                    editor.classList.add('dsu-rich-text-input__editor--empty');
+                } else {
+                    editor.classList.remove('dsu-rich-text-input__editor--empty');
+                }
+            }
+            
+            editor.addEventListener('input', function() {
+                checkPlaceholder();
+                syncToInput();
+            });
+            
+            editor.addEventListener('blur', function() {
+                checkPlaceholder();
+                syncToInput();
+            });
+            
+            // Inicializar placeholder
+            checkPlaceholder();
+            
+            // Función para extraer contenido del editor
+            function extractContentFromEditor() {
+                const text = editor.textContent.trim();
+                const links = editor.querySelectorAll('a');
+                
+                if (links.length > 0) {
+                    // Si hay links, retornar el primer link
+                    const firstLink = links[0];
+                    return {
+                        type: 'link',
+                        url: firstLink.href,
+                        name: firstLink.textContent.trim() || firstLink.href
+                    };
+                } else if (text) {
+                    // Verificar si el texto es una URL
+                    const urlValidator = isValidUrlFunction || function(string) {
+                        try {
+                            const url = new URL(string);
+                            return url.protocol === 'http:' || url.protocol === 'https:';
+                        } catch (_) {
+                            return false;
+                        }
+                    };
+                    
+                    if (urlValidator(text)) {
+                        return {
+                            type: 'link',
+                            url: text,
+                            name: text
+                        };
+                    } else {
+                        return {
+                            type: 'text',
+                            text: text
+                        };
+                    }
+                }
+                return null;
+            }
+            
+            // Event listener para el botón de link
+            linkButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const url = prompt('Enter URL:', 'https://');
+                if (url && url.trim()) {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    
+                    // Si hay texto seleccionado, crear link con ese texto
+                    if (selection.toString().trim()) {
+                        const link = document.createElement('a');
+                        link.href = url.trim();
+                        link.textContent = selection.toString();
+                        link.target = '_blank';
+                        
+                        range.deleteContents();
+                        range.insertNode(link);
+                    } else {
+                        // Si no hay texto seleccionado, crear link con la URL
+                        const link = document.createElement('a');
+                        link.href = url.trim();
+                        link.textContent = url.trim();
+                        link.target = '_blank';
+                        
+                        range.insertNode(link);
+                    }
+                    
+                    // Mover cursor después del link
+                    range.setStartAfter(link);
+                    range.collapse(true);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    checkPlaceholder();
+                    syncToInput();
+                }
+            });
+            
+            // Event listener para Enter - agregar item
+            editor.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const content = extractContentFromEditor();
+                    if (content) {
+                        addTeamAssetItem(content);
+                        
+                        // Limpiar editor
+                        editor.innerHTML = '';
+                        editor.textContent = '';
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                        syncToInput();
+                    }
+                }
+            });
+            
+            // Sincronizar desde input si hay datos guardados
+            syncFromInput();
+            
+            console.log('✅ Input convertido a rich text compact:', input.id);
+        }
+
+        // ============================================
         // Rich Text Input Toolbar Functionality
+        // ============================================
+        // Team Description Section - Collapsible Functionality
+        // ============================================
+        function initTeamDescriptionSection() {
+            // Inicializar sección de Description
+            const descriptionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamDescription"]');
+            const descriptionSectionContent = document.querySelector('.team-description-section-content[data-content="teamDescription"]');
+            
+            if (descriptionSectionTitle && descriptionSectionContent) {
+                descriptionSectionTitle.addEventListener('click', function() {
+                    const isExpanded = descriptionSectionTitle.classList.contains('team-description-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        descriptionSectionTitle.classList.remove('team-description-section-title--expanded');
+                        descriptionSectionContent.classList.remove('team-description-section-content--expanded');
+                    } else {
+                        // Expandir
+                        descriptionSectionTitle.classList.add('team-description-section-title--expanded');
+                        descriptionSectionContent.classList.add('team-description-section-content--expanded');
+                    }
+                    
+                    // Guardar estado inmediatamente
+                    saveSectionsState();
+                });
+                console.log('✅ Team Description Section inicializado');
+            } else {
+                console.warn('⚠️ Elementos de team description section no encontrados');
+            }
+
+            // Inicializar sección de Mission
+            const missionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamMission"]');
+            const missionSectionContent = document.querySelector('.team-description-section-content[data-content="teamMission"]');
+            
+            if (missionSectionTitle && missionSectionContent) {
+                missionSectionTitle.addEventListener('click', function() {
+                    const isExpanded = missionSectionTitle.classList.contains('team-description-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        missionSectionTitle.classList.remove('team-description-section-title--expanded');
+                        missionSectionContent.classList.remove('team-description-section-content--expanded');
+                    } else {
+                        // Expandir
+                        missionSectionTitle.classList.add('team-description-section-title--expanded');
+                        missionSectionContent.classList.add('team-description-section-content--expanded');
+                    }
+                    
+                    // Guardar estado inmediatamente
+                    saveSectionsState();
+                });
+                console.log('✅ Team Mission Section inicializado');
+            } else {
+                console.warn('⚠️ Elementos de team mission section no encontrados');
+            }
+
+            // Inicializar sección de Assets
+            const assetsSectionTitle = document.querySelector('.team-description-section-title[data-section="teamAssets"]');
+            const assetsSectionContent = document.querySelector('.team-description-section-content[data-content="teamAssets"]');
+            
+            if (assetsSectionTitle && assetsSectionContent) {
+                assetsSectionTitle.addEventListener('click', function() {
+                    const isExpanded = assetsSectionTitle.classList.contains('team-description-section-title--expanded');
+                    
+                    if (isExpanded) {
+                        // Colapsar
+                        assetsSectionTitle.classList.remove('team-description-section-title--expanded');
+                        assetsSectionContent.classList.remove('team-description-section-content--expanded');
+                    } else {
+                        // Expandir
+                        assetsSectionTitle.classList.add('team-description-section-title--expanded');
+                        assetsSectionContent.classList.add('team-description-section-content--expanded');
+                    }
+                    
+                    // Guardar estado inmediatamente
+                    saveSectionsState();
+                });
+                console.log('✅ Team Assets Section inicializado');
+            } else {
+                console.warn('⚠️ Elementos de team assets section no encontrados');
+            }
+        }
+
+        // Función para guardar el estado de las secciones
+        function saveSectionsState() {
+            if (!currentProjectId || !currentProjectData) {
+                return; // No guardar si no hay proyecto cargado
+            }
+
+            const descriptionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamDescription"]');
+            const missionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamMission"]');
+            const assetsSectionTitle = document.querySelector('.team-description-section-title[data-section="teamAssets"]');
+            
+            const sectionsState = {
+                descriptionExpanded: descriptionSectionTitle ? descriptionSectionTitle.classList.contains('team-description-section-title--expanded') : true,
+                missionExpanded: missionSectionTitle ? missionSectionTitle.classList.contains('team-description-section-title--expanded') : true,
+                assetsExpanded: assetsSectionTitle ? assetsSectionTitle.classList.contains('team-description-section-title--expanded') : true
+            };
+
+            // Actualizar en currentProjectData
+            if (!currentProjectData.sectionsState) {
+                currentProjectData.sectionsState = {};
+            }
+            currentProjectData.sectionsState = sectionsState;
+
+            // Guardar en storage
+            const projectData = getFormData();
+            projectData.sectionsState = sectionsState;
+            
+            // Guardar sin mostrar mensajes
+            saveProjectToStorage(currentProjectId, projectData).catch(err => {
+                console.warn('⚠️ Error al guardar estado de secciones:', err);
+            });
+        }
+
         // ============================================
         function initRichTextToolbar() {
             const richTextInputs = document.querySelectorAll('.dsu-rich-text-input');
@@ -4103,6 +5391,17 @@
                         editor.classList.add('dsu-rich-text-input__editor--empty');
                     } else {
                         editor.classList.remove('dsu-rich-text-input__editor--empty');
+                    }
+                    
+                    // Si es el editor de descripción o misión del team, trigger autoSave
+                    if (richTextInput.id === 'teamDescriptionRichTextInput' || richTextInput.id === 'teamMissionRichTextInput') {
+                        // Debounce para evitar demasiadas llamadas
+                        clearTimeout(richTextInput._autoSaveTimeout);
+                        richTextInput._autoSaveTimeout = setTimeout(() => {
+                            if (typeof autoSave === 'function') {
+                                autoSave();
+                            }
+                        }, 1000);
                     }
                 });
                 
@@ -5872,6 +7171,124 @@
                     // Si no hay teamCost, calcularlo desde los miembros
                     updateTeamCost();
                 }
+            }
+
+            // Cargar descripción del team
+            const teamDescriptionEditor = document.querySelector('#teamDescriptionRichTextInput .dsu-rich-text-input__editor');
+            if (teamDescriptionEditor && projectData.description) {
+                teamDescriptionEditor.innerHTML = projectData.description;
+                // Remover clase empty si hay contenido
+                if (teamDescriptionEditor.textContent.trim() !== '') {
+                    teamDescriptionEditor.classList.remove('dsu-rich-text-input__editor--empty');
+                }
+                console.log('✅ Descripción del team cargada');
+            }
+
+            // Cargar misión del team
+            const teamMissionEditor = document.querySelector('#teamMissionRichTextInput .dsu-rich-text-input__editor');
+            if (teamMissionEditor && projectData.mission) {
+                teamMissionEditor.innerHTML = projectData.mission;
+                // Remover clase empty si hay contenido
+                if (teamMissionEditor.textContent.trim() !== '') {
+                    teamMissionEditor.classList.remove('dsu-rich-text-input__editor--empty');
+                }
+                console.log('✅ Misión del team cargada');
+            }
+
+            // Restaurar estado de secciones colapsables
+            if (projectData.sectionsState) {
+                const descriptionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamDescription"]');
+                const descriptionSectionContent = document.querySelector('.team-description-section-content[data-content="teamDescription"]');
+                const missionSectionTitle = document.querySelector('.team-description-section-title[data-section="teamMission"]');
+                const missionSectionContent = document.querySelector('.team-description-section-content[data-content="teamMission"]');
+
+                // Restaurar estado de Description
+                if (descriptionSectionTitle && descriptionSectionContent) {
+                    if (projectData.sectionsState.descriptionExpanded !== false) { // Por defecto expandido si no está definido
+                        descriptionSectionTitle.classList.add('team-description-section-title--expanded');
+                        descriptionSectionContent.classList.add('team-description-section-content--expanded');
+                    } else {
+                        descriptionSectionTitle.classList.remove('team-description-section-title--expanded');
+                        descriptionSectionContent.classList.remove('team-description-section-content--expanded');
+                    }
+                }
+
+                // Restaurar estado de Mission
+                if (missionSectionTitle && missionSectionContent) {
+                    if (projectData.sectionsState && projectData.sectionsState.missionExpanded !== false) { // Por defecto expandido si no está definido
+                        missionSectionTitle.classList.add('team-description-section-title--expanded');
+                        missionSectionContent.classList.add('team-description-section-content--expanded');
+                    } else {
+                        missionSectionTitle.classList.remove('team-description-section-title--expanded');
+                        missionSectionContent.classList.remove('team-description-section-content--expanded');
+                    }
+                }
+
+                // Restaurar estado de Assets
+                const assetsSectionTitle = document.querySelector('.team-description-section-title[data-section="teamAssets"]');
+                const assetsSectionContent = document.querySelector('.team-description-section-content[data-content="teamAssets"]');
+                if (assetsSectionTitle && assetsSectionContent) {
+                    if (projectData.sectionsState && projectData.sectionsState.assetsExpanded !== false) { // Por defecto expandido si no está definido
+                        assetsSectionTitle.classList.add('team-description-section-title--expanded');
+                        assetsSectionContent.classList.add('team-description-section-content--expanded');
+                    } else {
+                        assetsSectionTitle.classList.remove('team-description-section-title--expanded');
+                        assetsSectionContent.classList.remove('team-description-section-content--expanded');
+                    }
+                }
+                console.log('✅ Estado de secciones restaurado');
+            }
+
+            // Restaurar contenido del input de assets si existe (antes de cargar items)
+            const teamAssetsInput = document.getElementById('teamAssetsInput');
+            if (teamAssetsInput && teamAssetsInput.dataset.richTextConverted === 'true') {
+                const richTextWrapper = teamAssetsInput.nextElementSibling;
+                if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                    const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                    if (editor && teamAssetsInput.dataset.richTextHtml) {
+                        editor.innerHTML = teamAssetsInput.dataset.richTextHtml;
+                        if (editor.textContent.trim() !== '') {
+                            editor.classList.remove('dsu-rich-text-input__editor--empty');
+                        }
+                    }
+                }
+            }
+
+            // Cargar assets del team
+            if (projectData.assets && Array.isArray(projectData.assets) && typeof window.addTeamAssetItem === 'function') {
+                // Esperar un poco para asegurar que la sección esté inicializada
+                setTimeout(() => {
+                    projectData.assets.forEach(asset => {
+                        if (asset.type === 'link' && asset.url) {
+                            window.addTeamAssetItem({
+                                type: 'link',
+                                name: asset.name || asset.url,
+                                url: asset.url
+                            });
+                        } else if (asset.type === 'file' && asset.name) {
+                            window.addTeamAssetItem({
+                                type: 'file',
+                                name: asset.name,
+                                size: asset.size || '',
+                                preview: asset.preview || '',
+                                fileExtension: asset.fileExtension || asset.name.split('.').pop().toLowerCase()
+                            });
+                        } else if (asset.type === 'image' && asset.name) {
+                            window.addTeamAssetItem({
+                                type: 'image',
+                                name: asset.name,
+                                size: asset.size || '',
+                                preview: asset.preview || ''
+                            });
+                        } else if (asset.text) {
+                            window.addTeamAssetItem({
+                                type: 'text',
+                                text: asset.text.replace(/^-\s*/, '')
+                            });
+                        }
+                    });
+                    console.log('✅ Assets del team cargados:', projectData.assets.length);
+                }, 200);
             }
 
             // Cargar miembros

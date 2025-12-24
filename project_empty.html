@@ -12124,31 +12124,10 @@
                 });
             }
 
-            // Input functionality - Add item on Enter (text or link)
-            if (assetsInput) {
-                assetsInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && this.value.trim()) {
-                        e.preventDefault();
-                        const value = this.value.trim();
-                        
-                        if (isValidUrl(value)) {
-                            // Es un link
-                            addAssetItem({
-                                type: 'link',
-                                url: value,
-                                name: value
-                            });
-                        } else {
-                            // Es texto normal (bullet)
-                            addAssetItem({
-                                type: 'text',
-                                text: value
-                            });
-                        }
-                        
-                        this.value = '';
-                    }
-                });
+            // Convert input to rich text compact
+            if (assetsInput && assetsInput.classList.contains('dsu-input--only')) {
+                const isValidUrlRef = isValidUrl;
+                convertInputToRichTextCompact(assetsInput, isValidUrlRef, addAssetItem);
             }
 
             // Event delegation para manejar clicks en previews de assets
@@ -12630,31 +12609,10 @@
                 });
             }
 
-            // Input functionality - Add item on Enter (text or link)
-            if (deliverablesInput) {
-                deliverablesInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && this.value.trim()) {
-                        e.preventDefault();
-                        const value = this.value.trim();
-                        
-                        if (isValidUrl(value)) {
-                            // Es un link
-                            addDeliverableItem({
-                                type: 'link',
-                                url: value,
-                                name: value
-                            });
-                        } else {
-                            // Es texto normal (bullet)
-                            addDeliverableItem({
-                                type: 'text',
-                                text: value
-                            });
-                        }
-                        
-                        this.value = '';
-                    }
-                });
+            // Convert input to rich text compact
+            if (deliverablesInput && deliverablesInput.classList.contains('dsu-input--only')) {
+                const isValidUrlRef = isValidUrl;
+                convertInputToRichTextCompact(deliverablesInput, isValidUrlRef, addDeliverableItem);
             }
 
             // Initialize deliverable status button
@@ -13520,9 +13478,89 @@
                         console.warn('⚠️ teamsListContainer no encontrado en el DOM');
                     }
                     
+                    // Sincronizar todos los rich text inputs convertidos antes de obtener los datos
+                    const convertedInputs = document.querySelectorAll('input[data-rich-text-converted="true"]');
+                    convertedInputs.forEach(input => {
+                        const richTextWrapper = input.nextElementSibling;
+                        if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                            const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                            if (editor) {
+                                const htmlContent = editor.innerHTML;
+                                input.dataset.richTextHtml = htmlContent;
+                                input.value = editor.textContent.trim();
+                            }
+                        }
+                    });
+                    
                     // Recopilar assets
                     const assetsItemsContainer = document.getElementById('assetsItemsContainer');
                     const assets = [];
+                    
+                    // Verificar si hay contenido pendiente en el input de rich text de assets
+                    const assetsInput = document.getElementById('assetsInput');
+                    if (assetsInput && assetsInput.dataset.richTextConverted === 'true') {
+                        const richTextWrapper = assetsInput.nextElementSibling;
+                        if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                            const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                            if (editor) {
+                                const htmlContent = editor.innerHTML.trim();
+                                const text = editor.textContent.trim();
+                                const links = editor.querySelectorAll('a');
+                                
+                                // Si hay contenido en el editor, agregarlo como asset antes de guardar
+                                if (text || links.length > 0) {
+                                    if (links.length > 0) {
+                                        // Si hay links, capturar el texto completo y el link
+                                        // El texto puede contener el link como parte del contenido
+                                        const firstLink = links[0];
+                                        const linkText = firstLink.textContent.trim();
+                                        const linkUrl = firstLink.href;
+                                        
+                                        // Si el texto completo es solo el link, guardar como link simple
+                                        if (text === linkText || text === linkUrl) {
+                                            assets.push({
+                                                type: 'link',
+                                                url: linkUrl,
+                                                name: linkText || linkUrl
+                                            });
+                                        } else {
+                                            // Si hay texto adicional además del link, guardar el texto completo y el link
+                                            // Usar el texto completo como nombre y el link como URL
+                                            assets.push({
+                                                type: 'link',
+                                                url: linkUrl,
+                                                name: text // Guardar el texto completo que incluye el link
+                                            });
+                                        }
+                                    } else if (text) {
+                                        // Verificar si el texto es una URL
+                                        function isValidUrl(string) {
+                                            try {
+                                                const url = new URL(string);
+                                                return url.protocol === 'http:' || url.protocol === 'https:';
+                                            } catch (_) {
+                                                return false;
+                                            }
+                                        }
+                                        
+                                        if (isValidUrl(text)) {
+                                            assets.push({
+                                                type: 'link',
+                                                url: text,
+                                                name: text
+                                            });
+                                        } else {
+                                            assets.push({
+                                                type: 'text',
+                                                text: text
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     if (assetsItemsContainer) {
                         const assetItems = assetsItemsContainer.querySelectorAll('.project-assets-item');
                         assetItems.forEach(item => {
@@ -13776,6 +13814,76 @@
                     
                     // Recopilar Deliverables
                     const deliverables = [];
+                    
+                    // Verificar si hay contenido pendiente en el input de rich text de deliverables
+                    const deliverablesInput = document.getElementById('deliverablesInput');
+                    if (deliverablesInput && deliverablesInput.dataset.richTextConverted === 'true') {
+                        const richTextWrapper = deliverablesInput.nextElementSibling;
+                        if (richTextWrapper && richTextWrapper.classList.contains('dsu-rich-text-input--compact')) {
+                            const editor = richTextWrapper.querySelector('.dsu-rich-text-input__editor--compact');
+                            if (editor) {
+                                const htmlContent = editor.innerHTML.trim();
+                                const text = editor.textContent.trim();
+                                const links = editor.querySelectorAll('a');
+                                
+                                // Si hay contenido en el editor, agregarlo como deliverable antes de guardar
+                                if (text || links.length > 0) {
+                                    if (links.length > 0) {
+                                        // Si hay links, capturar el texto completo y el link
+                                        // El texto puede contener el link como parte del contenido
+                                        const firstLink = links[0];
+                                        const linkText = firstLink.textContent.trim();
+                                        const linkUrl = firstLink.href;
+                                        
+                                        // Si el texto completo es solo el link, guardar como link simple
+                                        if (text === linkText || text === linkUrl) {
+                                            deliverables.push({
+                                                type: 'link',
+                                                url: linkUrl,
+                                                name: linkText || linkUrl,
+                                                status: 'to-start'
+                                            });
+                                        } else {
+                                            // Si hay texto adicional además del link, guardar el texto completo y el link
+                                            // Usar el texto completo como nombre y el link como URL
+                                            deliverables.push({
+                                                type: 'link',
+                                                url: linkUrl,
+                                                name: text, // Guardar el texto completo que incluye el link
+                                                status: 'to-start'
+                                            });
+                                        }
+                                    } else if (text) {
+                                        // Verificar si el texto es una URL
+                                        function isValidUrl(string) {
+                                            try {
+                                                const url = new URL(string);
+                                                return url.protocol === 'http:' || url.protocol === 'https:';
+                                            } catch (_) {
+                                                return false;
+                                            }
+                                        }
+                                        
+                                        if (isValidUrl(text)) {
+                                            deliverables.push({
+                                                type: 'link',
+                                                url: text,
+                                                name: text,
+                                                status: 'to-start'
+                                            });
+                                        } else {
+                                            deliverables.push({
+                                                type: 'text',
+                                                text: text,
+                                                status: 'to-start'
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     const deliverablesContainer = document.getElementById('deliverablesItemsContainer');
                     if (deliverablesContainer) {
                         const deliverableRows = deliverablesContainer.querySelectorAll('.project-deliverables-item-row');
@@ -15037,6 +15145,204 @@
         // ============================================
         // Utilities
         // ============================================
+        // ============================================
+        // Convert Input to Rich Text Compact
+        // ============================================
+        function convertInputToRichTextCompact(input, isValidUrlFunction, addItemFunction) {
+            if (!input || input.dataset.richTextConverted === 'true') return;
+            
+            const inputContainer = input.closest('.dsu-input-container');
+            if (!inputContainer) return;
+
+            // Guardar placeholder y valor original
+            const placeholder = input.placeholder || '';
+            const originalValue = input.value || '';
+
+            // Crear wrapper de rich text compact
+            const richTextWrapper = document.createElement('div');
+            richTextWrapper.className = 'dsu-rich-text-input dsu-rich-text-input--compact';
+            
+            // Crear toolbar compacto con solo el botón de link
+            const toolbar = document.createElement('div');
+            toolbar.className = 'dsu-rich-text-input__toolbar dsu-rich-text-input__toolbar--compact';
+            
+            const linkButton = document.createElement('button');
+            linkButton.className = 'dsu-rich-text-input__toolbar-button';
+            linkButton.setAttribute('data-command', 'createLink');
+            linkButton.setAttribute('data-value', 'https://');
+            linkButton.setAttribute('title', 'Insertar enlace');
+            linkButton.innerHTML = '<img src="images/link.svg" alt="Link">';
+            
+            toolbar.appendChild(linkButton);
+            
+            // Crear editor compacto
+            const editor = document.createElement('div');
+            editor.className = 'dsu-rich-text-input__editor dsu-rich-text-input__editor--compact';
+            if (originalValue.trim() === '') {
+                editor.classList.add('dsu-rich-text-input__editor--empty');
+            }
+            editor.setAttribute('contenteditable', 'true');
+            editor.setAttribute('data-placeholder', placeholder);
+            if (originalValue) {
+                editor.textContent = originalValue;
+            }
+            
+            // Agregar elementos al wrapper
+            richTextWrapper.appendChild(toolbar);
+            richTextWrapper.appendChild(editor);
+            
+            // Ocultar input original y agregar el wrapper
+            input.style.display = 'none';
+            input.dataset.richTextConverted = 'true';
+            inputContainer.insertBefore(richTextWrapper, input);
+            
+            // Función para sincronizar editor con input
+            function syncToInput() {
+                const htmlContent = editor.innerHTML;
+                input.dataset.richTextHtml = htmlContent;
+                input.value = editor.textContent.trim();
+            }
+            
+            // Función para sincronizar input con editor
+            function syncFromInput() {
+                const htmlContent = input.dataset.richTextHtml || '';
+                if (htmlContent) {
+                    editor.innerHTML = htmlContent;
+                    editor.classList.remove('dsu-rich-text-input__editor--empty');
+                } else {
+                    editor.textContent = input.value || '';
+                    if (editor.textContent.trim() === '') {
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                    }
+                }
+            }
+            
+            // Manejar placeholder
+            function checkPlaceholder() {
+                if (editor.textContent.trim() === '' && !editor.querySelector('a')) {
+                    editor.classList.add('dsu-rich-text-input__editor--empty');
+                } else {
+                    editor.classList.remove('dsu-rich-text-input__editor--empty');
+                }
+            }
+            
+            editor.addEventListener('input', function() {
+                checkPlaceholder();
+                syncToInput();
+            });
+            
+            editor.addEventListener('blur', function() {
+                checkPlaceholder();
+                syncToInput();
+            });
+            
+            // Inicializar placeholder
+            checkPlaceholder();
+            
+            // Función para extraer contenido del editor
+            function extractContentFromEditor() {
+                const text = editor.textContent.trim();
+                const links = editor.querySelectorAll('a');
+                
+                if (links.length > 0) {
+                    // Si hay links, retornar el primer link
+                    const firstLink = links[0];
+                    return {
+                        type: 'link',
+                        url: firstLink.href,
+                        name: firstLink.textContent.trim() || firstLink.href
+                    };
+                } else if (text) {
+                    // Verificar si el texto es una URL
+                    const urlValidator = isValidUrlFunction || function(string) {
+                        try {
+                            const url = new URL(string);
+                            return url.protocol === 'http:' || url.protocol === 'https:';
+                        } catch (_) {
+                            return false;
+                        }
+                    };
+                    
+                    if (urlValidator(text)) {
+                        return {
+                            type: 'link',
+                            url: text,
+                            name: text
+                        };
+                    } else {
+                        return {
+                            type: 'text',
+                            text: text
+                        };
+                    }
+                }
+                return null;
+            }
+            
+            // Event listener para el botón de link
+            linkButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const url = prompt('Enter URL:', 'https://');
+                if (url && url.trim()) {
+                    const selection = window.getSelection();
+                    const range = selection.getRangeAt(0);
+                    
+                    // Si hay texto seleccionado, crear link con ese texto
+                    if (selection.toString().trim()) {
+                        const link = document.createElement('a');
+                        link.href = url.trim();
+                        link.textContent = selection.toString();
+                        link.target = '_blank';
+                        
+                        range.deleteContents();
+                        range.insertNode(link);
+                    } else {
+                        // Si no hay texto seleccionado, crear link con la URL
+                        const link = document.createElement('a');
+                        link.href = url.trim();
+                        link.textContent = url.trim();
+                        link.target = '_blank';
+                        
+                        range.insertNode(link);
+                    }
+                    
+                    // Mover cursor después del link
+                    range.setStartAfter(link);
+                    range.collapse(true);
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    checkPlaceholder();
+                    syncToInput();
+                }
+            });
+            
+            // Event listener para Enter - agregar item
+            editor.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const content = extractContentFromEditor();
+                    if (content && addItemFunction) {
+                        addItemFunction(content);
+                        
+                        // Limpiar editor
+                        editor.innerHTML = '';
+                        editor.textContent = '';
+                        editor.classList.add('dsu-rich-text-input__editor--empty');
+                        syncToInput();
+                    }
+                }
+            });
+            
+            // Sincronizar desde input si hay datos guardados
+            syncFromInput();
+            
+            console.log('✅ Input convertido a rich text compact:', input.id);
+        }
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
