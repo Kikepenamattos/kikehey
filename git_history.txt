@@ -1,3 +1,4 @@
+8c993ac5eff663f869c4188c2ff36cd649d746f1|Ubits|ubits@macbookpro.lan|2025-12-24 12:21:03 -0500|Update: Actualizar changelog con nueva feature Deliverables (Links of interest)
 58c635c822a44ac4cbe80c58227155a507424866|Ubits|ubits@macbookpro.lan|2025-12-24 12:20:43 -0500|Feature: Agregar sección Deliverables (Links of interest) en create_space.html
 7ab0d8079c4adbfab7dfe7684520a67c6a9a1a82|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:54 -0500|Update: Finalizar sincronización de changelog
 01930b10f0b9a0b00f2740a2975bc566e3a12a69|Ubits|ubits@macbookpro.lan|2025-12-24 11:01:46 -0500|Update: Sincronizar changelog después del push
