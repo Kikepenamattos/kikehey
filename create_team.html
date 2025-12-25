@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="design-system/components/button.css">
     <link rel="stylesheet" href="design-system/components/chip.css">
     <link rel="stylesheet" href="design-system/components/card.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
     
     <style>
         * {
@@ -815,6 +816,31 @@
             /* margin-top: var(--spacing-24); */
         }
 
+        /* Team Tabs Section */
+        .team-tabs-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-24);
+            width: 100%;
+        }
+
+        .team-tabs-header {
+            display: flex;
+            gap: var(--spacing-08);
+            align-items: center;
+        }
+
+        .team-tab-panel {
+            display: none;
+            flex-direction: column;
+            gap: var(--spacing-24);
+            width: 100%;
+        }
+
+        .team-tab-panel--active {
+            display: flex;
+        }
+
         .team-assets-header {
             display: flex;
             flex-direction: column;
@@ -1438,151 +1464,6 @@
                         </div>
                     </div>
 
-                    <!-- Team Description Section (Rich Text Input) -->
-                    <div class="team-description-section" id="teamDescriptionSection">
-                        <div class="team-description-header">
-                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
-                                <span class="team-description-section-title__text">Description</span>
-                                <span class="team-description-section-title__chevron">
-                                    <img src="images/down-chevron.svg" alt="Toggle">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
-                            <div class="team-description-content">
-                                <div class="dsu-rich-text-input" id="teamDescriptionRichTextInput">
-                                    <div class="dsu-rich-text-input__toolbar">
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
-                                            <img src="images/bold.svg" alt="Bold">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
-                                            <img src="images/italic.svg" alt="Italic">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
-                                            <img src="images/underline.svg" alt="Underline">
-                                        </button>
-                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
-                                            <img src="images/list-bullet.svg" alt="Bullet List">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
-                                            <img src="images/number_list.svg" alt="Numbered List">
-                                        </button>
-                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
-                                            <img src="images/link.svg" alt="Link">
-                                        </button>
-                                    </div>
-                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team description..."></div>
-                                    <div class="dsu-rich-text-input__footer">
-                                        <div class="dsu-rich-text-input__footer-left">
-                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
-                                                <img src="images/attachment.svg" alt="Attachment">
-                                            </button>
-                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
-                                                <img src="images/trash.svg" alt="Delete">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END: Team Description Section -->
-
-                    <!-- Team Mission Section (Rich Text Input) -->
-                    <div class="team-description-section" id="teamMissionSection">
-                        <div class="team-description-header">
-                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
-                                <span class="team-description-section-title__text">Mission</span>
-                                <span class="team-description-section-title__chevron">
-                                    <img src="images/down-chevron.svg" alt="Toggle">
-                                </span>
-                            </div>
-                        </div>
-                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
-                            <div class="team-description-content">
-                                <div class="dsu-rich-text-input" id="teamMissionRichTextInput">
-                                    <div class="dsu-rich-text-input__toolbar">
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
-                                            <img src="images/bold.svg" alt="Bold">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
-                                            <img src="images/italic.svg" alt="Italic">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
-                                            <img src="images/underline.svg" alt="Underline">
-                                        </button>
-                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
-                                            <img src="images/list-bullet.svg" alt="Bullet List">
-                                        </button>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
-                                            <img src="images/number_list.svg" alt="Numbered List">
-                                        </button>
-                                        <div class="dsu-rich-text-input__toolbar-separator"></div>
-                                        <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
-                                            <img src="images/link.svg" alt="Link">
-                                        </button>
-                                    </div>
-                                    <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team mission..."></div>
-                                    <div class="dsu-rich-text-input__footer">
-                                        <div class="dsu-rich-text-input__footer-left">
-                                            <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
-                                                <img src="images/attachment.svg" alt="Attachment">
-                                            </button>
-                                            <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
-                                                <img src="images/trash.svg" alt="Delete">
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END: Team Mission Section -->
-
-                    <!-- Team Assets Section -->
-                    <div class="team-assets-section" id="teamAssetsSection">
-                        <div class="team-assets-header">
-                            <div class="team-description-section-title team-description-section-title--expanded" data-section="teamAssets">
-                                <span class="team-description-section-title__text">Links of interest</span>
-                                <span class="team-description-section-title__chevron">
-                                    <img src="images/down-chevron.svg" alt="Toggle">
-                                </span>
-                            </div>
-                            <p class="team-assets-description">Provide all the available information to star solid.</p>
-                        </div>
-                        <div class="team-description-section-content team-description-section-content--expanded" data-content="teamAssets">
-                            <div class="team-assets-content">
-                            <div class="team-assets-items-container" id="teamAssetsItemsContainer">
-                                <!-- Items se agregarán aquí dinámicamente -->
-                            </div>
-                            <div class="dsu-input-group">
-                                <div class="dsu-input-container team-assets-input-wrapper">
-                                    <input 
-                                        type="text" 
-                                        class="dsu-input dsu-input--only" 
-                                        id="teamAssetsInput" 
-                                        placeholder="Choose an unique name"
-                                    >
-                                    <div class="team-assets-input-actions">
-                                        <button class="team-assets-action-btn" id="teamUploadFileBtn" title="Upload file">
-                                            <img src="images/attachment.svg" alt="Upload">
-                                        </button>
-                                        <button class="team-assets-action-btn" id="teamUploadImageBtn" title="Upload image">
-                                            <img src="images/project.svg" alt="Image">
-                                        </button>
-                                        <input type="file" id="teamAssetsFileInput" accept="*/*" style="display: none;">
-                                        <input type="file" id="teamAssetsImageInput" accept="image/*" style="display: none;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <!-- END: Team Assets Section -->
-
                     <!-- Associated Projects -->
                     <div class="dsu-input-group associated-projects-group">
                         <div class="dsu-input-label">
@@ -1601,65 +1482,228 @@
                         <!-- Chips will be dynamically added here -->
                         </div>
                     </div>
-                </div>
 
-                <!-- Team Members Section -->
-                <div class="team-members-section">
-                    <h2 class="team-members-title">Team members</h2>
-                    
-                    <!-- Secondary Action Levels -->
-                    <div class="secondary-actions disabled">
-                        <div class="dsu-input-buscador search-input-group">
-                            <input 
-                                type="text" 
-                                id="searchInput" 
-                                class="dsu-input dsu-input--only" 
-                                placeholder="Missing someone? find it here."
-                            >
-                            <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
-                                <img src="images/send.svg" alt="Send">
-                            </span>
-                        </div>
-                        <div class="view-controls">
-                            <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
-                                <img src="images/grid.svg" alt="Grid" class="btn-icon">
+                    <!-- Team Tabs Section -->
+                    <div class="team-tabs-container">
+                        <div class="team-tabs-header">
+                            <button class="dsu-chip dsu-chip--active" id="teamTab1" data-tab="members">
+                                <span class="dsu-chip__text">Team members</span>
                             </button>
-                            <button class="view-control-btn" id="listViewBtn" title="List view">
-                                <img src="images/list.svg" alt="List" class="btn-icon">
-                            </button>
-                            <button class="view-control-btn" id="filtersBtn">
-                                <span>Filters</span>
-                                <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                            <button class="dsu-chip dsu-chip--inactive" id="teamTab2" data-tab="info">
+                                <span class="dsu-chip__text">Team info</span>
                             </button>
                         </div>
-                    </div>
-                    
-                    <div class="team-members-grid" id="teamMembersGrid">
-                        <!-- Placeholder Profile Card -->
-                        <div class="dsu-profile-card-placeholder" id="addMemberCard">
-                            <div class="dsu-profile-card-placeholder__image">
-                                <div class="dsu-profile-card-placeholder__edit-icon">
-                                    <img src="images/plus.svg" alt="Add member">
-                                </div>
-                            </div>
-                            <div class="dsu-profile-card-placeholder__content">
-                                <div class="dsu-profile-card-placeholder__name-job">
-                                    <div class="dsu-profile-card-placeholder__name">Name</div>
-                                    <div class="dsu-profile-card-placeholder__job">Job position</div>
-                                </div>
-                                <div class="dsu-profile-card-placeholder__contact">
-                                    <div class="dsu-profile-card-placeholder__contact-item">
-                                        <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
-                                        <span class="dsu-profile-card-placeholder__contact-text">email</span>
+
+                        <!-- Tab 1: Team Members -->
+                        <div class="team-tab-panel team-tab-panel--active" id="teamTabPanel1" data-tab-content="members">
+                            <div class="team-members-section">
+                                <h2 class="team-members-title">Team members</h2>
+                                
+                                <!-- Secondary Action Levels -->
+                                <div class="secondary-actions disabled">
+                                    <div class="dsu-input-buscador search-input-group">
+                                        <input 
+                                            type="text" 
+                                            id="searchInput" 
+                                            class="dsu-input dsu-input--only" 
+                                            placeholder="Missing someone? find it here."
+                                        >
+                                        <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
+                                            <img src="images/send.svg" alt="Send">
+                                        </span>
                                     </div>
-                                    <div class="dsu-profile-card-placeholder__contact-item">
-                                        <img src="images/chat.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
-                                        <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
+                                    <div class="view-controls">
+                                        <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
+                                            <img src="images/grid.svg" alt="Grid" class="btn-icon">
+                                        </button>
+                                        <button class="view-control-btn" id="listViewBtn" title="List view">
+                                            <img src="images/list.svg" alt="List" class="btn-icon">
+                                        </button>
+                                        <button class="view-control-btn" id="filtersBtn">
+                                            <span>Filters</span>
+                                            <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                                        </button>
                                     </div>
                                 </div>
+                                
+                                <div class="team-members-grid" id="teamMembersGrid">
+                                    <!-- Placeholder Profile Card -->
+                                    <div class="dsu-profile-card-placeholder" id="addMemberCard">
+                                        <div class="dsu-profile-card-placeholder__image">
+                                            <div class="dsu-profile-card-placeholder__edit-icon">
+                                                <img src="images/plus.svg" alt="Add member">
+                                            </div>
+                                        </div>
+                                        <div class="dsu-profile-card-placeholder__content">
+                                            <div class="dsu-profile-card-placeholder__name-job">
+                                                <div class="dsu-profile-card-placeholder__name">Name</div>
+                                                <div class="dsu-profile-card-placeholder__job">Job position</div>
+                                            </div>
+                                            <div class="dsu-profile-card-placeholder__contact">
+                                                <div class="dsu-profile-card-placeholder__contact-item">
+                                                    <img src="images/mail.svg" alt="Email" class="dsu-profile-card-placeholder__contact-icon">
+                                                    <span class="dsu-profile-card-placeholder__contact-text">email</span>
+                                                </div>
+                                                <div class="dsu-profile-card-placeholder__contact-item">
+                                                    <img src="images/chat.svg" alt="Contact" class="dsu-profile-card-placeholder__contact-icon">
+                                                    <span class="dsu-profile-card-placeholder__contact-text">Contact</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Tab 2: Team Info (Description, Mission, Assets) -->
+                        <div class="team-tab-panel" id="teamTabPanel2" data-tab-content="info">
+                            <!-- Team Description Section (Rich Text Input) -->
+                            <div class="team-description-section" id="teamDescriptionSection">
+                                <div class="team-description-header">
+                                    <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
+                                        <span class="team-description-section-title__text">Description</span>
+                                        <span class="team-description-section-title__chevron">
+                                            <img src="images/down-chevron.svg" alt="Toggle">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
+                                    <div class="team-description-content">
+                                        <div class="dsu-rich-text-input" id="teamDescriptionRichTextInput">
+                                            <div class="dsu-rich-text-input__toolbar">
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                                    <img src="images/bold.svg" alt="Bold">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                                    <img src="images/italic.svg" alt="Italic">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                                    <img src="images/underline.svg" alt="Underline">
+                                                </button>
+                                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                                    <img src="images/list-bullet.svg" alt="Bullet List">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                                    <img src="images/number_list.svg" alt="Numbered List">
+                                                </button>
+                                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                                    <img src="images/link.svg" alt="Link">
+                                                </button>
+                                            </div>
+                                            <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team description..."></div>
+                                            <div class="dsu-rich-text-input__footer">
+                                                <div class="dsu-rich-text-input__footer-left">
+                                                    <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                        <img src="images/attachment.svg" alt="Attachment">
+                                                    </button>
+                                                    <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                        <img src="images/trash.svg" alt="Delete">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END: Team Description Section -->
+
+                            <!-- Team Mission Section (Rich Text Input) -->
+                            <div class="team-description-section" id="teamMissionSection">
+                                <div class="team-description-header">
+                                    <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
+                                        <span class="team-description-section-title__text">Mission</span>
+                                        <span class="team-description-section-title__chevron">
+                                            <img src="images/down-chevron.svg" alt="Toggle">
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
+                                    <div class="team-description-content">
+                                        <div class="dsu-rich-text-input" id="teamMissionRichTextInput">
+                                            <div class="dsu-rich-text-input__toolbar">
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="bold" title="Negrita">
+                                                    <img src="images/bold.svg" alt="Bold">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="italic" title="Cursiva">
+                                                    <img src="images/italic.svg" alt="Italic">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="underline" title="Subrayado">
+                                                    <img src="images/underline.svg" alt="Underline">
+                                                </button>
+                                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertUnorderedList" title="Lista con viñetas">
+                                                    <img src="images/list-bullet.svg" alt="Bullet List">
+                                                </button>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="insertOrderedList" title="Lista numerada">
+                                                    <img src="images/number_list.svg" alt="Numbered List">
+                                                </button>
+                                                <div class="dsu-rich-text-input__toolbar-separator"></div>
+                                                <button class="dsu-rich-text-input__toolbar-button" data-command="createLink" data-value="https://" title="Insertar enlace">
+                                                    <img src="images/link.svg" alt="Link">
+                                                </button>
+                                            </div>
+                                            <div class="dsu-rich-text-input__editor" contenteditable="true" data-placeholder="Add team mission..."></div>
+                                            <div class="dsu-rich-text-input__footer">
+                                                <div class="dsu-rich-text-input__footer-left">
+                                                    <button class="dsu-rich-text-input__footer-button" data-command="attachment" title="Adjuntar archivo">
+                                                        <img src="images/attachment.svg" alt="Attachment">
+                                                    </button>
+                                                    <button class="dsu-rich-text-input__footer-button" data-command="delete" title="Eliminar">
+                                                        <img src="images/trash.svg" alt="Delete">
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END: Team Mission Section -->
+
+                            <!-- Team Assets Section -->
+                            <div class="team-assets-section" id="teamAssetsSection">
+                                <div class="team-assets-header">
+                                    <div class="team-description-section-title team-description-section-title--expanded" data-section="teamAssets">
+                                        <span class="team-description-section-title__text">Links of interest</span>
+                                        <span class="team-description-section-title__chevron">
+                                            <img src="images/down-chevron.svg" alt="Toggle">
+                                        </span>
+                                    </div>
+                                    <p class="team-assets-description">Provide all the available information to star solid.</p>
+                                </div>
+                                <div class="team-description-section-content team-description-section-content--expanded" data-content="teamAssets">
+                                    <div class="team-assets-content">
+                                    <div class="team-assets-items-container" id="teamAssetsItemsContainer">
+                                        <!-- Items se agregarán aquí dinámicamente -->
+                                    </div>
+                                    <div class="dsu-input-group">
+                                        <div class="dsu-input-container team-assets-input-wrapper">
+                                            <input 
+                                                type="text" 
+                                                class="dsu-input dsu-input--only" 
+                                                id="teamAssetsInput" 
+                                                placeholder="Choose an unique name"
+                                            >
+                                            <div class="team-assets-input-actions">
+                                                <button class="team-assets-action-btn" id="teamUploadFileBtn" title="Upload file">
+                                                    <img src="images/attachment.svg" alt="Upload">
+                                                </button>
+                                                <button class="team-assets-action-btn" id="teamUploadImageBtn" title="Upload image">
+                                                    <img src="images/project.svg" alt="Image">
+                                                </button>
+                                                <input type="file" id="teamAssetsFileInput" accept="*/*" style="display: none;">
+                                                <input type="file" id="teamAssetsImageInput" accept="image/*" style="display: none;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- END: Team Assets Section -->
+                        </div>
                     </div>
+                    <!-- END: Team Tabs Section -->
                 </div>
             </div>
 
@@ -2185,6 +2229,9 @@
             
             // Inicializar sección de assets del team
             initTeamAssetsSection();
+            
+            // Inicializar tabs del team
+            initTeamTabs();
             
             // Inicializar rich text toolbar (incluye el nuevo campo de descripción)
             initRichTextToolbar();
@@ -5338,6 +5385,68 @@
             saveProjectToStorage(currentProjectId, projectData).catch(err => {
                 console.warn('⚠️ Error al guardar estado de secciones:', err);
             });
+        }
+
+        // ============================================
+        // Inicializar Tabs del Team
+        // ============================================
+        function initTeamTabs() {
+            const tab1 = document.getElementById('teamTab1');
+            const tab2 = document.getElementById('teamTab2');
+            const panel1 = document.getElementById('teamTabPanel1');
+            const panel2 = document.getElementById('teamTabPanel2');
+
+            if (!tab1 || !tab2 || !panel1 || !panel2) {
+                console.warn('⚠️ Elementos de tabs no encontrados');
+                return;
+            }
+
+            // Cargar estado guardado del tab activo
+            const savedActiveTab = localStorage.getItem('teamActiveTab');
+            const activeTab = savedActiveTab || 'members'; // Por defecto 'members'
+
+            // Función para cambiar de tab
+            function switchTab(tabName) {
+                // Actualizar chips
+                if (tabName === 'members') {
+                    tab1.classList.remove('dsu-chip--inactive');
+                    tab1.classList.add('dsu-chip--active');
+                    tab2.classList.remove('dsu-chip--active');
+                    tab2.classList.add('dsu-chip--inactive');
+                    
+                    panel1.classList.add('team-tab-panel--active');
+                    panel2.classList.remove('team-tab-panel--active');
+                } else if (tabName === 'info') {
+                    tab1.classList.remove('dsu-chip--active');
+                    tab1.classList.add('dsu-chip--inactive');
+                    tab2.classList.remove('dsu-chip--inactive');
+                    tab2.classList.add('dsu-chip--active');
+                    
+                    panel1.classList.remove('team-tab-panel--active');
+                    panel2.classList.add('team-tab-panel--active');
+                }
+
+                // Guardar estado en localStorage
+                localStorage.setItem('teamActiveTab', tabName);
+            }
+
+            // Event listeners para los tabs
+            tab1.addEventListener('click', function() {
+                if (!this.classList.contains('dsu-chip--active')) {
+                    switchTab('members');
+                }
+            });
+
+            tab2.addEventListener('click', function() {
+                if (!this.classList.contains('dsu-chip--active')) {
+                    switchTab('info');
+                }
+            });
+
+            // Aplicar estado guardado al cargar
+            switchTab(activeTab);
+
+            console.log('✅ Team Tabs inicializados');
         }
 
         // ============================================

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+qu<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="design-system/components/button.css">
     <link rel="stylesheet" href="design-system/components/chip.css">
     <link rel="stylesheet" href="design-system/components/card.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
     
     <style>
         * {
@@ -1181,6 +1182,31 @@
             /* margin-top: var(--spacing-24); */
         }
 
+        /* Team Tabs Section */
+        .team-tabs-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-24);
+            width: 100%;
+        }
+
+        .team-tabs-header {
+            display: flex;
+            gap: var(--spacing-08);
+            align-items: center;
+        }
+
+        .team-tab-panel {
+            display: none;
+            flex-direction: column;
+            gap: var(--spacing-24);
+            width: 100%;
+        }
+
+        .team-tab-panel--active {
+            display: flex;
+        }
+
         .team-assets-header {
             display: flex;
             flex-direction: column;
@@ -1485,65 +1511,119 @@
                     </div>
                 </div>
 
-                <!-- Team Description Section -->
-                <div class="team-description-section" id="teamDescriptionSection">
-                    <div class="team-description-header">
-                        <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
-                            <span class="team-description-section-title__text">Description</span>
-                            <span class="team-description-section-title__chevron">
-                                <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
-                        </div>
+                <!-- Team Tabs Section -->
+                <div class="team-tabs-container">
+                    <div class="team-tabs-header">
+                        <button class="dsu-chip dsu-chip--active" id="teamTab1" data-tab="members">
+                            <span class="dsu-chip__text">Team members</span>
+                        </button>
+                        <button class="dsu-chip dsu-chip--inactive" id="teamTab2" data-tab="info">
+                            <span class="dsu-chip__text">Team info</span>
+                        </button>
                     </div>
-                    <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
-                        <div class="team-description-content">
-                            <div class="team-assets-item">
-                                <div class="team-description-display" id="teamDescriptionDisplay"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Team Description Section -->
 
-                <!-- Team Mission Section -->
-                <div class="team-description-section" id="teamMissionSection">
-                    <div class="team-description-header">
-                        <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
-                            <span class="team-description-section-title__text">Mission</span>
-                            <span class="team-description-section-title__chevron">
-                                <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
-                        <div class="team-description-content">
-                            <div class="team-assets-item">
-                                <div class="team-description-display" id="teamMissionDisplay"></div>
+                    <!-- Tab 1: Team Members -->
+                    <div class="team-tab-panel team-tab-panel--active" id="teamTabPanel1" data-tab-content="members">
+                        <div class="team-members-section">
+                            <h2 class="team-members-title">Team members</h2>
+                            
+                            <!-- Secondary Action Levels -->
+                            <div class="secondary-actions">
+                                <div class="dsu-input-buscador search-input-group">
+                                    <input 
+                                        type="text" 
+                                        id="searchInput" 
+                                        class="dsu-input dsu-input--only" 
+                                        placeholder="Missing someone? find it here."
+                                    >
+                                    <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
+                                        <img src="images/send.svg" alt="Send">
+                                    </span>
+                                </div>
+                                <div class="view-controls">
+                                    <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
+                                        <img src="images/grid.svg" alt="Grid" class="btn-icon">
+                                    </button>
+                                    <button class="view-control-btn" id="listViewBtn" title="List view">
+                                        <img src="images/list.svg" alt="List" class="btn-icon">
+                                    </button>
+                                    <button class="view-control-btn" id="filtersBtn">
+                                        <span>Filters</span>
+                                        <img src="images/filter.svg" alt="Filter" class="btn-icon">
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="team-members-grid" id="teamMembersGrid">
+                                <!-- Member Cards will be dynamically loaded -->
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- END: Team Mission Section -->
 
-                <!-- Team Assets Section -->
-                <div class="team-assets-section" id="teamAssetsSection">
-                    <div class="team-assets-header">
-                        <div class="team-description-section-title team-description-section-title--expanded" data-section="teamAssets">
-                            <span class="team-description-section-title__text">Links of interest</span>
-                            <span class="team-description-section-title__chevron">
-                                <img src="images/down-chevron.svg" alt="Toggle">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="team-description-section-content team-description-section-content--expanded" data-content="teamAssets">
-                        <div class="team-assets-content">
-                            <div class="team-assets-items-container" id="teamAssetsItemsContainer">
-                                <!-- Items se mostrarán aquí dinámicamente -->
+                    <!-- Tab 2: Team Info (Description, Mission, Assets) -->
+                    <div class="team-tab-panel" id="teamTabPanel2" data-tab-content="info">
+                        <!-- Team Description Section -->
+                        <div class="team-description-section" id="teamDescriptionSection">
+                            <div class="team-description-header">
+                                <div class="team-description-section-title team-description-section-title--expanded" data-section="teamDescription">
+                                    <span class="team-description-section-title__text">Description</span>
+                                    <span class="team-description-section-title__chevron">
+                                        <img src="images/down-chevron.svg" alt="Toggle">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="team-description-section-content team-description-section-content--expanded" data-content="teamDescription">
+                                <div class="team-description-content">
+                                    <div class="team-assets-item">
+                                        <div class="team-description-display" id="teamDescriptionDisplay"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <!-- END: Team Description Section -->
+
+                        <!-- Team Mission Section -->
+                        <div class="team-description-section" id="teamMissionSection">
+                            <div class="team-description-header">
+                                <div class="team-description-section-title team-description-section-title--expanded" data-section="teamMission">
+                                    <span class="team-description-section-title__text">Mission</span>
+                                    <span class="team-description-section-title__chevron">
+                                        <img src="images/down-chevron.svg" alt="Toggle">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="team-description-section-content team-description-section-content--expanded" data-content="teamMission">
+                                <div class="team-description-content">
+                                    <div class="team-assets-item">
+                                        <div class="team-description-display" id="teamMissionDisplay"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Team Mission Section -->
+
+                        <!-- Team Assets Section -->
+                        <div class="team-assets-section" id="teamAssetsSection">
+                            <div class="team-assets-header">
+                                <div class="team-description-section-title team-description-section-title--expanded" data-section="teamAssets">
+                                    <span class="team-description-section-title__text">Links of interest</span>
+                                    <span class="team-description-section-title__chevron">
+                                        <img src="images/down-chevron.svg" alt="Toggle">
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="team-description-section-content team-description-section-content--expanded" data-content="teamAssets">
+                                <div class="team-assets-content">
+                                    <div class="team-assets-items-container" id="teamAssetsItemsContainer">
+                                        <!-- Items se mostrarán aquí dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END: Team Assets Section -->
                     </div>
                 </div>
-                <!-- END: Team Assets Section -->
+                <!-- END: Team Tabs Section -->
 
                 <!-- Associated Projects -->
                 <div class="dsu-input-group associated-projects-group">
@@ -1554,42 +1634,6 @@
                     </div>
                     <div class="projects-chips-container" id="projectsChipsContainer">
                         <!-- Chips will be dynamically loaded -->
-                    </div>
-                </div>
-
-                <!-- Team Members Section -->
-                <div class="team-members-section">
-                    <h2 class="team-members-title">Team members</h2>
-                    
-                    <!-- Secondary Action Levels -->
-                    <div class="secondary-actions">
-                        <div class="dsu-input-buscador search-input-group">
-                            <input 
-                                type="text" 
-                                id="searchInput" 
-                                class="dsu-input dsu-input--only" 
-                                placeholder="Missing someone? find it here."
-                            >
-                            <span class="dsu-input-buscador__send-icon" id="searchSendIcon">
-                                <img src="images/send.svg" alt="Send">
-                            </span>
-                        </div>
-                        <div class="view-controls">
-                            <button class="view-control-btn active" id="gridViewBtn" title="Grid view">
-                                <img src="images/grid.svg" alt="Grid" class="btn-icon">
-                            </button>
-                            <button class="view-control-btn" id="listViewBtn" title="List view">
-                                <img src="images/list.svg" alt="List" class="btn-icon">
-                            </button>
-                            <button class="view-control-btn" id="filtersBtn">
-                                <span>Filters</span>
-                                <img src="images/filter.svg" alt="Filter" class="btn-icon">
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="team-members-grid" id="teamMembersGrid">
-                        <!-- Member Cards will be dynamically loaded -->
                     </div>
                 </div>
             </div>
@@ -1899,6 +1943,9 @@
 
             // Inicializar funcionalidad de colapsar/expandir para las secciones (Description, Mission y Assets)
             initTeamDescriptionSections();
+
+            // Inicializar tabs del team
+            initTeamTabs();
 
             // Cargar datos del team publicado PRIMERO (antes del sidebar para mostrar info real inmediatamente)
             loadPublishedTeamData();
@@ -2604,6 +2651,68 @@
                     console.warn(`⚠️ Elementos de team ${sectionConfig.dataSection} section no encontrados`);
                 }
             });
+        }
+
+        // ============================================
+        // Inicializar Tabs del Team
+        // ============================================
+        function initTeamTabs() {
+            const tab1 = document.getElementById('teamTab1');
+            const tab2 = document.getElementById('teamTab2');
+            const panel1 = document.getElementById('teamTabPanel1');
+            const panel2 = document.getElementById('teamTabPanel2');
+
+            if (!tab1 || !tab2 || !panel1 || !panel2) {
+                console.warn('⚠️ Elementos de tabs no encontrados');
+                return;
+            }
+
+            // Cargar estado guardado del tab activo
+            const savedActiveTab = localStorage.getItem('teamActiveTab');
+            const activeTab = savedActiveTab || 'members'; // Por defecto 'members'
+
+            // Función para cambiar de tab
+            function switchTab(tabName) {
+                // Actualizar chips
+                if (tabName === 'members') {
+                    tab1.classList.remove('dsu-chip--inactive');
+                    tab1.classList.add('dsu-chip--active');
+                    tab2.classList.remove('dsu-chip--active');
+                    tab2.classList.add('dsu-chip--inactive');
+                    
+                    panel1.classList.add('team-tab-panel--active');
+                    panel2.classList.remove('team-tab-panel--active');
+                } else if (tabName === 'info') {
+                    tab1.classList.remove('dsu-chip--active');
+                    tab1.classList.add('dsu-chip--inactive');
+                    tab2.classList.remove('dsu-chip--inactive');
+                    tab2.classList.add('dsu-chip--active');
+                    
+                    panel1.classList.remove('team-tab-panel--active');
+                    panel2.classList.add('team-tab-panel--active');
+                }
+
+                // Guardar estado en localStorage
+                localStorage.setItem('teamActiveTab', tabName);
+            }
+
+            // Event listeners para los tabs
+            tab1.addEventListener('click', function() {
+                if (!this.classList.contains('dsu-chip--active')) {
+                    switchTab('members');
+                }
+            });
+
+            tab2.addEventListener('click', function() {
+                if (!this.classList.contains('dsu-chip--active')) {
+                    switchTab('info');
+                }
+            });
+
+            // Aplicar estado guardado al cargar
+            switchTab(activeTab);
+
+            console.log('✅ Team Tabs inicializados');
         }
         
         /**
