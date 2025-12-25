@@ -1,4 +1,4 @@
-qu<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -4003,6 +4003,11 @@ qu<!DOCTYPE html>
             const inputs = document.querySelectorAll('.dsu-input.dsu-input--only');
             
             inputs.forEach(input => {
+                // Excluir searchInput de la conversión a rich text
+                if (input.id === 'searchInput') {
+                    return;
+                }
+                
                 // Verificar si ya fue convertido (evitar duplicados)
                 if (input.dataset.richTextConverted === 'true') {
                     return;
