@@ -1025,6 +1025,151 @@
             line-height: 1;
         }
 
+        /* Fullscreen Preview Modal */
+        .preview-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            backdrop-filter: blur(4px);
+            padding: var(--spacing-24);
+        }
+
+        .preview-modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .preview-modal {
+            width: 100%;
+            height: 100%;
+            max-width: 95vw;
+            max-height: 95vh;
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: previewModalFadeIn 0.2s ease;
+            overflow: hidden;
+        }
+
+        @keyframes previewModalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .preview-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-16) var(--spacing-24);
+            border-bottom: 1px solid var(--color-basics-gray);
+            flex-shrink: 0;
+        }
+
+        .preview-modal-title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            margin: 0;
+            word-break: break-word;
+        }
+
+        .preview-modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .preview-modal-close-btn:hover {
+            background: var(--color-status-disabled);
+        }
+
+        .preview-modal-close-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .preview-modal-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-24);
+            overflow: auto;
+            position: relative;
+        }
+
+        .preview-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 600px;
+            border: none;
+            border-radius: var(--radius-md);
+        }
+
+        .preview-modal-content .document-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-16);
+            text-align: center;
+        }
+
+        .preview-modal-content .document-preview-icon {
+            width: 80px;
+            height: 80px;
+            opacity: 0.5;
+        }
+
+        .preview-modal-content .document-preview-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .preview-modal-content .document-preview-name {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .preview-modal-content .document-preview-size {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+        }
+
         .team-assets-item-content {
             flex: 1;
             display: flex;
@@ -1719,6 +1864,21 @@
                     <button class="dsu-button dsu-button--secondary dsu-button--medium dsu-sticky-buttons__button" id="saveDraftBtn" disabled>Duplicate team</button>
                     <button class="dsu-button dsu-button--primary dsu-button--medium dsu-sticky-buttons__button" id="publishBtn" disabled>Publish</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="preview-modal-overlay" id="previewModalOverlay">
+        <div class="preview-modal">
+            <div class="preview-modal-header">
+                <h2 class="preview-modal-title" id="previewModalTitle">Preview</h2>
+                <button class="preview-modal-close-btn" id="closePreviewModalBtn" aria-label="Close preview">
+                    <img src="images/close.svg" alt="Close" width="24" height="24">
+                </button>
+            </div>
+            <div class="preview-modal-content" id="previewModalContent">
+                <!-- El contenido del preview se insertará aquí dinámicamente -->
             </div>
         </div>
     </div>
@@ -5069,7 +5229,142 @@
                 convertInputToRichTextCompact(assetsInput, isValidUrlRef);
             }
 
+            // Event delegation para manejar clicks en previews de assets
+            if (assetsItemsContainer) {
+                assetsItemsContainer.addEventListener('click', function(e) {
+                    // Verificar si se hizo clic en un preview de imagen
+                    const imgPreview = e.target.closest('.team-assets-item-preview');
+                    if (imgPreview && imgPreview.tagName === 'IMG') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const src = imgPreview.src || imgPreview.dataset.previewSrc;
+                        const name = imgPreview.alt || imgPreview.dataset.previewName || 'Image';
+                        if (src) {
+                            openPreviewModal(src, name, 'image');
+                        }
+                        return;
+                    }
+                    
+                    // Verificar si se hizo clic en un preview de PDF
+                    const pdfPreview = e.target.closest('.team-assets-item-preview-wrapper');
+                    if (pdfPreview && pdfPreview.querySelector('iframe')) {
+                        if (e.target.tagName !== 'IFRAME') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const pdfSrc = pdfPreview.dataset.pdfSrc || pdfPreview.querySelector('iframe')?.src;
+                            const fileName = pdfPreview.dataset.fileName || pdfPreview.closest('.team-assets-item')?.querySelector('.team-assets-item-text')?.textContent || 'PDF Document';
+                            if (pdfSrc) {
+                                openPreviewModal(pdfSrc, fileName, 'pdf');
+                            }
+                        }
+                        return;
+                    }
+                    
+                    // Verificar si se hizo clic en un icono de documento
+                    const docIcon = e.target.closest('.team-assets-item-icon');
+                    if (docIcon && !docIcon.closest('.team-assets-item-preview-wrapper')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const fileName = docIcon.dataset.fileName || docIcon.closest('.team-assets-item')?.querySelector('.team-assets-item-text')?.textContent || 'Document';
+                        const fileSize = docIcon.dataset.fileSize || '';
+                        const fileExtension = docIcon.dataset.fileExtension || '';
+                        openPreviewModal(null, fileName, 'document', {
+                            size: fileSize,
+                            extension: fileExtension
+                        });
+                        return;
+                    }
+                });
+            }
+
             console.log('✅ Team Assets Section inicializado correctamente');
+        }
+
+        // ============================================
+        // Preview Modal Functionality
+        // ============================================
+        function openPreviewModal(src, fileName, type, extraInfo = {}) {
+            const modalOverlay = document.getElementById('previewModalOverlay');
+            const modalTitle = document.getElementById('previewModalTitle');
+            const modalContent = document.getElementById('previewModalContent');
+            const closeBtn = document.getElementById('closePreviewModalBtn');
+            
+            if (!modalOverlay || !modalTitle || !modalContent) return;
+            
+            // Establecer título
+            modalTitle.textContent = fileName || 'Preview';
+            
+            // Limpiar contenido anterior
+            modalContent.innerHTML = '';
+            
+            // Crear contenido según el tipo
+            if (type === 'image' && src) {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = fileName;
+                modalContent.appendChild(img);
+            } else if (type === 'pdf' && src) {
+                const iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.title = fileName;
+                modalContent.appendChild(iframe);
+            } else if (type === 'document') {
+                const docPreview = document.createElement('div');
+                docPreview.className = 'document-preview';
+                
+                const icon = document.createElement('img');
+                icon.src = 'images/attachment.svg';
+                icon.className = 'document-preview-icon';
+                icon.alt = 'Document';
+                
+                const info = document.createElement('div');
+                info.className = 'document-preview-info';
+                
+                const name = document.createElement('div');
+                name.className = 'document-preview-name';
+                name.textContent = fileName || 'Document';
+                
+                const size = document.createElement('div');
+                size.className = 'document-preview-size';
+                size.textContent = extraInfo.size || 'Unknown size';
+                
+                info.appendChild(name);
+                info.appendChild(size);
+                docPreview.appendChild(icon);
+                docPreview.appendChild(info);
+                
+                modalContent.appendChild(docPreview);
+            }
+            
+            // Mostrar modal
+            modalOverlay.classList.add('preview-modal-overlay--visible');
+            
+            // Cerrar modal al hacer clic en el botón de cerrar
+            if (closeBtn) {
+                const closeHandler = function() {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    closeBtn.removeEventListener('click', closeHandler);
+                };
+                closeBtn.addEventListener('click', closeHandler);
+            }
+            
+            // Cerrar modal al hacer clic fuera del contenido
+            const overlayClickHandler = function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    modalOverlay.removeEventListener('click', overlayClickHandler);
+                }
+            };
+            modalOverlay.addEventListener('click', overlayClickHandler);
+            
+            // Cerrar modal con tecla Escape
+            const escapeHandler = function(e) {
+                if (e.key === 'Escape') {
+                    modalOverlay.classList.remove('preview-modal-overlay--visible');
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
         }
 
         // ============================================
