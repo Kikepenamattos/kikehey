@@ -1,3 +1,15 @@
+900a10e53e50b57d0defe95fd3e753e90f46e34a|Ubits|ubits@macbookpro.lan|2025-12-25 20:10:47 -0500|Style: Ajustar espaciado y eliminar título de team members
+963e8abd0184e8d6711bf86233f727c338c5a7c3|Ubits|ubits@macbookpro.lan|2025-12-25 19:44:01 -0500|Fix: Ajustar colores de texto en modo dark para rich text inputs y team-description-content
+bfd2da240fcc3050795e4b88063fe4b27c348668|Ubits|ubits@macbookpro.lan|2025-12-25 14:11:51 -0500|Feat: Implementar funcionalidad de preview para imágenes y archivos en team-assets-item
+e151ea385b0ff2f52a45c8c86b40707312ec1f42|Ubits|ubits@macbookpro.lan|2025-12-25 13:47:00 -0500|Fix: Eliminar texto 'qu' del inicio de team_filled.html y excluir searchInput de conversión a rich text
+8e18122bc76fda46272c683c8ae934ef4c6f15d3|Ubits|ubits@macbookpro.lan|2025-12-25 12:43:27 -0500|Refactor: Mover campo Associated Projects al Tab Team Members y ajustar estilos
+bdc762166b44bb55ec62d3046557ce36ed7486d2|Ubits|ubits@macbookpro.lan|2025-12-25 12:34:16 -0500|Feat: Implementar sistema de tabs para organizar Team Members y Team Info
+5c0d1d7c7d97ff150efb05ebec24979d9bde1994|Ubits|ubits@macbookpro.lan|2025-12-25 12:10:27 -0500|Style: Ajustar espaciados y márgenes en secciones de Description, Mission y Assets
+7aa29d98c5c07669d74aa361e34af04e42e5083b|Ubits|ubits@macbookpro.lan|2025-12-24 18:00:38 -0500|Chore: Actualizar changelog con nuevo commit
+021ff79e413472b566f6f27c7c919fdc39e7d629|Ubits|ubits@macbookpro.lan|2025-12-24 12:21:40 -0500|Update: Finalizar sincronización de changelog
+2e19ee46c765ddfbb0b77658504812f6ba993a2e|Ubits|ubits@macbookpro.lan|2025-12-24 09:40:20 -0500|Update: Actualizar changelog
+7cb59ee318e371da3237f769c412fe4c51d20289|Ubits|ubits@macbookpro.lan|2025-12-22 14:39:33 -0500|Update: Actualizar changelog con últimos cambios
+d272fd0e0be434d0e2a61726ed553d7cc69b166e|Ubits|ubits@macbookpro.lan|2025-12-26 16:02:33 -0500|Feat: Implementar menú contextual con botón de elipsis en sidebar
 69ce6c48d3a41367358d5d16a9f49274709b9eda|Ubits|ubits@macbookpro.lan|2025-12-24 18:00:17 -0500|Feature: Replicar estilo de team-assets-item en secciones Description y Mission, y habilitar funcionalidad de colapsar/expandir en vista publicada
 2c89d863e9a12181be964ea38a498bcd9400a91c|Ubits|ubits@macbookpro.lan|2025-12-24 17:50:16 -0500|Chore: Actualizar changelog con nuevo commit
 78c8e344d54a2971ef43c91d8b81c2dcdf9b9916|Ubits|ubits@macbookpro.lan|2025-12-24 17:49:44 -0500|Feature: Agregar funcionalidad de rich text input para assets y deliverables con persistencia de texto y links asociados
