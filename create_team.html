@@ -169,6 +169,52 @@
         .dsu-input {
             /* max-width: 840px; */
         }
+
+        /* Dark mode - Input text color */
+        [data-theme="dark"] .dsu-input {
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .dsu-input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        /* Dark mode - Rich text input editor text color */
+        [data-theme="dark"] .dsu-rich-text-input__editor {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor * {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor p,
+        [data-theme="dark"] .dsu-rich-text-input__editor span,
+        [data-theme="dark"] .dsu-rich-text-input__editor div,
+        [data-theme="dark"] .dsu-rich-text-input__editor li {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact * {
+            color: #ffffff !important;
+        }
+
+        /* Dark mode - Links dentro del editor deben ser visibles */
+        [data-theme="dark"] .dsu-rich-text-input__editor a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor::placeholder {
+            color: var(--color-text-secondary);
+        }
         
         /* Asegurar que el icono del buscador esté dentro del input */
         .dsu-input-buscador {

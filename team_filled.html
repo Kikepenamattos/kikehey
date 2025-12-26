@@ -1173,6 +1173,46 @@
             border-color: var(--color-status-disabled-dark);
         }
 
+        /* Dark mode - Inputs dentro de team-description-content */
+        [data-theme="dark"] .team-description-content .dsu-input {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor * {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor p,
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor span,
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor div,
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor li {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor--compact {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor--compact * {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .team-description-content .dsu-rich-text-input__editor--compact a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
         /* Team Assets Section */
         .team-assets-section {
             display: flex;
@@ -1490,9 +1530,83 @@
         }
 
         /* Dark mode adjustments */
-        [data-theme="dark"] .team-description-section-title__text,
+        [data-theme="dark"] .team-description-section-title__text {
+            color: var(--color-text-primary);
+        }
+        
         [data-theme="dark"] .team-description-display {
-            color: var(--color-text-primary-dark);
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .team-description-display a {
+            color: var(--color-basics-light-blue);
+        }
+
+        [data-theme="dark"] .team-description-display a:hover {
+            color: var(--color-basics-white);
+        }
+
+        /* Dark mode - Sobrescribir estilos inline con color negro */
+        [data-theme="dark"] .team-description-content *:not(a),
+        [data-theme="dark"] .team-description-display *:not(a) {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .team-description-content p,
+        [data-theme="dark"] .team-description-content div,
+        [data-theme="dark"] .team-description-content span,
+        [data-theme="dark"] .team-description-display p,
+        [data-theme="dark"] .team-description-display div,
+        [data-theme="dark"] .team-description-display span {
+            color: #ffffff !important;
+        }
+
+        /* Asegurar que los links mantengan su color en dark mode */
+        [data-theme="dark"] .team-description-content a,
+        [data-theme="dark"] .team-description-display a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .team-description-content a:hover,
+        [data-theme="dark"] .team-description-display a:hover {
+            color: var(--color-basics-white) !important;
+        }
+
+        /* Dark mode - Rich text input editor text color */
+        [data-theme="dark"] .dsu-rich-text-input__editor {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor * {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor p,
+        [data-theme="dark"] .dsu-rich-text-input__editor span,
+        [data-theme="dark"] .dsu-rich-text-input__editor div,
+        [data-theme="dark"] .dsu-rich-text-input__editor li {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact {
+            color: #ffffff !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact * {
+            color: #ffffff !important;
+        }
+
+        /* Dark mode - Links dentro del editor deben ser visibles */
+        [data-theme="dark"] .dsu-rich-text-input__editor a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor--compact a {
+            color: var(--color-basics-light-blue) !important;
+        }
+
+        [data-theme="dark"] .dsu-rich-text-input__editor::placeholder {
+            color: var(--color-text-secondary);
         }
 
         /* Responsive */
