@@ -1248,6 +1248,11 @@
             teamsList.innerHTML = '';
 
             publishedTeams.forEach((team) => {
+                // Crear wrapper
+                const teamItemWrapper = document.createElement('div');
+                teamItemWrapper.className = 'dsu-team-item-wrapper';
+                
+                // Crear el item del team
                 const teamItem = document.createElement('button');
                 teamItem.className = 'dsu-team-item';
                 teamItem.setAttribute('data-team-id', team.id || '');
@@ -1257,6 +1262,24 @@
                 teamText.className = 'dsu-team-item__text';
                 teamText.textContent = team.name || 'Sin nombre';
                 teamItem.appendChild(teamText);
+                
+                // Crear botón de elipsis (fuera del item)
+                const ellipsisBtn = document.createElement('button');
+                ellipsisBtn.className = 'dsu-team-item__ellipsis';
+                ellipsisBtn.type = 'button';
+                ellipsisBtn.setAttribute('aria-label', 'Más opciones');
+                const ellipsisImg = document.createElement('img');
+                ellipsisImg.src = 'images/elipsis.svg';
+                ellipsisImg.alt = 'Más opciones';
+                ellipsisBtn.appendChild(ellipsisImg);
+                
+                // Event listener para el botón de elipsis
+                ellipsisBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    showContextMenu(e, 'team', team.id, team.name);
+                });
                 
                 teamItem.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1271,8 +1294,216 @@
                     }
                 });
                 
-                teamsList.appendChild(teamItem);
+                // Agregar item y botón al wrapper
+                teamItemWrapper.appendChild(teamItem);
+                teamItemWrapper.appendChild(ellipsisBtn);
+                
+                // Agregar wrapper a la lista
+                teamsList.appendChild(teamItemWrapper);
             });
+        }
+
+        // ============================================
+        // Context Menu Functions
+        // ============================================
+        let currentContextMenu = null;
+
+        function showContextMenu(event, itemType, itemId, itemName) {
+            // Cerrar menú anterior si existe
+            closeContextMenu();
+
+            // Crear menú contextual
+            const contextMenu = document.createElement('div');
+            contextMenu.className = 'context-menu context-menu--visible';
+            contextMenu.setAttribute('data-item-type', itemType);
+            contextMenu.setAttribute('data-item-id', itemId);
+            contextMenu.setAttribute('data-item-name', itemName);
+
+            // Opciones del menú
+            const menuItems = [
+                { action: 'share', label: 'Share', icon: 'images/share.svg' },
+                { action: 'duplicate', label: 'Duplicate', icon: 'images/duplicate.svg' },
+                { action: 'edit', label: 'Edit', icon: 'images/Edit.svg' },
+                { separator: true },
+                { action: 'delete', label: 'Delete', icon: 'images/trash.svg', danger: true }
+            ];
+
+            menuItems.forEach(item => {
+                if (item.separator) {
+                    const separator = document.createElement('hr');
+                    separator.className = 'context-menu__separator';
+                    contextMenu.appendChild(separator);
+                } else {
+                    const menuItem = document.createElement('button');
+                    menuItem.className = 'context-menu__item' + (item.danger ? ' context-menu__item--danger' : '');
+                    menuItem.setAttribute('data-action', item.action);
+                    
+                    const icon = document.createElement('div');
+                    icon.className = 'context-menu__item-icon';
+                    const iconImg = document.createElement('img');
+                    iconImg.src = item.icon;
+                    iconImg.alt = item.label;
+                    icon.appendChild(iconImg);
+                    
+                    const text = document.createElement('span');
+                    text.className = 'context-menu__item-text';
+                    text.textContent = item.label;
+                    
+                    menuItem.appendChild(icon);
+                    menuItem.appendChild(text);
+                    
+                    menuItem.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleContextMenuAction(item.action, itemType, itemId, itemName);
+                        closeContextMenu();
+                    });
+                    
+                    contextMenu.appendChild(menuItem);
+                }
+            });
+
+            // Agregar al body
+            document.body.appendChild(contextMenu);
+            currentContextMenu = contextMenu;
+
+            // Posicionar el menú
+            positionContextMenu(contextMenu, event);
+
+            // Cerrar al hacer clic fuera
+            setTimeout(() => {
+                document.addEventListener('click', closeContextMenuOnOutsideClick, true);
+            }, 0);
+        }
+
+        function positionContextMenu(menu, event) {
+            // Primero posicionar para calcular dimensiones
+            menu.style.left = event.clientX + 'px';
+            menu.style.top = event.clientY + 'px';
+            
+            // Esperar un frame para que el DOM se actualice
+            requestAnimationFrame(() => {
+                const rect = menu.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                let left = event.clientX;
+                let top = event.clientY;
+
+                // Ajustar si se sale por la derecha
+                if (left + rect.width > viewportWidth) {
+                    left = viewportWidth - rect.width - 10;
+                }
+
+                // Ajustar si se sale por abajo
+                if (top + rect.height > viewportHeight) {
+                    top = viewportHeight - rect.height - 10;
+                }
+
+                // Asegurar que no se salga por la izquierda o arriba
+                if (left < 10) left = 10;
+                if (top < 10) top = 10;
+
+                menu.style.left = left + 'px';
+                menu.style.top = top + 'px';
+            });
+        }
+
+        function closeContextMenu() {
+            if (currentContextMenu) {
+                currentContextMenu.remove();
+                currentContextMenu = null;
+            }
+            document.removeEventListener('click', closeContextMenuOnOutsideClick, true);
+        }
+
+        function closeContextMenuOnOutsideClick(event) {
+            if (currentContextMenu && !currentContextMenu.contains(event.target)) {
+                closeContextMenu();
+            }
+        }
+
+        function handleContextMenuAction(action, itemType, itemId, itemName) {
+            console.log(`🖱️ Context menu action: ${action} for ${itemType}`, itemId, itemName);
+
+            switch (action) {
+                case 'share':
+                    handleShare(itemType, itemId, itemName);
+                    break;
+                case 'duplicate':
+                    handleDuplicate(itemType, itemId, itemName);
+                    break;
+                case 'edit':
+                    handleEdit(itemType, itemId, itemName);
+                    break;
+                case 'delete':
+                    handleDelete(itemType, itemId, itemName);
+                    break;
+            }
+        }
+
+        function handleShare(itemType, itemId, itemName) {
+            const url = window.location.origin + window.location.pathname + '?id=' + itemId;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: itemName,
+                    text: `Check out this ${itemType}: ${itemName}`,
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying to clipboard:', err);
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        function handleDuplicate(itemType, itemId, itemName) {
+            if (itemType === 'team') {
+                // Redirigir a create_team.html con el ID para duplicar
+                window.location.href = `create_team.html?edit=true&id=${itemId}&duplicate=true`;
+            } else if (itemType === 'project') {
+                // Redirigir a project_empty.html con el ID para duplicar
+                window.location.href = `project_empty.html?id=${itemId}&duplicate=true`;
+            }
+        }
+
+        function handleEdit(itemType, itemId, itemName) {
+            if (itemType === 'team') {
+                window.location.href = `create_team.html?edit=true&id=${itemId}`;
+            } else if (itemType === 'project') {
+                window.location.href = `project_empty.html?edit=true&id=${itemId}`;
+            }
+        }
+
+        function handleDelete(itemType, itemId, itemName) {
+            const confirmMessage = `¿Estás seguro de que deseas eliminar "${itemName}"?\n\nEsta acción no se puede deshacer.`;
+            
+            if (confirm(confirmMessage)) {
+                // Aquí implementar la lógica de eliminación
+                console.log(`🗑️ Deleting ${itemType}:`, itemId, itemName);
+                
+                // TODO: Implementar eliminación real
+                // Por ahora solo mostramos un mensaje
+                alert(`"${itemName}" será eliminado. (Funcionalidad pendiente de implementar)`);
+            }
         }
 
         // Load Projects in Sidebar
@@ -1302,6 +1533,11 @@
             projectsList.innerHTML = '';
 
             publishedProjects.forEach((project) => {
+                // Crear wrapper
+                const projectItemWrapper = document.createElement('div');
+                projectItemWrapper.className = 'dsu-project-item-wrapper';
+                
+                // Crear el item del proyecto
                 const projectItem = document.createElement('button');
                 projectItem.className = 'dsu-project-item';
                 projectItem.setAttribute('data-project-id', project.id || '');
@@ -1311,6 +1547,24 @@
                 projectText.className = 'dsu-project-item__text';
                 projectText.textContent = project.name || 'Sin nombre';
                 projectItem.appendChild(projectText);
+                
+                // Crear botón de elipsis (fuera del item)
+                const ellipsisBtn = document.createElement('button');
+                ellipsisBtn.className = 'dsu-project-item__ellipsis';
+                ellipsisBtn.type = 'button';
+                ellipsisBtn.setAttribute('aria-label', 'Más opciones');
+                const ellipsisImg = document.createElement('img');
+                ellipsisImg.src = 'images/elipsis.svg';
+                ellipsisImg.alt = 'Más opciones';
+                ellipsisBtn.appendChild(ellipsisImg);
+                
+                // Event listener para el botón de elipsis
+                ellipsisBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    showContextMenu(e, 'project', project.id, project.name);
+                });
                 
                 projectItem.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1325,7 +1579,12 @@
                     }
                 });
                 
-                projectsList.appendChild(projectItem);
+                // Agregar item y botón al wrapper
+                projectItemWrapper.appendChild(projectItem);
+                projectItemWrapper.appendChild(ellipsisBtn);
+                
+                // Agregar wrapper a la lista
+                projectsList.appendChild(projectItemWrapper);
             });
         }
 

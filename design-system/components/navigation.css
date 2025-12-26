@@ -45,6 +45,10 @@
 .dsu-sidebar--collapsed .dsu-projects-button__text,
 .dsu-sidebar--collapsed .dsu-team-item__text,
 .dsu-sidebar--collapsed .dsu-project-item__text,
+.dsu-sidebar--collapsed .dsu-team-item__ellipsis,
+.dsu-sidebar--collapsed .dsu-project-item__ellipsis,
+.dsu-sidebar--collapsed .dsu-team-item-wrapper,
+.dsu-sidebar--collapsed .dsu-project-item-wrapper,
 .dsu-sidebar--collapsed .dsu-teams-create span,
 .dsu-sidebar--collapsed .dsu-projects-create span {
   display: none;
@@ -358,6 +362,14 @@
   max-width: 100%;
 }
 
+.dsu-team-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  position: relative;
+}
+
 .dsu-team-item {
   display: flex;
   align-items: center;
@@ -366,7 +378,8 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   text-align: left;
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-sm);
@@ -377,7 +390,7 @@
   border-radius: 20px;
 }
 
-.dsu-team-item:hover:not(:disabled) {
+.dsu-team-item-wrapper:hover .dsu-team-item:not(:disabled) {
   background-color: var(--color-surface-especial);
 }
 
@@ -391,7 +404,42 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
+}
+
+.dsu-team-item__ellipsis {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+.dsu-team-item-wrapper:hover .dsu-team-item__ellipsis {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.dsu-team-item__ellipsis img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-team-item__ellipsis img {
+  filter: brightness(0) saturate(100%) invert(1);
 }
 
 /* === PROJECTS BUTTON === */
@@ -585,6 +633,14 @@
   gap: 0;
 }
 
+.dsu-project-item-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  position: relative;
+}
+
 .dsu-project-item {
   display: flex;
   align-items: center;
@@ -593,7 +649,8 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   text-align: left;
   font-family: var(--font-family-secondary);
   font-size: var(--font-size-sm);
@@ -604,7 +661,7 @@
   border-radius: 30px;
 }
 
-.dsu-project-item:hover:not(:disabled) {
+.dsu-project-item-wrapper:hover .dsu-project-item:not(:disabled) {
   background-color: var(--color-surface-especial);
 }
 
@@ -618,9 +675,151 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
+.dsu-project-item__ellipsis {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+}
+
+.dsu-project-item-wrapper:hover .dsu-project-item__ellipsis {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.dsu-project-item__ellipsis img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .dsu-project-item__ellipsis img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* === CONTEXT MENU === */
+.context-menu {
+  position: fixed;
+  background: var(--color-surface-regular);
+  border: 1px solid var(--color-basics-gray);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+  min-width: 200px;
+  z-index: 10002;
+  display: none;
+  flex-direction: column;
+  animation: contextMenuFadeIn 0.15s ease;
+  overflow: hidden;
+}
+
+.context-menu--visible {
+  display: flex !important;
+}
+
+@keyframes contextMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.context-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.context-menu__item:hover {
+  background-color: var(--color-surface-especial);
+}
+
+.context-menu__item--danger {
+  color: #e74c3c;
+}
+
+.context-menu__item--danger:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+}
+
+.context-menu__item-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.context-menu__item-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Icon color adjustment for dark mode */
+[data-theme="dark"] .context-menu__item-icon img {
+  filter: brightness(0) saturate(100%) invert(1);
+}
+
+/* Danger icon should not be inverted */
+[data-theme="dark"] .context-menu__item--danger .context-menu__item-icon img {
+  filter: none;
+}
+
+.context-menu__item-text {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.context-menu__separator {
+  height: 1px;
+  background-color: var(--color-basics-gray);
+  margin: 4px 0;
+  border: none;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .context-menu {
+  background: var(--color-surface-regular);
+  border-color: var(--color-basics-gray);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .context-menu__separator {
+  background-color: var(--color-basics-gray);
+}
 
 /* === SIDEBAR TOGGLE BUTTON === */
 .dsu-sidebar__toggle {
