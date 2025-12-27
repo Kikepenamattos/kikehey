@@ -1,3 +1,4 @@
+44433698de829f8871d35184bc6c051ab9d1f671|Ubits|ubits@macbookpro.lan|2025-12-27 12:27:29 -0500|Update: Changelog actualizado con rich text en Communication Channels
 8741dd02dfc15b9bd71ea75cab6ac7d29f1f178d|Ubits|ubits@macbookpro.lan|2025-12-27 12:27:10 -0500|Feature: Implementar rich text compact en Communication Channels
 1a62d935a0dad9c3157e015736ccab5a84f7a375|Ubits|ubits@macbookpro.lan|2025-12-27 10:37:03 -0500|Update: Changelog actualizado con Task planner
 fb99f4bd9a414dbb56802d6988f162716dac071f|Ubits|ubits@macbookpro.lan|2025-12-27 10:36:53 -0500|Feature: Implementar sección Task planner con asignación múltiple de miembros
