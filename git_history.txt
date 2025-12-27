@@ -1,3 +1,4 @@
+f5b9749ea2117eb232b1ec4ee3ed94bc58e7dedb|Ubits|ubits@macbookpro.lan|2025-12-27 12:36:56 -0500|Update: Changelog actualizado con estilos de items
 2353106d042e272c4a9db978faf112dc3789464c|Ubits|ubits@macbookpro.lan|2025-12-27 12:36:32 -0500|Style: Actualizar estilos de communication channels y deliverables items
 44433698de829f8871d35184bc6c051ab9d1f671|Ubits|ubits@macbookpro.lan|2025-12-27 12:27:29 -0500|Update: Changelog actualizado con rich text en Communication Channels
 8741dd02dfc15b9bd71ea75cab6ac7d29f1f178d|Ubits|ubits@macbookpro.lan|2025-12-27 12:27:10 -0500|Feature: Implementar rich text compact en Communication Channels

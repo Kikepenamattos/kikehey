@@ -3528,7 +3528,18 @@
                 if (tasksItemsDisplay) {
                     tasksItemsDisplay.innerHTML = '';
                     tasksItemsDisplay.style.display = 'flex';
-                    project.tasks.forEach(task => {
+                    // Ordenar tasks por fecha de creación (más reciente primero)
+                    const sortedTasks = [...project.tasks].sort((a, b) => {
+                        const getDate = (task) => {
+                            if (typeof task === 'object' && task.createdAt) {
+                                return new Date(task.createdAt);
+                            }
+                            return new Date(0); // Tareas sin fecha al final
+                        };
+                        return getDate(b) - getDate(a); // Descendente (más reciente primero)
+                    });
+                    
+                    sortedTasks.forEach(task => {
                         // Manejar tanto formato antiguo (string) como nuevo (objeto)
                         const taskText = typeof task === 'string' ? task : (task.text || '');
                         const isCompleted = typeof task === 'object' ? (task.completed || false) : false;
