@@ -13432,11 +13432,40 @@
             function addCommunicationChannelItem(data) {
                 if (!communicationChannelsItemsContainer) return;
                 
+                // Manejar datos que vienen de extractContentFromEditor()
+                let url = '';
+                let name = '';
+                
+                if (data.type === 'link') {
+                    // Datos de rich text compact con link
+                    url = data.url || '';
+                    name = data.name || url;
+                } else if (data.type === 'text') {
+                    // Texto sin link - intentar normalizar como URL
+                    const text = data.text || '';
+                    const normalizedValue = normalizeUrl(text);
+                    if (isValidUrl(normalizedValue)) {
+                        url = normalizedValue;
+                        name = text;
+                    } else {
+                        // Si no es una URL válida, mostrar error
+                        alert('Please enter a valid URL (e.g., https://example.com) or add a link to the text using the link button.');
+                        return;
+                    }
+                } else {
+                    // Formato antiguo (compatibilidad)
+                    url = data.url || data.link || '';
+                    name = data.name || url;
+                }
+                
+                if (!url) {
+                    console.warn('⚠️ No se pudo obtener URL del communication channel');
+                    return;
+                }
+                
                 const item = document.createElement('div');
                 item.className = 'project-communication-channels-item';
                 
-                const url = data.url || data.link || '';
-                const name = data.name || url;
                 const normalizedUrl = normalizeUrl(url);
                 
                 item.innerHTML = `
@@ -13480,38 +13509,15 @@
                 }
             };
 
-            // Input functionality - Add link on Enter
+            // Convert input to rich text compact
             if (communicationChannelsInput) {
-                communicationChannelsInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter' && this.value.trim()) {
-                        e.preventDefault();
-                        const value = this.value.trim();
-                        
-                        if (isValidUrl(value)) {
-                            // Es un link válido
-                            addCommunicationChannelItem({
-                                type: 'link',
-                                url: value,
-                                name: value
-                            });
-                        } else {
-                            // Intentar agregar https:// si no tiene protocolo
-                            const normalizedValue = normalizeUrl(value);
-                            if (isValidUrl(normalizedValue)) {
-                                addCommunicationChannelItem({
-                                    type: 'link',
-                                    url: normalizedValue,
-                                    name: value
-                                });
-                            } else {
-                                alert('Please enter a valid URL (e.g., https://example.com)');
-                                return;
-                            }
-                        }
-                        
-                        this.value = '';
-                    }
-                });
+                // Convertir el input a rich text compact con funcionalidad de link
+                convertInputToRichTextCompact(
+                    communicationChannelsInput,
+                    isValidUrl, // Función de validación de URL
+                    addCommunicationChannelItem // Función para agregar item al presionar Enter
+                );
+                console.log('✅ Communication Channels Input convertido a rich text compact');
             }
 
             // Hacer addCommunicationChannelItem accesible globalmente para loadProjectData

@@ -1,3 +1,4 @@
+1a62d935a0dad9c3157e015736ccab5a84f7a375|Ubits|ubits@macbookpro.lan|2025-12-27 10:37:03 -0500|Update: Changelog actualizado con Task planner
 fb99f4bd9a414dbb56802d6988f162716dac071f|Ubits|ubits@macbookpro.lan|2025-12-27 10:36:53 -0500|Feature: Implementar sección Task planner con asignación múltiple de miembros
 7d1f2d923c0e82a05e127ef65a369dde7410ccaf|Ubits|ubits@macbookpro.lan|2025-12-27 07:51:51 -0500|Update: Changelog actualizado con icono rojo en menú contextual
 c2a68fd958fd8a805bb41b4117462b40b59810b4|Ubits|ubits@macbookpro.lan|2025-12-27 07:51:39 -0500|Style: Hacer icono de trash.svg rojo en menú contextual
