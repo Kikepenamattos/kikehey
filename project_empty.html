@@ -4979,6 +4979,102 @@
                 </div>
                 <!-- END: Tasks Section -->
 
+                <!-- Deliverables Section -->
+                <div class="project-deliverables-section" id="projectDeliverablesSection">
+                    <div class="project-deliverables-header">
+                        <div class="project-deliverables-headline">
+                            <h2 class="project-deliverables-title">Deliverables</h2>
+                        </div>
+                        <p class="project-deliverables-description">Provide all the available information to star solid.</p>
+                    </div>
+                    <div class="project-deliverables-content">
+                        <div class="project-deliverables-items-container" id="deliverablesItemsContainer">
+                            <!-- Items se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="project-deliverables-input-row">
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container project-deliverables-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="deliverablesInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                                <div class="project-deliverables-input-actions">
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
+                                        <img src="images/attachment.svg" alt="Upload">
+                                    </button>
+                                    <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
+                                        <img src="images/project.svg" alt="Image">
+                                    </button>
+                                    <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
+                                    <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dsu-status-button-wrapper">
+                                <button class="dsu-status-button dsu-status-button--to-start" id="deliverableStatusButton">
+                                    <span id="deliverableStatusButtonText">To start</span>
+                                    <span class="dsu-status-button__chevron">
+                                        <img src="images/down-chevron.svg" alt="Chevron" id="deliverableStatusChevron">
+                                    </span>
+                                </button>
+                                <div class="dsu-status-dropdown" id="deliverableStatusDropdown">
+                                    <button class="dsu-status-dropdown__item" data-status="to-start">
+                                        <span class="dsu-status-dropdown__text">To start</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="in-progress">
+                                        <span class="dsu-status-dropdown__text">In progress</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="done">
+                                        <span class="dsu-status-dropdown__text">Done</span>
+                                    </button>
+                                    <button class="dsu-status-dropdown__item" data-status="paused">
+                                        <span class="dsu-status-dropdown__text">Paused</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Deliverables Section -->
+
+                <!-- Assets or Links Section -->
+                <div class="project-assets-section" id="projectAssetsSection">
+                    <div class="project-assets-header">
+                        <div class="project-assets-headline">
+                            <h2 class="project-assets-title">Assets or links</h2>
+                        </div>
+                        <p class="project-assets-description">Provide all the available information to star solid.</p>
+                    </div>
+                    <div class="project-assets-content">
+                        <div class="project-assets-items-container" id="assetsItemsContainer">
+                            <!-- Items se agregarán aquí dinámicamente -->
+                        </div>
+                        <div class="dsu-input-group">
+                            <div class="dsu-input-container project-assets-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="dsu-input dsu-input--only" 
+                                    id="assetsInput" 
+                                    placeholder="Choose an unique name"
+                                >
+                                <div class="project-assets-input-actions">
+                                    <button class="project-assets-action-btn" id="uploadFileBtn" title="Upload file">
+                                        <img src="images/attachment.svg" alt="Upload">
+                                    </button>
+                                    <button class="project-assets-action-btn" id="uploadImageBtn" title="Upload image">
+                                        <img src="images/project.svg" alt="Image">
+                                    </button>
+                                    <input type="file" id="assetsFileInput" accept="*/*" style="display: none;">
+                                    <input type="file" id="assetsImageInput" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Assets or Links Section -->
+
                 <!-- Test Section (Rich Text Input) -->
                 <div class="project-test-section" id="projectTestSection">
                     <div class="project-test-header">
@@ -5145,102 +5241,6 @@
                     </div>
                 </div>
                 <!-- END: Solution approach Section -->
-
-                <!-- Assets or Links Section -->
-                <div class="project-assets-section" id="projectAssetsSection">
-                    <div class="project-assets-header">
-                        <div class="project-assets-headline">
-                            <h2 class="project-assets-title">Assets or links</h2>
-                        </div>
-                        <p class="project-assets-description">Provide all the available information to star solid.</p>
-                    </div>
-                    <div class="project-assets-content">
-                        <div class="project-assets-items-container" id="assetsItemsContainer">
-                            <!-- Items se agregarán aquí dinámicamente -->
-                        </div>
-                        <div class="dsu-input-group">
-                            <div class="dsu-input-container project-assets-input-wrapper">
-                                <input 
-                                    type="text" 
-                                    class="dsu-input dsu-input--only" 
-                                    id="assetsInput" 
-                                    placeholder="Choose an unique name"
-                                >
-                                <div class="project-assets-input-actions">
-                                    <button class="project-assets-action-btn" id="uploadFileBtn" title="Upload file">
-                                        <img src="images/attachment.svg" alt="Upload">
-                                    </button>
-                                    <button class="project-assets-action-btn" id="uploadImageBtn" title="Upload image">
-                                        <img src="images/project.svg" alt="Image">
-                                    </button>
-                                    <input type="file" id="assetsFileInput" accept="*/*" style="display: none;">
-                                    <input type="file" id="assetsImageInput" accept="image/*" style="display: none;">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Assets or Links Section -->
-
-                <!-- Deliverables Section -->
-                <div class="project-deliverables-section" id="projectDeliverablesSection">
-                    <div class="project-deliverables-header">
-                        <div class="project-deliverables-headline">
-                            <h2 class="project-deliverables-title">Deliverables</h2>
-                        </div>
-                        <p class="project-deliverables-description">Provide all the available information to star solid.</p>
-                    </div>
-                    <div class="project-deliverables-content">
-                        <div class="project-deliverables-items-container" id="deliverablesItemsContainer">
-                            <!-- Items se agregarán aquí dinámicamente -->
-                        </div>
-                        <div class="project-deliverables-input-row">
-                        <div class="dsu-input-group">
-                            <div class="dsu-input-container project-deliverables-input-wrapper">
-                                <input 
-                                    type="text" 
-                                    class="dsu-input dsu-input--only" 
-                                    id="deliverablesInput" 
-                                    placeholder="Choose an unique name"
-                                >
-                                <div class="project-deliverables-input-actions">
-                                    <button class="project-deliverables-action-btn" id="uploadDeliverableFileBtn" title="Upload file">
-                                        <img src="images/attachment.svg" alt="Upload">
-                                    </button>
-                                    <button class="project-deliverables-action-btn" id="uploadDeliverableImageBtn" title="Upload image">
-                                        <img src="images/project.svg" alt="Image">
-                                    </button>
-                                    <input type="file" id="deliverablesFileInput" accept="*/*" style="display: none;">
-                                    <input type="file" id="deliverablesImageInput" accept="image/*" style="display: none;">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dsu-status-button-wrapper">
-                                <button class="dsu-status-button dsu-status-button--to-start" id="deliverableStatusButton">
-                                    <span id="deliverableStatusButtonText">To start</span>
-                                    <span class="dsu-status-button__chevron">
-                                        <img src="images/down-chevron.svg" alt="Chevron" id="deliverableStatusChevron">
-                                    </span>
-                                </button>
-                                <div class="dsu-status-dropdown" id="deliverableStatusDropdown">
-                                    <button class="dsu-status-dropdown__item" data-status="to-start">
-                                        <span class="dsu-status-dropdown__text">To start</span>
-                                    </button>
-                                    <button class="dsu-status-dropdown__item" data-status="in-progress">
-                                        <span class="dsu-status-dropdown__text">In progress</span>
-                                    </button>
-                                    <button class="dsu-status-dropdown__item" data-status="done">
-                                        <span class="dsu-status-dropdown__text">Done</span>
-                                    </button>
-                                    <button class="dsu-status-dropdown__item" data-status="paused">
-                                        <span class="dsu-status-dropdown__text">Paused</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Deliverables Section -->
 
                 <!-- ========================================== -->
                 <!-- NUEVOS COMPONENTES: Agregar aquí arriba -->

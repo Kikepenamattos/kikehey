@@ -1,3 +1,4 @@
+e4e80281881f1f9da7f0ed65f622c135daff370d|Ubits|ubits@macbookpro.lan|2025-12-27 12:45:28 -0500|Update: Changelog actualizado con orden de tasks
 8b8335eb1896f4a365ce70220082dd9f8ac0647f|Ubits|ubits@macbookpro.lan|2025-12-27 12:45:17 -0500|Feature: Implementar orden de tasks (más reciente arriba)
 f5b9749ea2117eb232b1ec4ee3ed94bc58e7dedb|Ubits|ubits@macbookpro.lan|2025-12-27 12:36:56 -0500|Update: Changelog actualizado con estilos de items
 2353106d042e272c4a9db978faf112dc3789464c|Ubits|ubits@macbookpro.lan|2025-12-27 12:36:32 -0500|Style: Actualizar estilos de communication channels y deliverables items
