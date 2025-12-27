@@ -1,3 +1,4 @@
+39b8c6d8bc30fa29f73ea0d385dcc8624296fa06|Ubits|ubits@macbookpro.lan|2025-12-26 16:04:26 -0500|Update: Changelog actualizado con menú contextual
 900a10e53e50b57d0defe95fd3e753e90f46e34a|Ubits|ubits@macbookpro.lan|2025-12-25 20:10:47 -0500|Style: Ajustar espaciado y eliminar título de team members
 963e8abd0184e8d6711bf86233f727c338c5a7c3|Ubits|ubits@macbookpro.lan|2025-12-25 19:44:01 -0500|Fix: Ajustar colores de texto en modo dark para rich text inputs y team-description-content
 bfd2da240fcc3050795e4b88063fe4b27c348668|Ubits|ubits@macbookpro.lan|2025-12-25 14:11:51 -0500|Feat: Implementar funcionalidad de preview para imágenes y archivos en team-assets-item

@@ -793,9 +793,14 @@
   filter: brightness(0) saturate(100%) invert(1);
 }
 
-/* Danger icon should not be inverted */
+/* Danger icon should be red */
+.context-menu__item--danger .context-menu__item-icon img {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+/* Danger icon should not be inverted in dark mode, keep red */
 [data-theme="dark"] .context-menu__item--danger .context-menu__item-icon img {
-  filter: none;
+  filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
 .context-menu__item-text {
