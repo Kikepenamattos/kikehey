@@ -865,6 +865,319 @@
             margin-top: 48px;
         }
 
+        /* Project Tasks Section */
+        .project-tasks-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: var(--spacing-48);
+        }
+
+        .project-tasks-header {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-tasks-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .project-tasks-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .project-tasks-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+        }
+
+        .project-tasks-items-container[style*="display: none"] {
+            display: none !important;
+        }
+
+        .project-tasks-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-text {
+            flex: 1;
+            margin: 0;
+        }
+
+        .project-tasks-item-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: var(--color-basics-dark-blue, #0a243f);
+        }
+
+        .project-tasks-item-checkbox:checked {
+            accent-color: var(--color-status-done);
+        }
+
+        .project-tasks-item-text {
+            flex: 1;
+            margin: 0;
+            transition: text-decoration 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+            min-width: 0;
+        }
+
+        .project-tasks-item--completed .project-tasks-item-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .project-tasks-item--completed {
+            background-color: var(--color-status-done-light-bg);
+            border-color: var(--color-status-done);
+        }
+
+        .project-tasks-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-tasks-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-tasks-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .project-tasks-section--disabled .dsu-input {
+            background-color: var(--color-status-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+            color: var(--color-text-secondary);
+            pointer-events: none;
+        }
+
+        .project-tasks-section--disabled .project-tasks-items-container {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Project Tasks Item - Avatar and Member Assignment */
+        .project-tasks-item-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex-shrink: 0;
+        }
+
+        .project-tasks-item-avatar-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--color-status-disabled);
+            background-color: var(--color-surface-regular);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0;
+            position: relative;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .project-tasks-item-avatar-btn:hover {
+            border-color: var(--color-basics-dark-blue);
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-tasks-item-avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-avatar-placeholder img {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .project-tasks-item-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .project-tasks-item-member-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+        }
+
+        .project-tasks-item-member-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-date {
+            color: var(--color-text-secondary);
+        }
+
+        .project-tasks-item-date-container {
+            display: flex;
+            align-items: center;
+            margin-left: var(--spacing-12);
+        }
+
+        /* Multiple Avatars Container */
+        .project-tasks-item-avatars-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .project-tasks-item-assigned-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            background-color: var(--color-status-disabled);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .project-tasks-item-assigned-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .project-tasks-item-assigned-avatar:not(:first-child) {
+            margin-left: -12px;
+        }
+
+        /* Member Selection Dropdown */
+        .project-tasks-member-dropdown {
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            position: absolute;
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10000;
+        }
+
+        .project-tasks-member-dropdown--visible {
+            display: flex;
+        }
+
+        .project-tasks-member-dropdown__item {
+            padding: var(--spacing-12) var(--spacing-16);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-member-dropdown__item:hover {
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-tasks-member-dropdown__item--selected {
+            background-color: var(--color-surface-especial);
+        }
+
+        .project-tasks-member-dropdown__item-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+        }
+
+        .project-tasks-member-dropdown__item-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--color-status-disabled);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .project-tasks-member-dropdown__item-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-tasks-member-dropdown__item-name {
+            flex: 1;
+        }
+
+        .project-tasks-member-dropdown__separator {
+            height: 1px;
+            background-color: var(--color-basics-gray);
+            margin: var(--spacing-04) 0;
+        }
+
 
         .project-agreements-hide {
             display: flex;
@@ -1083,6 +1396,27 @@
             cursor: pointer;
             user-select: none;
             width: 100%;
+        }
+
+        .project-section-title__icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: var(--spacing-12);
+        }
+
+        .project-section-title__icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .project-section-title__icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .project-section-title__text {
@@ -3072,10 +3406,13 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             overflow: hidden;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+            background-color: var(--color-status-disabled);
         }
 
         .modal-member-avatar .avatar__img {
@@ -4606,6 +4943,42 @@
                 </div>
                 <!-- END: Project Agreements Section -->
 
+                <!-- Tasks Section -->
+                <div class="project-tasks-section" id="projectTasksSection">
+                    <div class="project-tasks-header">
+                        <div class="project-tasks-headline">
+                            <div class="project-section-title project-section-title--expanded" data-section="tasks">
+                                <span class="project-section-title__icon">
+                                    <img src="images/number_list.svg" alt="Task planner">
+                                </span>
+                                <span class="project-section-title__text">Task planner</span>
+                                <span class="project-section-title__chevron">
+                                    <img src="images/down-chevron.svg" alt="Toggle">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="tasks">
+                        <div class="project-tasks-content">
+                            <!-- Tasks Items Container -->
+                            <div class="project-tasks-items-container" id="tasksItemsContainer">
+                                <!-- Items de Tasks se agregarán aquí dinámicamente -->
+                            </div>
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="taskInput" 
+                                        placeholder="Choose an unique name"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Tasks Section -->
+
                 <!-- Test Section (Rich Text Input) -->
                 <div class="project-test-section" id="projectTestSection">
                     <div class="project-test-header">
@@ -4918,6 +5291,33 @@
                                     <span>Confirm</span>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal para asignar miembros a task -->
+            <div class="modal-overlay" id="assignTaskMembersModal">
+                <div class="modal" style="width: 35%; max-width: 500px;">
+                    <div class="modal-headline">
+                        <div class="modal__title">Assign members to task</div>
+                        <button class="modal-close-btn" id="closeAssignTaskMembersModalBtn" aria-label="Close modal">
+                            <img src="images/close.svg" alt="Close" width="20" height="20">
+                        </button>
+                    </div>
+                    <div class="modal__body">
+                        <div class="modal-members-selection" id="assignTaskMembersList" style="display: block;">
+                            <div class="modal-members-list" id="assignTaskMembersListContent">
+                                <!-- Miembros con checkboxes se cargarán aquí -->
+                            </div>
+                        </div>
+                        <div class="modal-step-actions" style="margin-top: var(--spacing-24);">
+                            <button class="dsu-button dsu-button--secondary dsu-button--small" id="cancelAssignTaskMembersBtn">
+                                <span>Cancel</span>
+                            </button>
+                            <button class="dsu-button dsu-button--primary dsu-button--small" id="confirmAssignTaskMembersBtn">
+                                <span>Confirm</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -5303,6 +5703,9 @@
 
             // Inicializar objective section
             initObjectiveSection();
+
+            // Inicializar tasks section
+            initTasksSection();
 
             // Inicializar solve section
             initSolveSection();
@@ -6788,6 +7191,75 @@
             } else {
                 console.log('ℹ️ No hay sección de objetivos o no hay datos de Goals/KPIs');
             }
+
+            // Cargar Tasks
+            const tasksSection = document.getElementById('projectTasksSection');
+            const tasksItemsContainer = document.getElementById('tasksItemsContainer');
+            
+            if (tasksSection && project.tasks && Array.isArray(project.tasks) && project.tasks.length > 0) {
+                console.log('✅ Cargando Tasks:', project.tasks.length);
+                // Esperar a que initTasksSection haya terminado y addTaskItem esté disponible
+                setTimeout(() => {
+                    if (tasksItemsContainer && typeof window.addTaskItem === 'function') {
+                        project.tasks.forEach(task => {
+                            // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                            const taskText = typeof task === 'string' ? task : (task.text || '');
+                            const isCompleted = typeof task === 'object' ? (task.completed || false) : false;
+                            const createdAt = typeof task === 'object' ? (task.createdAt || null) : null;
+                            
+                            // Manejar assignedMembers (array) o assignedMember (single) para compatibilidad
+                            let assignedMembers = null;
+                            if (typeof task === 'object') {
+                                if (task.assignedMembers && Array.isArray(task.assignedMembers)) {
+                                    assignedMembers = task.assignedMembers;
+                                } else if (task.assignedMember) {
+                                    // Compatibilidad con formato antiguo (single member)
+                                    assignedMembers = [task.assignedMember];
+                                }
+                            }
+                            
+                            if (taskText && taskText.trim()) {
+                                window.addTaskItem(taskText.trim(), isCompleted, assignedMembers, createdAt);
+                            }
+                        });
+                        console.log('✅ Tasks cargados');
+                        
+                        // Asegurar que el contenedor de Tasks esté visible
+                        if (tasksItemsContainer) {
+                            tasksItemsContainer.style.display = 'flex';
+                        }
+                    } else {
+                        console.warn('⚠️ addTaskItem no está disponible aún, reintentando...');
+                        setTimeout(() => {
+                            if (tasksItemsContainer && typeof window.addTaskItem === 'function') {
+                                project.tasks.forEach(task => {
+                                    const taskText = typeof task === 'string' ? task : (task.text || '');
+                                    const isCompleted = typeof task === 'object' ? (task.completed || false) : false;
+                                    const createdAt = typeof task === 'object' ? (task.createdAt || null) : null;
+                                    
+                                    // Manejar assignedMembers (array) o assignedMember (single) para compatibilidad
+                                    let assignedMembers = null;
+                                    if (typeof task === 'object') {
+                                        if (task.assignedMembers && Array.isArray(task.assignedMembers)) {
+                                            assignedMembers = task.assignedMembers;
+                                        } else if (task.assignedMember) {
+                                            // Compatibilidad con formato antiguo (single member)
+                                            assignedMembers = [task.assignedMember];
+                                        }
+                                    }
+                                    
+                                    if (taskText && taskText.trim()) {
+                                        window.addTaskItem(taskText.trim(), isCompleted, assignedMembers, createdAt);
+                                    }
+                                });
+                                console.log('✅ Tasks cargados (reintento)');
+                            }
+                        }, 800);
+                    }
+                }, 600);
+            } else {
+                console.log('ℹ️ No hay Tasks para cargar');
+            }
             
             // Cargar Agreements
             if (project.agreements && Array.isArray(project.agreements) && project.agreements.length > 0) {
@@ -7221,7 +7693,7 @@
             if (project.collapsibleSectionsState && typeof project.collapsibleSectionsState === 'object') {
                 // Esperar un poco para asegurar que initCollapsibleSections ya se haya ejecutado
                 setTimeout(() => {
-                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives'];
+                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives', 'tasks'];
                     collapsibleSections.forEach(sectionName => {
                         const savedState = project.collapsibleSectionsState[sectionName];
                         if (savedState !== undefined) {
@@ -11968,6 +12440,482 @@
         }
 
         // ============================================
+        // Project Tasks Section
+        // ============================================
+        function initTasksSection() {
+            const tasksSection = document.getElementById('projectTasksSection');
+            const taskInput = document.getElementById('taskInput');
+            const tasksItemsContainer = document.getElementById('tasksItemsContainer');
+            
+            if (!tasksSection) {
+                console.warn('⚠️ Elementos de Tasks Section no encontrados');
+                return;
+            }
+
+            // Function to get all team members from teams associated with the project (teams-list-container)
+            function getAllTeamMembers() {
+                const projectData = DocuProjectData.getProjectData();
+                if (!projectData || !projectData.teams) {
+                    return [];
+                }
+                
+                // Obtener teams asociados al proyecto desde teams-list-container
+                const teamsListContainer = document.getElementById('teamsListContainer');
+                const associatedTeamIds = [];
+                
+                if (teamsListContainer) {
+                    const teamItems = teamsListContainer.querySelectorAll('.team-item[data-team-id]');
+                    teamItems.forEach(teamItem => {
+                        const teamId = teamItem.getAttribute('data-team-id');
+                        if (teamId) {
+                            associatedTeamIds.push(teamId);
+                        }
+                    });
+                }
+                
+                // Si no hay teams en el contenedor, retornar array vacío
+                if (associatedTeamIds.length === 0) {
+                    console.log('ℹ️ No hay teams asociados al proyecto');
+                    return [];
+                }
+                
+                const allMembers = [];
+                
+                // Obtener miembros solo de los teams asociados
+                associatedTeamIds.forEach(teamId => {
+                    const team = projectData.teams.find(t => String(t.id) === String(teamId));
+                    if (team && team.members && Array.isArray(team.members)) {
+                        team.members.forEach(member => {
+                            // Evitar duplicados por ID
+                            if (!allMembers.find(m => m.id === member.id)) {
+                                // Obtener imagen del miembro (puede ser 'image' o 'avatar')
+                                const memberImage = member.image || member.avatar || '';
+                                allMembers.push({
+                                    id: member.id,
+                                    name: member.name || 'Unnamed',
+                                    lastName: member.lastName || '',
+                                    avatar: memberImage, // Usar 'image' o 'avatar'
+                                    image: memberImage,  // Mantener ambos para compatibilidad
+                                    role: member.role || '',
+                                    email: member.email || ''
+                                });
+                            }
+                        });
+                    }
+                });
+                
+                console.log('📋 Miembros obtenidos de teams asociados:', allMembers.length);
+                return allMembers;
+            }
+
+            // Variable para almacenar el task item actual en el modal
+            let currentTaskItemForModal = null;
+
+            // Function to show member selection modal
+            function showMemberSelectionModal(taskItem) {
+                const members = getAllTeamMembers();
+                if (members.length === 0) {
+                    alert('No hay miembros disponibles en los teams. Agrega miembros primero.');
+                    return;
+                }
+
+                currentTaskItemForModal = taskItem;
+
+                // Obtener miembros actualmente asignados
+                const currentAssignedMembers = getAssignedMembersFromTask(taskItem);
+
+                // Mostrar modal
+                const modal = document.getElementById('assignTaskMembersModal');
+                const membersList = document.getElementById('assignTaskMembersListContent');
+                
+                if (!modal || !membersList) {
+                    console.error('Modal elements not found');
+                    return;
+                }
+
+                // Limpiar lista
+                membersList.innerHTML = '';
+
+                // Crear items de miembros con checkboxes
+                members.forEach(member => {
+                    const memberItem = document.createElement('div');
+                    memberItem.className = 'modal-member-item';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `task-member-${member.id}`;
+                    checkbox.value = JSON.stringify(member);
+                    
+                    // Marcar como seleccionado si ya está asignado
+                    const isAssigned = currentAssignedMembers.some(m => m.id === member.id);
+                    checkbox.checked = isAssigned;
+                    
+                    const memberContent = document.createElement('div');
+                    memberContent.className = 'modal-member-content';
+                    memberContent.addEventListener('click', function() {
+                        checkbox.checked = !checkbox.checked;
+                    });
+                    
+                    // Avatar
+                    const avatarContainer = document.createElement('span');
+                    avatarContainer.className = 'modal-member-avatar';
+                    
+                    // Obtener referencia de imagen (puede ser 'image' o 'avatar')
+                    const memberImageRef = member.image || member.avatar || '';
+                    
+                    if (memberImageRef && memberImageRef.trim()) {
+                        const avatarImg = document.createElement('img');
+                        avatarImg.className = 'avatar__img';
+                        avatarImg.alt = member.name || 'Member';
+                        
+                        // Cargar imagen usando getMemberImage si está disponible
+                        if (typeof getMemberImage === 'function') {
+                            getMemberImage(memberImageRef).then(imageSrc => {
+                                avatarImg.src = imageSrc;
+                            }).catch(error => {
+                                console.error('Error al cargar imagen del miembro:', error);
+                                avatarImg.style.display = 'none';
+                                avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                            });
+                        } else {
+                            // Fallback directo
+                            avatarImg.src = memberImageRef;
+                        }
+                        
+                        avatarImg.onerror = function() {
+                            // Si la imagen falla al cargar, mostrar inicial
+                            this.style.display = 'none';
+                            avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                        };
+                        
+                        avatarContainer.appendChild(avatarImg);
+                    } else {
+                        // Mostrar inicial si no hay avatar
+                        avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                    }
+                    
+                    // Nombre
+                    const memberLabel = document.createElement('label');
+                    memberLabel.className = 'modal-member-label';
+                    memberLabel.setAttribute('for', `task-member-${member.id}`);
+                    memberLabel.textContent = member.name;
+                    
+                    memberContent.appendChild(avatarContainer);
+                    memberContent.appendChild(memberLabel);
+                    
+                    memberItem.appendChild(checkbox);
+                    memberItem.appendChild(memberContent);
+                    
+                    membersList.appendChild(memberItem);
+                });
+
+                // Mostrar modal
+                modal.classList.add('modal-overlay--visible');
+            }
+
+            // Function to get assigned members from task item
+            function getAssignedMembersFromTask(taskItem) {
+                const assignedMembersData = taskItem.dataset.assignedMembers;
+                if (!assignedMembersData) {
+                    return [];
+                }
+                try {
+                    return JSON.parse(assignedMembersData);
+                } catch (e) {
+                    console.error('Error parsing assigned members:', e);
+                    return [];
+                }
+            }
+
+            // Function to close assign members modal
+            function closeAssignMembersModal() {
+                const modal = document.getElementById('assignTaskMembersModal');
+                if (modal) {
+                    modal.classList.remove('modal-overlay--visible');
+                }
+                currentTaskItemForModal = null;
+            }
+
+            // Inicializar event listeners para el modal
+            function initTaskMembersModal() {
+                const closeBtn = document.getElementById('closeAssignTaskMembersModalBtn');
+                const cancelBtn = document.getElementById('cancelAssignTaskMembersBtn');
+                const confirmBtn = document.getElementById('confirmAssignTaskMembersBtn');
+                const modal = document.getElementById('assignTaskMembersModal');
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', closeAssignMembersModal);
+                }
+
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', closeAssignMembersModal);
+                }
+
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', function() {
+                        if (!currentTaskItemForModal) return;
+
+                        const membersList = document.getElementById('assignTaskMembersListContent');
+                        const checkboxes = membersList.querySelectorAll('input[type="checkbox"]:checked');
+                        
+                        const selectedMembers = [];
+                        checkboxes.forEach(checkbox => {
+                            try {
+                                const member = JSON.parse(checkbox.value);
+                                selectedMembers.push(member);
+                            } catch (e) {
+                                console.error('Error parsing member data:', e);
+                            }
+                        });
+
+                        // Asignar miembros seleccionados
+                        assignTaskMembers(currentTaskItemForModal, selectedMembers);
+                        closeAssignMembersModal();
+                    });
+                }
+
+                // Cerrar modal al hacer clic fuera
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            closeAssignMembersModal();
+                        }
+                    });
+                }
+            }
+
+            // Inicializar modal cuando la sección se inicializa
+            initTaskMembersModal();
+
+            // Function to assign multiple members to task
+            function assignTaskMembers(taskItem, members) {
+                const memberInfo = taskItem.querySelector('.project-tasks-item-member-info');
+                const avatarBtn = taskItem.querySelector('.project-tasks-item-avatar-btn');
+                const avatarsContainer = taskItem.querySelector('.project-tasks-item-avatars-container');
+                const dateInfo = taskItem.querySelector('.project-tasks-item-date');
+
+                // Guardar miembros asignados en dataset
+                if (members && members.length > 0) {
+                    taskItem.dataset.assignedMembers = JSON.stringify(members);
+                } else {
+                    delete taskItem.dataset.assignedMembers;
+                }
+
+                // Actualizar contenedor de avatares
+                if (avatarsContainer) {
+                    avatarsContainer.innerHTML = '';
+
+                    if (members && members.length > 0) {
+                        // Mostrar avatares de los miembros asignados
+                        members.forEach(member => {
+                            const avatarWrapper = document.createElement('div');
+                            avatarWrapper.className = 'project-tasks-item-assigned-avatar';
+                            
+                            // Obtener referencia de imagen (puede ser 'image' o 'avatar')
+                            const memberImageRef = member.image || member.avatar || '';
+                            
+                            if (memberImageRef && memberImageRef.trim()) {
+                                const avatarImg = document.createElement('img');
+                                avatarImg.className = 'avatar__img';
+                                avatarImg.alt = member.name || 'Member';
+                                
+                                // Cargar imagen usando getMemberImage si está disponible
+                                if (typeof getMemberImage === 'function') {
+                                    getMemberImage(memberImageRef).then(imageSrc => {
+                                        avatarImg.src = imageSrc;
+                                    }).catch(error => {
+                                        console.error('Error al cargar imagen del miembro:', error);
+                                        avatarImg.style.display = 'none';
+                                        avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                    });
+                                } else {
+                                    // Fallback directo
+                                    avatarImg.src = memberImageRef;
+                                }
+                                
+                                avatarImg.onerror = function() {
+                                    // Si la imagen falla al cargar, mostrar inicial
+                                    this.style.display = 'none';
+                                    avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                };
+                                
+                                avatarWrapper.appendChild(avatarImg);
+                            } else {
+                                // Mostrar inicial si no hay avatar
+                                avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                            }
+                            
+                            avatarsContainer.appendChild(avatarWrapper);
+                        });
+                        avatarsContainer.style.display = 'flex';
+                    } else {
+                        avatarsContainer.style.display = 'none';
+                    }
+                }
+
+                // Actualizar información del miembro (mostrar cantidad si hay múltiples)
+                if (memberInfo) {
+                    if (members && members.length > 0) {
+                        memberInfo.style.display = 'flex';
+                        const memberNameSpan = memberInfo.querySelector('.project-tasks-item-member-name');
+                        if (memberNameSpan) {
+                            if (members.length === 1) {
+                                memberNameSpan.textContent = members[0].name;
+                            } else {
+                                memberNameSpan.textContent = `${members.length} members assigned`;
+                            }
+                        }
+                    } else {
+                        memberInfo.style.display = 'none';
+                    }
+                }
+
+                // El botón de avatar siempre debe estar visible
+                if (avatarBtn) {
+                    avatarBtn.style.display = 'flex';
+                }
+            }
+
+            // Function to add task item (bullet) to container
+            function addTaskItem(text, completed = false, assignedMembers = null, createdAt = null) {
+                if (!tasksItemsContainer || !text.trim()) return;
+                
+                const item = document.createElement('div');
+                item.className = 'project-tasks-item' + (completed ? ' project-tasks-item--completed' : '');
+                
+                // Fecha de creación (usar la proporcionada o la actual)
+                const taskCreatedAt = createdAt || new Date().toISOString();
+                item.dataset.createdAt = taskCreatedAt;
+                
+                // Crear checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'project-tasks-item-checkbox';
+                checkbox.checked = completed;
+                
+                // Event listener para marcar como completado
+                checkbox.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    if (isChecked) {
+                        item.classList.add('project-tasks-item--completed');
+                    } else {
+                        item.classList.remove('project-tasks-item--completed');
+                    }
+                });
+                
+                // Crear texto
+                const textElement = document.createElement('p');
+                textElement.className = 'project-tasks-item-text';
+                textElement.textContent = `-${text}`;
+                
+                // Crear contenedor de información (miembros y fecha)
+                const infoContainer = document.createElement('div');
+                infoContainer.className = 'project-tasks-item-info';
+                
+                // Contenedor para avatares asignados (múltiples)
+                const avatarsContainer = document.createElement('div');
+                avatarsContainer.className = 'project-tasks-item-avatars-container';
+                avatarsContainer.style.display = 'none';
+                
+                // Avatar button para asignar miembros
+                const avatarBtn = document.createElement('button');
+                avatarBtn.className = 'project-tasks-item-avatar-btn';
+                avatarBtn.type = 'button';
+                avatarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showMemberSelectionModal(item);
+                });
+                
+                const avatarPlaceholder = document.createElement('div');
+                avatarPlaceholder.className = 'project-tasks-item-avatar-placeholder';
+                avatarPlaceholder.innerHTML = '<img src="images/plus.svg" alt="Assign">';
+                
+                avatarBtn.appendChild(avatarPlaceholder);
+                
+                // Información del miembro asignado
+                const memberInfo = document.createElement('div');
+                memberInfo.className = 'project-tasks-item-member-info';
+                memberInfo.style.display = 'none';
+                
+                const memberName = document.createElement('span');
+                memberName.className = 'project-tasks-item-member-name';
+                memberInfo.appendChild(memberName);
+                
+                // Fecha de creación - SIEMPRE VISIBLE
+                const dateContainer = document.createElement('div');
+                dateContainer.className = 'project-tasks-item-date-container';
+                
+                const dateInfo = document.createElement('span');
+                dateInfo.className = 'project-tasks-item-date';
+                const createdDate = new Date(taskCreatedAt);
+                dateInfo.textContent = createdDate.toLocaleDateString('es-ES', { 
+                    day: 'numeric', 
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                dateContainer.appendChild(dateInfo);
+                
+                infoContainer.appendChild(avatarsContainer);
+                infoContainer.appendChild(avatarBtn);
+                infoContainer.appendChild(memberInfo);
+                infoContainer.appendChild(dateContainer);
+                
+                // Si hay miembros asignados, configurarlos
+                if (assignedMembers && Array.isArray(assignedMembers) && assignedMembers.length > 0) {
+                    assignTaskMembers(item, assignedMembers);
+                }
+                
+                // Crear acciones
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'project-tasks-item-actions';
+                actionsDiv.innerHTML = `
+                    <button class="project-tasks-item-action" onclick="this.closest('.project-tasks-item').remove(); if(typeof updatePublishButtonState === 'function') setTimeout(updatePublishButtonState, 100);">
+                        <img src="images/trash.svg" alt="Delete">
+                    </button>
+                    <button class="project-tasks-item-action" onclick="editTaskItem(this)">
+                        <img src="images/Edit.svg" alt="Edit">
+                    </button>
+                `;
+                
+                // Ensamblar item
+                item.appendChild(checkbox);
+                item.appendChild(textElement);
+                item.appendChild(infoContainer);
+                item.appendChild(actionsDiv);
+                
+                tasksItemsContainer.appendChild(item);
+            }
+            
+            // Hacer addTaskItem global para que sea accesible desde loadProjectData
+            window.addTaskItem = addTaskItem;
+
+            // Edit item functionality
+            window.editTaskItem = function(button) {
+                const item = button.closest('.project-tasks-item');
+                const textElement = item.querySelector('.project-tasks-item-text');
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+
+            // Input functionality - Add item on Enter
+            if (taskInput) {
+                taskInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        addTaskItem(this.value.trim());
+                        this.value = '';
+                    }
+                });
+            }
+
+            console.log('✅ Tasks Section inicializado correctamente');
+        }
+
+        // ============================================
         // Project Solve Section
         // ============================================
         function initSolveSection() {
@@ -11994,7 +12942,7 @@
         // ============================================
         function initCollapsibleSections() {
             // Secciones con funcionalidad de colapsar/plegar
-            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives'];
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives', 'tasks'];
             
             collapsibleSections.forEach(sectionName => {
                 const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
@@ -13924,6 +14872,49 @@
                     console.log('📋 Goals recopilados:', goals.length, goals);
                     console.log('📊 KPIs recopilados:', kpis.length, kpis);
                     
+                    // Recopilar Tasks
+                    const tasksItemsContainer = document.getElementById('tasksItemsContainer');
+                    const tasks = [];
+                    
+                    if (tasksItemsContainer) {
+                        const taskItems = tasksItemsContainer.querySelectorAll('.project-tasks-item');
+                        taskItems.forEach(item => {
+                            const taskText = item.querySelector('.project-tasks-item-text')?.textContent || '';
+                            const checkbox = item.querySelector('.project-tasks-item-checkbox');
+                            const isCompleted = checkbox ? checkbox.checked : false;
+                            const createdAt = item.dataset.createdAt || new Date().toISOString();
+                            const assignedMembersData = item.dataset.assignedMembers || null;
+                            
+                            if (taskText) {
+                                // Remover el prefijo "-" si existe
+                                const cleanText = taskText.replace(/^-\s*/, '').trim();
+                                if (cleanText) {
+                                    const taskData = {
+                                        text: cleanText,
+                                        completed: isCompleted,
+                                        createdAt: createdAt
+                                    };
+                                    
+                                    // Agregar información de los miembros asignados si existe
+                                    if (assignedMembersData) {
+                                        try {
+                                            const assignedMembers = JSON.parse(assignedMembersData);
+                                            if (Array.isArray(assignedMembers) && assignedMembers.length > 0) {
+                                                taskData.assignedMembers = assignedMembers;
+                                            }
+                                        } catch (e) {
+                                            console.error('Error parsing assigned members:', e);
+                                        }
+                                    }
+                                    
+                                    tasks.push(taskData);
+                                }
+                            }
+                        });
+                    }
+                    
+                    console.log('✅ Tasks recopilados:', tasks.length, tasks);
+                    
                     // Recopilar Agreements
                     const agreements = [];
                     const emptyContainer = document.getElementById('projectAgreementsEmpty');
@@ -14227,7 +15218,7 @@
                     
                     // Recopilar estado de secciones colapsables
                     const collapsibleSectionsState = {};
-                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives'];
+                    const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives', 'tasks'];
                     collapsibleSections.forEach(sectionName => {
                         const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
                         if (title) {
@@ -14278,6 +15269,7 @@
                             assets: assets,
                             goals: goals,
                             kpis: kpis,
+                            tasks: tasks,
                             agreements: agreements,
                             projectContext: projectContext,
                             solveDescription: solveDescription,

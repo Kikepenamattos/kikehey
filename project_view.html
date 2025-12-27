@@ -270,6 +270,27 @@
             user-select: none;
         }
 
+        .project-section-title__icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-right: var(--spacing-12);
+        }
+
+        .project-section-title__icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .project-section-title__icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .project-section-title__text {
             flex: 1;
         }
@@ -459,6 +480,154 @@
         /* Dark mode icon adjustment */
         [data-theme="dark"] .project-objective-item-action img {
             filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        /* Project Tasks Section Styles */
+        .project-tasks-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .project-tasks-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+        }
+
+        .project-tasks-items-container[style*="display: none"] {
+            display: none !important;
+        }
+
+        .project-tasks-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-text {
+            flex: 1;
+            margin: 0;
+            transition: text-decoration 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+            min-width: 0;
+        }
+
+        .project-tasks-item--completed .project-tasks-item-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .project-tasks-item--completed {
+            background-color: #D1FFEF;
+            border-color: #3BE4A9;
+        }
+
+        /* Project Tasks Item - Avatar and Member Display (View) */
+        .project-tasks-item-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .project-tasks-item-avatar-display {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--color-status-disabled);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .project-tasks-item-avatar-display.project-tasks-item-avatar-placeholder {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .project-tasks-item-member-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+        }
+
+        .project-tasks-item-member-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+
+        .project-tasks-item-date {
+            color: var(--color-text-secondary);
+        }
+
+        .project-tasks-item-date-container {
+            display: flex;
+            align-items: center;
+            margin-left: var(--spacing-12);
+        }
+
+        /* Multiple Avatars Container */
+        .project-tasks-item-avatars-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .project-tasks-item-assigned-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            background-color: var(--color-status-disabled);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .project-tasks-item-assigned-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .project-tasks-item-assigned-avatar:not(:first-child) {
+            margin-left: -12px;
         }
 
         /* With Members Component Styles */
@@ -1829,6 +1998,27 @@
                     <div class="agreements-list" id="agreementsListDisplay"></div>
                 </div>
                 
+                <!-- Tasks Section -->
+                <div class="project-section" id="tasksSection" style="display: none;">
+                    <div class="project-section-title project-section-title--expanded" data-section="tasks">
+                        <span class="project-section-title__icon">
+                            <img src="images/number_list.svg" alt="Task planner">
+                        </span>
+                        <span class="project-section-title__text">Task planner</span>
+                        <span class="project-section-title__chevron">
+                            <img src="images/down-chevron.svg" alt="Toggle">
+                        </span>
+                    </div>
+                    <div class="project-section-content project-section-content--expanded" data-content="tasks">
+                        <div class="project-tasks-content">
+                            <!-- Tasks Items Container -->
+                            <div class="project-tasks-items-container" id="tasksItemsDisplay">
+                                <!-- Tasks items will be added dynamically here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Project context Section -->
                 <div class="project-section" id="projectContextSection" style="display: none;">
                     <div class="project-section-title project-section-title--expanded" data-section="projectContext">
@@ -2143,7 +2333,7 @@
         // Initialize Collapsible Sections (Project context, What do you want to solve, Solution approach, Ceremonies, Objectives)
         function initCollapsibleSections() {
             // Secciones con funcionalidad de colapsar/plegar
-            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives'];
+            const collapsibleSections = ['projectContext', 'solve', 'solutionApproach', 'ceremonies', 'objectives', 'tasks'];
             
             collapsibleSections.forEach(sectionName => {
                 const title = document.querySelector(`.project-section-title[data-section="${sectionName}"]`);
@@ -3305,6 +3495,166 @@
                         kpis: hasKpis ? project.kpis.length : 0
                     });
                 }
+            }
+
+            // Mostrar Tasks
+            const tasksSection = document.getElementById('tasksSection');
+            const tasksItemsDisplay = document.getElementById('tasksItemsDisplay');
+            
+            if (tasksSection && project.tasks && Array.isArray(project.tasks) && project.tasks.length > 0) {
+                tasksSection.style.display = 'block';
+                
+                // Restaurar estado colapsado/expandido si existe
+                if (project.collapsibleSectionsState && project.collapsibleSectionsState.tasks !== undefined) {
+                    const tasksTitle = tasksSection.querySelector('.project-section-title[data-section="tasks"]');
+                    const tasksContent = tasksSection.querySelector('.project-section-content[data-content="tasks"]');
+                    
+                    if (tasksTitle && tasksContent) {
+                        if (project.collapsibleSectionsState.tasks) {
+                            tasksTitle.classList.add('project-section-title--expanded');
+                            tasksTitle.classList.remove('project-section-title--collapsed');
+                            tasksContent.classList.add('project-section-content--expanded');
+                            tasksContent.classList.remove('project-section-content--collapsed');
+                        } else {
+                            tasksTitle.classList.remove('project-section-title--expanded');
+                            tasksTitle.classList.add('project-section-title--collapsed');
+                            tasksContent.classList.remove('project-section-content--expanded');
+                            tasksContent.classList.add('project-section-content--collapsed');
+                        }
+                    }
+                }
+                
+                // Mostrar Tasks - Todos los tasks con estilos de completado para los marcados
+                if (tasksItemsDisplay) {
+                    tasksItemsDisplay.innerHTML = '';
+                    tasksItemsDisplay.style.display = 'flex';
+                    project.tasks.forEach(task => {
+                        // Manejar tanto formato antiguo (string) como nuevo (objeto)
+                        const taskText = typeof task === 'string' ? task : (task.text || '');
+                        const isCompleted = typeof task === 'object' ? (task.completed || false) : false;
+                        const assignedMember = typeof task === 'object' ? (task.assignedMember || null) : null;
+                        const createdAt = typeof task === 'object' ? (task.createdAt || null) : null;
+                        
+                        if (taskText && taskText.trim()) {
+                            const taskItem = document.createElement('div');
+                            taskItem.className = 'project-tasks-item' + (isCompleted ? ' project-tasks-item--completed' : '');
+                            
+                            // Manejar assignedMembers (array) o assignedMember (single) para compatibilidad
+                            let assignedMembers = null;
+                            if (typeof task === 'object') {
+                                if (task.assignedMembers && Array.isArray(task.assignedMembers)) {
+                                    assignedMembers = task.assignedMembers;
+                                } else if (task.assignedMember) {
+                                    // Compatibilidad con formato antiguo (single member)
+                                    assignedMembers = [task.assignedMember];
+                                }
+                            }
+                            
+                            // Crear contenedor de información (miembros y fecha)
+                            const infoContainer = document.createElement('div');
+                            infoContainer.className = 'project-tasks-item-info';
+                            
+                            // Contenedor para avatares asignados (múltiples)
+                            if (assignedMembers && assignedMembers.length > 0) {
+                                const avatarsContainer = document.createElement('div');
+                                avatarsContainer.className = 'project-tasks-item-avatars-container';
+                                
+                                assignedMembers.forEach(member => {
+                                    const avatarWrapper = document.createElement('div');
+                                    avatarWrapper.className = 'project-tasks-item-assigned-avatar';
+                                    
+                                    // Obtener referencia de imagen (puede ser 'image' o 'avatar')
+                                    const memberImageRef = member.image || member.avatar || '';
+                                    
+                                    if (memberImageRef && memberImageRef.trim()) {
+                                        const avatarImg = document.createElement('img');
+                                        avatarImg.className = 'avatar__img';
+                                        avatarImg.alt = member.name || 'Member';
+                                        
+                                        // Cargar imagen usando getMemberImage si está disponible
+                                        if (typeof getMemberImage === 'function') {
+                                            getMemberImage(memberImageRef).then(imageSrc => {
+                                                avatarImg.src = imageSrc;
+                                            }).catch(error => {
+                                                console.error('Error al cargar imagen del miembro:', error);
+                                                avatarImg.style.display = 'none';
+                                                avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                            });
+                                        } else {
+                                            // Fallback directo
+                                            avatarImg.src = memberImageRef;
+                                        }
+                                        
+                                        avatarImg.onerror = function() {
+                                            // Si la imagen falla al cargar, mostrar inicial
+                                            this.style.display = 'none';
+                                            avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                        };
+                                        
+                                        avatarWrapper.appendChild(avatarImg);
+                                    } else {
+                                        // Mostrar inicial si no hay avatar
+                                        avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                    }
+                                    
+                                    avatarsContainer.appendChild(avatarWrapper);
+                                });
+                                
+                                infoContainer.appendChild(avatarsContainer);
+                            }
+                            
+                            // Información del miembro asignado
+                            if (assignedMembers && assignedMembers.length > 0) {
+                                const memberInfo = document.createElement('div');
+                                memberInfo.className = 'project-tasks-item-member-info';
+                                
+                                const memberName = document.createElement('span');
+                                memberName.className = 'project-tasks-item-member-name';
+                                if (assignedMembers.length === 1) {
+                                    memberName.textContent = assignedMembers[0].name || 'Unnamed';
+                                } else {
+                                    memberName.textContent = `${assignedMembers.length} members assigned`;
+                                }
+                                memberInfo.appendChild(memberName);
+                                
+                                infoContainer.appendChild(memberInfo);
+                            }
+                            
+                            // Fecha de creación - SIEMPRE VISIBLE
+                            if (createdAt) {
+                                const dateContainer = document.createElement('div');
+                                dateContainer.className = 'project-tasks-item-date-container';
+                                
+                                const dateInfo = document.createElement('span');
+                                dateInfo.className = 'project-tasks-item-date';
+                                const createdDate = new Date(createdAt);
+                                dateInfo.textContent = createdDate.toLocaleDateString('es-ES', { 
+                                    day: 'numeric', 
+                                    month: 'short',
+                                    year: 'numeric'
+                                });
+                                
+                                dateContainer.appendChild(dateInfo);
+                                infoContainer.appendChild(dateContainer);
+                            }
+                            
+                            // Texto del task
+                            const taskTextElement = document.createElement('p');
+                            taskTextElement.className = 'project-tasks-item-text';
+                            taskTextElement.textContent = `-${escapeHtml(taskText.trim())}`;
+                            
+                            taskItem.appendChild(taskTextElement);
+                            if (infoContainer.children.length > 0) {
+                                taskItem.appendChild(infoContainer);
+                            }
+                            
+                            tasksItemsDisplay.appendChild(taskItem);
+                        }
+                    });
+                    console.log('✅ Tasks mostrados:', project.tasks.length);
+                }
+            } else {
+                console.log('ℹ️ No hay Tasks para mostrar');
             }
 
             // Mostrar stages según Figma
