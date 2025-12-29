@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks - Docu</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="design-system/tokens/index.css">
+    <link rel="stylesheet" href="design-system/components/navigation.css">
+    <link rel="stylesheet" href="design-system/components/input.css">
+    <link rel="stylesheet" href="design-system/components/button.css">
+    <link rel="stylesheet" href="design-system/components/tabs-chip.css">
+    <link rel="stylesheet" href="design-system/components/card.css">
+    <link rel="stylesheet" href="design-system/components/date-picker.css">
+    <link rel="stylesheet" href="design-system/components/status-button.css">
+    <link rel="stylesheet" href="design-system/components/progress-bar.css">
+    
+    <!-- JavaScript -->
+    <script src="js/auth.js"></script>
+    <script src="js/project-data.js"></script>
+    <script src="js/image-storage.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-secondary, 'Lato', sans-serif);
+            background-color: var(--color-surface-regular, #ffffff);
+            color: var(--color-text-primary, #0a243f);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Layout Principal */
+        .my-tasks-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenido Principal */
+        .my-tasks-content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .my-tasks-content {
+            flex: 0 1 auto;
+            padding: 64px 173px 64px 135px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        /* Headline Container */
+        .my-tasks-headline-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* margin-bottom: 48px; */
+            gap: 24px;
+        }
+
+        /* Headline */
+        .my-tasks-headline {
+            font-family: var(--font-family-secondary);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--color-text-primary, #0a243f);
+            line-height: normal;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+        }
+
+        .search-input-group {
+            flex: 1;
+        }
+        
+        /* Input Buscador */
+        .dsu-input-buscador {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .dsu-input-buscador .dsu-input {
+            padding-right: calc(var(--spacing-16) + 20px + var(--spacing-08));
+            box-sizing: border-box;
+        }
+        
+        .dsu-input-buscador__send-icon {
+            position: absolute;
+            right: var(--spacing-16);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .dsu-input-buscador__send-icon--active {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        .dsu-input-buscador__send-icon:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .dsu-input-buscador__send-icon img,
+        .dsu-input-buscador__send-icon svg {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .view-controls {
+            display: flex;
+            gap: 0;
+            align-items: center;
+        }
+
+        .view-control-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background-color: var(--color-surface-regular, #ffffff);
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-family-secondary, 'Lato');
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        .view-control-btn:hover {
+            opacity: 0.8;
+        }
+
+        .view-control-btn.active {
+            background-color: var(--color-surface-especial, #f4f7fb);
+        }
+
+        .btn-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* My Tasks Section Styles */
+        .my-tasks-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            /* margin-top: var(--spacing-48); */
+        }
+
+        .my-tasks-section-content {
+            display: none;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+        }
+
+        .my-tasks-section-content--expanded {
+            display: flex;
+        }
+
+        .my-tasks-section-content .my-tasks-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .my-tasks-content .dsu-input-group {
+            width: 100%;
+        }
+
+        .my-tasks-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+        }
+
+        .my-tasks-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            padding: var(--spacing-12) var(--spacing-16);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-status-disabled);
+            border-radius: var(--radius-md);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            color: var(--color-text-primary);
+        }
+
+        .my-tasks-item-text {
+            flex: 1;
+            margin: 0;
+            transition: text-decoration 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+            min-width: 0;
+        }
+
+        .my-tasks-item-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: var(--color-basics-dark-blue, #0a243f);
+        }
+
+        .my-tasks-item-checkbox:checked {
+            accent-color: var(--color-status-done);
+        }
+
+        .my-tasks-item--completed .my-tasks-item-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .my-tasks-item--completed {
+            background-color: var(--color-status-done-light-bg);
+            border-color: var(--color-status-done);
+        }
+
+        .my-tasks-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .my-tasks-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .my-tasks-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* My Tasks Item - Avatar and Member Assignment */
+        .my-tasks-item-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex-shrink: 0;
+        }
+
+        .my-tasks-item-avatar-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--color-status-disabled);
+            background-color: var(--color-surface-regular);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-shrink: 0;
+            position: relative;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .my-tasks-item-avatar-btn:hover {
+            border-color: var(--color-basics-dark-blue);
+            background-color: var(--color-surface-especial);
+        }
+
+        .my-tasks-item-avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+
+        .my-tasks-item-avatar-placeholder img {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .my-tasks-item-member-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            color: var(--color-text-secondary);
+        }
+
+        .my-tasks-item-member-name {
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text-primary);
+        }
+
+        .my-tasks-item-date {
+            color: var(--color-text-secondary);
+        }
+
+        .my-tasks-item-date-container {
+            display: flex;
+            align-items: center;
+            margin-left: var(--spacing-12);
+        }
+
+        /* Multiple Avatars Container */
+        .my-tasks-item-avatars-container {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .my-tasks-item-assigned-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            background-color: var(--color-status-disabled);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .my-tasks-item-assigned-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .my-tasks-item-assigned-avatar:not(:first-child) {
+            margin-left: -12px;
+        }
+
+        /* Modal Styles - Estándar del proyecto */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-overlay-dark);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-overlay--visible {
+            display: flex !important;
+        }
+
+        .modal {
+            background: var(--color-surface-regular);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-basics-mid-blue);
+            width: 28%;
+            padding: var(--spacing-24);
+            box-shadow: var(--elevation-modal);
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        /* Modal específico para asignación de miembros - ancho personalizado */
+        #assignMyTaskMembersModal .modal {
+            width: 35%;
+            max-width: 500px;
+        }
+
+        .modal__body {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-headline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: var(--spacing-12);
+        }
+
+        .modal-headline:has(.modal-close-btn:only-child) {
+            justify-content: flex-end;
+            margin-bottom: 0;
+        }
+
+        .modal__title {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            flex: 1;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .modal-close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .modal-close-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .modal__body {
+            font-size: var(--font-size-base);
+            color: var(--color-text-secondary);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Modal Member Item Styles */
+        .modal-members-selection {
+            margin-top: var(--spacing-16);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .modal-members-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+        }
+
+        .modal-member-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            padding: var(--spacing-08) var(--spacing-12);
+            border: 1px solid var(--color-basics-gray);
+            border-radius: var(--radius-md);
+            background: var(--color-surface-regular);
+            transition: all 0.2s ease;
+        }
+
+        .modal-member-item:hover {
+            background: var(--color-surface-especial);
+            border-color: var(--color-basics-dark-blue);
+        }
+
+        .modal-member-item input[type="checkbox"] {
+            margin: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .modal-member-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-12);
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .modal-member-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+            background-color: var(--color-status-disabled);
+        }
+
+        .modal-member-avatar .avatar__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .modal-member-label {
+            flex: 1;
+            cursor: pointer;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .modal-step-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-24);
+            gap: var(--spacing-12);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .modal-step-actions .dsu-button {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: none;
+        }
+
+        /* Dark mode adjustments */
+        [data-theme="dark"] .my-tasks-item {
+            background-color: var(--color-surface-regular-dark, #1a1a1a);
+            border-color: var(--color-basics-gray-dark, #404040);
+        }
+
+        [data-theme="dark"] .modal-member-item {
+            background: var(--color-surface-regular-dark, #1a1a1a);
+            border-color: var(--color-basics-gray-dark, #404040);
+        }
+
+        [data-theme="dark"] .modal-member-item:hover {
+            background: var(--color-surface-especial-dark, #2a2a2a);
+            border-color: var(--color-basics-dark-blue-dark, #0066cc);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .my-tasks-content {
+                padding: 64px 80px 0 80px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .my-tasks-content {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="my-tasks-container">
+        <!-- Sidebar Navigation -->
+        <nav class="dsu-sidebar" id="sidebar">
+            <button class="dsu-sidebar__toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <img src="images/collapse.svg" alt="Collapse" id="sidebarToggleIcon">
+            </button>
+            <div class="dsu-sidebar__main">
+                <!-- Logo Container -->
+                <div class="dsu-sidebar__logo-container">
+                    <a href="#" class="dsu-sidebar__logo">
+                        <img src="images/logo.svg" alt="Docu Logo">
+                    </a>
+                </div>
+                
+                <!-- Navigation Wrapper -->
+                <div class="dsu-sidebar__navigation-wrapper">
+                    <!-- Navigation Main -->
+                    <div class="dsu-sidebar__navigation">
+                        <!-- Teams Level -->
+                        <div class="dsu-teams-level">
+                            <button class="dsu-teams-button">
+                                <span class="dsu-teams-button__icon">
+                                    <img src="images/team.svg" alt="Teams">
+                                </span>
+                                <span class="dsu-nav-button__text">Teams</span>
+                            </button>
+                            <div class="dsu-teams-chevron">
+                                <img src="images/up-chevron.svg" alt="Chevron">
+                            </div>
+                        </div>
+                        
+                        <!-- Teams Dropdown -->
+                        <div class="dsu-teams-dropdown dsu-teams-dropdown--expanded">
+                            <button class="dsu-teams-create" id="createTeamBtn">
+                                <span>Create new team</span>
+                                <span class="dsu-teams-create__icon">
+                                    <img src="images/plus.svg" alt="Plus">
+                                </span>
+                            </button>
+                            <div class="dsu-teams-list" id="teamsList">
+                                <!-- Teams list se poblará dinámicamente -->
+                            </div>
+                        </div>
+                        
+                        <!-- Projects Level -->
+                        <div class="dsu-projects-button">
+                            <div class="dsu-projects-level">
+                                <button class="dsu-projects-button__trigger dsu-projects-button__trigger--active">
+                                    <span class="dsu-projects-button__icon">
+                                        <img src="images/project.svg" alt="Projects">
+                                    </span>
+                                    <span class="dsu-projects-button__text">Projects</span>
+                                </button>
+                                <div class="dsu-projects-chevron">
+                                    <img src="images/up-chevron.svg" alt="Chevron">
+                                </div>
+                            </div>
+                            
+                            <!-- Projects Dropdown -->
+                            <div class="dsu-projects-dropdown dsu-projects-dropdown--expanded">
+                                <button class="dsu-projects-create" id="createProjectBtn">
+                                    <span>Create new project</span>
+                                    <span class="dsu-projects-create__icon">
+                                        <img src="images/plus.svg" alt="Plus">
+                                    </span>
+                                </button>
+                                <div class="dsu-projects-list" id="projectsList">
+                                    <!-- Projects list se poblará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- My Task Button -->
+                        <button class="dsu-nav-button dsu-nav-button--active" id="myTasksBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/number_list.svg" alt="My tasks">
+                            </span>
+                            <span class="dsu-nav-button__text">My tasks</span>
+                        </button>
+                        
+                        <!-- Profile Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/avatar.svg" alt="Profile">
+                            </span>
+                            <span class="dsu-nav-button__text">Profile</span>
+                        </button>
+                        
+                        <!-- Feedback Button -->
+                        <button class="dsu-nav-button">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/chat.svg" alt="Feedback">
+                            </span>
+                            <span class="dsu-nav-button__text">Give us feedback</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Sidebar Footer -->
+                    <div class="dsu-sidebar__footer">
+                        <button class="dsu-nav-button" id="darkModeBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/moon.svg" alt="Dark Mode">
+                            </span>
+                            <span class="dsu-nav-button__text">Dark mode</span>
+                        </button>
+                        <button class="dsu-nav-button" id="logoutBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/exit.svg" alt="Logout">
+                            </span>
+                            <span class="dsu-nav-button__text">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="my-tasks-content-wrapper">
+            <div class="my-tasks-content">
+                <!-- Headline Container -->
+                <div class="my-tasks-headline-container">
+                    <h1 class="my-tasks-headline">My Tasks</h1>
+                </div>
+                
+                <!-- My Tasks Section -->
+                <div class="my-tasks-section" id="myTasksSection">
+                    <div class="my-tasks-section-content my-tasks-section-content--expanded" data-content="my-tasks">
+                        <div class="my-tasks-content">
+                            <!-- Tasks Items Container -->
+                            <div class="my-tasks-items-container" id="myTasksItemsContainer">
+                                <!-- Items de Tasks se agregarán aquí dinámicamente -->
+                            </div>
+                            <div class="dsu-input-group">
+                                <div class="dsu-input-container">
+                                    <input 
+                                        type="text" 
+                                        class="dsu-input dsu-input--only" 
+                                        id="myTaskInput" 
+                                        placeholder="Choose an unique name"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para asignar miembros a tareas -->
+    <div class="modal-overlay" id="assignMyTaskMembersModal">
+        <div class="modal">
+            <div class="modal-headline">
+                <div class="modal__title">Assign members to task</div>
+                <button class="modal-close-btn" id="closeAssignMyTaskMembersModalBtn" aria-label="Close modal">
+                    <img src="images/close.svg" alt="Close" width="20" height="20">
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="modal-members-selection" id="assignMyTaskMembersList" style="display: block;">
+                    <div class="modal-members-list" id="assignMyTaskMembersListContent">
+                        <!-- Miembros con checkboxes se cargarán aquí -->
+                    </div>
+                </div>
+                <div class="modal-step-actions" style="margin-top: var(--spacing-24);">
+                    <button class="dsu-button dsu-button--secondary dsu-button--small" id="cancelAssignMyTaskMembersBtn">
+                        <span>Cancel</span>
+                    </button>
+                    <button class="dsu-button dsu-button--primary dsu-button--small" id="confirmAssignMyTaskMembersBtn">
+                        <span>Confirm</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Sidebar Navigation
+        function initSidebarNavigation() {
+            // Sidebar Toggle Functionality
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
+            const sidebarLogo = sidebar ? sidebar.querySelector('.dsu-sidebar__logo img') : null;
+            
+            if (sidebar && sidebarToggle && sidebarToggleIcon) {
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    sidebar.classList.toggle('dsu-sidebar--collapsed');
+                    const isNowCollapsed = sidebar.classList.contains('dsu-sidebar--collapsed');
+                    
+                    // Update icon
+                    if (isNowCollapsed) {
+                        sidebarToggleIcon.src = 'images/expand.svg';
+                        sidebarToggleIcon.alt = 'Expand';
+                        if (sidebarLogo) {
+                            sidebarLogo.src = 'images/logo_icon.svg';
+                        }
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    } else {
+                        sidebarToggleIcon.src = 'images/collapse.svg';
+                        sidebarToggleIcon.alt = 'Collapse';
+                        if (sidebarLogo) {
+                            sidebarLogo.src = 'images/logo.svg';
+                        }
+                        localStorage.setItem('sidebarCollapsed', 'false');
+                    }
+                });
+            }
+            
+            // Teams Dropdown - Asegurar que siempre esté expandido por defecto
+            const teamsButtons = document.querySelectorAll('.dsu-teams-button');
+            teamsButtons.forEach((button) => {
+                const teamsLevel = button.closest('.dsu-teams-level');
+                if (!teamsLevel) return;
+                
+                const chevron = teamsLevel.querySelector('.dsu-teams-chevron img');
+                const dropdown = teamsLevel.parentElement.querySelector('.dsu-teams-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-teams-dropdown--expanded');
+                button.classList.add('dsu-teams-button--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-teams-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-teams-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-teams-dropdown--expanded');
+                            button.classList.remove('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-teams-dropdown--expanded');
+                            button.classList.add('dsu-teams-button--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
+                    });
+                }
+            });
+
+            // Projects Dropdown - Asegurar que siempre esté expandido por defecto
+            const projectsTriggers = document.querySelectorAll('.dsu-projects-button__trigger');
+            projectsTriggers.forEach((trigger) => {
+                const projectsLevel = trigger.closest('.dsu-projects-level');
+                if (!projectsLevel) return;
+                
+                const chevron = projectsLevel.querySelector('.dsu-projects-chevron img');
+                const projectsButton = trigger.closest('.dsu-projects-button');
+                const dropdown = projectsButton.querySelector('.dsu-projects-dropdown');
+                
+                if (!dropdown) return;
+                
+                // Asegurar que siempre esté expandido por defecto
+                dropdown.classList.add('dsu-projects-dropdown--expanded');
+                trigger.classList.add('dsu-projects-button__trigger--active');
+                if (chevron) chevron.src = 'images/up-chevron.svg';
+                
+                // El botón navega a myprojects.html
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'myprojects.html';
+                });
+                
+                // SOLO el chevron puede colapsar/expandir (no el botón completo)
+                const chevronElement = chevron ? chevron.closest('.dsu-projects-chevron') : null;
+                if (chevronElement) {
+                    chevronElement.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        const isExpanded = dropdown.classList.contains('dsu-projects-dropdown--expanded');
+                        
+                        if (isExpanded) {
+                            dropdown.classList.remove('dsu-projects-dropdown--expanded');
+                            trigger.classList.remove('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/down-chevron.svg';
+                        } else {
+                            dropdown.classList.add('dsu-projects-dropdown--expanded');
+                            trigger.classList.add('dsu-projects-button__trigger--active');
+                            if (chevron) chevron.src = 'images/up-chevron.svg';
+                        }
+                    });
+                }
+            });
+
+            // Create New Team Button
+            const createTeamBtn = document.getElementById('createTeamBtn');
+            if (createTeamBtn) {
+                createTeamBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = 'create_team.html';
+                });
+            }
+
+            // Create New Project Button
+            const createProjectBtn = document.getElementById('createProjectBtn');
+            if (createProjectBtn) {
+                createProjectBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    try {
+                        sessionStorage.removeItem('docu_selected_project_id');
+                        sessionStorage.setItem('docu_create_new_project', 'true');
+                    } catch (error) {
+                        console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                    }
+                    window.location.href = 'project_empty.html';
+                });
+            }
+
+            // Load Teams in Sidebar
+            loadTeamsInSidebar();
+            
+            // Load Projects in Sidebar
+            loadProjectsInSidebar();
+
+            // Logout Button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                        DocuAuth.logout();
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }
+
+        // Load Teams in Sidebar
+        function loadTeamsInSidebar() {
+            const teamsList = document.getElementById('teamsList');
+            if (!teamsList) return;
+
+            if (typeof DocuProjectData === 'undefined' || typeof DocuAuth === 'undefined') {
+                setTimeout(loadTeamsInSidebar, 200);
+                return;
+            }
+
+            const session = DocuAuth.getCurrentSession();
+            if (!session) return;
+
+            const projectData = DocuProjectData.getProjectData();
+            if (!projectData) return;
+
+            const teams = projectData.teams || [];
+            const publishedTeams = teams.filter(team => {
+                return team && team.status === 'published' && team.name && typeof team.name === 'string' && team.name.trim().length > 0;
+            });
+
+            publishedTeams.sort((a, b) => {
+                const dateA = a.publishedAt || a.updatedAt || a.createdAt || 0;
+                const dateB = b.publishedAt || b.updatedAt || b.createdAt || 0;
+                return dateB - dateA;
+            });
+
+            teamsList.innerHTML = '';
+
+            publishedTeams.forEach((team) => {
+                // Crear wrapper
+                const teamItemWrapper = document.createElement('div');
+                teamItemWrapper.className = 'dsu-team-item-wrapper';
+                
+                // Crear el item del team
+                const teamItem = document.createElement('button');
+                teamItem.className = 'dsu-team-item';
+                teamItem.setAttribute('data-team-id', team.id || '');
+                teamItem.setAttribute('data-team-name', escapeHtml(team.name || 'Sin nombre'));
+                
+                const teamText = document.createElement('span');
+                teamText.className = 'dsu-team-item__text';
+                teamText.textContent = team.name || 'Sin nombre';
+                teamItem.appendChild(teamText);
+                
+                // Crear botón de elipsis (fuera del item)
+                const ellipsisBtn = document.createElement('button');
+                ellipsisBtn.className = 'dsu-team-item__ellipsis';
+                ellipsisBtn.type = 'button';
+                ellipsisBtn.setAttribute('aria-label', 'Más opciones');
+                const ellipsisImg = document.createElement('img');
+                ellipsisImg.src = 'images/elipsis.svg';
+                ellipsisImg.alt = 'Más opciones';
+                ellipsisBtn.appendChild(ellipsisImg);
+                
+                // Event listener para el botón de elipsis
+                ellipsisBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    showContextMenu(e, 'team', team.id, team.name);
+                });
+                
+                teamItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (team.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_team_id', team.id);
+                            window.location.href = `team_filled.html?id=${team.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    }
+                });
+                
+                // Agregar item y botón al wrapper
+                teamItemWrapper.appendChild(teamItem);
+                teamItemWrapper.appendChild(ellipsisBtn);
+                
+                // Agregar wrapper a la lista
+                teamsList.appendChild(teamItemWrapper);
+            });
+        }
+
+        // ============================================
+        // Context Menu Functions
+        // ============================================
+        let currentContextMenu = null;
+
+        function showContextMenu(event, itemType, itemId, itemName) {
+            // Cerrar menú anterior si existe
+            closeContextMenu();
+
+            // Crear menú contextual
+            const contextMenu = document.createElement('div');
+            contextMenu.className = 'context-menu context-menu--visible';
+            contextMenu.setAttribute('data-item-type', itemType);
+            contextMenu.setAttribute('data-item-id', itemId);
+            contextMenu.setAttribute('data-item-name', itemName);
+
+            // Opciones del menú
+            const menuItems = [
+                { action: 'share', label: 'Share', icon: 'images/share.svg' },
+                { action: 'duplicate', label: 'Duplicate', icon: 'images/duplicate.svg' },
+                { action: 'edit', label: 'Edit', icon: 'images/Edit.svg' },
+                { separator: true },
+                { action: 'delete', label: 'Delete', icon: 'images/trash.svg', danger: true }
+            ];
+
+            menuItems.forEach(item => {
+                if (item.separator) {
+                    const separator = document.createElement('hr');
+                    separator.className = 'context-menu__separator';
+                    contextMenu.appendChild(separator);
+                } else {
+                    const menuItem = document.createElement('button');
+                    menuItem.className = 'context-menu__item' + (item.danger ? ' context-menu__item--danger' : '');
+                    menuItem.setAttribute('data-action', item.action);
+                    
+                    const icon = document.createElement('div');
+                    icon.className = 'context-menu__item-icon';
+                    const iconImg = document.createElement('img');
+                    iconImg.src = item.icon;
+                    iconImg.alt = item.label;
+                    icon.appendChild(iconImg);
+                    
+                    const text = document.createElement('span');
+                    text.className = 'context-menu__item-text';
+                    text.textContent = item.label;
+                    
+                    menuItem.appendChild(icon);
+                    menuItem.appendChild(text);
+                    
+                    menuItem.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleContextMenuAction(item.action, itemType, itemId, itemName);
+                        closeContextMenu();
+                    });
+                    
+                    contextMenu.appendChild(menuItem);
+                }
+            });
+
+            // Agregar al body
+            document.body.appendChild(contextMenu);
+            currentContextMenu = contextMenu;
+
+            // Posicionar el menú
+            positionContextMenu(contextMenu, event);
+
+            // Cerrar al hacer clic fuera
+            setTimeout(() => {
+                document.addEventListener('click', closeContextMenuOnOutsideClick, true);
+            }, 0);
+        }
+
+        function positionContextMenu(menu, event) {
+            // Primero posicionar para calcular dimensiones
+            menu.style.left = event.clientX + 'px';
+            menu.style.top = event.clientY + 'px';
+            
+            // Esperar un frame para que el DOM se actualice
+            requestAnimationFrame(() => {
+                const rect = menu.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                let left = event.clientX;
+                let top = event.clientY;
+
+                // Ajustar si se sale por la derecha
+                if (left + rect.width > viewportWidth) {
+                    left = viewportWidth - rect.width - 10;
+                }
+
+                // Ajustar si se sale por abajo
+                if (top + rect.height > viewportHeight) {
+                    top = viewportHeight - rect.height - 10;
+                }
+
+                // Asegurar que no se salga por la izquierda o arriba
+                if (left < 10) left = 10;
+                if (top < 10) top = 10;
+
+                menu.style.left = left + 'px';
+                menu.style.top = top + 'px';
+            });
+        }
+
+        function closeContextMenu() {
+            if (currentContextMenu) {
+                currentContextMenu.remove();
+                currentContextMenu = null;
+            }
+            document.removeEventListener('click', closeContextMenuOnOutsideClick, true);
+        }
+
+        function closeContextMenuOnOutsideClick(event) {
+            if (currentContextMenu && !currentContextMenu.contains(event.target)) {
+                closeContextMenu();
+            }
+        }
+
+        function handleContextMenuAction(action, itemType, itemId, itemName) {
+            console.log(`🖱️ Context menu action: ${action} for ${itemType}`, itemId, itemName);
+
+            switch (action) {
+                case 'share':
+                    handleShare(itemType, itemId, itemName);
+                    break;
+                case 'duplicate':
+                    handleDuplicate(itemType, itemId, itemName);
+                    break;
+                case 'edit':
+                    handleEdit(itemType, itemId, itemName);
+                    break;
+                case 'delete':
+                    handleDelete(itemType, itemId, itemName);
+                    break;
+            }
+        }
+
+        function handleShare(itemType, itemId, itemName) {
+            const url = window.location.origin + window.location.pathname + '?id=' + itemId;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: itemName,
+                    text: `Check out this ${itemType}: ${itemName}`,
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying to clipboard:', err);
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        function handleDuplicate(itemType, itemId, itemName) {
+            if (itemType === 'team') {
+                // Redirigir a create_team.html con el ID para duplicar
+                window.location.href = `create_team.html?edit=true&id=${itemId}&duplicate=true`;
+            } else if (itemType === 'project') {
+                // Redirigir a project_empty.html con el ID para duplicar
+                window.location.href = `project_empty.html?id=${itemId}&duplicate=true`;
+            }
+        }
+
+        function handleEdit(itemType, itemId, itemName) {
+            if (itemType === 'team') {
+                window.location.href = `create_team.html?edit=true&id=${itemId}`;
+            } else if (itemType === 'project') {
+                window.location.href = `project_empty.html?edit=true&id=${itemId}`;
+            }
+        }
+
+        function handleDelete(itemType, itemId, itemName) {
+            const confirmMessage = `¿Estás seguro de que deseas eliminar "${itemName}"?\n\nEsta acción no se puede deshacer.`;
+            
+            if (confirm(confirmMessage)) {
+                // Aquí implementar la lógica de eliminación
+                console.log(`🗑️ Deleting ${itemType}:`, itemId, itemName);
+                
+                // TODO: Implementar eliminación real
+                // Por ahora solo mostramos un mensaje
+                alert(`"${itemName}" será eliminado. (Funcionalidad pendiente de implementar)`);
+            }
+        }
+
+        // Load Projects in Sidebar
+        function loadProjectsInSidebar() {
+            const projectsList = document.getElementById('projectsList');
+            if (!projectsList) return;
+
+            if (typeof DocuProjectData === 'undefined' || typeof DocuAuth === 'undefined') {
+                setTimeout(loadProjectsInSidebar, 200);
+                return;
+            }
+
+            const session = DocuAuth.getCurrentSession();
+            if (!session) return;
+
+            const projects = DocuProjectData.getProjects() || [];
+            const publishedProjects = projects.filter(project => {
+                return project && project.status === 'published' && project.name && typeof project.name === 'string' && project.name.trim().length > 0;
+            });
+
+            publishedProjects.sort((a, b) => {
+                const dateA = a.createdAt || a.updatedAt || 0;
+                const dateB = b.createdAt || b.updatedAt || 0;
+                return dateB - dateA;
+            });
+
+            projectsList.innerHTML = '';
+
+            publishedProjects.forEach((project) => {
+                // Crear wrapper
+                const projectItemWrapper = document.createElement('div');
+                projectItemWrapper.className = 'dsu-project-item-wrapper';
+                
+                // Crear el item del proyecto
+                const projectItem = document.createElement('button');
+                projectItem.className = 'dsu-project-item';
+                projectItem.setAttribute('data-project-id', project.id || '');
+                projectItem.setAttribute('data-project-name', escapeHtml(project.name || 'Sin nombre'));
+                
+                const projectText = document.createElement('span');
+                projectText.className = 'dsu-project-item__text';
+                projectText.textContent = project.name || 'Sin nombre';
+                projectItem.appendChild(projectText);
+                
+                // Crear botón de elipsis (fuera del item)
+                const ellipsisBtn = document.createElement('button');
+                ellipsisBtn.className = 'dsu-project-item__ellipsis';
+                ellipsisBtn.type = 'button';
+                ellipsisBtn.setAttribute('aria-label', 'Más opciones');
+                const ellipsisImg = document.createElement('img');
+                ellipsisImg.src = 'images/elipsis.svg';
+                ellipsisImg.alt = 'Más opciones';
+                ellipsisBtn.appendChild(ellipsisImg);
+                
+                // Event listener para el botón de elipsis
+                ellipsisBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    showContextMenu(e, 'project', project.id, project.name);
+                });
+                
+                projectItem.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (project.id) {
+                        try {
+                            sessionStorage.setItem('docu_selected_project_id', project.id);
+                            window.location.href = `project_view.html?id=${project.id}`;
+                        } catch (error) {
+                            console.warn('⚠️ Error al redirigir:', error);
+                        }
+                    }
+                });
+                
+                // Agregar item y botón al wrapper
+                projectItemWrapper.appendChild(projectItem);
+                projectItemWrapper.appendChild(ellipsisBtn);
+                
+                // Agregar wrapper a la lista
+                projectsList.appendChild(projectItemWrapper);
+            });
+        }
+
+        // Initialize search functionality
+        function initSearchTasks() {
+            const searchInput = document.getElementById('searchTasksInput');
+            const searchSendIcon = document.getElementById('searchTasksSendIcon');
+            
+            if (!searchInput || !searchSendIcon) return;
+
+            // Función para realizar búsqueda
+            const performSearch = () => {
+                const query = searchInput.value.trim();
+                // TODO: Implementar búsqueda de tasks
+                console.log('🔍 Buscando tasks:', query);
+            };
+
+            // Event listener para el icono de envío
+            searchSendIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                performSearch();
+            });
+
+            // Event listener para Enter en el input
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performSearch();
+                }
+            });
+        }
+
+        // Initialize filters button
+        function initFiltersButton() {
+            const filtersBtn = document.getElementById('filtersTasksBtn');
+            if (!filtersBtn) return;
+
+            filtersBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // TODO: Implementar modal de filtros si es necesario
+                console.log('🔍 Filters button clicked');
+                // Por ahora solo muestra un mensaje
+                alert('Funcionalidad de filtros próximamente');
+            });
+        }
+
+        // Initialize sidebar state immediately on page load (before any other initialization)
+        function initSidebarState() {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggleIcon = document.getElementById('sidebarToggleIcon');
+            const sidebarLogo = sidebar ? sidebar.querySelector('.dsu-sidebar__logo img') : null;
+            
+            if (sidebar) {
+                // Apply state immediately without animation
+                const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                if (isCollapsed) {
+                    sidebar.classList.add('dsu-sidebar--collapsed');
+                    if (sidebarToggleIcon) {
+                        sidebarToggleIcon.src = 'images/expand.svg';
+                        sidebarToggleIcon.alt = 'Expand';
+                    }
+                    if (sidebarLogo) {
+                        sidebarLogo.src = 'images/logo_icon.svg';
+                    }
+                }
+                
+                // Mark sidebar as initialized after a short delay to enable transitions for user interactions
+                setTimeout(function() {
+                    sidebar.classList.add('sidebar-initialized');
+                }, 100);
+            }
+        }
+
+        // ============================================
+        // Theme Management (Light/Dark Mode)
+        // ============================================
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Save preference to localStorage
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo guardar el tema:', error);
+            }
+            
+            // Update dark mode button icon and text
+            updateThemeButton(newTheme);
+        }
+        
+        // Function to update theme button icon and text
+        function updateThemeButton(theme) {
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (!darkModeBtn) return;
+            
+            const icon = darkModeBtn.querySelector('.dsu-nav-button__icon img');
+            const text = darkModeBtn.querySelector('.dsu-nav-button__text');
+            
+            if (icon) {
+                icon.src = theme === 'dark' ? 'images/sun.svg' : 'images/moon.svg';
+                icon.alt = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+            }
+            
+            if (text) {
+                text.textContent = theme === 'dark' ? 'Light mode' : 'Dark mode';
+            }
+        }
+        
+        // Function to load saved theme
+        function loadTheme() {
+            try {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                updateThemeButton(savedTheme);
+            } catch (error) {
+                console.warn('⚠️ No se pudo cargar el tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+        
+        // Initialize theme immediately (before DOMContentLoaded to prevent flash)
+        loadTheme();
+
+        // Initialize sidebar state immediately when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSidebarState);
+        } else {
+            initSidebarState();
+        }
+
+        // ============================================
+        // My Tasks Section
+        // ============================================
+        function initMyTasksSection() {
+            const myTasksSection = document.getElementById('myTasksSection');
+            const myTaskInput = document.getElementById('myTaskInput');
+            const myTasksItemsContainer = document.getElementById('myTasksItemsContainer');
+            
+            if (!myTasksSection) {
+                console.warn('⚠️ Elementos de My Tasks Section no encontrados');
+                return;
+            }
+
+            // Helper function to get member image (from IndexedDB or base64)
+            async function getMemberImageHelper(memberImageRef) {
+                if (!memberImageRef || memberImageRef.trim() === '') {
+                    return 'images/avatar_icon.svg';
+                }
+                
+                // Si es referencia de IndexedDB
+                if (memberImageRef.startsWith('indexeddb:')) {
+                    const imageId = memberImageRef.replace('indexeddb:', '');
+                    if (typeof DocuImageStorage !== 'undefined' && DocuImageStorage.isAvailable()) {
+                        try {
+                            const imageData = await DocuImageStorage.getImage(imageId);
+                            return imageData || 'images/avatar_icon.svg';
+                        } catch (error) {
+                            console.error('❌ Error al cargar imagen de IndexedDB:', error);
+                            return 'images/avatar_icon.svg';
+                        }
+                    } else {
+                        console.warn('⚠️ IndexedDB no disponible');
+                        return 'images/avatar_icon.svg';
+                    }
+                }
+                
+                // Si es base64, retornar directamente
+                if (memberImageRef.startsWith('data:')) {
+                    return memberImageRef;
+                }
+                
+                // Fallback
+                return 'images/avatar_icon.svg';
+            }
+
+            // Function to get all team members from all teams
+            function getAllTeamMembers() {
+                if (typeof DocuProjectData === 'undefined') {
+                    return [];
+                }
+                
+                const projectData = DocuProjectData.getProjectData();
+                if (!projectData || !projectData.teams) {
+                    return [];
+                }
+                
+                const allMembers = [];
+                const seenIds = new Set();
+                const seenKeys = new Set(); // Para miembros sin ID, usar nombre+email como clave única
+                
+                // Obtener miembros de todos los teams
+                projectData.teams.forEach(team => {
+                    if (team && team.members && Array.isArray(team.members)) {
+                        team.members.forEach(member => {
+                            if (!member) return; // Saltar miembros nulos
+                            
+                            // Normalizar ID a string para comparación
+                            const memberId = member.id != null ? String(member.id) : null;
+                            const memberName = (member.name || '').trim();
+                            const memberEmail = (member.email || '').trim();
+                            
+                            // Crear clave única para deduplicación
+                            let uniqueKey = null;
+                            
+                            if (memberId && memberId !== '') {
+                                // Si tiene ID, usar ID como clave única
+                                uniqueKey = memberId;
+                                
+                                // Verificar si ya existe por ID
+                                if (seenIds.has(uniqueKey)) {
+                                    console.log('⚠️ Miembro duplicado detectado por ID:', memberId, memberName);
+                                    return; // Saltar duplicado
+                                }
+                                seenIds.add(uniqueKey);
+                            } else {
+                                // Si no tiene ID, usar nombre + email como clave única
+                                uniqueKey = `${memberName}|${memberEmail}`;
+                                
+                                // Verificar si ya existe por nombre+email
+                                if (seenKeys.has(uniqueKey)) {
+                                    console.log('⚠️ Miembro duplicado detectado por nombre+email:', memberName, memberEmail);
+                                    return; // Saltar duplicado
+                                }
+                                seenKeys.add(uniqueKey);
+                            }
+                            
+                            // Agregar miembro único
+                            const memberImage = member.image || member.avatar || '';
+                            allMembers.push({
+                                id: member.id,
+                                name: memberName || 'Unnamed',
+                                lastName: (member.lastName || '').trim(),
+                                avatar: memberImage,
+                                image: memberImage,
+                                role: (member.role || '').trim(),
+                                email: memberEmail
+                            });
+                        });
+                    }
+                });
+                
+                console.log('📋 Miembros únicos obtenidos de todos los teams:', allMembers.length);
+                console.log('📋 IDs únicos:', Array.from(seenIds));
+                return allMembers;
+            }
+
+            // Variable para almacenar el task item actual en el modal
+            let currentMyTaskItemForModal = null;
+
+            // Function to show member selection modal
+            function showMyTaskMemberSelectionModal(taskItem) {
+                const members = getAllTeamMembers();
+                if (members.length === 0) {
+                    alert('No hay miembros disponibles en los teams. Agrega miembros primero.');
+                    return;
+                }
+
+                currentMyTaskItemForModal = taskItem;
+
+                // Obtener miembros actualmente asignados
+                const currentAssignedMembers = getAssignedMembersFromMyTask(taskItem);
+
+                // Mostrar modal
+                const modal = document.getElementById('assignMyTaskMembersModal');
+                const membersList = document.getElementById('assignMyTaskMembersListContent');
+                
+                if (!modal || !membersList) {
+                    console.error('Modal elements not found');
+                    return;
+                }
+
+                // Limpiar lista
+                membersList.innerHTML = '';
+
+                // Crear un Set para rastrear IDs de checkboxes ya creados (evitar duplicados en DOM)
+                const createdCheckboxIds = new Set();
+
+                // Crear items de miembros con checkboxes
+                members.forEach((member, index) => {
+                    // Validar que el miembro tenga datos válidos
+                    if (!member || (!member.id && !member.name)) {
+                        console.warn('⚠️ Miembro inválido detectado, saltando:', member);
+                        return;
+                    }
+                    
+                    // Crear ID único para el checkbox (usar ID del miembro o índice como fallback)
+                    const memberId = member.id != null ? String(member.id) : `temp-${index}`;
+                    const checkboxId = `my-task-member-${memberId}`;
+                    
+                    // Verificar si ya se creó un checkbox con este ID (evitar duplicados en DOM)
+                    if (createdCheckboxIds.has(checkboxId)) {
+                        console.warn('⚠️ Checkbox duplicado detectado, saltando:', checkboxId, member.name);
+                        return;
+                    }
+                    createdCheckboxIds.add(checkboxId);
+                    
+                    const memberItem = document.createElement('div');
+                    memberItem.className = 'modal-member-item';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = checkboxId;
+                    checkbox.value = JSON.stringify(member);
+                    
+                    // Marcar como seleccionado si ya está asignado (comparación robusta)
+                    const isAssigned = currentAssignedMembers.some(m => {
+                        const assignedId = m.id != null ? String(m.id) : null;
+                        const memberIdStr = member.id != null ? String(member.id) : null;
+                        // Comparar por ID si ambos tienen ID
+                        if (assignedId && memberIdStr) {
+                            return assignedId === memberIdStr;
+                        }
+                        // Si no tienen ID, comparar por nombre + email
+                        const assignedName = (m.name || '').trim();
+                        const assignedEmail = (m.email || '').trim();
+                        const memberName = (member.name || '').trim();
+                        const memberEmail = (member.email || '').trim();
+                        return assignedName === memberName && assignedEmail === memberEmail && assignedName !== '';
+                    });
+                    checkbox.checked = isAssigned;
+                    
+                    const memberContent = document.createElement('div');
+                    memberContent.className = 'modal-member-content';
+                    memberContent.addEventListener('click', function() {
+                        checkbox.checked = !checkbox.checked;
+                    });
+                    
+                    // Avatar
+                    const avatarContainer = document.createElement('span');
+                    avatarContainer.className = 'modal-member-avatar';
+                    
+                    const memberImageRef = member.image || member.avatar || '';
+                    
+                    if (memberImageRef && memberImageRef.trim()) {
+                        const avatarImg = document.createElement('img');
+                        avatarImg.className = 'avatar__img';
+                        avatarImg.alt = member.name || 'Member';
+                        
+                        getMemberImageHelper(memberImageRef).then(imageSrc => {
+                            avatarImg.src = imageSrc;
+                        }).catch(error => {
+                            console.error('Error al cargar imagen del miembro:', error);
+                            avatarImg.style.display = 'none';
+                            avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                        });
+                        
+                        avatarImg.onerror = function() {
+                            this.style.display = 'none';
+                            avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                        };
+                        
+                        avatarContainer.appendChild(avatarImg);
+                    } else {
+                        avatarContainer.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                    }
+                    
+                    // Nombre
+                    const memberLabel = document.createElement('label');
+                    memberLabel.className = 'modal-member-label';
+                    memberLabel.setAttribute('for', checkboxId);
+                    memberLabel.textContent = member.name || 'Unnamed';
+                    
+                    memberContent.appendChild(avatarContainer);
+                    memberContent.appendChild(memberLabel);
+                    
+                    memberItem.appendChild(checkbox);
+                    memberItem.appendChild(memberContent);
+                    
+                    membersList.appendChild(memberItem);
+                });
+
+                // Mostrar modal
+                modal.classList.add('modal-overlay--visible');
+            }
+
+            // Function to get assigned members from task item
+            function getAssignedMembersFromMyTask(taskItem) {
+                const assignedMembersData = taskItem.dataset.assignedMembers;
+                if (!assignedMembersData) {
+                    return [];
+                }
+                try {
+                    return JSON.parse(assignedMembersData);
+                } catch (e) {
+                    console.error('Error parsing assigned members:', e);
+                    return [];
+                }
+            }
+
+            // Function to close assign members modal
+            function closeAssignMyTaskMembersModal() {
+                const modal = document.getElementById('assignMyTaskMembersModal');
+                if (modal) {
+                    modal.classList.remove('modal-overlay--visible');
+                }
+                currentMyTaskItemForModal = null;
+            }
+
+            // Inicializar event listeners para el modal
+            function initMyTaskMembersModal() {
+                const closeBtn = document.getElementById('closeAssignMyTaskMembersModalBtn');
+                const cancelBtn = document.getElementById('cancelAssignMyTaskMembersBtn');
+                const confirmBtn = document.getElementById('confirmAssignMyTaskMembersBtn');
+                const modal = document.getElementById('assignMyTaskMembersModal');
+
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', closeAssignMyTaskMembersModal);
+                }
+
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', closeAssignMyTaskMembersModal);
+                }
+
+                if (confirmBtn) {
+                    confirmBtn.addEventListener('click', function() {
+                        if (!currentMyTaskItemForModal) return;
+
+                        const membersList = document.getElementById('assignMyTaskMembersListContent');
+                        const checkboxes = membersList.querySelectorAll('input[type="checkbox"]:checked');
+                        
+                        const selectedMembers = [];
+                        checkboxes.forEach(checkbox => {
+                            try {
+                                const member = JSON.parse(checkbox.value);
+                                selectedMembers.push(member);
+                            } catch (e) {
+                                console.error('Error parsing member data:', e);
+                            }
+                        });
+
+                        // Asignar miembros seleccionados
+                        assignMyTaskMembers(currentMyTaskItemForModal, selectedMembers);
+                        closeAssignMyTaskMembersModal();
+                    });
+                }
+
+                // Cerrar modal al hacer clic fuera
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            closeAssignMyTaskMembersModal();
+                        }
+                    });
+                }
+            }
+
+            // Inicializar modal cuando la sección se inicializa
+            initMyTaskMembersModal();
+
+            // Function to assign multiple members to task
+            function assignMyTaskMembers(taskItem, members) {
+                const memberInfo = taskItem.querySelector('.my-tasks-item-member-info');
+                const avatarBtn = taskItem.querySelector('.my-tasks-item-avatar-btn');
+                const avatarsContainer = taskItem.querySelector('.my-tasks-item-avatars-container');
+                const dateInfo = taskItem.querySelector('.my-tasks-item-date');
+
+                // Guardar miembros asignados en dataset
+                if (members && members.length > 0) {
+                    taskItem.dataset.assignedMembers = JSON.stringify(members);
+                } else {
+                    delete taskItem.dataset.assignedMembers;
+                }
+
+                // Actualizar contenedor de avatares
+                if (avatarsContainer) {
+                    avatarsContainer.innerHTML = '';
+
+                    if (members && members.length > 0) {
+                        members.forEach(member => {
+                            const avatarWrapper = document.createElement('div');
+                            avatarWrapper.className = 'my-tasks-item-assigned-avatar';
+                            
+                            const memberImageRef = member.image || member.avatar || '';
+                            
+                            if (memberImageRef && memberImageRef.trim()) {
+                                const avatarImg = document.createElement('img');
+                                avatarImg.className = 'avatar__img';
+                                avatarImg.alt = member.name || 'Member';
+                                
+                                getMemberImageHelper(memberImageRef).then(imageSrc => {
+                                    avatarImg.src = imageSrc;
+                                }).catch(error => {
+                                    console.error('Error al cargar imagen del miembro:', error);
+                                    avatarImg.style.display = 'none';
+                                    avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                });
+                                
+                                avatarImg.onerror = function() {
+                                    this.style.display = 'none';
+                                    avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                                };
+                                
+                                avatarWrapper.appendChild(avatarImg);
+                            } else {
+                                avatarWrapper.textContent = (member.name || 'U').charAt(0).toUpperCase();
+                            }
+                            
+                            avatarsContainer.appendChild(avatarWrapper);
+                        });
+                        avatarsContainer.style.display = 'flex';
+                    } else {
+                        avatarsContainer.style.display = 'none';
+                    }
+                }
+
+                // Actualizar información del miembro
+                if (memberInfo) {
+                    if (members && members.length > 0) {
+                        memberInfo.style.display = 'flex';
+                        const memberNameSpan = memberInfo.querySelector('.my-tasks-item-member-name');
+                        if (memberNameSpan) {
+                            if (members.length === 1) {
+                                memberNameSpan.textContent = members[0].name;
+                            } else {
+                                memberNameSpan.textContent = `${members.length} members assigned`;
+                            }
+                        }
+                    } else {
+                        memberInfo.style.display = 'none';
+                    }
+                }
+
+                // El botón de avatar siempre debe estar visible
+                if (avatarBtn) {
+                    avatarBtn.style.display = 'flex';
+                }
+            }
+
+            // Function to add task item
+            function addMyTaskItem(text, completed = false, assignedMembers = null, createdAt = null) {
+                if (!myTasksItemsContainer || !text.trim()) return;
+                
+                const item = document.createElement('div');
+                item.className = 'my-tasks-item' + (completed ? ' my-tasks-item--completed' : '');
+                
+                const taskCreatedAt = createdAt || new Date().toISOString();
+                item.dataset.createdAt = taskCreatedAt;
+                
+                // Crear checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'my-tasks-item-checkbox';
+                checkbox.checked = completed;
+                
+                checkbox.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    if (isChecked) {
+                        item.classList.add('my-tasks-item--completed');
+                    } else {
+                        item.classList.remove('my-tasks-item--completed');
+                    }
+                });
+                
+                // Crear texto
+                const textElement = document.createElement('p');
+                textElement.className = 'my-tasks-item-text';
+                textElement.textContent = `-${text}`;
+                
+                // Crear contenedor de información
+                const infoContainer = document.createElement('div');
+                infoContainer.className = 'my-tasks-item-info';
+                
+                // Contenedor para avatares asignados
+                const avatarsContainer = document.createElement('div');
+                avatarsContainer.className = 'my-tasks-item-avatars-container';
+                avatarsContainer.style.display = 'none';
+                
+                // Avatar button para asignar miembros
+                const avatarBtn = document.createElement('button');
+                avatarBtn.className = 'my-tasks-item-avatar-btn';
+                avatarBtn.type = 'button';
+                avatarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showMyTaskMemberSelectionModal(item);
+                });
+                
+                const avatarPlaceholder = document.createElement('div');
+                avatarPlaceholder.className = 'my-tasks-item-avatar-placeholder';
+                avatarPlaceholder.innerHTML = '<img src="images/plus.svg" alt="Assign">';
+                
+                avatarBtn.appendChild(avatarPlaceholder);
+                
+                // Información del miembro asignado
+                const memberInfo = document.createElement('div');
+                memberInfo.className = 'my-tasks-item-member-info';
+                memberInfo.style.display = 'none';
+                
+                const memberName = document.createElement('span');
+                memberName.className = 'my-tasks-item-member-name';
+                memberInfo.appendChild(memberName);
+                
+                // Fecha de creación - SIEMPRE VISIBLE
+                const dateContainer = document.createElement('div');
+                dateContainer.className = 'my-tasks-item-date-container';
+                
+                const dateInfo = document.createElement('span');
+                dateInfo.className = 'my-tasks-item-date';
+                const createdDate = new Date(taskCreatedAt);
+                dateInfo.textContent = createdDate.toLocaleDateString('es-ES', { 
+                    day: 'numeric', 
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                dateContainer.appendChild(dateInfo);
+                
+                infoContainer.appendChild(avatarsContainer);
+                infoContainer.appendChild(avatarBtn);
+                infoContainer.appendChild(memberInfo);
+                infoContainer.appendChild(dateContainer);
+                
+                // Si hay miembros asignados, configurarlos
+                if (assignedMembers && Array.isArray(assignedMembers) && assignedMembers.length > 0) {
+                    assignMyTaskMembers(item, assignedMembers);
+                }
+                
+                // Crear acciones
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'my-tasks-item-actions';
+                actionsDiv.innerHTML = `
+                    <button class="my-tasks-item-action" onclick="this.closest('.my-tasks-item').remove();">
+                        <img src="images/trash.svg" alt="Delete">
+                    </button>
+                    <button class="my-tasks-item-action" onclick="editMyTaskItem(this)">
+                        <img src="images/Edit.svg" alt="Edit">
+                    </button>
+                `;
+                
+                // Ensamblar item
+                item.appendChild(checkbox);
+                item.appendChild(textElement);
+                item.appendChild(infoContainer);
+                item.appendChild(actionsDiv);
+                
+                // Agregar al inicio de la lista (más reciente arriba)
+                myTasksItemsContainer.prepend(item);
+            }
+
+            // Hacer addMyTaskItem global
+            window.addMyTaskItem = addMyTaskItem;
+
+            // Edit item functionality
+            window.editMyTaskItem = function(button) {
+                const item = button.closest('.my-tasks-item');
+                const textElement = item.querySelector('.my-tasks-item-text');
+                const currentText = textElement.textContent.replace(/^-\s*/, '');
+                const newText = prompt('Edit item:', currentText);
+                if (newText && newText.trim()) {
+                    textElement.textContent = '-' + newText.trim();
+                }
+            };
+
+            // Input functionality - Add item on Enter
+            if (myTaskInput) {
+                myTaskInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        addMyTaskItem(this.value.trim());
+                        this.value = '';
+                    }
+                });
+            }
+
+            console.log('✅ My Tasks Section inicializado correctamente');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof window.DocuAuth === 'undefined' || !DocuAuth.isAuthenticated()) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            initSidebarNavigation();
+            initMyTasksSection();
+            
+            // Dark Mode Button
+            const darkModeBtn = document.getElementById('darkModeBtn');
+            if (darkModeBtn) {
+                darkModeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTheme();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

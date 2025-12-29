@@ -1,3 +1,4 @@
+da4e28bfba41afc9f047e130549d4e4f920e126b|Ubits|ubits@macbookpro.lan|2025-12-27 18:20:32 -0500|Update: Changelog actualizado con espaciado de listas
 fad62a06ab0d1feafeaba8a8eacb8bb0827d749b|Ubits|ubits@macbookpro.lan|2025-12-27 18:20:15 -0500|Style: Actualizar espaciado de listas en project_view.html
 909fd1a233e958cde6c26b8e28608b202306d18b|Ubits|ubits@macbookpro.lan|2025-12-27 13:24:46 -0500|Update: Changelog actualizado con reorganización de secciones
 0315fb289cfd574c32ec4db56f8a92741846464d|Ubits|ubits@macbookpro.lan|2025-12-27 13:24:26 -0500|Refactor: Reorganizar orden de secciones en project views

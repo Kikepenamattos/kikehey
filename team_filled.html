@@ -1693,6 +1693,14 @@
                             </div>
                         </div>
                         
+                        <!-- My Task Button -->
+                        <button class="dsu-nav-button" id="myTasksBtn">
+                            <span class="dsu-nav-button__icon">
+                                <img src="images/number_list.svg" alt="My tasks">
+                            </span>
+                            <span class="dsu-nav-button__text">My tasks</span>
+                        </button>
+                        
                         <!-- Profile Button -->
                         <button class="dsu-nav-button">
                             <span class="dsu-nav-button__icon">
@@ -3372,6 +3380,19 @@
                 });
             } else {
                 console.error('❌ Botón "Create new project" no encontrado');
+            }
+
+            // My Task Button - Redirigir a my_tasks.html
+            const myTasksBtn = document.getElementById('myTasksBtn');
+            if (myTasksBtn) {
+                myTasksBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('📋 Botón "My Task" clickeado, redirigiendo a my_tasks.html');
+                    window.location.href = 'my_tasks.html';
+                });
+            } else {
+                console.warn('⚠️ Botón "My Task" no encontrado');
             }
 
             // Dark Mode Button
