@@ -1,3 +1,5 @@
+3d4de725e476e59eff43fc12b4de6d2810d78129|Ubits|ubits@macbookpro.lan|2025-12-29 16:21:04 -0500|Update: Cambiar texto del botón 'My Task' a 'My tasks' en sidebar
+3d4de725e476e59eff43fc12b4de6d2810d78129|Ubits|ubits@macbookpro.lan|2025-12-29 16:21:04 -0500|Update: Cambiar texto del botón 'My Task' a 'My tasks' en sidebar
 da4e28bfba41afc9f047e130549d4e4f920e126b|Ubits|ubits@macbookpro.lan|2025-12-27 18:20:32 -0500|Update: Changelog actualizado con espaciado de listas
 fad62a06ab0d1feafeaba8a8eacb8bb0827d749b|Ubits|ubits@macbookpro.lan|2025-12-27 18:20:15 -0500|Style: Actualizar espaciado de listas en project_view.html
 909fd1a233e958cde6c26b8e28608b202306d18b|Ubits|ubits@macbookpro.lan|2025-12-27 13:24:46 -0500|Update: Changelog actualizado con reorganización de secciones
