@@ -50,28 +50,29 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             height: 100vh;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .my-tasks-content {
-            flex: 0 1 auto;
+            flex: 1;
             padding: 64px 173px 64px 135px;
             display: flex;
             flex-direction: column;
             gap: 32px;
             width: 80%;
+            max-width: 100%;
             margin: 0 auto;
+            min-height: min-content;
         }
 
         /* Headline Container */
         .my-tasks-headline-container {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: var(--spacing-08);
             /* margin-bottom: 48px; */
-            gap: 24px;
         }
 
         /* Headline */
@@ -83,7 +84,17 @@
             line-height: normal;
             margin: 0;
             padding: 0;
-            flex: 1;
+        }
+
+        /* Description */
+        .my-tasks-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-md, 16px);
+            font-weight: var(--font-weight-regular, 400);
+            color: var(--color-text-secondary, #6b7280);
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
         }
 
         .search-input-group {
@@ -197,16 +208,13 @@
         .my-tasks-section-content .my-tasks-content {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-16);
+            /* gap: var(--spacing-16); */
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
             padding: 0;
         }
 
-        .my-tasks-content .dsu-input-group {
-            width: 100%;
-        }
 
         .my-tasks-items-container {
             display: flex;
@@ -385,6 +393,207 @@
 
         .my-tasks-item-assigned-avatar:not(:first-child) {
             margin-left: -12px;
+        }
+
+        /* Task Groups Styles - Reutilizando componentes existentes */
+        .my-tasks-groups-container {
+            display: flex;
+            flex-direction: column;
+            /* gap: 16px; */
+            width: 100%;
+        }
+
+        #addTaskGroupBtn {
+            align-self: flex-start;
+            display: block;
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .my-tasks-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-16);
+            width: 100%;
+            margin-bottom: 32px;
+        }
+
+        /* Group Title - Reutiliza estilos de project-section-title */
+        .my-tasks-group-title {
+            font-family: var(--font-family-secondary);
+            font-size: 24px;
+            font-weight: var(--font-weight-black);
+            color: var(--color-text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            width: 100%;
+            gap: var(--spacing-12);
+        }
+
+        .my-tasks-group-title__text {
+            flex: 1;
+            cursor: text;
+            padding: var(--spacing-04) 0;
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s ease;
+        }
+
+        .my-tasks-group-title__text:hover {
+            background-color: var(--color-surface-especial, #f4f7fb);
+        }
+
+        /* Input para editar nombre del grupo - Reutilizando estilos de dsu-input */
+        .my-tasks-group-title__input {
+            flex: 1;
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+            color: var(--color-text-primary);
+            background-color: var(--color-surface-regular);
+            border: 1px solid var(--color-basics-mid-blue);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-12) var(--spacing-16);
+            outline: none;
+            min-height: 48px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        /* Placeholder styles - Reutilizando del design system */
+        .my-tasks-group-title__input::placeholder {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
+        }
+
+        .my-tasks-group-title__input:focus {
+            outline: none;
+            border: 1px solid var(--color-basics-dark-blue);
+            color: var(--color-text-primary);
+        }
+
+        /* Dark mode para input */
+        [data-theme="dark"] .my-tasks-group-title__input {
+            color: #ffffff;
+            border-color: var(--color-basics-mid-blue);
+        }
+
+        [data-theme="dark"] .my-tasks-group-title__input:focus {
+            border-color: var(--color-basics-white);
+            color: #ffffff;
+        }
+
+        [data-theme="dark"] .my-tasks-group-title__input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .my-tasks-group-title__delete {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .my-tasks-group-title__delete:hover {
+            opacity: 0.8;
+        }
+
+        .my-tasks-group-title__delete img {
+            width: 16px;
+            height: 16px;
+        }
+
+        .my-tasks-group-title__delete:hover img {
+            filter: brightness(0) saturate(100%) invert(27%) sepia(95%) saturate(7471%) hue-rotate(349deg) brightness(91%) contrast(92%);
+        }
+
+        /* Contenido del grupo - Reutiliza estilos de project-section-content */
+        .my-tasks-group-content {
+            overflow: visible;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            margin: 0;
+            padding-left: 24px;
+            display: flex;
+            flex-direction: column;
+            /* gap: var(--spacing-16); */
+        }
+
+        .my-tasks-group-content--collapsed {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .my-tasks-group-content--expanded {
+            max-height: 10000px;
+            opacity: 1;
+            overflow: visible;
+            margin: 0;
+            padding-left: 24px;
+        }
+
+        .my-tasks-group-content .my-tasks-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-08);
+            width: 100%;
+            min-height: 0;
+            /* padding-left: 24px; */
+        }
+
+        .my-tasks-content #myTaskInput {
+            width: 100%;
+        }
+
+        .my-tasks-group-content input.dsu-input {
+            width: 100%;
+            /* margin-left: 24px; */
+            padding-left: 24px;
+            margin-top: 8px;
+        }
+
+        /* Chevron styles - Reutilizando de project-section-title */
+        .my-tasks-group-title .project-section-title__chevron {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-left: var(--spacing-12);
+            transition: transform 0.2s ease;
+        }
+
+        .my-tasks-group-title .project-section-title__chevron img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Dark mode icon adjustment */
+        [data-theme="dark"] .my-tasks-group-title .project-section-title__chevron img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .my-tasks-group-title.project-section-title--collapsed .project-section-title__chevron {
+            transform: rotate(0deg);
+        }
+
+        .my-tasks-group-title.project-section-title--expanded .project-section-title__chevron {
+            transform: rotate(180deg);
         }
 
         /* Modal Styles - Estándar del proyecto */
@@ -733,25 +942,37 @@
                 <!-- Headline Container -->
                 <div class="my-tasks-headline-container">
                     <h1 class="my-tasks-headline">My Tasks</h1>
+                    <p class="my-tasks-description">Create and manage your daily duties in one place.</p>
                 </div>
                 
                 <!-- My Tasks Section -->
                 <div class="my-tasks-section" id="myTasksSection">
                     <div class="my-tasks-section-content my-tasks-section-content--expanded" data-content="my-tasks">
                         <div class="my-tasks-content">
-                            <!-- Tasks Items Container -->
-                            <div class="my-tasks-items-container" id="myTasksItemsContainer">
-                                <!-- Items de Tasks se agregarán aquí dinámicamente -->
-                            </div>
-                            <div class="dsu-input-group">
-                                <div class="dsu-input-container">
-                                    <input 
-                                        type="text" 
-                                        class="dsu-input dsu-input--only" 
-                                        id="myTaskInput" 
-                                        placeholder="Choose an unique name"
-                                    >
+                            <!-- Input para agregar tareas (oculto inicialmente) -->
+                            <input 
+                                type="text" 
+                                class="dsu-input dsu-input--only" 
+                                id="myTaskInput" 
+                                placeholder="Choose an unique name"
+                                style="display: none;"
+                            >
+                            
+                            <!-- Estructura legacy (se mantiene para compatibilidad) -->
+                            <div id="myTasksLegacyContainer" style="display: none;">
+                                <!-- Tasks Items Container -->
+                                <div class="my-tasks-items-container" id="myTasksItemsContainer">
+                                    <!-- Items de Tasks se agregarán aquí dinámicamente -->
                                 </div>
+                            </div>
+                            
+                            <!-- Contenedor de grupos de tareas (visible inicialmente solo con el botón) -->
+                            <div class="my-tasks-groups-container" id="myTasksGroupsContainer" style="display: flex;">
+                                <!-- Los grupos de tareas se agregarán aquí dinámicamente -->
+                                <!-- Botón para crear grupos (siempre al final) -->
+                                <button class="dsu-button dsu-button--primary dsu-button--small" id="addTaskGroupBtn">
+                                    <span>Create group</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1468,7 +1689,6 @@
         // ============================================
         function initMyTasksSection() {
             const myTasksSection = document.getElementById('myTasksSection');
-            const myTaskInput = document.getElementById('myTaskInput');
             const myTasksItemsContainer = document.getElementById('myTasksItemsContainer');
             
             if (!myTasksSection) {
@@ -1952,14 +2172,30 @@
                 // Crear acciones
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'my-tasks-item-actions';
-                actionsDiv.innerHTML = `
-                    <button class="my-tasks-item-action" onclick="this.closest('.my-tasks-item').remove();">
-                        <img src="images/trash.svg" alt="Delete">
-                    </button>
-                    <button class="my-tasks-item-action" onclick="editMyTaskItem(this)">
-                        <img src="images/Edit.svg" alt="Edit">
-                    </button>
-                `;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'my-tasks-item-action';
+                deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+                deleteBtn.addEventListener('click', function() {
+                    const taskItem = this.closest('.my-tasks-item');
+                    if (taskItem) {
+                        taskItem.remove();
+                        // Guardar grupos si estamos en modo grupos
+                        if (typeof saveTaskGroupsFromDOM === 'function') {
+                            saveTaskGroupsFromDOM();
+                        }
+                    }
+                });
+                
+                const editBtn = document.createElement('button');
+                editBtn.className = 'my-tasks-item-action';
+                editBtn.innerHTML = '<img src="images/Edit.svg" alt="Edit">';
+                editBtn.addEventListener('click', function() {
+                    editMyTaskItem(this);
+                });
+                
+                actionsDiv.appendChild(deleteBtn);
+                actionsDiv.appendChild(editBtn);
                 
                 // Ensamblar item
                 item.appendChild(checkbox);
@@ -1982,19 +2218,718 @@
                 const newText = prompt('Edit item:', currentText);
                 if (newText && newText.trim()) {
                     textElement.textContent = '-' + newText.trim();
+                    // Guardar grupos si estamos en modo grupos
+                    if (typeof saveTaskGroupsFromDOM === 'function') {
+                        saveTaskGroupsFromDOM();
+                    }
                 }
             };
 
-            // Input functionality - Add item on Enter
-            if (myTaskInput) {
-                myTaskInput.addEventListener('keypress', function(e) {
+            // Delete item functionality (actualizada para grupos)
+            if (!window.deleteMyTaskItem) {
+                window.deleteMyTaskItem = function(button) {
+                    const item = button.closest('.my-tasks-item');
+                    if (item) {
+                        item.remove();
+                        // Guardar grupos si estamos en modo grupos
+                        if (typeof saveTaskGroupsFromDOM === 'function') {
+                            saveTaskGroupsFromDOM();
+                        }
+                    }
+                };
+            }
+
+            // Input functionality - Los inputs están solo dentro de los grupos
+
+            // ============================================
+            // Task Groups Functionality
+            // ============================================
+            
+            const STORAGE_KEY = 'myTasksGroups';
+            const CHEVRON_ICON = 'images/down-chevron.svg'; // Constante para evitar inconsistencias
+            const myTasksGroupsContainer = document.getElementById('myTasksGroupsContainer');
+            const addTaskGroupBtn = document.getElementById('addTaskGroupBtn');
+            const myTasksLegacyContainer = document.getElementById('myTasksLegacyContainer');
+
+            // Save groups to localStorage
+            function saveTaskGroups(groups) {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(groups));
+                } catch (error) {
+                    console.error('❌ Error al guardar grupos de tareas:', error);
+                }
+            }
+
+            // Load groups from localStorage
+            function loadTaskGroups() {
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY);
+                    if (saved) {
+                        return JSON.parse(saved);
+                    }
+                } catch (error) {
+                    console.error('❌ Error al cargar grupos de tareas:', error);
+                }
+                return [];
+            }
+
+            // Get active or default group
+            function getActiveOrDefaultGroup() {
+                const groups = myTasksGroupsContainer.querySelectorAll('.my-tasks-group');
+                if (groups.length === 0) return null;
+                
+                // Buscar grupo expandido
+                for (const group of groups) {
+                    const title = group.querySelector('.my-tasks-group-title');
+                    if (title && title.classList.contains('project-section-title--expanded')) {
+                        return { id: group.dataset.groupId, element: group };
+                    }
+                }
+                
+                // Si no hay expandido, retornar el primero
+                if (groups.length > 0) {
+                    return { id: groups[0].dataset.groupId, element: groups[0] };
+                }
+                
+                return null;
+            }
+
+            // Add task to specific group
+            function addTaskToGroup(groupId, text, completed = false, assignedMembers = null, createdAt = null) {
+                const group = document.querySelector(`[data-group-id="${groupId}"]`);
+                if (!group) return;
+                
+                const itemsContainer = group.querySelector('.my-tasks-items-container');
+                if (!itemsContainer || !text.trim()) return;
+                
+                // Reutilizar lógica existente de addMyTaskItem pero para un grupo específico
+                const item = document.createElement('div');
+                item.className = 'my-tasks-item' + (completed ? ' my-tasks-item--completed' : '');
+                
+                const taskCreatedAt = createdAt || new Date().toISOString();
+                item.dataset.createdAt = taskCreatedAt;
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'my-tasks-item-checkbox';
+                checkbox.checked = completed;
+                
+                checkbox.addEventListener('change', function() {
+                    const isChecked = this.checked;
+                    if (isChecked) {
+                        item.classList.add('my-tasks-item--completed');
+                    } else {
+                        item.classList.remove('my-tasks-item--completed');
+                    }
+                    saveTaskGroupsFromDOM();
+                });
+                
+                const textElement = document.createElement('p');
+                textElement.className = 'my-tasks-item-text';
+                textElement.textContent = `-${text}`;
+                
+                const infoContainer = document.createElement('div');
+                infoContainer.className = 'my-tasks-item-info';
+                
+                const avatarsContainer = document.createElement('div');
+                avatarsContainer.className = 'my-tasks-item-avatars-container';
+                avatarsContainer.style.display = 'none';
+                
+                const avatarBtn = document.createElement('button');
+                avatarBtn.className = 'my-tasks-item-avatar-btn';
+                avatarBtn.type = 'button';
+                avatarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showMyTaskMemberSelectionModal(item);
+                });
+                
+                const avatarPlaceholder = document.createElement('div');
+                avatarPlaceholder.className = 'my-tasks-item-avatar-placeholder';
+                avatarPlaceholder.innerHTML = '<img src="images/plus.svg" alt="Assign">';
+                
+                avatarBtn.appendChild(avatarPlaceholder);
+                
+                const memberInfo = document.createElement('div');
+                memberInfo.className = 'my-tasks-item-member-info';
+                memberInfo.style.display = 'none';
+                
+                const memberName = document.createElement('span');
+                memberName.className = 'my-tasks-item-member-name';
+                memberInfo.appendChild(memberName);
+                
+                const dateContainer = document.createElement('div');
+                dateContainer.className = 'my-tasks-item-date-container';
+                
+                const dateInfo = document.createElement('span');
+                dateInfo.className = 'my-tasks-item-date';
+                const createdDate = new Date(taskCreatedAt);
+                dateInfo.textContent = createdDate.toLocaleDateString('es-ES', { 
+                    day: 'numeric', 
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                dateContainer.appendChild(dateInfo);
+                
+                infoContainer.appendChild(avatarsContainer);
+                infoContainer.appendChild(avatarBtn);
+                infoContainer.appendChild(memberInfo);
+                infoContainer.appendChild(dateContainer);
+                
+                if (assignedMembers && Array.isArray(assignedMembers) && assignedMembers.length > 0) {
+                    assignMyTaskMembers(item, assignedMembers);
+                }
+                
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'my-tasks-item-actions';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'my-tasks-item-action';
+                deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+                deleteBtn.addEventListener('click', function() {
+                    const taskItem = this.closest('.my-tasks-item');
+                    if (taskItem) {
+                        taskItem.remove();
+                        // Guardar grupos si estamos en modo grupos
+                        if (typeof saveTaskGroupsFromDOM === 'function') {
+                            saveTaskGroupsFromDOM();
+                        }
+                    }
+                });
+                
+                const editBtn = document.createElement('button');
+                editBtn.className = 'my-tasks-item-action';
+                editBtn.innerHTML = '<img src="images/Edit.svg" alt="Edit">';
+                editBtn.addEventListener('click', function() {
+                    editMyTaskItem(this);
+                });
+                
+                actionsDiv.appendChild(deleteBtn);
+                actionsDiv.appendChild(editBtn);
+                
+                item.appendChild(checkbox);
+                item.appendChild(textElement);
+                item.appendChild(infoContainer);
+                item.appendChild(actionsDiv);
+                
+                itemsContainer.prepend(item);
+                saveTaskGroupsFromDOM();
+            }
+
+            // Create a new task group
+            function createTaskGroup(name = '', startEditing = false) {
+                const groupId = 'group-' + Date.now();
+                const groupName = name.trim() || 'Click to name this group';
+                
+                const group = document.createElement('div');
+                group.className = 'my-tasks-group';
+                group.dataset.groupId = groupId;
+                
+                const title = document.createElement('div');
+                title.className = 'my-tasks-group-title project-section-title project-section-title--expanded';
+                title.dataset.section = groupId;
+                
+                const titleText = document.createElement('span');
+                titleText.className = 'my-tasks-group-title__text project-section-title__text';
+                titleText.textContent = groupName;
+                titleText.title = 'Click to edit group name';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'my-tasks-group-title__delete';
+                deleteBtn.type = 'button';
+                deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('¿Eliminar este grupo y todas sus tareas?')) {
+                        deleteTaskGroup(groupId);
+                    }
+                });
+                
+                const chevron = document.createElement('div');
+                chevron.className = 'project-section-title__chevron';
+                chevron.innerHTML = `<img src="${CHEVRON_ICON}" alt="Toggle">`;
+                
+                title.appendChild(titleText);
+                title.appendChild(deleteBtn);
+                title.appendChild(chevron);
+                
+                const content = document.createElement('div');
+                content.className = 'my-tasks-group-content project-section-content project-section-content--expanded';
+                content.dataset.content = groupId;
+                
+                const itemsContainer = document.createElement('div');
+                itemsContainer.className = 'my-tasks-items-container';
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'dsu-input dsu-input--only';
+                input.placeholder = 'Choose an unique name';
+                input.addEventListener('keypress', function(e) {
+                    e.stopPropagation(); // Prevenir que el evento llegue al título
                     if (e.key === 'Enter' && this.value.trim()) {
                         e.preventDefault();
-                        addMyTaskItem(this.value.trim());
+                        addTaskToGroup(groupId, this.value.trim());
                         this.value = '';
                     }
                 });
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevenir que el clic colapse/expanda el grupo
+                });
+                
+                content.appendChild(itemsContainer);
+                content.appendChild(input);
+                
+                group.appendChild(title);
+                group.appendChild(content);
+                
+                // Event listeners - Separar clic en título vs clic en texto
+                title.addEventListener('click', function(e) {
+                    // Si se hace clic en el texto, editar nombre
+                    if (e.target.closest('.my-tasks-group-title__text')) {
+                        e.stopPropagation();
+                        editTaskGroupName(groupId);
+                        return;
+                    }
+                    // Si se hace clic en delete, no hacer nada (ya tiene su handler)
+                    if (e.target.closest('.my-tasks-group-title__delete')) {
+                        return;
+                    }
+                    // Cualquier otro clic en el título, colapsar/expandir
+                    toggleTaskGroup(groupId);
+                });
+                
+                // Insertar grupo antes del botón (si existe)
+                if (addTaskGroupBtn && addTaskGroupBtn.parentNode === myTasksGroupsContainer) {
+                    myTasksGroupsContainer.insertBefore(group, addTaskGroupBtn);
+                } else {
+                    myTasksGroupsContainer.appendChild(group);
+                }
+                
+                // Asegurar que el botón esté al final
+                if (addTaskGroupBtn && myTasksGroupsContainer.contains(addTaskGroupBtn)) {
+                    myTasksGroupsContainer.appendChild(addTaskGroupBtn);
+                }
+                
+                // Si se solicita edición o no hay nombre, iniciar edición inmediatamente
+                if (startEditing || !name.trim()) {
+                    // Usar requestAnimationFrame para asegurar que el DOM esté listo
+                    requestAnimationFrame(() => {
+                        editTaskGroupName(groupId);
+                    });
+                }
+                
+                // Mostrar contenedor de grupos (el botón ya está siempre visible)
+                myTasksGroupsContainer.style.display = 'flex';
+                
+                saveTaskGroupsFromDOM();
+                return groupId;
             }
+
+            // Edit task group name
+            function editTaskGroupName(groupId) {
+                const group = document.querySelector(`[data-group-id="${groupId}"]`);
+                if (!group) return;
+                
+                const titleText = group.querySelector('.my-tasks-group-title__text');
+                if (!titleText) return;
+                
+                // Si ya hay un input, no hacer nada
+                if (group.querySelector('.my-tasks-group-title__input')) return;
+                
+                const currentName = titleText.textContent;
+                const originalName = currentName === 'Click to name this group' ? '' : currentName;
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'my-tasks-group-title__input dsu-input dsu-input--only';
+                input.value = originalName;
+                input.placeholder = 'Enter group name';
+                
+                // Reemplazar texto con input
+                titleText.replaceWith(input);
+                
+                // Focus y seleccionar después de que el input esté en el DOM
+                requestAnimationFrame(() => {
+                    input.focus();
+                    input.select();
+                });
+                
+                let nameSaved = false;
+                
+                const saveName = () => {
+                    const newName = input.value.trim();
+                    if (!newName) {
+                        // Si está vacío, restaurar nombre original
+                        cancelEdit();
+                        return;
+                    }
+                    titleText.textContent = newName;
+                    titleText.title = 'Click to edit group name';
+                    input.replaceWith(titleText);
+                    saveTaskGroupsFromDOM();
+                    nameSaved = true;
+                };
+                
+                const cancelEdit = () => {
+                    titleText.textContent = currentName;
+                    titleText.title = 'Click to edit group name';
+                    input.replaceWith(titleText);
+                };
+                
+                // Solo cancelar en blur si no se guardó con Enter
+                input.addEventListener('blur', function() {
+                    if (!nameSaved) {
+                        cancelEdit();
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        nameSaved = true;
+                        saveName();
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelEdit();
+                    }
+                });
+            }
+
+            // Delete task group
+            function deleteTaskGroup(groupId) {
+                const group = document.querySelector(`[data-group-id="${groupId}"]`);
+                if (group) {
+                    group.remove();
+                    saveTaskGroupsFromDOM();
+                    
+                    // Si no quedan grupos, mantener el contenedor visible con el botón
+                    const remainingGroups = myTasksGroupsContainer.querySelectorAll('.my-tasks-group');
+                    if (remainingGroups.length === 0) {
+                        // Mantener el contenedor de grupos visible para mostrar el botón
+                        myTasksGroupsContainer.style.display = 'flex';
+                        // Verificar si hay tareas legacy para mostrar
+                        const legacyContainer = document.getElementById('myTasksItemsContainer');
+                        const existingTasks = legacyContainer ? legacyContainer.querySelectorAll('.my-tasks-item') : [];
+                        if (myTasksLegacyContainer) {
+                            myTasksLegacyContainer.style.display = existingTasks.length > 0 ? 'block' : 'none';
+                        }
+                        // Asegurar que el botón esté al final
+                        if (addTaskGroupBtn && myTasksGroupsContainer.contains(addTaskGroupBtn)) {
+                            myTasksGroupsContainer.appendChild(addTaskGroupBtn);
+                        }
+                    } else {
+                        // Asegurar que el botón esté al final después de eliminar un grupo
+                        if (addTaskGroupBtn && myTasksGroupsContainer.contains(addTaskGroupBtn)) {
+                            myTasksGroupsContainer.appendChild(addTaskGroupBtn);
+                        }
+                    }
+                }
+            }
+
+            // Toggle task group (collapse/expand)
+            function toggleTaskGroup(groupId) {
+                const group = document.querySelector(`[data-group-id="${groupId}"]`);
+                if (!group) return;
+                
+                const title = group.querySelector('.my-tasks-group-title');
+                const content = group.querySelector('.my-tasks-group-content');
+                
+                if (!title || !content) return;
+                
+                const isExpanded = title.classList.contains('project-section-title--expanded');
+                
+                if (isExpanded) {
+                    title.classList.remove('project-section-title--expanded');
+                    title.classList.add('project-section-title--collapsed');
+                    content.classList.remove('my-tasks-group-content--expanded');
+                    content.classList.add('my-tasks-group-content--collapsed');
+                } else {
+                    title.classList.remove('project-section-title--collapsed');
+                    title.classList.add('project-section-title--expanded');
+                    content.classList.remove('my-tasks-group-content--collapsed');
+                    content.classList.add('my-tasks-group-content--expanded');
+                }
+                
+                saveTaskGroupsFromDOM();
+            }
+
+            // Save groups from DOM to localStorage
+            function saveTaskGroupsFromDOM() {
+                const groups = [];
+                const groupElements = myTasksGroupsContainer.querySelectorAll('.my-tasks-group');
+                
+                groupElements.forEach(groupEl => {
+                    const groupId = groupEl.dataset.groupId;
+                    const titleText = groupEl.querySelector('.my-tasks-group-title__text');
+                    const title = groupEl.querySelector('.my-tasks-group-title');
+                    const itemsContainer = groupEl.querySelector('.my-tasks-items-container');
+                    
+                    if (!groupId || !titleText || !itemsContainer) return;
+                    
+                    const isExpanded = title.classList.contains('project-section-title--expanded');
+                    const tasks = [];
+                    
+                    itemsContainer.querySelectorAll('.my-tasks-item').forEach(item => {
+                        const textEl = item.querySelector('.my-tasks-item-text');
+                        const checkbox = item.querySelector('.my-tasks-item-checkbox');
+                        const createdAt = item.dataset.createdAt;
+                        const assignedMembersData = item.dataset.assignedMembers;
+                        
+                        if (!textEl) return;
+                        
+                        const taskText = textEl.textContent.replace(/^-\s*/, '');
+                        const completed = checkbox ? checkbox.checked : false;
+                        let assignedMembers = null;
+                        
+                        if (assignedMembersData) {
+                            try {
+                                assignedMembers = JSON.parse(assignedMembersData);
+                            } catch (e) {
+                                console.error('Error parsing assigned members:', e);
+                            }
+                        }
+                        
+                        tasks.push({
+                            text: taskText,
+                            completed: completed,
+                            createdAt: createdAt || new Date().toISOString(),
+                            assignedMembers: assignedMembers
+                        });
+                    });
+                    
+                    groups.push({
+                        id: groupId,
+                        name: titleText.textContent,
+                        expanded: isExpanded,
+                        tasks: tasks
+                    });
+                });
+                
+                saveTaskGroups(groups);
+            }
+
+            // Load groups from localStorage and render
+            function loadTaskGroupsFromStorage() {
+                const groups = loadTaskGroups();
+                
+                // Asegurar que el botón siempre esté visible
+                if (addTaskGroupBtn) {
+                    addTaskGroupBtn.style.display = 'block';
+                    // Asegurar que el botón esté dentro del contenedor de grupos
+                    if (!myTasksGroupsContainer.contains(addTaskGroupBtn)) {
+                        myTasksGroupsContainer.appendChild(addTaskGroupBtn);
+                    }
+                }
+                
+                if (groups.length === 0) {
+                    // Verificar si hay tareas legacy para migrar
+                    const legacyContainer = document.getElementById('myTasksItemsContainer');
+                    const existingTasks = legacyContainer ? legacyContainer.querySelectorAll('.my-tasks-item') : [];
+                    
+                    if (existingTasks.length > 0) {
+                        // Migrar tareas existentes a grupo por defecto
+                        migrateExistingTasksToGroups();
+                    } else {
+                        // Si no hay grupos ni tareas, mostrar contenedor de grupos solo con el botón
+                        if (myTasksGroupsContainer) myTasksGroupsContainer.style.display = 'flex';
+                        if (myTasksLegacyContainer) myTasksLegacyContainer.style.display = 'none';
+                    }
+                    return;
+                }
+                
+                // Ocultar contenedor legacy
+                if (myTasksLegacyContainer) myTasksLegacyContainer.style.display = 'none';
+                
+                // Mostrar contenedor de grupos
+                myTasksGroupsContainer.style.display = 'flex';
+                
+                groups.forEach(groupData => {
+                    const group = document.createElement('div');
+                    group.className = 'my-tasks-group';
+                    group.dataset.groupId = groupData.id;
+                    
+                    const title = document.createElement('div');
+                    title.className = `my-tasks-group-title project-section-title ${groupData.expanded ? 'project-section-title--expanded' : 'project-section-title--collapsed'}`;
+                    title.dataset.section = groupData.id;
+                    
+                    const titleText = document.createElement('span');
+                    titleText.className = 'my-tasks-group-title__text project-section-title__text';
+                    titleText.textContent = groupData.name || 'Click to name this group';
+                    titleText.title = 'Click to edit group name';
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'my-tasks-group-title__delete';
+                    deleteBtn.type = 'button';
+                    deleteBtn.innerHTML = '<img src="images/trash.svg" alt="Delete">';
+                    deleteBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (confirm('¿Eliminar este grupo y todas sus tareas?')) {
+                            deleteTaskGroup(groupData.id);
+                        }
+                    });
+                    
+                    const chevron = document.createElement('div');
+                    chevron.className = 'project-section-title__chevron';
+                    chevron.innerHTML = `<img src="${CHEVRON_ICON}" alt="Toggle">`;
+                    
+                    title.appendChild(titleText);
+                    title.appendChild(deleteBtn);
+                    title.appendChild(chevron);
+                    
+                    const content = document.createElement('div');
+                    content.className = `my-tasks-group-content project-section-content ${groupData.expanded ? 'my-tasks-group-content--expanded' : 'my-tasks-group-content--collapsed'}`;
+                    content.dataset.content = groupData.id;
+                    
+                    const itemsContainer = document.createElement('div');
+                    itemsContainer.className = 'my-tasks-items-container';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'dsu-input dsu-input--only';
+                    input.placeholder = 'Choose an unique name';
+                    input.addEventListener('keypress', function(e) {
+                        e.stopPropagation(); // Prevenir que el evento llegue al título
+                        if (e.key === 'Enter' && this.value.trim()) {
+                            e.preventDefault();
+                            addTaskToGroup(groupData.id, this.value.trim());
+                            this.value = '';
+                        }
+                    });
+                    input.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevenir que el clic colapse/expanda el grupo
+                    });
+                    
+                    content.appendChild(itemsContainer);
+                    content.appendChild(input);
+                    
+                    group.appendChild(title);
+                    group.appendChild(content);
+                    
+                    // Event listeners - Separar clic en título vs clic en texto
+                    title.addEventListener('click', function(e) {
+                        // Si se hace clic en el texto, editar nombre
+                        if (e.target.closest('.my-tasks-group-title__text')) {
+                            e.stopPropagation();
+                            editTaskGroupName(groupData.id);
+                            return;
+                        }
+                        // Si se hace clic en delete, no hacer nada (ya tiene su handler)
+                        if (e.target.closest('.my-tasks-group-title__delete')) {
+                            return;
+                        }
+                        // Cualquier otro clic en el título, colapsar/expandir
+                        toggleTaskGroup(groupData.id);
+                    });
+                    
+                    // Insertar grupo antes del botón (si existe)
+                    if (addTaskGroupBtn && addTaskGroupBtn.parentNode === myTasksGroupsContainer) {
+                        myTasksGroupsContainer.insertBefore(group, addTaskGroupBtn);
+                    } else {
+                        myTasksGroupsContainer.appendChild(group);
+                    }
+                    
+                    // Cargar tareas después de agregar el grupo al DOM
+                    if (groupData.tasks && Array.isArray(groupData.tasks)) {
+                        const sortedTasks = [...groupData.tasks].sort((a, b) => {
+                            const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                            const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                            return dateB - dateA;
+                        });
+                        
+                        sortedTasks.forEach(taskData => {
+                            addTaskToGroup(
+                                groupData.id,
+                                taskData.text,
+                                taskData.completed || false,
+                                taskData.assignedMembers || null,
+                                taskData.createdAt || null
+                            );
+                        });
+                    }
+                });
+                
+                // Asegurar que el botón esté al final
+                if (addTaskGroupBtn && myTasksGroupsContainer.contains(addTaskGroupBtn)) {
+                    myTasksGroupsContainer.appendChild(addTaskGroupBtn);
+                }
+            }
+
+            // Migrate existing tasks to groups
+            function migrateExistingTasksToGroups() {
+                const legacyContainer = document.getElementById('myTasksItemsContainer');
+                if (!legacyContainer) return;
+                
+                const existingTasks = legacyContainer.querySelectorAll('.my-tasks-item');
+                
+                if (existingTasks.length > 0) {
+                    // Crear grupo por defecto
+                    const defaultGroupId = createTaskGroup('My Tasks', false);
+                    
+                    // Migrar tareas existentes
+                    existingTasks.forEach(taskItem => {
+                        const textEl = taskItem.querySelector('.my-tasks-item-text');
+                        if (!textEl) return;
+                        
+                        const text = textEl.textContent.replace(/^-\s*/, '');
+                        const completed = taskItem.classList.contains('my-tasks-item--completed');
+                        const createdAt = taskItem.dataset.createdAt;
+                        const assignedMembersData = taskItem.dataset.assignedMembers;
+                        let assignedMembers = null;
+                        
+                        if (assignedMembersData) {
+                            try {
+                                assignedMembers = JSON.parse(assignedMembersData);
+                            } catch (e) {
+                                console.error('Error parsing assigned members:', e);
+                            }
+                        }
+                        
+                        // Agregar al grupo
+                        addTaskToGroup(defaultGroupId, text, completed, assignedMembers, createdAt);
+                        
+                        // Remover del contenedor legacy
+                        taskItem.remove();
+                    });
+                    
+                    // Ocultar contenedor legacy
+                    if (myTasksLegacyContainer) myTasksLegacyContainer.style.display = 'none';
+                }
+            }
+
+            // Initialize add group button
+            if (addTaskGroupBtn) {
+                addTaskGroupBtn.addEventListener('click', function() {
+                    createTaskGroup('', true);
+                });
+            }
+
+            // Modify addMyTaskItem to be backward compatible
+            const originalAddMyTaskItem = window.addMyTaskItem;
+            window.addMyTaskItem = function(text, completed = false, assignedMembers = null, createdAt = null) {
+                // Detectar si estamos en modo grupos
+                const isGroupsMode = myTasksGroupsContainer && myTasksGroupsContainer.style.display !== 'none';
+                
+                if (isGroupsMode) {
+                    // Modo grupos: agregar a grupo activo o por defecto
+                    let activeGroup = getActiveOrDefaultGroup();
+                    
+                    // Si no hay grupos, crear uno automáticamente
+                    if (!activeGroup) {
+                        const defaultGroupId = createTaskGroup('My Tasks', false);
+                        activeGroup = getActiveOrDefaultGroup();
+                    }
+                    
+                    if (activeGroup) {
+                        return addTaskToGroup(activeGroup.id, text, completed, assignedMembers, createdAt);
+                    }
+                }
+                
+                // Modo legacy: usar funcionalidad original
+                return originalAddMyTaskItem(text, completed, assignedMembers, createdAt);
+            };
+
+            // Load groups on initialization
+            loadTaskGroupsFromStorage();
 
             console.log('✅ My Tasks Section inicializado correctamente');
         }

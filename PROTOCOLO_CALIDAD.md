@@ -749,8 +749,256 @@ Si el sidebar está vacío:
 
 ---
 
-**Última actualización**: Después del error de migración a IndexedDB y problema del sidebar
-**Versión**: 1.1
+## 🚨 NUEVA SECCIÓN: Prevención de Cambios Destructivos en DOM y Funciones Globales
+
+### Problema Crítico Identificado: Crash por Cambios Destructivos
+
+**Síntoma**: El proyecto completo se daña, funcionalidades dejan de trabajar, elementos no se encuentran.
+
+**Causa Raíz**: 
+1. Eliminación de elementos DOM que son referenciados por código existente
+2. Cambio en firmas de funciones globales sin actualizar todas las llamadas
+3. Reemplazo completo de funciones sin verificar dependencias
+4. Eliminación de funcionalidad existente sin migración
+
+### Regla Crítica: Análisis de Dependencias ANTES de Modificar
+
+```javascript
+// ❌ PROBLEMA: Eliminar elemento sin verificar uso
+// HTML: <div id="myTasksItemsContainer"></div>
+// JavaScript en otro lugar:
+const container = document.getElementById('myTasksItemsContainer');
+container.appendChild(item); // ❌ Error: container es null
+
+// ✅ SOLUCIÓN: Verificar uso antes de eliminar
+// 1. Buscar todas las referencias
+grep -r "myTasksItemsContainer" .
+// 2. Verificar si hay código externo que lo use
+// 3. Mantener elemento o migrar código que lo usa
+```
+
+### Checklist de Cambios Destructivos (OBLIGATORIO)
+
+Antes de eliminar o modificar elementos DOM o funciones:
+
+- [ ] **Buscar TODAS las referencias al elemento/función** (usar grep en todo el proyecto)
+- [ ] **Verificar si hay código externo que dependa de esto**
+- [ ] **Identificar funciones globales que puedan estar siendo llamadas**
+- [ ] **Verificar event listeners registrados**
+- [ ] **Revisar si hay datos en localStorage que dependan de la estructura**
+- [ ] **Planificar migración si es necesario**
+- [ ] **Mantener compatibilidad hacia atrás cuando sea posible**
+
+### Patrón Seguro para Modificar Funciones Globales
+
+#### Patrón 1: Cambio de Firma de Función Global
+```javascript
+// ❌ PROBLEMA: Cambiar firma sin actualizar todas las llamadas
+// Versión antigua:
+window.addMyTaskItem = function(text) { ... }
+
+// Versión nueva (cambia firma):
+window.addMyTaskItem = function(groupId, text) { ... }
+// Código existente que llama: addMyTaskItem('Task 1') ❌ Falla
+
+// ✅ SOLUCIÓN: Mantener compatibilidad hacia atrás
+window.addMyTaskItem = function(groupIdOrText, text) {
+    // Detectar si es llamada antigua (solo un parámetro)
+    if (arguments.length === 1) {
+        // Llamada antigua: usar grupo por defecto
+        const defaultGroup = getDefaultGroup();
+        return addMyTaskItemToGroup(defaultGroup, groupIdOrText);
+    }
+    // Llamada nueva: usar grupo especificado
+    return addMyTaskItemToGroup(groupIdOrText, text);
+}
+```
+
+#### Patrón 2: Eliminar Elemento DOM
+```javascript
+// ❌ PROBLEMA: Eliminar elemento que se usa
+const container = document.getElementById('oldContainer');
+container.remove(); // ❌ Otro código busca este elemento
+
+// ✅ SOLUCIÓN 1: Mantener elemento pero ocultarlo
+const container = document.getElementById('oldContainer');
+container.style.display = 'none'; // Mantener en DOM pero oculto
+
+// ✅ SOLUCIÓN 2: Migrar código que lo usa primero
+// 1. Actualizar código que usa oldContainer
+// 2. Verificar que funciona con nuevo elemento
+// 3. Solo entonces eliminar oldContainer
+
+// ✅ SOLUCIÓN 3: Agregar nuevo sin eliminar viejo
+// Mantener ambos durante transición
+```
+
+#### Patrón 3: Reemplazar Función Completa
+```javascript
+// ❌ PROBLEMA: Reemplazar función sin verificar dependencias
+function initMyTasksSection() {
+    // Nueva implementación completamente diferente
+    // Código que dependía de comportamiento anterior ❌ Falla
+}
+
+// ✅ SOLUCIÓN: Cambios incrementales
+function initMyTasksSection() {
+    // Mantener funcionalidad existente
+    const existingContainer = document.getElementById('myTasksItemsContainer');
+    if (existingContainer) {
+        // Funcionalidad antigua sigue funcionando
+        initOldFunctionality();
+    }
+    
+    // Agregar nueva funcionalidad
+    const newContainer = document.getElementById('myTasksGroupsContainer');
+    if (newContainer) {
+        // Nueva funcionalidad
+        initNewFunctionality();
+    }
+    
+    // Migrar gradualmente
+    migrateOldToNew();
+}
+```
+
+### Señales de Alerta: Cambios Destructivos
+
+Si ves alguno de estos patrones, **DETENER** y revisar:
+
+1. **Eliminar elemento DOM sin verificar uso**
+   ```javascript
+   document.getElementById('element').remove(); // ❌ Sin verificar
+   ```
+
+2. **Cambiar firma de función global**
+   ```javascript
+   window.myFunction = function(newParam) { ... }; // ❌ Sin compatibilidad
+   ```
+
+3. **Reemplazar función completa**
+   ```javascript
+   function init() {
+       // Nueva implementación completamente diferente
+   }
+   ```
+
+4. **Eliminar funcionalidad sin migración**
+   ```javascript
+   // Eliminar código sin migrar datos o funcionalidad
+   ```
+
+### Checklist Pre-Cambio Destructivo
+
+Antes de hacer cambios que puedan romper funcionalidad existente:
+
+#### 1. Análisis de Referencias
+```bash
+# Buscar todas las referencias
+grep -r "elementId" .
+grep -r "functionName" .
+grep -r "className" .
+```
+
+#### 2. Verificación de Dependencias
+- [ ] ¿Hay código externo que use esto?
+- [ ] ¿Hay event listeners registrados?
+- [ ] ¿Hay datos en localStorage que dependan de esto?
+- [ ] ¿Hay funciones globales que puedan estar siendo llamadas?
+
+#### 3. Plan de Migración
+- [ ] ¿Puedo mantener ambos (viejo y nuevo) durante transición?
+- [ ] ¿Puedo hacer cambios incrementales?
+- [ ] ¿Necesito migrar datos existentes?
+- [ ] ¿Puedo mantener compatibilidad hacia atrás?
+
+#### 4. Validación Post-Cambio
+- [ ] ¿Funcionalidad existente sigue funcionando?
+- [ ] ¿No hay errores en consola?
+- [ ] ¿Elementos se encuentran correctamente?
+- [ ] ¿Funciones se llaman correctamente?
+
+### Patrón de Implementación Segura: Cambios Incrementales
+
+```javascript
+// ✅ CORRECTO: Agregar sin eliminar
+function initMyTasksSection() {
+    // 1. Verificar elementos existentes
+    const oldContainer = document.getElementById('myTasksItemsContainer');
+    const newContainer = document.getElementById('myTasksGroupsContainer');
+    
+    // 2. Inicializar funcionalidad antigua si existe
+    if (oldContainer) {
+        initOldTaskFunctionality(oldContainer);
+    }
+    
+    // 3. Inicializar funcionalidad nueva si existe
+    if (newContainer) {
+        initNewTaskGroupsFunctionality(newContainer);
+    }
+    
+    // 4. Migrar datos si es necesario
+    if (oldContainer && newContainer) {
+        migrateOldTasksToGroups();
+    }
+}
+
+// ✅ CORRECTO: Función con compatibilidad hacia atrás
+window.addMyTaskItem = function(...args) {
+    // Detectar tipo de llamada
+    if (args.length === 1) {
+        // Llamada antigua: solo texto
+        const defaultGroup = getOrCreateDefaultGroup();
+        return addTaskToGroup(defaultGroup, args[0]);
+    } else if (args.length === 2) {
+        // Llamada nueva: grupo y texto
+        return addTaskToGroup(args[0], args[1]);
+    }
+    console.error('Invalid arguments');
+};
+```
+
+### Verificación Post-Cambio Destructivo
+
+Después de hacer cambios que podrían ser destructivos:
+
+```javascript
+// 1. Verificar que elementos existen
+const element = document.getElementById('elementId');
+console.assert(element !== null, '❌ Elemento no encontrado');
+
+// 2. Verificar que funciones funcionan
+try {
+    const result = window.myFunction('test');
+    console.assert(result !== undefined, '❌ Función no funciona');
+} catch (error) {
+    console.error('❌ Error en función:', error);
+}
+
+// 3. Verificar que no hay errores en consola
+// Revisar consola del navegador por errores
+
+// 4. Verificar funcionalidad existente
+// Probar todas las funcionalidades que usan el elemento/función
+```
+
+### Comandos de Verificación
+
+```bash
+# Buscar todas las referencias a un elemento
+grep -r "myTasksItemsContainer" .
+
+# Buscar todas las llamadas a una función
+grep -r "addMyTaskItem" .
+
+# Buscar uso de una clase CSS
+grep -r "my-tasks-item" .
+```
+
+---
+
+**Última actualización**: Después del error de grupos de tareas (2025-12-29)
+**Versión**: 1.2
 **Estado**: Activo - OBLIGATORIO seguir este protocolo
 
 ---
