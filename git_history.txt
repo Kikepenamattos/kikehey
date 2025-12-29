@@ -1,3 +1,4 @@
+63f8c50a36df36829ffe8190d9ed06e6e3e3e447|Ubits|ubits@macbookpro.lan|2025-12-29 18:06:58 -0500|Update: Changelog actualizado con implementación de grupos de tareas
 b117ee8fad57f5ca663daddab9d7263cddbc1028|Ubits|ubits@macbookpro.lan|2025-12-29 18:05:58 -0500|feat: Implementar grupos de tareas en my_tasks.html con funcionalidades completas
 4243668cf428c261cb67abbd27a1adc19f3e9c5d|Ubits|ubits@macbookpro.lan|2025-12-29 16:21:58 -0500|Update: Sincronización final del changelog
 45ea2adeb45307eef390000d81c15d0a302c883d|Ubits|ubits@macbookpro.lan|2025-12-29 16:21:47 -0500|Update: Changelog actualizado automáticamente

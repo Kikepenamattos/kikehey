@@ -2498,11 +2498,18 @@
                     toggleTaskGroup(groupId);
                 });
                 
-                // Insertar grupo antes del botón (si existe)
-                if (addTaskGroupBtn && addTaskGroupBtn.parentNode === myTasksGroupsContainer) {
-                    myTasksGroupsContainer.insertBefore(group, addTaskGroupBtn);
+                // Insertar el nuevo grupo al inicio (arriba de todos los grupos existentes)
+                const existingGroups = myTasksGroupsContainer.querySelectorAll('.my-tasks-group');
+                if (existingGroups.length > 0) {
+                    // Insertar antes del primer grupo existente
+                    myTasksGroupsContainer.insertBefore(group, existingGroups[0]);
                 } else {
-                    myTasksGroupsContainer.appendChild(group);
+                    // Si no hay grupos, insertar antes del botón
+                    if (addTaskGroupBtn && addTaskGroupBtn.parentNode === myTasksGroupsContainer) {
+                        myTasksGroupsContainer.insertBefore(group, addTaskGroupBtn);
+                    } else {
+                        myTasksGroupsContainer.appendChild(group);
+                    }
                 }
                 
                 // Asegurar que el botón esté al final
