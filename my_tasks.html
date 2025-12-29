@@ -60,7 +60,7 @@
             padding: 64px 173px 64px 135px;
             display: flex;
             flex-direction: column;
-            gap: 32px;
+            gap: 64px;
             width: 80%;
             max-width: 100%;
             margin: 0 auto;
@@ -2419,7 +2419,7 @@
             // Create a new task group
             function createTaskGroup(name = '', startEditing = false) {
                 const groupId = 'group-' + Date.now();
-                const groupName = name.trim() || 'Click to name this group';
+                const groupName = name.trim() || 'Enter a group name';
                 
                 const group = document.createElement('div');
                 group.className = 'my-tasks-group';
@@ -2517,8 +2517,8 @@
                     myTasksGroupsContainer.appendChild(addTaskGroupBtn);
                 }
                 
-                // Si se solicita edición o no hay nombre, iniciar edición inmediatamente
-                if (startEditing || !name.trim()) {
+                // Si se solicita edición explícitamente, iniciar edición
+                if (startEditing) {
                     // Usar requestAnimationFrame para asegurar que el DOM esté listo
                     requestAnimationFrame(() => {
                         editTaskGroupName(groupId);
@@ -2544,7 +2544,7 @@
                 if (group.querySelector('.my-tasks-group-title__input')) return;
                 
                 const currentName = titleText.textContent;
-                const originalName = currentName === 'Click to name this group' ? '' : currentName;
+                const originalName = currentName === 'Enter a group name' ? '' : currentName;
                 
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -2737,8 +2737,12 @@
                         // Migrar tareas existentes a grupo por defecto
                         migrateExistingTasksToGroups();
                     } else {
-                        // Si no hay grupos ni tareas, mostrar contenedor de grupos solo con el botón
-                        if (myTasksGroupsContainer) myTasksGroupsContainer.style.display = 'flex';
+                        // Si no hay grupos ni tareas, crear un grupo inicial con placeholder
+                        if (myTasksGroupsContainer) {
+                            myTasksGroupsContainer.style.display = 'flex';
+                            // Crear grupo inicial con placeholder (sin modo edición)
+                            createTaskGroup('Enter a group name', false);
+                        }
                         if (myTasksLegacyContainer) myTasksLegacyContainer.style.display = 'none';
                     }
                     return;
@@ -2761,7 +2765,7 @@
                     
                     const titleText = document.createElement('span');
                     titleText.className = 'my-tasks-group-title__text project-section-title__text';
-                    titleText.textContent = groupData.name || 'Click to name this group';
+                    titleText.textContent = groupData.name || 'Enter a group name';
                     titleText.title = 'Click to edit group name';
                     
                     const deleteBtn = document.createElement('button');
@@ -2906,7 +2910,7 @@
             // Initialize add group button
             if (addTaskGroupBtn) {
                 addTaskGroupBtn.addEventListener('click', function() {
-                    createTaskGroup('', true);
+                    createTaskGroup('Enter a group name', false);
                 });
             }
 
