@@ -7574,6 +7574,17 @@
             
             if (tasksSection && project.tasks && Array.isArray(project.tasks) && project.tasks.length > 0) {
                 console.log('✅ Cargando Tasks:', project.tasks.length);
+                
+                // Asegurar que la sección de tasks esté expandida para que los elementos sean visibles
+                const tasksTitle = tasksSection.querySelector('.project-section-title[data-section="tasks"]');
+                const tasksContent = tasksSection.querySelector('.project-section-content[data-content="tasks"]');
+                if (tasksTitle && tasksContent) {
+                    tasksTitle.classList.remove('project-section-title--collapsed');
+                    tasksTitle.classList.add('project-section-title--expanded');
+                    tasksContent.classList.remove('project-section-content--collapsed');
+                    tasksContent.classList.add('project-section-content--expanded');
+                }
+                
                 // Esperar a que initTasksSection haya terminado y addTaskItem esté disponible
                 setTimeout(() => {
                     if (tasksItemsContainer && typeof window.addTaskItem === 'function') {
@@ -13373,11 +13384,6 @@
                 infoContainer.appendChild(memberInfo);
                 infoContainer.appendChild(dateContainer);
                 
-                // Si hay miembros asignados, configurarlos
-                if (assignedMembers && Array.isArray(assignedMembers) && assignedMembers.length > 0) {
-                    assignTaskMembers(item, assignedMembers);
-                }
-                
                 // Crear acciones
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'project-tasks-item-actions';
@@ -13398,6 +13404,24 @@
                 
                 // Agregar al inicio de la lista (más reciente arriba)
                 tasksItemsContainer.prepend(item);
+                
+                // Si hay miembros asignados, configurarlos DESPUÉS de agregar al DOM
+                // Usar requestAnimationFrame para asegurar que el DOM esté completamente renderizado
+                if (assignedMembers && Array.isArray(assignedMembers) && assignedMembers.length > 0) {
+                    requestAnimationFrame(() => {
+                        // Verificar que el item esté en el DOM antes de asignar miembros
+                        if (item.isConnected) {
+                            assignTaskMembers(item, assignedMembers);
+                        } else {
+                            // Si aún no está conectado, esperar un poco más
+                            setTimeout(() => {
+                                if (item.isConnected) {
+                                    assignTaskMembers(item, assignedMembers);
+                                }
+                            }, 50);
+                        }
+                    });
+                }
             }
             
             // Hacer addTaskItem global para que sea accesible desde loadProjectData
