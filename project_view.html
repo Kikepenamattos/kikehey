@@ -729,13 +729,15 @@
         .with-members-row {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
+            width: 100%;
         }
 
         .with-members-row__left {
             display: flex;
             align-items: center;
-            margin-right: 8px;
+            flex: 1;
         }
 
         .avatars-row {
@@ -768,6 +770,29 @@
             display: block;
         }
 
+        .avatars-overflow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--color-surface-especial);
+            border: 1px solid var(--color-basics-white);
+            box-shadow: 0 0 0 1px rgba(10, 36, 63, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0A243F;
+            font-family: var(--font-family-secondary);
+            font-weight: var(--font-weight-bold);
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Cuando está dentro de avatars-row, mantener el margin-left negativo */
+        .avatars-row .avatars-overflow {
+            margin-left: -12px;
+        }
+
+        /* Mantener compatibilidad con la clase anterior */
         .avatar--overflow {
             width: 48px;
             height: 48px;
@@ -4101,16 +4126,16 @@
                             avatarsRow.appendChild(avatarElement);
                         });
                         
-                        // Agregar overflow badge si hay más miembros
-                        if (remainingCount > 0) {
-                            const overflowAvatar = document.createElement('span');
-                            overflowAvatar.className = 'avatar avatar--overflow';
-                            overflowAvatar.textContent = `+${remainingCount}`;
-                            avatarsRow.appendChild(overflowAvatar);
-                        }
-                        
                         withMembersRowLeft.appendChild(avatarsRow);
                         withMembersRow.appendChild(withMembersRowLeft);
+                        
+                        // Agregar overflow badge si hay más miembros (fuera de with-members-row__left, hacia la derecha)
+                        if (remainingCount > 0) {
+                            const overflowAvatar = document.createElement('span');
+                            overflowAvatar.className = 'avatars-overflow';
+                            overflowAvatar.textContent = `+ ${remainingCount}`;
+                            withMembersRow.appendChild(overflowAvatar);
+                        }
                         
                         teamItem.appendChild(teamTitle);
                         teamItem.appendChild(withMembersRow);
