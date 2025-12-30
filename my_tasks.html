@@ -295,6 +295,7 @@
             flex-shrink: 0;
         }
 
+        /* ELIMINADO: CSS del botón de avatar
         .my-tasks-item-avatar-btn {
             width: 32px;
             height: 32px;
@@ -315,6 +316,7 @@
             border-color: var(--color-basics-dark-blue);
             background-color: var(--color-surface-especial);
         }
+        */
 
         .my-tasks-item-avatar-placeholder {
             width: 100%;
@@ -2005,7 +2007,7 @@
             // Function to assign multiple members to task
             function assignMyTaskMembers(taskItem, members) {
                 const memberInfo = taskItem.querySelector('.my-tasks-item-member-info');
-                const avatarBtn = taskItem.querySelector('.my-tasks-item-avatar-btn');
+                // ELIMINADO: const avatarBtn = taskItem.querySelector('.my-tasks-item-avatar-btn');
                 const avatarsContainer = taskItem.querySelector('.my-tasks-item-avatars-container');
                 const dateInfo = taskItem.querySelector('.my-tasks-item-date');
 
@@ -2075,10 +2077,7 @@
                     }
                 }
 
-                // El botón de avatar siempre debe estar visible
-                if (avatarBtn) {
-                    avatarBtn.style.display = 'flex';
-                }
+                // ELIMINADO: Botón de avatar
             }
 
             // Function to add task item
@@ -2120,20 +2119,7 @@
                 avatarsContainer.className = 'my-tasks-item-avatars-container';
                 avatarsContainer.style.display = 'none';
                 
-                // Avatar button para asignar miembros
-                const avatarBtn = document.createElement('button');
-                avatarBtn.className = 'my-tasks-item-avatar-btn';
-                avatarBtn.type = 'button';
-                avatarBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    showMyTaskMemberSelectionModal(item);
-                });
-                
-                const avatarPlaceholder = document.createElement('div');
-                avatarPlaceholder.className = 'my-tasks-item-avatar-placeholder';
-                avatarPlaceholder.innerHTML = '<img src="images/plus.svg" alt="Assign">';
-                
-                avatarBtn.appendChild(avatarPlaceholder);
+                // ELIMINADO: Avatar button para asignar miembros
                 
                 // Información del miembro asignado
                 const memberInfo = document.createElement('div');
@@ -2160,7 +2146,7 @@
                 dateContainer.appendChild(dateInfo);
                 
                 infoContainer.appendChild(avatarsContainer);
-                infoContainer.appendChild(avatarBtn);
+                // ELIMINADO: infoContainer.appendChild(avatarBtn);
                 infoContainer.appendChild(memberInfo);
                 infoContainer.appendChild(dateContainer);
                 
@@ -2335,19 +2321,7 @@
                 avatarsContainer.className = 'my-tasks-item-avatars-container';
                 avatarsContainer.style.display = 'none';
                 
-                const avatarBtn = document.createElement('button');
-                avatarBtn.className = 'my-tasks-item-avatar-btn';
-                avatarBtn.type = 'button';
-                avatarBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    showMyTaskMemberSelectionModal(item);
-                });
-                
-                const avatarPlaceholder = document.createElement('div');
-                avatarPlaceholder.className = 'my-tasks-item-avatar-placeholder';
-                avatarPlaceholder.innerHTML = '<img src="images/plus.svg" alt="Assign">';
-                
-                avatarBtn.appendChild(avatarPlaceholder);
+                // ELIMINADO: Avatar button para asignar miembros
                 
                 const memberInfo = document.createElement('div');
                 memberInfo.className = 'my-tasks-item-member-info';
@@ -2372,7 +2346,7 @@
                 dateContainer.appendChild(dateInfo);
                 
                 infoContainer.appendChild(avatarsContainer);
-                infoContainer.appendChild(avatarBtn);
+                // ELIMINADO: infoContainer.appendChild(avatarBtn);
                 infoContainer.appendChild(memberInfo);
                 infoContainer.appendChild(dateContainer);
                 
@@ -2840,14 +2814,18 @@
                     }
                     
                     // Cargar tareas después de agregar el grupo al DOM
+                    // IMPORTANTE: Mantener el orden original en que se guardaron
+                    // Como las tareas se guardan con las más recientes arriba (prepend),
+                    // y se guardan en orden del DOM, al cargar debemos invertir el array
+                    // para que al usar prepend, el orden final sea correcto
                     if (groupData.tasks && Array.isArray(groupData.tasks)) {
-                        const sortedTasks = [...groupData.tasks].sort((a, b) => {
-                            const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
-                            const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
-                            return dateB - dateA;
-                        });
-                        
-                        sortedTasks.forEach(taskData => {
+                        // Invertir el array para que al usar prepend, el orden sea correcto
+                        // Si se guardó [T3, T2, T1] (más reciente arriba), al cargar:
+                        // - Iteramos desde el final: T1, T2, T3
+                        // - Usamos prepend para cada una: [T1], [T2, T1], [T3, T2, T1]
+                        // Resultado: [T3, T2, T1] (orden correcto)
+                        const reversedTasks = [...groupData.tasks].reverse();
+                        reversedTasks.forEach(taskData => {
                             addTaskToGroup(
                                 groupData.id,
                                 taskData.text,
