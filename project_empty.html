@@ -979,6 +979,12 @@
             height: 16px;
         }
 
+        /* Dark mode icon adjustment for task action icons - Color #8fa0b0 */
+        [data-theme="dark"] .project-tasks-item-action img {
+            filter: brightness(0) saturate(0%) invert(56%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(110%) contrast(100%);
+            opacity: 0.85;
+        }
+
         .project-tasks-section--disabled .dsu-input {
             background-color: var(--color-status-disabled);
             cursor: not-allowed;

@@ -410,6 +410,10 @@
             background-color: #f4f7fb;
         }
 
+        [data-theme="dark"] .dsu-stage-status__badge {
+            background-color: var(--color-surface-especial);
+        }
+
         /* Contenedor para título, icono y botón toggle (misma fila) */
         .dsu-stage-status__badge-title-container {
             display: flex;
@@ -494,6 +498,10 @@
             text-align: left;
         }
 
+        [data-theme="dark"] .stage-description {
+            color: #ffffff;
+        }
+
         /* Project Objective Section Styles */
         .project-objective-tabs {
             display: flex;
@@ -549,6 +557,11 @@
 
         .project-objective-item--completed {
             background-color: #D1FFEF;
+            border-color: #3BE4A9;
+        }
+
+        [data-theme="dark"] .project-objective-item--completed {
+            background-color: rgba(59, 228, 169, 0.2);
             border-color: #3BE4A9;
         }
 
@@ -627,6 +640,15 @@
         .project-tasks-item--completed {
             background-color: #D1FFEF;
             border-color: #3BE4A9;
+        }
+
+        [data-theme="dark"] .project-tasks-item--completed {
+            background-color: rgba(59, 228, 169, 0.15);
+            border-color: #3BE4A9;
+        }
+
+        [data-theme="dark"] .project-tasks-item--completed .project-tasks-item-text {
+            color: var(--color-text-secondary);
         }
 
         /* Project Tasks Item - Avatar and Member Display (View) */
@@ -714,6 +736,10 @@
             position: relative;
         }
 
+        [data-theme="dark"] .project-tasks-item-assigned-avatar {
+            border-color: var(--color-surface-regular);
+        }
+
         .project-tasks-item-assigned-avatar .avatar__img {
             width: 100%;
             height: 100%;
@@ -723,6 +749,33 @@
 
         .project-tasks-item-assigned-avatar:not(:first-child) {
             margin-left: -12px;
+        }
+
+        /* Project Tasks Item Actions (if present) */
+        .project-tasks-item-actions {
+            display: flex;
+            gap: var(--spacing-08);
+        }
+
+        .project-tasks-item-action {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-tasks-item-action img {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Dark mode icon adjustment for task action icons - Color #8fa0b0 */
+        [data-theme="dark"] .project-tasks-item-action img {
+            filter: brightness(0) saturate(0%) invert(56%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(110%) contrast(100%);
+            opacity: 0.85;
         }
 
         /* With Members Component Styles */
@@ -787,6 +840,10 @@
             flex-shrink: 0;
         }
 
+        [data-theme="dark"] .avatars-overflow {
+            color: var(--color-basics-white);
+        }
+
         /* Cuando está dentro de avatars-row, mantener el margin-left negativo */
         .avatars-row .avatars-overflow {
             margin-left: -12px;
@@ -809,6 +866,10 @@
             font-size: 14px;
             margin-left: -12px;
             flex-shrink: 0;
+        }
+
+        [data-theme="dark"] .avatar--overflow {
+            color: var(--color-basics-white);
         }
 
         /* Team Title (from Figma) */
@@ -897,6 +958,10 @@
             height: 24px;
         }
 
+        [data-theme="dark"] .asset-item-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
         .asset-item-content {
             flex: 1;
             display: flex;
@@ -925,8 +990,16 @@
             text-decoration: none;
         }
 
+        [data-theme="dark"] .asset-link a {
+            color: var(--color-basics-white);
+        }
+
         .asset-link a:hover {
             text-decoration: underline;
+        }
+
+        [data-theme="dark"] .asset-link a:hover {
+            opacity: 0.8;
         }
 
         /* Rich Text Content Styles */
@@ -961,8 +1034,16 @@
             text-decoration: none;
         }
 
+        [data-theme="dark"] .rich-text-content a {
+            color: var(--color-basics-white);
+        }
+
         .rich-text-content a:hover {
             text-decoration: underline;
+        }
+
+        [data-theme="dark"] .rich-text-content a:hover {
+            opacity: 0.8;
         }
 
         /* Deliverables Section Styles */
@@ -989,6 +1070,10 @@
             border-radius: var(--radius-md);
             border: 1px solid var(--color-basics-gray);
             flex: 1;
+        }
+
+        [data-theme="dark"] .deliverable-item {
+            background-color: var(--color-surface-regular);
         }
 
         .deliverable-item-row .dsu-status-button-wrapper {
@@ -1054,8 +1139,16 @@
             text-decoration: none;
         }
 
+        [data-theme="dark"] .deliverable-item-link a {
+            color: var(--color-basics-white);
+        }
+
         .deliverable-item-link a:hover {
             text-decoration: underline;
+        }
+
+        [data-theme="dark"] .deliverable-item-link a:hover {
+            opacity: 0.8;
         }
 
         /* Ceremonies Section Styles */
@@ -1088,9 +1181,17 @@
             flex-shrink: 0;
         }
 
+        [data-theme="dark"] .ceremony-item-icon {
+            background-color: rgba(255, 214, 232, 0.3);
+        }
+
         .ceremony-item-icon svg {
             width: 24px;
             height: 24px;
+        }
+
+        [data-theme="dark"] .ceremony-item-icon svg {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .ceremony-item-content {
@@ -1151,6 +1252,10 @@
             border: 1px solid var(--color-basics-gray);
         }
 
+        [data-theme="dark"] .communication-channel-item {
+            background-color: var(--color-surface-regular);
+        }
+
         .communication-channel-item-icon {
             width: 48px;
             height: 48px;
@@ -1165,6 +1270,10 @@
         .communication-channel-item-icon img {
             width: 24px;
             height: 24px;
+        }
+
+        [data-theme="dark"] .communication-channel-item-icon img {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .communication-channel-item-content {
