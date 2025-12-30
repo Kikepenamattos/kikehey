@@ -1,3 +1,5 @@
+ddc5d708f99c1439825ce965cb8a59266faa77f8|Ubits|ubits@macbookpro.lan|2025-12-29 20:18:44 -0500|Eliminar botón de avatar y asegurar persistencia del orden de tareas en my_tasks.html
+aed6ed3d7a9382325653e7fef55f886a843b5fa3|Ubits|ubits@macbookpro.lan|2025-12-29 18:23:37 -0500|feat: Mejorar estructura inicial de grupos de tareas con placeholders visibles
 9813272e4e5df5950a3df14781e3a3bfd891b02f|Ubits|ubits@macbookpro.lan|2025-12-29 18:14:09 -0500|fix: Ajustar orden de grupos de tareas - nuevo grupo siempre arriba
 63f8c50a36df36829ffe8190d9ed06e6e3e3e447|Ubits|ubits@macbookpro.lan|2025-12-29 18:06:58 -0500|Update: Changelog actualizado con implementación de grupos de tareas
 b117ee8fad57f5ca663daddab9d7263cddbc1028|Ubits|ubits@macbookpro.lan|2025-12-29 18:05:58 -0500|feat: Implementar grupos de tareas en my_tasks.html con funcionalidades completas
