@@ -78,7 +78,7 @@
             box-sizing: border-box;
             position: sticky;
             bottom: 0;
-            z-index: 2000;
+            z-index: 6000;
             justify-content: center;
         }
 
@@ -606,6 +606,10 @@
             flex-direction: column;
             gap: var(--spacing-16);
             width: 100%;
+        }
+
+        .project-ceremonies-section.draggable-section {
+            z-index: 5000;
         }
 
         .project-ceremonies-header {
@@ -1897,6 +1901,7 @@
             gap: var(--spacing-16);
             width: 100%;
             margin-top: 48px;
+            position: relative;
         }
 
         .project-communication-channels-header {
@@ -1904,6 +1909,8 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         .project-communication-channels-headline {
@@ -1911,6 +1918,8 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         .project-communication-channels-title {
@@ -4305,7 +4314,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            z-index: 0;
             padding: 4px;
             border-radius: 4px;
             pointer-events: none; /* No capturar eventos, solo visual */
