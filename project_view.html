@@ -4701,6 +4701,9 @@
             } else {
                 console.log('ℹ️ No hay Deliverables para mostrar');
             }
+
+            // Aplicar orden de secciones si está guardado
+            applySectionOrder(project);
         }
         
         // Helper function para escapar HTML
@@ -5218,6 +5221,76 @@
                     closeAllAgreementsModal();
                 }
             });
+        }
+
+        // ============================================
+        // Aplicar Orden de Secciones en Vista Publicada
+        // ============================================
+        function applySectionOrder(project) {
+            if (!project || !project.sectionOrder || !Array.isArray(project.sectionOrder)) {
+                console.log('ℹ️ No hay orden de secciones guardado, usando orden por defecto');
+                return;
+            }
+
+            console.log('📋 Aplicando orden de secciones:', project.sectionOrder);
+
+            // Mapeo entre IDs de project_empty.html y project_view.html
+            const sectionIdMap = {
+                'projectStagesSection': 'stagesSection',
+                'teamMembersSection': 'teamsSection',
+                'projectCeremoniesSection': 'ceremoniesSection',
+                'projectCommunicationChannelsSection': 'communicationChannelsSection',
+                'projectObjectiveSection': 'objectivesSection',
+                'projectAgreementsSection': 'agreementsSection',
+                'projectTasksSection': 'tasksSection',
+                'projectDeliverablesSection': 'deliverablesSection',
+                'projectAssetsSection': 'assetsSection',
+                'projectTestSection': 'projectContextSection',
+                'projectSolveSection': 'solveSection',
+                'projectSolutionApproachSection': 'solutionApproachSection'
+            };
+
+            const projectContent = document.querySelector('.project-content');
+            if (!projectContent) {
+                console.warn('⚠️ No se encontró .project-content');
+                return;
+            }
+
+            // Crear un fragmento para reordenar sin causar múltiples reflows
+            const fragment = document.createDocumentFragment();
+            const reorderedSections = [];
+
+            // Reordenar secciones según el orden guardado
+            project.sectionOrder.forEach(sectionId => {
+                const viewSectionId = sectionIdMap[sectionId] || sectionId;
+                const section = document.getElementById(viewSectionId);
+                
+                if (section && section.classList.contains('project-section')) {
+                    // Remover de su posición actual
+                    if (section.parentNode) {
+                        section.parentNode.removeChild(section);
+                    }
+                    // Agregar al fragmento en el orden correcto
+                    fragment.appendChild(section);
+                    reorderedSections.push(viewSectionId);
+                } else {
+                    console.warn(`⚠️ Sección no encontrada: ${viewSectionId} (original: ${sectionId})`);
+                }
+            });
+
+            // Agregar todas las secciones reordenadas al contenedor
+            // Insertar después de las secciones fijas (name, budget, dateStatus)
+            const fixedSections = projectContent.querySelectorAll('.project-name-container, .project-budget-section, .project-date-status-section');
+            const lastFixedSection = fixedSections[fixedSections.length - 1];
+            
+            if (lastFixedSection && lastFixedSection.nextSibling) {
+                projectContent.insertBefore(fragment, lastFixedSection.nextSibling);
+            } else {
+                // Si no hay secciones fijas o es la última, agregar al final
+                projectContent.appendChild(fragment);
+            }
+
+            console.log('✅ Orden de secciones aplicado:', reorderedSections);
         }
     </script>
 </body>

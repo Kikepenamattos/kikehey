@@ -4200,6 +4200,130 @@
             }
         }
 
+        /* ============================================
+           DRAG & DROP STYLES - Secciones Arrastrables
+           ============================================ */
+        .draggable-section {
+            position: relative;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            margin-top: 48px;
+        }
+
+        .draggable-section:hover {
+            opacity: 0.95;
+        }
+
+        .draggable-section.dragging {
+            opacity: 0.5;
+            border: 2px dashed var(--color-basics-light-blue);
+            border-radius: 8px;
+            background-color: rgba(157, 255, 0, 0.05);
+        }
+
+        .draggable-section.drag-over {
+            border-top: 3px solid var(--color-basics-light-blue);
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+
+        /* Drag Handle - Icono para arrastrar (solo visual) */
+        .section-drag-handle {
+            position: absolute;
+            left: -40px;
+            top: 24px;
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            padding: 4px;
+            border-radius: 4px;
+            pointer-events: none; /* No capturar eventos, solo visual */
+        }
+
+        /* Cursor para la sección completa */
+        .draggable-section {
+            cursor: grab;
+        }
+
+        .draggable-section:active,
+        .draggable-section.dragging {
+            cursor: grabbing;
+        }
+
+        .draggable-section:hover .section-drag-handle {
+            opacity: 0.6;
+        }
+
+        .draggable-section.dragging .section-drag-handle,
+        .section-drag-handle:hover {
+            opacity: 1;
+        }
+
+        .section-drag-handle svg {
+            width: 20px;
+            height: 20px;
+            color: var(--color-text-secondary, #6b7b8a);
+        }
+
+        .section-drag-handle:hover svg {
+            color: var(--color-text-primary, #0a243f);
+        }
+
+        [data-theme="dark"] .section-drag-handle svg {
+            color: var(--color-text-secondary-dark, #9ca3af);
+        }
+
+        [data-theme="dark"] .section-drag-handle:hover svg {
+            color: var(--color-text-primary-dark, #ffffff);
+        }
+
+        /* Indicador visual durante drag */
+        .drag-placeholder {
+            height: 4px;
+            background-color: var(--color-basics-light-blue);
+            border-radius: 2px;
+            margin: 8px 0;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .drag-placeholder.active {
+            opacity: 1;
+        }
+
+        /* Ajuste de posición para secciones con drag handle */
+        .project-stages-section,
+        .team-members-section,
+        .project-ceremonies-section,
+        .project-communication-channels-section,
+        .project-objective-section,
+        .project-agreements-section,
+        .project-tasks-section,
+        .project-deliverables-section,
+        .project-assets-section,
+        .project-test-section,
+        .project-solve-section {
+            position: relative;
+            padding-left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .section-drag-handle {
+                left: -24px;
+                width: 20px;
+                height: 20px;
+            }
+
+            .section-drag-handle img {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
         /* Tablet: Ajustar padding para mejor distribución */
         @media (min-width: 769px) and (max-width: 1024px) {
             .dsu-sticky-buttons {
@@ -4527,7 +4651,20 @@
                 </div>
 
                 <!-- Project Stages Section -->
-                <div class="project-stages-section" id="projectStagesSection">
+                <div class="project-stages-section draggable-section" id="projectStagesSection" draggable="true" data-section-id="projectStagesSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-stages-header">
                         <h2 class="project-stages-title">Define your project stages</h2>
                     </div>
@@ -4640,7 +4777,20 @@
                 </div>
 
                 <!-- Team Members Section -->
-                <div class="team-members-section" id="teamMembersSection">
+                <div class="team-members-section draggable-section" id="teamMembersSection" draggable="true" data-section-id="teamMembersSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="team-members-header">
                         <h2 class="team-members-title">Team members</h2>
                     </div>
@@ -4660,7 +4810,20 @@
                 <!-- Project Ceremonies and Communication Channels Wrapper -->
                 <div class="project-ceremonies-channels-wrapper">
                     <!-- Project Ceremonies Section -->
-                    <div class="project-ceremonies-section" id="projectCeremoniesSection">
+                    <div class="project-ceremonies-section draggable-section" id="projectCeremoniesSection" draggable="true" data-section-id="projectCeremoniesSection">
+                        <div class="section-drag-handle" title="Drag to reorder">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                            </svg>
+                        </div>
                         <div class="project-ceremonies-header">
                             <div class="project-section-title project-section-title--expanded" data-section="ceremonies">
                                 <span class="project-section-title__text">Project ceremonies</span>
@@ -4690,7 +4853,20 @@
                     <!-- END: Project Ceremonies Section -->
 
                     <!-- Communication Channels Section -->
-                    <div class="project-communication-channels-section" id="projectCommunicationChannelsSection">
+                    <div class="project-communication-channels-section draggable-section" id="projectCommunicationChannelsSection" draggable="true" data-section-id="projectCommunicationChannelsSection">
+                        <div class="section-drag-handle" title="Drag to reorder">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                                <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                                <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                                <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                                <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                            </svg>
+                        </div>
                         <div class="project-communication-channels-header">
                             <div class="project-communication-channels-headline">
                                 <h2 class="project-communication-channels-title">Communication channels</h2>
@@ -4718,7 +4894,20 @@
                 <!-- END: Project Ceremonies and Communication Channels Wrapper -->
 
                 <!-- What do you want to accomplish? Section -->
-                <div class="project-objective-section" id="projectObjectiveSection">
+                <div class="project-objective-section draggable-section" id="projectObjectiveSection" draggable="true" data-section-id="projectObjectiveSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-objective-header">
                         <div class="project-objective-headline">
                             <div class="project-section-title project-section-title--expanded" data-section="objectives">
@@ -4764,7 +4953,20 @@
                 <!-- END: What do you want to accomplish? Section -->
 
                 <!-- Project Agreements Section -->
-                <div class="project-agreements-section" id="projectAgreementsSection">
+                <div class="project-agreements-section draggable-section" id="projectAgreementsSection" draggable="true" data-section-id="projectAgreementsSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <!-- Default State (Interactive) -->
                     <div id="projectAgreementsDefault" class="dsu-agreements dsu-agreements--default">
                         <div class="dsu-agreements__wrapper">
@@ -4952,7 +5154,20 @@
                 <!-- END: Project Agreements Section -->
 
                 <!-- Tasks Section -->
-                <div class="project-tasks-section" id="projectTasksSection">
+                <div class="project-tasks-section draggable-section" id="projectTasksSection" draggable="true" data-section-id="projectTasksSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-tasks-header">
                         <div class="project-tasks-headline">
                             <div class="project-section-title project-section-title--expanded" data-section="tasks">
@@ -4988,7 +5203,20 @@
                 <!-- END: Tasks Section -->
 
                 <!-- Deliverables Section -->
-                <div class="project-deliverables-section" id="projectDeliverablesSection">
+                <div class="project-deliverables-section draggable-section" id="projectDeliverablesSection" draggable="true" data-section-id="projectDeliverablesSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-deliverables-header">
                         <div class="project-deliverables-headline">
                             <h2 class="project-deliverables-title">Deliverables</h2>
@@ -5048,7 +5276,20 @@
                 <!-- END: Deliverables Section -->
 
                 <!-- Assets or Links Section -->
-                <div class="project-assets-section" id="projectAssetsSection">
+                <div class="project-assets-section draggable-section" id="projectAssetsSection" draggable="true" data-section-id="projectAssetsSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-assets-header">
                         <div class="project-assets-headline">
                             <h2 class="project-assets-title">Assets or links</h2>
@@ -5084,7 +5325,20 @@
                 <!-- END: Assets or Links Section -->
 
                 <!-- Test Section (Rich Text Input) -->
-                <div class="project-test-section" id="projectTestSection">
+                <div class="project-test-section draggable-section" id="projectTestSection" draggable="true" data-section-id="projectTestSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-test-header">
                         <div class="project-section-title project-section-title--expanded" data-section="projectContext">
                             <span class="project-section-title__text">Project context</span>
@@ -5137,7 +5391,20 @@
                 <!-- END: Test Section -->
 
                 <!-- What do you want to solve? Section -->
-                <div class="project-solve-section" id="projectSolveSection">
+                <div class="project-solve-section draggable-section" id="projectSolveSection" draggable="true" data-section-id="projectSolveSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-solve-header">
                         <div class="project-section-title project-section-title--expanded" data-section="solve">
                             <span class="project-section-title__text">What do you want to solve?</span>
@@ -5190,7 +5457,20 @@
                 <!-- END: What do you want to solve? Section -->
 
                 <!-- Solution approach Section -->
-                <div class="project-solve-section" id="projectSolutionApproachSection">
+                <div class="project-solve-section draggable-section" id="projectSolutionApproachSection" draggable="true" data-section-id="projectSolutionApproachSection">
+                    <div class="section-drag-handle" title="Drag to reorder">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="4" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="4" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="10" r="1.5" fill="currentColor"/>
+                            <circle cx="4" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="10" cy="16" r="1.5" fill="currentColor"/>
+                            <circle cx="16" cy="16" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <div class="project-solve-header">
                         <div class="project-section-title project-section-title--expanded" data-section="solutionApproach">
                             <span class="project-section-title__text">Solution approach</span>
@@ -5675,6 +5955,14 @@
 
             // Inicializar sticky buttons
             initStickyButtons();
+
+            // Inicializar drag & drop de secciones
+            // Cargar orden guardado primero
+            setTimeout(() => {
+                loadSectionOrder();
+                // Inicializar drag & drop después de cargar el orden
+                initSectionDragDrop();
+            }, 300);
 
             // Inicializar funcionalidad de hide section
             initHideBudgetSection();
@@ -15308,6 +15596,16 @@
                         existingProject = DocuProjectData.getProjectById(existingProjectId);
                     }
                     
+                    // Obtener el orden de secciones antes de crear projectData
+                    let sectionOrder = null;
+                    const projectContent = document.querySelector('.project-content');
+                    if (projectContent) {
+                        const sections = Array.from(projectContent.querySelectorAll('.draggable-section'));
+                        sectionOrder = sections.map(section => {
+                            return section.id || section.dataset.sectionId;
+                        }).filter(id => id);
+                    }
+                    
                     try {
                         const projectData = {
                             name: projectName,
@@ -15327,6 +15625,12 @@
                             deliverables: deliverables,
                             collapsibleSectionsState: collapsibleSectionsState
                         };
+                        
+                        // Agregar sectionOrder si existe
+                        if (sectionOrder && sectionOrder.length > 0) {
+                            projectData.sectionOrder = sectionOrder;
+                            console.log('📋 Orden de secciones incluido en projectData:', sectionOrder);
+                        }
                         
                         // Agregar budget allocation solo si tiene valor
                         if (budgetAllocation) {
@@ -16648,6 +16952,255 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // ============================================
+        // DRAG & DROP - Reordenamiento de Secciones
+        // ============================================
+        let draggedElement = null;
+        let draggedIndex = null;
+
+        function initSectionDragDrop() {
+            const draggableSections = document.querySelectorAll('.draggable-section');
+            
+            if (draggableSections.length === 0) {
+                console.log('⚠️ No se encontraron secciones arrastrables');
+                return;
+            }
+
+            console.log(`✅ Inicializando drag & drop para ${draggableSections.length} secciones`);
+
+            draggableSections.forEach(section => {
+                // Asegurar que tenga el atributo draggable
+                section.draggable = true;
+                
+                // Event listeners
+                section.addEventListener('dragstart', handleDragStart);
+                section.addEventListener('dragover', handleDragOver);
+                section.addEventListener('drop', handleDrop);
+                section.addEventListener('dragend', handleDragEnd);
+                section.addEventListener('dragenter', handleDragEnter);
+                section.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedElement = this;
+            draggedIndex = Array.from(this.parentNode.children).indexOf(this);
+            this.classList.add('dragging');
+            
+            // Establecer datos de transferencia
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.outerHTML);
+            e.dataTransfer.setData('text/plain', this.id);
+            
+            console.log('🔄 Iniciando drag de:', this.id);
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            
+            e.dataTransfer.dropEffect = 'move';
+            
+            // Solo permitir drop en otras secciones arrastrables
+            if (!this.classList.contains('draggable-section') || this === draggedElement) {
+                return false;
+            }
+
+            // Calcular posición de inserción sin mover aún
+            const afterElement = getDragAfterElement(this.parentNode, e.clientY);
+            const dragging = draggedElement;
+            
+            // Solo mover si la posición cambió
+            if (afterElement == null) {
+                // Si no hay elemento después, mover al final
+                if (this.parentNode.lastElementChild !== dragging) {
+                    this.parentNode.appendChild(dragging);
+                }
+            } else {
+                // Si hay elemento después, insertar antes de él
+                if (afterElement !== dragging && afterElement.nextSibling !== dragging) {
+                    this.parentNode.insertBefore(dragging, afterElement);
+                }
+            }
+            
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            
+            if (this.classList.contains('draggable-section') && this !== draggedElement) {
+                this.classList.add('drag-over');
+            }
+        }
+
+        function handleDragLeave(e) {
+            // Solo remover si realmente salimos del elemento (no solo de un hijo)
+            if (!this.contains(e.relatedTarget)) {
+                this.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            
+            this.classList.remove('drag-over');
+            
+            // Asegurar que el elemento arrastrado esté en la posición correcta
+            if (draggedElement) {
+                const afterElement = getDragAfterElement(this.parentNode, e.clientY);
+                
+                if (afterElement == null) {
+                    this.parentNode.appendChild(draggedElement);
+                } else {
+                    this.parentNode.insertBefore(draggedElement, afterElement);
+                }
+            }
+            
+            // Guardar nuevo orden
+            saveSectionOrder();
+            
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            
+            // Remover clase drag-over de todas las secciones
+            document.querySelectorAll('.draggable-section').forEach(section => {
+                section.classList.remove('drag-over');
+            });
+            
+            // Guardar orden final
+            saveSectionOrder();
+            
+            console.log('✅ Drag finalizado');
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.draggable-section:not(.dragging)')];
+            
+            if (draggableElements.length === 0) {
+                return null;
+            }
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - (box.height / 2);
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function saveSectionOrder() {
+            const projectContent = document.querySelector('.project-content');
+            if (!projectContent) {
+                console.warn('⚠️ No se encontró .project-content');
+                return;
+            }
+
+            // Obtener todas las secciones arrastrables en el orden actual del DOM
+            const sections = Array.from(projectContent.querySelectorAll('.draggable-section'));
+            const sectionOrder = sections.map(section => {
+                const sectionId = section.id || section.dataset.sectionId;
+                if (!sectionId) {
+                    console.warn('⚠️ Sección sin ID:', section);
+                }
+                return sectionId;
+            }).filter(id => id); // Filtrar IDs nulos
+
+            if (sectionOrder.length === 0) {
+                console.warn('⚠️ No se encontraron secciones para guardar');
+                return;
+            }
+
+            // Guardar en localStorage
+            const projectId = new URLSearchParams(window.location.search).get('id');
+            const storageKey = projectId ? `project_section_order_${projectId}` : 'project_section_order_temp';
+            
+            try {
+                localStorage.setItem(storageKey, JSON.stringify(sectionOrder));
+                console.log('💾 Orden de secciones guardado:', sectionOrder);
+            } catch (error) {
+                console.error('❌ Error al guardar orden de secciones:', error);
+            }
+
+            // También guardar en window.currentProjectData si existe
+            if (window.currentProjectData) {
+                window.currentProjectData.sectionOrder = sectionOrder;
+            }
+        }
+
+        function loadSectionOrder() {
+            const projectId = new URLSearchParams(window.location.search).get('id');
+            const storageKey = projectId ? `project_section_order_${projectId}` : 'project_section_order_temp';
+            
+            try {
+                const savedOrder = localStorage.getItem(storageKey);
+                if (!savedOrder) {
+                    console.log('ℹ️ No hay orden guardado de secciones, usando orden por defecto');
+                    return;
+                }
+
+                const sectionOrder = JSON.parse(savedOrder);
+                console.log('📋 Cargando orden de secciones:', sectionOrder);
+
+                const projectContent = document.querySelector('.project-content');
+                if (!projectContent) {
+                    console.warn('⚠️ No se encontró .project-content');
+                    return;
+                }
+
+                // Crear un fragmento para reordenar sin causar múltiples reflows
+                const fragment = document.createDocumentFragment();
+                
+                // Reordenar secciones según el orden guardado
+                sectionOrder.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    
+                    if (section && section.classList.contains('draggable-section')) {
+                        // Remover de su posición actual
+                        if (section.parentNode) {
+                            section.parentNode.removeChild(section);
+                        }
+                        // Agregar al fragmento en el orden correcto
+                        fragment.appendChild(section);
+                    } else {
+                        console.warn(`⚠️ Sección no encontrada: ${sectionId}`);
+                    }
+                });
+
+                // Agregar todas las secciones reordenadas al contenedor
+                // Insertar después de las secciones fijas (name y budget)
+                const fixedSections = projectContent.querySelectorAll('.project-name-section, .project-budget-section, .project-date-status-section');
+                const lastFixedSection = fixedSections[fixedSections.length - 1];
+                
+                if (lastFixedSection && lastFixedSection.nextSibling) {
+                    projectContent.insertBefore(fragment, lastFixedSection.nextSibling);
+                } else {
+                    // Si no hay secciones fijas o es la última, agregar al final
+                    projectContent.appendChild(fragment);
+                }
+
+                console.log('✅ Orden de secciones restaurado');
+            } catch (error) {
+                console.error('❌ Error al cargar orden de secciones:', error);
+            }
         }
     </script>
 </body>
