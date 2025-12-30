@@ -4048,28 +4048,89 @@
 
 
         .stage-status-badge {
-            background-color: var(--color-status-in-progress);
+            background-color: #f4f7fb;
             border-radius: var(--radius-md);
             padding: var(--spacing-16);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .stage-status-badge__title-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: var(--spacing-08);
         }
 
         .stage-status-badge__text {
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-regular);
-            color: var(--color-text-primary);
+            font-weight: 700;
+            color: #0a243f;
             line-height: var(--line-height-normal);
+            text-align: left;
+            flex: 1;
+            margin: 0;
+        }
+
+        [data-theme="dark"] .stage-status-badge__text {
+            color: #ffffff;
+        }
+
+        .stage-description-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            transition: opacity 0.2s ease;
+            opacity: 0.6;
+        }
+
+        .stage-description-toggle:hover {
+            opacity: 1;
+        }
+
+        .stage-description-toggle__icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        [data-theme="dark"] .stage-description-toggle__icon {
+            filter: brightness(0) saturate(100%) invert(1);
         }
 
         .stage-description {
             font-family: var(--font-family-secondary);
             font-size: var(--font-size-xs);
             font-weight: var(--font-weight-regular);
-            color: var(--color-text-secondary, #6b7b8a);
+            color: #0a243f;
             line-height: var(--line-height-normal);
             margin-top: var(--spacing-08);
             text-align: left;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stage-description--expanded {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .stage-description--collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
         .stage-card-date-range-wrapper {
@@ -9319,17 +9380,53 @@
             // Status badge con el nombre del stage
             const statusBadge = document.createElement('div');
             statusBadge.className = 'stage-status-badge';
+            
+            // Contenedor para texto y botón de colapsar
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'stage-status-badge__title-container';
+            
             const statusText = document.createElement('p');
             statusText.className = 'stage-status-badge__text';
             statusText.textContent = stageName;
-            statusBadge.appendChild(statusText);
+            titleContainer.appendChild(statusText);
 
+            // Agregar titleContainer primero
+            statusBadge.appendChild(titleContainer);
+            
             // Descripción del stage (si existe)
             if (stageDescription) {
+                // Botón para colapsar/expandir descripción
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'stage-description-toggle';
+                toggleBtn.setAttribute('aria-label', 'Toggle description');
+                const toggleIcon = document.createElement('img');
+                toggleIcon.src = 'images/up-chevron.svg';
+                toggleIcon.alt = 'Collapse';
+                toggleIcon.className = 'stage-description-toggle__icon';
+                toggleBtn.appendChild(toggleIcon);
+                titleContainer.appendChild(toggleBtn);
+                
                 const descriptionElement = document.createElement('p');
-                descriptionElement.className = 'stage-description';
+                descriptionElement.className = 'stage-description stage-description--expanded';
                 descriptionElement.textContent = stageDescription;
                 statusBadge.appendChild(descriptionElement);
+                
+                // Event listener para toggle
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isExpanded = descriptionElement.classList.contains('stage-description--expanded');
+                    if (isExpanded) {
+                        descriptionElement.classList.remove('stage-description--expanded');
+                        descriptionElement.classList.add('stage-description--collapsed');
+                        toggleIcon.src = 'images/down-chevron.svg';
+                        toggleIcon.alt = 'Expand';
+                    } else {
+                        descriptionElement.classList.remove('stage-description--collapsed');
+                        descriptionElement.classList.add('stage-description--expanded');
+                        toggleIcon.src = 'images/up-chevron.svg';
+                        toggleIcon.alt = 'Collapse';
+                    }
+                });
             }
 
             // Date range wrapper con botones delete y edit
@@ -9435,29 +9532,106 @@
             if (!stageItem) return;
 
             const statusBadge = stageItem.querySelector('.stage-status-badge');
+            if (!statusBadge) return;
+            
+            // Obtener o crear contenedor del título
+            let titleContainer = statusBadge.querySelector('.stage-status-badge__title-container');
+            if (!titleContainer) {
+                // Si no existe, crear la estructura completa
+                titleContainer = document.createElement('div');
+                titleContainer.className = 'stage-status-badge__title-container';
+                
+                const statusText = statusBadge.querySelector('.stage-status-badge__text');
+                if (statusText) {
+                    // Mover el texto al contenedor
+                    titleContainer.appendChild(statusText);
+                } else {
+                    // Crear nuevo texto
+                    const newStatusText = document.createElement('p');
+                    newStatusText.className = 'stage-status-badge__text';
+                    newStatusText.textContent = stageName;
+                    titleContainer.appendChild(newStatusText);
+                }
+                
+                // Mover el contenedor al inicio del badge
+                statusBadge.insertBefore(titleContainer, statusBadge.firstChild);
+            }
             
             // Actualizar nombre del stage
-            const statusText = statusBadge?.querySelector('.stage-status-badge__text');
+            const statusText = titleContainer.querySelector('.stage-status-badge__text');
             if (statusText) {
                 statusText.textContent = stageName;
             }
 
-            // Actualizar o crear descripción
-            let descriptionElement = statusBadge?.querySelector('.stage-description');
+            // Actualizar o crear descripción y botón toggle
+            let descriptionElement = statusBadge.querySelector('.stage-description');
+            let toggleBtn = titleContainer.querySelector('.stage-description-toggle');
+            
             if (stageDescription) {
+                // Actualizar o crear descripción
                 if (descriptionElement) {
                     descriptionElement.textContent = stageDescription;
-                } else if (statusBadge) {
-                    // Crear descripción si no existe
+                    if (!descriptionElement.classList.contains('stage-description--expanded') && 
+                        !descriptionElement.classList.contains('stage-description--collapsed')) {
+                        descriptionElement.classList.add('stage-description--expanded');
+                    }
+                } else {
                     descriptionElement = document.createElement('p');
-                    descriptionElement.className = 'stage-description';
+                    descriptionElement.className = 'stage-description stage-description--expanded';
                     descriptionElement.textContent = stageDescription;
                     statusBadge.appendChild(descriptionElement);
                 }
+                
+                // Crear o actualizar botón toggle
+                if (!toggleBtn) {
+                    toggleBtn = document.createElement('button');
+                    toggleBtn.className = 'stage-description-toggle';
+                    toggleBtn.setAttribute('aria-label', 'Toggle description');
+                    const toggleIcon = document.createElement('img');
+                    toggleIcon.src = 'images/up-chevron.svg';
+                    toggleIcon.alt = 'Collapse';
+                    toggleIcon.className = 'stage-description-toggle__icon';
+                    toggleBtn.appendChild(toggleIcon);
+                    titleContainer.appendChild(toggleBtn);
+                    
+                    // Event listener para toggle
+                    toggleBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const isExpanded = descriptionElement.classList.contains('stage-description--expanded');
+                        if (isExpanded) {
+                            descriptionElement.classList.remove('stage-description--expanded');
+                            descriptionElement.classList.add('stage-description--collapsed');
+                            toggleIcon.src = 'images/down-chevron.svg';
+                            toggleIcon.alt = 'Expand';
+                        } else {
+                            descriptionElement.classList.remove('stage-description--collapsed');
+                            descriptionElement.classList.add('stage-description--expanded');
+                            toggleIcon.src = 'images/up-chevron.svg';
+                            toggleIcon.alt = 'Collapse';
+                        }
+                    });
+                } else {
+                    // Actualizar icono según estado
+                    const toggleIcon = toggleBtn.querySelector('.stage-description-toggle__icon');
+                    if (descriptionElement.classList.contains('stage-description--expanded')) {
+                        if (toggleIcon) {
+                            toggleIcon.src = 'images/up-chevron.svg';
+                            toggleIcon.alt = 'Collapse';
+                        }
+                    } else {
+                        if (toggleIcon) {
+                            toggleIcon.src = 'images/down-chevron.svg';
+                            toggleIcon.alt = 'Expand';
+                        }
+                    }
+                }
             } else {
-                // Eliminar descripción si está vacía
+                // Eliminar descripción y botón toggle si está vacía
                 if (descriptionElement) {
                     descriptionElement.remove();
+                }
+                if (toggleBtn) {
+                    toggleBtn.remove();
                 }
             }
             

@@ -399,6 +399,101 @@
             background-color: var(--color-surface-especial, #f4f7fb);
         }
 
+        /* Ajustes para badge cuando tiene descripción */
+        .dsu-stage-status__badge {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            text-align: left;
+            white-space: normal;
+            background-color: #f4f7fb;
+        }
+
+        /* Contenedor para título, icono y botón toggle (misma fila) */
+        .dsu-stage-status__badge-title-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-08);
+            width: 100%;
+        }
+
+        .dsu-stage-status__badge-text {
+            flex: 1;
+        }
+
+        .stage-description-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-left: auto;
+            transition: opacity 0.2s ease;
+            opacity: 0.6;
+        }
+
+        .stage-description-toggle:hover {
+            opacity: 1;
+        }
+
+        .stage-description-toggle__icon {
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        [data-theme="dark"] .stage-description-toggle__icon {
+            filter: brightness(0) saturate(100%) invert(1);
+        }
+
+        .stage-description {
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stage-description--expanded {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        .stage-description--collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        /* Estilos para badge text de stages */
+        .dsu-stage-status__badge-text {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-sm);
+            font-weight: 700;
+            color: #0a243f;
+            line-height: var(--line-height-normal);
+            text-align: left;
+        }
+
+        [data-theme="dark"] .dsu-stage-status__badge-text {
+            color: #ffffff;
+        }
+
+        /* Estilos para descripción de stages */
+        .stage-description {
+            font-family: var(--font-family-secondary);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-regular);
+            color: #0a243f;
+            line-height: var(--line-height-normal);
+            margin-top: var(--spacing-08);
+            text-align: left;
+        }
+
         /* Project Objective Section Styles */
         .project-objective-tabs {
             display: flex;
@@ -3774,10 +3869,15 @@
                     // Badge con nombre del stage
                     const badge = document.createElement('div');
                     badge.className = 'dsu-stage-status__badge';
+                    
+                    // Contenedor para título, icono y botón toggle (misma fila)
+                    const titleContainer = document.createElement('div');
+                    titleContainer.className = 'dsu-stage-status__badge-title-container';
+                    
                     const badgeText = document.createElement('span');
                     badgeText.className = 'dsu-stage-status__badge-text';
                     badgeText.textContent = stage.name || 'Sin nombre';
-                    badge.appendChild(badgeText);
+                    titleContainer.appendChild(badgeText);
                     
                     // Agregar icono solo si es in-progress
                     if (isActive && stageStatusClass === 'dsu-stage-status--in-progress') {
@@ -3787,7 +3887,50 @@
                         iconImg.src = 'images/Progress.svg';
                         iconImg.alt = 'Progress';
                         badgeIcon.appendChild(iconImg);
-                        badge.appendChild(badgeIcon);
+                        titleContainer.appendChild(badgeIcon);
+                    }
+                    
+                    // Botón para colapsar/expandir descripción (si existe descripción)
+                    let descriptionElement = null;
+                    if (stage.description) {
+                        const toggleBtn = document.createElement('button');
+                        toggleBtn.className = 'stage-description-toggle';
+                        toggleBtn.setAttribute('aria-label', 'Toggle description');
+                        const toggleIcon = document.createElement('img');
+                        toggleIcon.src = 'images/up-chevron.svg';
+                        toggleIcon.alt = 'Collapse';
+                        toggleIcon.className = 'stage-description-toggle__icon';
+                        toggleBtn.appendChild(toggleIcon);
+                        titleContainer.appendChild(toggleBtn);
+                        
+                        descriptionElement = document.createElement('p');
+                        descriptionElement.className = 'stage-description stage-description--expanded';
+                        descriptionElement.textContent = stage.description;
+                        
+                        // Event listener para toggle
+                        toggleBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            const isExpanded = descriptionElement.classList.contains('stage-description--expanded');
+                            if (isExpanded) {
+                                descriptionElement.classList.remove('stage-description--expanded');
+                                descriptionElement.classList.add('stage-description--collapsed');
+                                toggleIcon.src = 'images/down-chevron.svg';
+                                toggleIcon.alt = 'Expand';
+                            } else {
+                                descriptionElement.classList.remove('stage-description--collapsed');
+                                descriptionElement.classList.add('stage-description--expanded');
+                                toggleIcon.src = 'images/up-chevron.svg';
+                                toggleIcon.alt = 'Collapse';
+                            }
+                        });
+                    }
+                    
+                    // Agregar titleContainer al badge primero
+                    badge.appendChild(titleContainer);
+                    
+                    // Agregar descripción después del titleContainer
+                    if (descriptionElement) {
+                        badge.appendChild(descriptionElement);
                     }
                     
                     // Fecha
