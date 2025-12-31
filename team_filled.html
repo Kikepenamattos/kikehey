@@ -2367,7 +2367,13 @@
                         sessionStorage.setItem('docu_editing_mode', 'true');
                         window.location.href = `create_team.html?edit=true&id=${teamId}`;
                     } else {
-                        // Si no hay ID, ir a create_team.html sin parámetros
+                        // Si no hay ID, ir a create_team.html sin parámetros - limpiar sessionStorage para crear nuevo
+                        try {
+                            sessionStorage.removeItem('docu_selected_team_id');
+                            sessionStorage.setItem('docu_create_new_team', 'true');
+                        } catch (error) {
+                            console.warn('⚠️ No se pudo limpiar sessionStorage:', error);
+                        }
                         window.location.href = 'create_team.html';
                     }
                 });
